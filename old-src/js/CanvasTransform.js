@@ -19,7 +19,7 @@ define( function( require ) {
     this.transform = new Property( null ); // updated by the listener below
 
     var that = this;
-    canvasSizeProperty.addObserver( function() {
+    canvasSizeProperty.link( function() {
       that.updateTransform();
     }, true );
   };

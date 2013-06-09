@@ -95,7 +95,7 @@ phet.moleculeshapes.view = phet.moleculeshapes.view || {};
       sphere.wrappers.push( whiteColorWrapper );
     }
 
-    atom.position.addObserver( function () {
+    atom.position.link( function () {
       var position = atom.position.get();
       sphere.transform.set( dot.Matrix4.translation( position.x, position.y, position.z ) );
     }, true );

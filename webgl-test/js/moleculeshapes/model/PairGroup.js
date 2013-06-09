@@ -27,7 +27,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     // undefined for vsepr pair groups
     this.element = element;
 
-    this.position.addObserver( function ( oldValue, newValue ) {
+    this.position.link( function ( oldValue, newValue ) {
 //      if ( newValue.magnitude() > 40 ) {
 //        throw new Error( "Magnitude way too large!" );
 //      }
@@ -39,7 +39,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       }
     } );
 
-    this.velocity.addObserver( function ( oldValue, newValue ) {
+    this.velocity.link( function ( oldValue, newValue ) {
       if ( isNaN( newValue.x ) ) {
         throw new Error( "NaN detected in velocity!" );
       }
