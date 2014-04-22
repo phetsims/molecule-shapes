@@ -6,7 +6,7 @@
  * <p/>
  * We display these real molecules to the user in 3D
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 var phet = phet || {};

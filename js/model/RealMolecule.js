@@ -3,7 +3,7 @@
 /**
  * Represents a physically malleable version of a real molecule, with lone pairs if necessary.
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 var phet = phet || {};
