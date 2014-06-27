@@ -11,10 +11,10 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
   var Property = phet.model.Property;
 
-  phet.moleculeshapes.model.Atom = function ( element, position, lonePairCount ) {
+  phet.moleculeshapes.model.Atom = function( element, position, lonePairCount ) {
     phet.chemistry.Atom.call( this, element );
 
     this.position = new Property( position );

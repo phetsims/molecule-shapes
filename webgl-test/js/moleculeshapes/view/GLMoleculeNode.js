@@ -11,18 +11,18 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.view = phet.moleculeshapes.view || {};
 
 // create a new scope
-(function () {
+(function() {
 
   var defaultAtomRadius = 2;
   var defaultBondRadius = defaultAtomRadius / 4;
 
-  var colorWrapper = function ( red, green, blue, alpha ) {
+  var colorWrapper = function( red, green, blue, alpha ) {
     return {
-      preRender: function ( args ) {
+      preRender: function( args ) {
         args.gl.uniform4f( args.shaderProgram.atomColor, red, green, blue, alpha );
       },
 
-      postRender: function ( args ) {
+      postRender: function( args ) {
 
       }
     }
@@ -31,7 +31,7 @@ phet.moleculeshapes.view = phet.moleculeshapes.view || {};
   var whiteColorWrapper = colorWrapper( 1, 1, 1, 1 );
   var centerColorWrapper = colorWrapper( 159 / 255.0, 102 / 255.0, 218 / 255.0, 1 );
 
-  phet.moleculeshapes.view.GLMoleculeNode = function ( gl, molecule ) {
+  phet.moleculeshapes.view.GLMoleculeNode = function( gl, molecule ) {
     phet.webgl.GLNode.call( this );
 
     var moleculeNode = this;
@@ -46,13 +46,14 @@ phet.moleculeshapes.view = phet.moleculeshapes.view || {};
     for ( var i = 0; i < atoms; i++ ) {
       this.addAtom( atoms[i] );
     }
-    molecule.onGroupAdded.addListener( function(group){
-      if ( group.isLonePair) {
+    molecule.onGroupAdded.addListener( function( group ) {
+      if ( group.isLonePair ) {
 
-      } else {
+      }
+      else {
         moleculeNode.addAtom( group );
       }
-    });
+    } );
 
 //    var sphere1 = new phet.webgl.Sphere( gl, defaultAtomRadius, 25, 25 );
 //    sphere1.wrappers.push( centerColorWrapper );
@@ -84,7 +85,7 @@ phet.moleculeshapes.view = phet.moleculeshapes.view || {};
   GLMoleculeNode.prototype = phet.Object.create( phet.webgl.GLNode.prototype );
   GLMoleculeNode.prototype.constructor = GLMoleculeNode;
 
-  GLMoleculeNode.prototype.addAtom = function ( atom ) {
+  GLMoleculeNode.prototype.addAtom = function( atom ) {
     var sphere = new phet.webgl.Sphere( this.gl, defaultAtomRadius, 25, 25 );
 
     // if it's the center atom
@@ -95,7 +96,7 @@ phet.moleculeshapes.view = phet.moleculeshapes.view || {};
       sphere.wrappers.push( whiteColorWrapper );
     }
 
-    atom.position.link( function () {
+    atom.position.link( function() {
       var position = atom.position.get();
       sphere.transform.set( dot.Matrix4.translation( position.x, position.y, position.z ) );
     }, true );

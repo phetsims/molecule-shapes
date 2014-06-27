@@ -10,8 +10,8 @@ var phet = phet || {};
 phet.chemistry = phet.chemistry || {};
 
 // create a new scope
-(function () {
-  phet.chemistry.Atom = function ( element ) {
+(function() {
+  phet.chemistry.Atom = function( element ) {
     this.element = element;
     this.symbol = element.symbol;
     this.radius = element.radius;
@@ -26,23 +26,23 @@ phet.chemistry = phet.chemistry || {};
   Atom.prototype = {
     constructor: Atom,
 
-    hasSameElement: function ( atom ) {
+    hasSameElement: function( atom ) {
       return this.element.isSameElement( atom.element );
     },
 
-    isHydrogen: function () {
+    isHydrogen: function() {
       return this.element.isHydrogen();
     },
 
-    isCarbon: function () {
+    isCarbon: function() {
       return this.element.isCarbon();
     },
 
-    isOxygen: function () {
+    isOxygen: function() {
       return this.element.isOxygen();
     },
 
-    toString: function () {
+    toString: function() {
       return this.symbol;
     }
   };

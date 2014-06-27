@@ -9,13 +9,13 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
   var Property = phet.model.Property;
   var Vector3 = dot.Vector3;
 
   var nextId = 0;
 
-  phet.moleculeshapes.model.PairGroup = function ( position, isLonePair, startDragged, element ) {
+  phet.moleculeshapes.model.PairGroup = function( position, isLonePair, startDragged, element ) {
     // unique identifier
     this.id = nextId++;
 
@@ -27,7 +27,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     // undefined for vsepr pair groups
     this.element = element;
 
-    this.position.link( function ( oldValue, newValue ) {
+    this.position.link( function( oldValue, newValue ) {
 //      if ( newValue.magnitude() > 40 ) {
 //        throw new Error( "Magnitude way too large!" );
 //      }
@@ -39,7 +39,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       }
     } );
 
-    this.velocity.link( function ( oldValue, newValue ) {
+    this.velocity.link( function( oldValue, newValue ) {
       if ( isNaN( newValue.x ) ) {
         throw new Error( "NaN detected in velocity!" );
       }
@@ -67,20 +67,20 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   }
 
   // Returns a unit vector that is the component of "vector" that is perpendicular to the "position" vector
-  PairGroup.getTangentDirection = function ( position, vector ) {
+  PairGroup.getTangentDirection = function( position, vector ) {
     var normalizedPosition = position.normalized();
     return vector.minus( normalizedPosition.times( vector.dot( normalizedPosition ) ) );
   };
 
   // helps avoid oscillation when the frame-rate is low, due to how the damping is implemented
-  PairGroup.getTimescaleImpulseFactor = function ( timeElapsed ) {
+  PairGroup.getTimescaleImpulseFactor = function( timeElapsed ) {
     return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
   };
 
   PairGroup.prototype = {
     constructor: PairGroup,
 
-    attractToIdealDistance: function ( timeElapsed, oldDistance, bond ) {
+    attractToIdealDistance: function( timeElapsed, oldDistance, bond ) {
       if ( this.userControlled.get() ) {
         // don't process if being dragged
         return;
@@ -126,7 +126,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
      * @param trueLengthsRatioOverride From 0 to 1. If 0, lone pairs will behave the same as bonds. If 1, lone pair distance will be taken into account
      * @return Repulsion force on this pair group, from the other pair group
      */
-    getRepulsionImpulse: function ( other, timeElapsed, trueLengthsRatioOverride ) {
+    getRepulsionImpulse: function( other, timeElapsed, trueLengthsRatioOverride ) {
       // only handle the force on this object for now
 
       /*---------------------------------------------------------------------------*
@@ -163,22 +163,22 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       return coulombVelocityDelta.times( coulombDowngrade );
     },
 
-    repulseFrom: function ( other, timeElapsed, trueLengthsRatioOverride ) {
+    repulseFrom: function( other, timeElapsed, trueLengthsRatioOverride ) {
       this.addVelocity( this.getRepulsionImpulse( other, timeElapsed, trueLengthsRatioOverride ) );
     },
 
-    addVelocity: function ( velocityChange ) {
+    addVelocity: function( velocityChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
       if ( !this.userControlled.get() && !this.isCentralAtom() ) {
         this.velocity.set( this.velocity.get().plus( velocityChange ) );
       }
     },
 
-    getPushFactor: function () {
+    getPushFactor: function() {
       return this.isLonePair ? 1 : 1;
     },
 
-    estimatePush: function ( angle ) {
+    estimatePush: function( angle ) {
       var result = 10 / ( angle * angle );
       if ( isNaN( result ) ) {
         return 0;
@@ -186,7 +186,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       return result;
     },
 
-    stepForward: function ( timeElapsed ) {
+    stepForward: function( timeElapsed ) {
       // velocity changes so that it doesn't point at all towards or away from the origin
       var velocityMagnitudeOutwards = this.velocity.get().dot( this.position.get().normalized() );
       if ( this.position.get().magnitude() > 0 ) {
@@ -202,18 +202,18 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       this.velocity.set( this.velocity.get().times( damping ) );
     },
 
-    dragToPosition: function ( vector ) {
+    dragToPosition: function( vector ) {
       this.position.set( vector );
 
       // stop any velocity that was moving the pair
       this.velocity.set( new Vector3() );
     },
 
-    isCentralAtom: function () {
+    isCentralAtom: function() {
       return !this.isLonePair && this.position.get().equals( Vector3.ZERO );
     },
 
-    getElement: function () {
+    getElement: function() {
       return this.element;
     }
   };

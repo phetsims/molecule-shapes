@@ -11,6 +11,6 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.view = phet.moleculeshapes.view || {};
 
 // create a new scope
-(function () {
+(function() {
 
 })();

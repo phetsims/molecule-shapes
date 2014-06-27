@@ -11,9 +11,9 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
 
-  phet.moleculeshapes.model.Bond = function ( a, b, order, length ) {
+  phet.moleculeshapes.model.Bond = function( a, b, order, length ) {
     this.a = a;
     this.b = b;
     this.order = order;
@@ -25,21 +25,21 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   Bond.prototype = {
     constructor: Bond,
 
-    toString: function () {
+    toString: function() {
       return "{" + this.a.toString() + " => " + this.b.toString() + "}";
     },
 
-    contains: function ( atom ) {
+    contains: function( atom ) {
       return this.a === atom || this.b === atom;
     },
 
-    getOtherAtom: function ( atom ) {
+    getOtherAtom: function( atom ) {
       phet.assert( this.contains( atom ) );
 
       return this.a === atom ? this.b : this.a;
     },
 
-    equals: function ( bond ) {
+    equals: function( bond ) {
       // TODO: consider checking bond order? or is this not important?
       return this.a === bond.a && this.b === bond.b;
     }

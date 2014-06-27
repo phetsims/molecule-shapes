@@ -1,4 +1,4 @@
-$( document ).ready( function () {
+$( document ).ready( function() {
   var model = phet.moleculeshapes.model;
 
   var Property = phet.model.Property;
@@ -27,7 +27,7 @@ $( document ).ready( function () {
   var molecule = new model.VSEPRMolecule(); // no extra args needed, no bond override
 
   // stop text selection on the canvas
-  var emptyFunction = function () { return false; };
+  var emptyFunction = function() { return false; };
   mainCanvas.onselectstart = emptyFunction;
   uiCanvas.onselectstart = emptyFunction;
 
@@ -128,18 +128,18 @@ $( document ).ready( function () {
     var correctedFieldOfViewRadians = Math.atan( canvasTransform.fieldOfViewYFactor() * Math.tan( fieldOfViewRadians ) );
 
     return dot.Matrix4.gluPerspective( correctedFieldOfViewRadians,
-                         canvasSize.get().width / canvasSize.get().height,
-                         nearPlane, farPlane );
+        canvasSize.get().width / canvasSize.get().height,
+      nearPlane, farPlane );
   }
 
   function debuggingText() {
     return canvasSize.get().toString() + " window.orientation = " + window.orientation +
-         "<br>alpha: " + alpha +
-         "<br>beta: " + beta +
-         "<br>gamma: " + gamma +
-         "<br>backingScale: " + phet.canvas.backingScale( uiContext ) +
-         "<br>window.innerWidth: " + window.innerWidth +
-         "<br>window.innerHeight: " + window.innerHeight;
+           "<br>alpha: " + alpha +
+           "<br>beta: " + beta +
+           "<br>gamma: " + gamma +
+           "<br>backingScale: " + phet.canvas.backingScale( uiContext ) +
+           "<br>window.innerWidth: " + window.innerWidth +
+           "<br>window.innerHeight: " + window.innerHeight;
   }
 
   function drawMainCanvas() {
@@ -179,12 +179,12 @@ $( document ).ready( function () {
 
       mainContext.strokeStyle = '#FFFFFF';
 
-      phet.util.foreach( molecule.getAtoms(), function ( atom ) {
+      phet.util.foreach( molecule.getAtoms(), function( atom ) {
         var position = mappingMatrix.timesVector4( atom.position.get().plus( mainTranslation ).toVector4() );
         mainContext.beginPath();
         mainContext.arc( stageSize.width * (position.x / position.w + 1) / 2,
-                 stageSize.height * (1 - (position.y / position.w + 1) / 2),
-                 50, 0, Math.PI * 2 );
+            stageSize.height * (1 - (position.y / position.w + 1) / 2),
+          50, 0, Math.PI * 2 );
         mainContext.stroke();
       } );
 
@@ -232,7 +232,7 @@ $( document ).ready( function () {
   var cursorX = 0;
   var cursorY = 0;
 
-  var updateCursor = function ( x, y ) {
+  var updateCursor = function( x, y ) {
     cursorX = x;
     cursorY = y;
 
@@ -244,7 +244,7 @@ $( document ).ready( function () {
     }
   };
 
-  var resizer = function () {
+  var resizer = function() {
     mainCanvas.width = uiCanvas.width = window.innerWidth;
     mainCanvas.height = uiCanvas.height = window.innerHeight;
     if ( useGL ) {
@@ -257,7 +257,7 @@ $( document ).ready( function () {
   };
   $( window ).resize( resizer );
 
-  window.addEventListener( "deviceorientation", function ( event ) {
+  window.addEventListener( "deviceorientation", function( event ) {
     alpha = event.alpha;
     beta = event.beta;
     gamma = event.gamma;
@@ -265,53 +265,53 @@ $( document ).ready( function () {
 
   tick();
 
-  var moveListener = function ( x, y ) {
+  var moveListener = function( x, y ) {
     updateCursor( x, y );
   };
 
-  var downListener = function ( x, y ) {
+  var downListener = function( x, y ) {
     updateCursor( x, y );
 
     var v = new Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
     molecule.addGroupAndBond( new model.PairGroup( v.normalized().times( model.PairGroup.BONDED_PAIR_DISTANCE ), false, false ), centralAtom, 1 );
   };
 
-  var upListener = function ( x, y ) {
+  var upListener = function( x, y ) {
     updateCursor( x, y );
   };
 
-  var touchFromJQueryEvent = function ( evt ) {
+  var touchFromJQueryEvent = function( evt ) {
     return evt.originalEvent.targetTouches[0];
   };
 
-  $( uiCanvas ).bind( "mousemove", function ( evt ) {
+  $( uiCanvas ).bind( "mousemove", function( evt ) {
     evt.preventDefault();
     moveListener( evt.pageX, evt.pageY );
   } );
-  $( uiCanvas ).bind( "mousedown", function ( evt ) {
+  $( uiCanvas ).bind( "mousedown", function( evt ) {
     evt.preventDefault();
     downListener( evt.pageX, evt.pageY );
   } );
-  $( uiCanvas ).bind( "mouseup", function ( evt ) {
+  $( uiCanvas ).bind( "mouseup", function( evt ) {
     evt.preventDefault();
     upListener( evt.pageX, evt.pageY );
   } );
-  $( uiCanvas ).bind( "touchmove", function ( evt ) {
+  $( uiCanvas ).bind( "touchmove", function( evt ) {
     evt.preventDefault();
     var touch = touchFromJQueryEvent( evt );
     moveListener( touch.pageX, touch.pageY );
   } );
-  $( uiCanvas ).bind( "touchstart", function ( evt ) {
+  $( uiCanvas ).bind( "touchstart", function( evt ) {
     evt.preventDefault();
     var touch = touchFromJQueryEvent( evt );
     downListener( touch.pageX, touch.pageY );
   } );
-  $( uiCanvas ).bind( "touchend", function ( evt ) {
+  $( uiCanvas ).bind( "touchend", function( evt ) {
     evt.preventDefault();
     var touch = touchFromJQueryEvent( evt );
     upListener( touch.pageX, touch.pageY );
   } );
-  $( uiCanvas ).bind( "touchcancel", function ( evt ) {
+  $( uiCanvas ).bind( "touchcancel", function( evt ) {
     evt.preventDefault();
     var touch = touchFromJQueryEvent( evt );
     upListener( touch.pageX, touch.pageY );

@@ -11,12 +11,12 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
 
   var model = phet.moleculeshapes.model;
   var Vector3 = dot.Vector3;
 
-  phet.moleculeshapes.model.RealMolecule = function ( realMolecule ) {
+  phet.moleculeshapes.model.RealMolecule = function( realMolecule ) {
     var i, group;
 
     model.Molecule.call( this );
@@ -81,7 +81,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   RealMolecule.prototype = phet.Object.create( model.Molecule.prototype );
   RealMolecule.prototype.constructor = RealMolecule;
 
-  RealMolecule.prototype.update = function ( tpf ) {
+  RealMolecule.prototype.update = function( tpf ) {
     model.Molecule.prototype.update.call( this, tpf );
 
     // angle-based repulsion
@@ -97,17 +97,17 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     }
   };
 
-  RealMolecule.prototype.getLocalShape = function ( atom ) {
+  RealMolecule.prototype.getLocalShape = function( atom ) {
     return this.localShapeMap[atom.id];
   };
 
   RealMolecule.prototype.isReal = true;
 
-  RealMolecule.prototype.getMaximumBondLength = function () {
+  RealMolecule.prototype.getMaximumBondLength = function() {
     return undefined;
   };
 
-  RealMolecule.prototype.getRealMolecule = function () {
+  RealMolecule.prototype.getRealMolecule = function() {
     return this.realMolecule;
   };
 })();

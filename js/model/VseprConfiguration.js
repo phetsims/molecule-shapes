@@ -5,11 +5,11 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
 
   var model = phet.moleculeshapes.model;
 
-  phet.moleculeshapes.model.VseprConfiguration = function ( x, e ) {
+  phet.moleculeshapes.model.VseprConfiguration = function( x, e ) {
     this.x = x;
     this.e = e;
 
@@ -104,11 +104,11 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   VseprConfiguration.prototype = {
     constructor: VseprConfiguration,
 
-    getAllUnitVectors: function () {
+    getAllUnitVectors: function() {
       return this.geometry.unitVectors;
     },
 
-    getIdealBondUnitVectors: function () {
+    getIdealBondUnitVectors: function() {
       var result = [];
       for ( var i = e; i < x + e; i++ ) {
         result.push( this.geometry.unitVectors.get( i ) );
@@ -117,7 +117,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     // for finding ideal rotations including matching for "bond-vs-bond" and "lone pair-vs-lone pair"
-    getIdealGroupRotationToPositions: function ( groups ) {
+    getIdealGroupRotationToPositions: function( groups ) {
       phet.assert( ( x + e ) == groups.length );
 
       // done currently only when the molecule is rebuilt, so we don't try to pass a lastPermutation in (not helpful)
@@ -125,7 +125,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     // for finding ideal rotations exclusively using the "bonded" portions
-    getIdealBondRotationToPositions: function ( groups ) {
+    getIdealBondRotationToPositions: function( groups ) {
       // ideal vectors excluding lone pairs (just for the bonds)
       phet.assert( ( x ) == groups.length );
       var idealModelBondVectors = this.getIdealBondUnitVectors();
@@ -134,7 +134,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       return model.AttractorModel.findClosestMatchingConfiguration( model.AttractorModel.getOrientationsFromOrigin( groups ), idealModelBondVectors, dot.Permutation.permutations( idealModelBondVectors.length ) );
     },
 
-    equals: function ( other ) {
+    equals: function( other ) {
       return this.x == other.x && this.e == other.e;
     }
   };

@@ -11,11 +11,11 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
 
   var model = phet.moleculeshapes.model;
 
-  phet.moleculeshapes.model.VSEPRMolecule = function ( bondLengthOverride ) {
+  phet.moleculeshapes.model.VSEPRMolecule = function( bondLengthOverride ) {
     model.Molecule.call( this );
 
     this.bondLengthOverride = bondLengthOverride;
@@ -26,7 +26,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   VSEPRMolecule.prototype = phet.Object.create( model.Molecule.prototype );
   VSEPRMolecule.prototype.constructor = VSEPRMolecule;
 
-  VSEPRMolecule.prototype.update = function ( tpf ) {
+  VSEPRMolecule.prototype.update = function( tpf ) {
     model.Molecule.prototype.update.call( this, tpf );
 
     var radialGroups = this.getRadialGroups();
@@ -61,13 +61,13 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     }
   };
 
-  VSEPRMolecule.prototype.getLocalShape = function ( atom ) {
+  VSEPRMolecule.prototype.getLocalShape = function( atom ) {
     return this.getLocalVSEPRShape( atom );
   };
 
   VSEPRMolecule.prototype.isReal = false;
 
-  VSEPRMolecule.prototype.getMaximumBondLength = function () {
+  VSEPRMolecule.prototype.getMaximumBondLength = function() {
     if ( this.bondLengthOverride !== undefined ) {
       return this.bondLengthOverride;
     }

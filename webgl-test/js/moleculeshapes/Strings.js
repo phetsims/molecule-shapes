@@ -3,7 +3,7 @@
 var phet = phet || {};
 phet.moleculeshapes = phet.moleculeshapes || {};
 
-(function () {
+(function() {
   var englishStrings = {
     "molecule-shapes.name": "Molecule Shapes",
     "molecule-shapes.title": "Model",

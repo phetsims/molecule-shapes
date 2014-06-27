@@ -11,7 +11,7 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
 
   var PairGroup = phet.moleculeshapes.model.PairGroup;
 
@@ -30,8 +30,8 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
    * @param center        The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
    * @return A measure of total error (least squares-style)
    */
-  AttractorModel.applyAttractorForces = function ( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
-    var currentOrientations = phet.util.map( groups, function ( group ) {
+  AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
+    var currentOrientations = phet.util.map( groups, function( group ) {
       return group.position.get().minus( center ).normalized();
     } );
     var mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
@@ -109,10 +109,10 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
         var extraClosePushFactor = dot.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
 
         var push = dirTowardsA.times( timeFactor
-                            * angleDifference
-                            * PairGroup.ANGLE_REPULSION_SCALE
-                            * ( currentAngle < targetAngle ? 2.0 : 0.5 )
-                            * extraClosePushFactor );
+                                        * angleDifference
+                                        * PairGroup.ANGLE_REPULSION_SCALE
+                                        * ( currentAngle < targetAngle ? 2.0 : 0.5 )
+          * extraClosePushFactor );
         a.addVelocity( push );
         b.addVelocity( push.negated() );
       }
@@ -142,7 +142,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
    * @param allowablePermutations A list of permutations that map stable positions to pair groups in order.
    * @return Result mapping (see docs there)
    */
-  AttractorModel.findClosestMatchingConfiguration = function ( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) {
+  AttractorModel.findClosestMatchingConfiguration = function( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) {
     var n = currentOrientations.length; // number of total pairs
 
     // y == electron pair positions
@@ -180,9 +180,9 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       if ( n > 2 && bestResult != null && bestResult.permutation != permutation ) {
         var permutedOrientations = permutation.apply( idealOrientations );
         var errorLowBound = 4 - 4 * Math.cos( Math.abs(
-          Math.acos( permutedOrientations[0].dot( currentOrientations[0] ) )
-          - Math.acos( permutedOrientations[1].dot( currentOrientations[1] ) )
-         ) );
+            Math.acos( permutedOrientations[0].dot( currentOrientations[0] ) )
+            - Math.acos( permutedOrientations[1].dot( currentOrientations[1] ) )
+        ) );
 
         // throw out results where this arbitrarily-chosen lower bound rules out the entire permutation
         if ( bestResult.error < errorLowBound ) {
@@ -199,13 +199,13 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     return bestResult;
   };
 
-  AttractorModel.getOrientationsFromOrigin = function ( groups ) {
-    return phet.util.map( groups, function ( group ) {
+  AttractorModel.getOrientationsFromOrigin = function( groups ) {
+    return phet.util.map( groups, function( group ) {
       return group.position.get().normalized();
     } );
   };
 
-  AttractorModel.computeRotationMatrixWithTranspose = function ( x, yTransposed ) {
+  AttractorModel.computeRotationMatrixWithTranspose = function( x, yTransposed ) {
     // S = X * Y^T
     var s = x.times( yTransposed );
 
@@ -218,7 +218,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   };
 
   // double error, Matrix target, Permutation permutation, Matrix rotation
-  AttractorModel.ResultMapping = function ( error, target, permutation, rotation ) {
+  AttractorModel.ResultMapping = function( error, target, permutation, rotation ) {
     this.error = error;
     this.target = target;
     this.permutation = permutation;
@@ -228,7 +228,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   AttractorModel.ResultMapping.prototype = {
     constructor: AttractorModel.ResultMapping,
 
-    rotateVector: function ( v ) {
+    rotateVector: function( v ) {
       var x = dot.Matrix.columnVector3( v );
       var rotated = this.rotation.times( x );
       return rotated.extractVector3( 0 );
@@ -241,7 +241,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
    * @param lists  List of lists. Order of lists will not change, however each possible permutation involving sub-lists will be used
    * @param callback Function to call
    */
-  AttractorModel.forEachMultiplePermutations = function ( lists, callback ) {
+  AttractorModel.forEachMultiplePermutations = function( lists, callback ) {
     if ( lists.length == 0 ) {
       callback.call( undefined, lists );
     }
@@ -252,8 +252,8 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
       remainder.splice( 0, 1 );
 
-      AttractorModel.forEachPermutation( first, [], function ( permutedFirst ) {
-        AttractorModel.forEachMultiplePermutations( remainder, function ( subLists ) {
+      AttractorModel.forEachPermutation( first, [], function( permutedFirst ) {
+        AttractorModel.forEachMultiplePermutations( remainder, function( subLists ) {
           var arr = new Array( lists.length );
           arr[0] = permutedFirst;
           for ( var i = 0; i < subLists.length; i++ ) {
@@ -272,7 +272,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
    * @param prefix   Elements that should be inserted at the front of each list before each call
    * @param callback Function to call
    */
-  AttractorModel.forEachPermutation = function ( list, prefix, callback ) {
+  AttractorModel.forEachPermutation = function( list, prefix, callback ) {
     if ( list.length == 0 ) {
       callback.call( undefined, prefix );
     }
@@ -291,7 +291,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     }
   };
 
-  AttractorModel.listPrint = function ( lists ) {
+  AttractorModel.listPrint = function( lists ) {
     var ret = "";
     for ( var i = 0; i < lists.length; i++ ) {
       var list = lists[i];
@@ -303,7 +303,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     return ret;
   };
 
-  AttractorModel.testMe = function () {
+  AttractorModel.testMe = function() {
     /*
      Testing of permuting each individual list. Output:
      AB C DEF
@@ -326,7 +326,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       ["D", "E", "F"]
     ];
 
-    AttractorModel.forEachMultiplePermutations( arr, function ( lists ) {
+    AttractorModel.forEachMultiplePermutations( arr, function( lists ) {
       console.log( AttractorModel.listPrint( lists ) );
     } );
   };

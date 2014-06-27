@@ -11,10 +11,10 @@ phet.moleculeshapes = phet.moleculeshapes || {};
 phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
 // create a new scope
-(function () {
+(function() {
   var model = phet.moleculeshapes.model;
 
-  phet.moleculeshapes.model.LocalShape = function ( allowedPermutations, centralAtom, groups, idealOrientations ) {
+  phet.moleculeshapes.model.LocalShape = function( allowedPermutations, centralAtom, groups, idealOrientations ) {
     // denotes how we can map the groups into the orientation vectors. some combinations may not be possible
     this.allowedPermutations = allowedPermutations;
 
@@ -36,7 +36,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
    * IE, if given the list of the single permutation (12), and specified indices {3,4,5}, the permutations returned will be
    * (12)(34),(12)(35),(12)(45),(12)(453),(12)(534),(12)
    */
-  LocalShape.permuteListWithIndices = function ( permutations, indices ) {
+  LocalShape.permuteListWithIndices = function( permutations, indices ) {
     if ( indices.length < 2 ) {
       // no changes if we can't move more than 1 element (need somewhere to put it)
       return permutations;
@@ -53,9 +53,9 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     return result;
   };
 
-  LocalShape.sortedLonePairsFirst = function ( groups ) {
+  LocalShape.sortedLonePairsFirst = function( groups ) {
     var result = groups.slice();
-    result.sort( function ( a, b ) {
+    result.sort( function( a, b ) {
       if ( a.isLonePair == b.isLonePair ) {
         return 0;
       }
@@ -71,16 +71,16 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
   // allow switching of lone pairs with each other, and all other types of bonds with each other
   // NOTE: I recommended double or triple bonds being put in "higher repulsion" spots over single bonds, but this was specifically rejected. -JO
-  LocalShape.vseprPermutations = function ( neighbors ) {
+  LocalShape.vseprPermutations = function( neighbors ) {
     var permutations = [];
     permutations.push( dot.Permutation.identity( neighbors.length ) );
 
-    var indexOf = function ( group ) {
+    var indexOf = function( group ) {
       return neighbors.indexOf( group );
     };
 
     // partition the neighbors into lone pairs and atoms.
-    var partitioned = phet.util.partition( neighbors, function ( group ) {
+    var partitioned = phet.util.partition( neighbors, function( group ) {
       return group.isLonePair;
     } );
     // this separation looks better in languages where you say "(lonePairs, atoms) = partition(...)"
@@ -96,28 +96,28 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   };
 
   // allow switching of lone pairs with each other, and all other types of bonds with the same type of element
-  LocalShape.realPermutations = function ( neighbors ) {
+  LocalShape.realPermutations = function( neighbors ) {
     var permutations = [];
     permutations.add( dot.Permutation.identity( neighbors.length ) );
 
-    var indexOf = function ( group ) {
+    var indexOf = function( group ) {
       return neighbors.indexOf( group );
     };
 
     // allow interchanging of lone pairs
-    var lonePairs = phet.util.filter( neighbors, function ( group ) { return group.isLonePair} );
+    var lonePairs = phet.util.filter( neighbors, function( group ) { return group.isLonePair} );
     permutations = LocalShape.permuteListWithIndices( permutations, phet.util.map( lonePairs, indexOf ) );
 
     // allow interchanging of pair groups when they have the same chemical element
-    var atoms = phet.util.filter( neighbors, function ( group ) { return !group.isLonePair} );
+    var atoms = phet.util.filter( neighbors, function( group ) { return !group.isLonePair} );
 
-    var usedElements = phet.util.unique( phet.util.map( atoms, function ( group ) { return group.getElement();} ) );
+    var usedElements = phet.util.unique( phet.util.map( atoms, function( group ) { return group.getElement();} ) );
 
     for ( var i = 0; i < usedElements.length; i++ ) {
       var element = usedElements[i];
 
       // since the closure is being executed at this point, the warning in this line can be ignored
-      var atomsWithElement = phet.util.filter( atoms, function ( group ) {return group.getElement() == element; } );
+      var atomsWithElement = phet.util.filter( atoms, function( group ) {return group.getElement() == element; } );
       permutations = LocalShape.permuteListWithIndices( permutations, phet.util.map( atomsWithElement, indexOf ) );
     }
 
@@ -135,11 +135,11 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
      * @param tpf Time elapsed.
      * @return Amount of error (least squares-style)
      */
-    applyAttraction: function ( tpf ) {
+    applyAttraction: function( tpf ) {
       return model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position.get(), false );
     },
 
-    applyAngleAttractionRepulsion: function ( tpf ) {
+    applyAngleAttractionRepulsion: function( tpf ) {
       model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position.get(), true );
     }
   };

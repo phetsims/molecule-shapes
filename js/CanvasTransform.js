@@ -63,6 +63,6 @@ define( function( require ) {
       this.transform.set( new Transform4( matrix4 ) );
     }
   };
-  
+
   return StageCenteringCanvasTransform;
 } );
