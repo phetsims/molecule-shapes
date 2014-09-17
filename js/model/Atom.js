@@ -1,28 +1,26 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * An atom with a 3D position
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+define( function( require ) {
+  'use strict';
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
+  var inherit = require( 'PHET_CORE/inherit' );
+  var PropertySet = require( 'AXON/PropertySet' );
+  var NitroglycerinAtom = require( 'NITROGLYCERIN/Atom' );
 
-// create a new scope
-(function() {
-  var Property = phet.model.Property;
+  function Atom( element, position, lonePairCount ) {
+    NitroglycerinAtom.call( this, element );
 
-  phet.moleculeshapes.model.Atom = function( element, position, lonePairCount ) {
-    phet.chemistry.Atom.call( this, element );
+    PropertySet.call( this, {
+      position: position
+    } );
 
-    this.position = new Property( position );
     this.lonePairCount = lonePairCount || 0;
-  };
+  }
 
-  var Atom = phet.moleculeshapes.model.Atom;
-
-  Atom.prototype = phet.Object.create( phet.chemistry.Atom.prototype );
-  Atom.prototype.constructor = Atom;
-})();
+  return inherit( PropertySet, Atom, NitroglycerinAtom.prototype );
+} );
