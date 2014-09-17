@@ -1,52 +1,44 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * A group of electron pairs. The pairs may be part of a bond, or may be a lone electron pair.
+ *
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+define( function( require ) {
+  'use strict';
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
-
-// create a new scope
-(function() {
-  var Property = phet.model.Property;
-  var Vector3 = dot.Vector3;
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var PropertySet = require( 'AXON/PropertySet' );
 
   var nextId = 0;
 
-  phet.moleculeshapes.model.PairGroup = function( position, isLonePair, startDragged, element ) {
+  function PairGroup( position, isLonePair, startDragged, element ) {
     // unique identifier
     this.id = nextId++;
 
-    this.position = new Property( position );
-    this.velocity = new Property( Vector3.ZERO );
+    PropertySet.call( this, {
+      position: position,
+      velocity: Vector3.ZERO,
+      userControlled: startDragged
+    } );
+
     this.isLonePair = isLonePair;
-    this.userControlled = new Property( startDragged );
 
     // undefined for vsepr pair groups
     this.element = element;
 
-    this.position.link( function( oldValue, newValue ) {
-//      if ( newValue.magnitude() > 40 ) {
-//        throw new Error( "Magnitude way too large!" );
-//      }
-      if ( isNaN( newValue.x ) ) {
-        throw new Error( "NaN detected in position!" );
-      }
-      if ( oldValue.equals( Vector3.ZERO ) ) {
-        throw new Error( "center molecule position change?" );
-      }
-    } );
-
-    this.velocity.link( function( oldValue, newValue ) {
-      if ( isNaN( newValue.x ) ) {
-        throw new Error( "NaN detected in velocity!" );
-      }
-    } );
-  };
-
-  var PairGroup = phet.moleculeshapes.model.PairGroup;
+    if ( assert ) {
+      this.positionProperty.lazyLink( function( newValue, oldValue ) {
+        assert && assert( !isNaN( newValue.x ), 'NaN detected in position!' );
+        assert && assert( !oldValue.equals( Vector3.ZERO ), 'center molecule position change?' );
+      } );
+      this.velocityProperty.lazyLink( function( newValue, oldValue ) {
+        assert && assert( !isNaN( newValue.x ), 'NaN detected in velocity!' );
+      } );
+    }
+  }
 
   /*---------------------------------------------------------------------------*
    * constants
@@ -77,15 +69,14 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
   };
 
-  PairGroup.prototype = {
-    constructor: PairGroup,
+  return inherit( PropertySet, PairGroup, {
 
     attractToIdealDistance: function( timeElapsed, oldDistance, bond ) {
-      if ( this.userControlled.get() ) {
+      if ( this.userControlled ) {
         // don't process if being dragged
         return;
       }
-      var origin = bond.getOtherAtom( this ).position.get();
+      var origin = bond.getOtherAtom( this ).position;
 
       var isTerminalLonePair = !origin.equals( Vector3.ZERO );
 
@@ -94,18 +85,18 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       /*---------------------------------------------------------------------------*
        * prevent movement away from our ideal distance
        *----------------------------------------------------------------------------*/
-      var currentError = Math.abs( ( this.position.get().minus( origin ) ).magnitude() - idealDistanceFromCenter );
+      var currentError = Math.abs( ( this.position.minus( origin ) ).magnitude() - idealDistanceFromCenter );
       var oldError = Math.abs( oldDistance - idealDistanceFromCenter );
       if ( currentError > oldError ) {
         // our error is getting worse! for now, don't let us slide AWAY from the ideal distance ever
         // set our distance to the old one, so it is easier to process
-        this.position.set( this.position.get().normalized().times( oldDistance ).plus( origin ) );
+        this.position = this.position.normalized().times( oldDistance ).plus( origin );
       }
 
       /*---------------------------------------------------------------------------*
        * use damped movement towards our ideal distance
        *----------------------------------------------------------------------------*/
-      var toCenter = this.position.get().minus( origin );
+      var toCenter = this.position.minus( origin );
 
       var distance = toCenter.magnitude();
       var directionToCenter = toCenter.normalized();
@@ -117,7 +108,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       if ( isTerminalLonePair ) {
         ratioOfMovement = 1;
       }
-      this.position.set( this.position.get().plus( directionToCenter.times( ratioOfMovement * offset ) ) );
+      this.position = this.position.plus( directionToCenter.times( ratioOfMovement * offset ) );
     },
 
     /**
@@ -139,12 +130,12 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
        *----------------------------------------------------------------------------*/
 
       // adjusted distances from the center atom
-      var adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.position.get().magnitude(), trueLengthsRatioOverride );
-      var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.position.get().magnitude(), trueLengthsRatioOverride );
+      var adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.position.magnitude(), trueLengthsRatioOverride );
+      var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.position.magnitude(), trueLengthsRatioOverride );
 
       // adjusted positions
-      var adjustedPosition = this.position.get().normalized().times( adjustedMagnitude );
-      var adjustedOtherPosition = other.position.get().magnitude() == 0 ? new Vector3() : other.position.get().normalized().times( adjustedOtherMagnitude );
+      var adjustedPosition = this.position.normalized().times( adjustedMagnitude );
+      var adjustedOtherPosition = other.position.magnitude() === 0 ? new Vector3() : other.position.normalized().times( adjustedOtherMagnitude );
 
       // from other => this (adjusted)
       var delta = adjustedPosition.minus( adjustedOtherPosition );
@@ -169,8 +160,8 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     addVelocity: function( velocityChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
-      if ( !this.userControlled.get() && !this.isCentralAtom() ) {
-        this.velocity.set( this.velocity.get().plus( velocityChange ) );
+      if ( !this.userControlled && !this.isCentralAtom() ) {
+        this.velocity = this.velocity.plus( velocityChange );
       }
     },
 
@@ -188,33 +179,33 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     stepForward: function( timeElapsed ) {
       // velocity changes so that it doesn't point at all towards or away from the origin
-      var velocityMagnitudeOutwards = this.velocity.get().dot( this.position.get().normalized() );
-      if ( this.position.get().magnitude() > 0 ) {
-        this.velocity.set( this.velocity.get().minus( this.position.get().normalized().times( velocityMagnitudeOutwards ) ) ); // subtract the outwards-component out
+      var velocityMagnitudeOutwards = this.velocity.dot( this.position.normalized() );
+      if ( this.position.magnitude() > 0 ) {
+        this.velocity = this.velocity.minus( this.position.normalized().times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
       }
 
       // move position forward by scaled velocity
-      this.position.set( this.position.get().plus( this.velocity.get().times( timeElapsed ) ) );
+      this.position = this.position.plus( this.velocity.times( timeElapsed ) );
 
       // add in damping so we don't get the kind of oscillation that we are seeing
       var damping = 1 - PairGroup.DAMPING_FACTOR;
       damping = Math.pow( damping, timeElapsed / 0.017 ); // based so that we have no modification at 0.017
-      this.velocity.set( this.velocity.get().times( damping ) );
+      this.velocity = this.velocity.times( damping );
     },
 
     dragToPosition: function( vector ) {
-      this.position.set( vector );
+      this.position = vector;
 
       // stop any velocity that was moving the pair
-      this.velocity.set( new Vector3() );
+      this.velocity = new Vector3();
     },
 
     isCentralAtom: function() {
-      return !this.isLonePair && this.position.get().equals( Vector3.ZERO );
+      return !this.isLonePair && this.position.equals( Vector3.ZERO );
     },
 
     getElement: function() {
       return this.element;
     }
-  };
-})();
+  } );
+} );

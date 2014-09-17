@@ -1,30 +1,23 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * Bond between atoms
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+define( function( require ) {
+  'use strict';
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
+  var inherit = require( 'PHET_CORE/inherit' );
 
-// create a new scope
-(function() {
-
-  phet.moleculeshapes.model.Bond = function( a, b, order, length ) {
+  function Bond( a, b, order, length ) {
     this.a = a;
     this.b = b;
     this.order = order;
     this.length = length; // in angstroms, or 0 / undefined if there is no data
-  };
+  }
 
-  var Bond = phet.moleculeshapes.model.Bond;
-
-  Bond.prototype = {
-    constructor: Bond,
-
+  return inherit( Object, Bond, {
     toString: function() {
       return "{" + this.a.toString() + " => " + this.b.toString() + "}";
     },
@@ -34,7 +27,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     getOtherAtom: function( atom ) {
-      phet.assert( this.contains( atom ) );
+      assert && assert( this.contains( atom ) );
 
       return this.a === atom ? this.b : this.a;
     },
@@ -43,5 +36,5 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       // TODO: consider checking bond order? or is this not important?
       return this.a === bond.a && this.b === bond.b;
     }
-  }
-})();
+  } );
+} );

@@ -20,12 +20,30 @@
     // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
     function check() {
       if ( window.loadedMoleculeShapesConfig ) {
-        requirejs( [ 'SCENERY/main', 'KITE/main', 'DOT/main', 'PHET_CORE/main', 'model/Atom', 'NITROGLYCERIN/Element' ], function( scenery, kite, dot, core, Atom, Element ) {
+        requirejs( [ 'SCENERY/main',
+                     'KITE/main',
+                     'DOT/main',
+                     'PHET_CORE/main',
+                     'model/Atom',
+                     'model/PairGroup',
+                     'model/Bond',
+                     'NITROGLYCERIN/Element' ], function(
+                      scenery,
+                      kite,
+                      dot,
+                      core,
+                      Atom,
+                      PairGroup,
+                      Bond,
+                      Element
+                      ) {
           window.scenery = scenery;
           window.kite = kite;
           window.dot = dot;
           window.core = core;
           window.Atom = Atom;
+          window.PairGroup = PairGroup;
+          window.Bond = Bond;
           window.Element = Element;
 
           console.log( 'loaded' );
