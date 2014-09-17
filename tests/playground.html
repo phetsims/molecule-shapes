@@ -20,31 +20,26 @@
     // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
     function check() {
       if ( window.loadedMoleculeShapesConfig ) {
-        requirejs( [ 'SCENERY/main',
+        requirejs( [ 'molecule-shapes-dev-main',
+                     'SCENERY/main',
                      'KITE/main',
                      'DOT/main',
-                     'PHET_CORE/main',
-                     'model/Atom',
-                     'model/PairGroup',
-                     'model/Bond',
-                     'NITROGLYCERIN/Element' ], function(
+                     'AXON/main',
+                     'PHET_CORE/main' ], function(
+                      devMain,
                       scenery,
                       kite,
                       dot,
-                      core,
-                      Atom,
-                      PairGroup,
-                      Bond,
-                      Element
+                      axon,
+                      core
                       ) {
+          // put all of our dev-main into the global namespace
+          _.extend( window, devMain );
           window.scenery = scenery;
           window.kite = kite;
           window.dot = dot;
+          window.axon = axon;
           window.core = core;
-          window.Atom = Atom;
-          window.PairGroup = PairGroup;
-          window.Bond = Bond;
-          window.Element = Element;
 
           console.log( 'loaded' );
         } );

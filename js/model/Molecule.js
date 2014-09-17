@@ -1,26 +1,35 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * Model of a single-atom-centered molecule which has a certain number of pair groups
  * surrounding it.
  *
+ * Events:
+ *  bondAdded( bond )
+ *  bondRemoved( bond )
+ *  bondChanged( bond )
+ *  groupAdded( group )
+ *  groupRemoved( group )
+ *  groupChanged( group )
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+define( function( require ) {
+  'use strict';
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
-
-// create a new scope
-(function() {
-
-  var model = phet.moleculeshapes.model;
-  var Notifier = phet.model.Notifier;
-  var CompositeNotifier = phet.model.CompositeNotifier;
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Permutation = require( 'DOT/Permutation' );
+  var Events = require( 'AXON/Events' );
+  var Bond = require( 'MOLECULE_SHAPES/model/Bond' );
+  var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
+  var GeometryConfiguration = require( 'MOLECULE_SHAPES/model/GeometryConfiguration' );
+  var VseprConfiguration = require( 'MOLECULE_SHAPES/model/VseprConfiguration' );
+  var LocalShape = require( 'MOLECULE_SHAPES/model/LocalShape' );
+  var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
 
   var MAX_PAIRS = 6;
 
-  phet.moleculeshapes.model.Molecule = function() {
+  function Molecule() {
     // all of the pair groups
     this.groups = [];
 
@@ -29,45 +38,38 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     this.centralAtom = null; // will be filled in later
 
-    this.onBondAdded = new Notifier();
-    this.onBondRemoved = new Notifier();
-    this.onBondChanged = new CompositeNotifier( [this.onBondAdded, this.onBondRemoved] );
-
-    this.onGroupAdded = new Notifier();
-    this.onGroupRemoved = new Notifier();
-    this.onGroupChanged = new CompositeNotifier( [this.onGroupAdded, this.onGroupRemoved] );
+    // composite events
+    this.on( 'bondAdded', function( bond ) { this.trigger1( 'bondChanged', bond ); } );
+    this.on( 'bondRemoved', function( bond ) { this.trigger1( 'bondChanged', bond ); } );
+    this.on( 'groupAdded', function( group ) { this.trigger1( 'groupChanged', group ); } );
+    this.on( 'groupRemoved', function( group ) { this.trigger1( 'groupChanged', group ); } );
   };
 
-  var Molecule = phet.moleculeshapes.model.Molecule;
-  var map = phet.util.map;
-  var filter = phet.util.filter;
-
-  Molecule.prototype = {
-    constructor: Molecule,
-
+  return inherit( Events, Molecule, {
     // abstract getLocalShape( atom )
     // abstract getMaximumBondLength() -- option
     // abstract isReal()
 
     update: function( tpf ) {
       var that = this;
-      var nonCentralGroups = phet.util.filter( this.groups, function( group ) {return group != that.centralAtom;} );
+      // TODO: don't filter for garbage collection. just continue in the for loop
+      var nonCentralGroups = _.fiter( this.groups, function( group ) { return group !== that.centralAtom; } );
 
       // move based on velocity
       for ( var i = 0; i < nonCentralGroups.length; i++ ) {
         var group = nonCentralGroups[i];
 
         var parentBond = this.getParentBond( group );
-        var origin = parentBond.getOtherAtom( group ).position.get();
+        var origin = parentBond.getOtherAtom( group ).position;
 
-        var oldDistance = ( group.position.get().minus( origin ) ).magnitude();
+        var oldDistance = ( group.position.minus( origin ) ).magnitude();
         group.stepForward( tpf );
         group.attractToIdealDistance( tpf, oldDistance, parentBond );
       }
     },
 
     getAtoms: function() {
-      return filter( this.groups, function( group ) {return !group.isLonePair;} );
+      return _.filter( this.groups, function( group ) { return !group.isLonePair; } );
     },
 
     // the number of surrounding pair groups
@@ -78,7 +80,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     getBonds: function( group ) {
       if ( group ) {
         // all bonds to the pair group, if specified
-        return filter( this.bonds, function( bond ) {return bond.contains( group )} );
+        return _.filter( this.bonds, function( bond ) { return bond.contains( group ) } );
       }
       else {
         return this.bonds;
@@ -87,16 +89,16 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     // all neighboring pair groups
     getNeighbors: function( group ) {
-      return map( this.getBonds( group ), function( bond ) {return bond.getOtherAtom( group )} );
+      return _.map( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ) } );
     },
 
     getAllNonCentralAtoms: function() {
       var centralAtom = this.centralAtom;
-      return filter( this.groups, function( group ) { return !group.isLonePair && group != centralAtom; } );
+      return _.filter( this.groups, function( group ) { return !group.isLonePair && group !== centralAtom; } );
     },
 
     getAllLonePairs: function() {
-      return filter( groups, function( group ) {return group.isLonePair;} );
+      return _.filter( groups, function( group ) { return group.isLonePair; } );
     },
 
     // atoms surrounding the center atom
@@ -105,11 +107,11 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     getNeighboringAtoms: function( group ) {
-      return filter( this.getRadialGroups(), function( group ) {return !group.isLonePair;} );
+      return _.filter( this.getRadialGroups(), function( group ) { return !group.isLonePair; } );
     },
 
     getLonePairNeighbors: function( group ) {
-      return filter( this.getRadialGroups(), function( group ) {return group.isLonePair;} );
+      return _.filter( this.getRadialGroups(), function( group ) { return group.isLonePair; } );
     },
 
     getRadialLonePairs: function() {
@@ -117,7 +119,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     getGeometryConfiguration: function( group ) {
-      return model.GeometryConfiguration.getConfiguration( this.getStericNumber( group ) );
+      return GeometryConfiguration.getConfiguration( this.getStericNumber( group ) );
     },
 
     getCentralVseprConfiguration: function() {
@@ -125,7 +127,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     getVseprConfiguration: function( group ) {
-      return new model.VseprConfiguration( this.getNeighboringAtoms( group ).length, this.getLonePairNeighbors( group ).length );
+      return new VseprConfiguration( this.getNeighboringAtoms( group ).length, this.getLonePairNeighbors( group ).length );
     },
 
     // get the bond to the more central "parent", or undefined
@@ -136,7 +138,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       }
       else {
         var centralAtom = this.centralAtom;
-        return phet.util.firstOrNull( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ) == centralAtom; } );
+        return phet.util.firstOrNull( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } );
       }
     },
 
@@ -155,7 +157,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       // add the group, but delay notifications (inconsistent state)
       this.addGroupOnly( group, false );
 
-      bondLength = bondLength || group.position.get().minus( parent.position.get() ).magnitude() / model.PairGroup.REAL_TMP_SCALE;
+      bondLength = bondLength || group.position.get().minus( parent.position.get() ).magnitude() / PairGroup.REAL_TMP_SCALE;
       this.addBondBetween( group, parent, bondOrder, bondLength );
 
       // notify after bond added, so we don't send notifications in an inconsistent state
@@ -164,7 +166,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     addGroupOnly: function( group, notify ) {
       // always add the central group first
-      phet.assert( this.centralAtom != null );
+      assert && assert( this.centralAtom !== null );
 
       this.groups.push( group );
 
@@ -181,7 +183,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     addBondBetween: function( a, b, order, bondLength ) {
-      this.addBond( new model.Bond( a, b, order, bondLength ) );
+      this.addBond( new Bond( a, b, order, bondLength ) );
     },
 
     removeBond: function( bond ) {
@@ -196,15 +198,15 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     removeGroup: function( group ) {
       var i;
 
-      phet.assert( this.centralAtom != group );
+      assert && assert( this.centralAtom !== group );
 
       // remove all of its bonds first
       var bondList = this.getBonds( group );
       for ( i = 0; i < bondList.length; i++ ) {
-        phet.util.remove( this.bonds, bondList[i] );
+        this.bonds.splice( this.bonds.indexOf( bondList[i] ) );
       }
 
-      phet.util.remove( this.groups, group );
+      this.groups.splice( this.groups.indexOf( group ) );
 
       // notify
       this.onGroupRemoved.updateListeners( group );
@@ -228,7 +230,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     getCorrespondingIdealGeometryVectors: function() {
-      return new model.VseprConfiguration( this.getRadialAtoms().length, this.getRadialLonePairs().length ).geometry.unitVectors;
+      return new VseprConfiguration( this.getRadialAtoms().length, this.getRadialLonePairs().length ).geometry.unitVectors;
     },
 
     /**
@@ -240,14 +242,16 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     },
 
     getDistantLonePairs: function() {
-      return phet.util.subtract( this.getAllLonePairs(), this.getLonePairNeighbors( this.centralAtom ) );
+      var closeLonePairs = this.getLonePairNeighbors( this.centralAtom );
+      return _.filter( this.getAllLonePairs(), function( lonePair ) { return !closeLonePairs.contains( lonePair ); } );
     },
 
     getLocalVSEPRShape: function( atom ) {
-      var groups = model.LocalShape.sortedLonePairsFirst( this.getNeighbors( atom ) );
-      var numLonePairs = phet.util.count( groups, function( group ) {return group.isLonePair;} );
+      var groups = LocalShape.sortedLonePairsFirst( this.getNeighbors( atom ) );
+      // TODO: optimized function for counting?
+      var numLonePairs = _.filter( groups, function( group ) { return group.isLonePair; } ).length;
       var numAtoms = groups.length - numLonePairs;
-      return new model.LocalShape( model.LocalShape.vseprPermutations( groups ), atom, groups, (new model.VseprConfiguration( numAtoms, numLonePairs )).geometry.unitVectors );
+      return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( new VseprConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
     },
 
     getRadialGroups: function() {
@@ -257,26 +261,26 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     getIdealDistanceFromCenter: function( group ) {
       // this only works on pair groups adjacent to the central atom
       var bond = this.getParentBond( group );
-      phet.assert( bond.contains( this.centralAtom ) );
+      assert && assert( bond.contains( this.centralAtom ) );
 
-      return group.isLonePair ? model.PairGroup.LONE_PAIR_DISTANCE : bond.length * model.PairGroup.REAL_TMP_SCALE;
+      return group.isLonePair ? PairGroup.LONE_PAIR_DISTANCE : bond.length * PairGroup.REAL_TMP_SCALE;
     },
 
     addTerminalLonePairs: function( atom, quantity ) {
-      var pairConfig = new model.VseprConfiguration( 1, quantity );
+      var pairConfig = new VseprConfiguration( 1, quantity );
       var lonePairOrientations = pairConfig.geometry.unitVectors;
-      var mapping = model.AttractorModel.findClosestMatchingConfiguration(
+      var mapping = AttractorModel.findClosestMatchingConfiguration(
         // last vector should be lowest energy (best bond if ambiguous), and is negated for the proper coordinate frame
-        [ atom.position.get().normalized() ], // TODO: why did this have to get changed to non-negated?
+        [ atom.position.normalized() ], // TODO: why did this have to get changed to non-negated?
         [ lonePairOrientations.get( lonePairOrientations.size() - 1 ).negated() ],
-        [dot.Permutation.identity( 1 ) ]
+        [ Permutation.identity( 1 ) ]
       );
 
       for ( var i = 0; i < quantity; i++ ) {
         // mapped into our coordinates
         var lonePairOrientation = mapping.rotateVector( lonePairOrientations[i] );
-        this.addGroupAndBond( new model.PairGroup( atom.position.get().plus( lonePairOrientation.times( model.PairGroup.LONE_PAIR_DISTANCE ) ), true, false ), atom, 0 );
+        this.addGroupAndBond( new PairGroup( atom.position.plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true, false ), atom, 0 );
       }
     }
-  };
-})();
+  } );
+} );

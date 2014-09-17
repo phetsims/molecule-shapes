@@ -8,14 +8,13 @@
 define( function( require ) {
   'use strict';
 
-  // modules
-  var Atom = require( 'MOLECULE_SHAPES/model/Atom' );
-  var Bond = require( 'MOLECULE_SHAPES/model/Bond' );
-  var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
-
   return {
-    Atom: Atom,
-    Bond: Bond,
-    PairGroup: PairGroup
+    Atom: require( 'MOLECULE_SHAPES/model/Atom' ),
+    Bond: require( 'MOLECULE_SHAPES/model/Bond' ),
+    LocalShape: require( 'MOLECULE_SHAPES/model/LocalShape' ),
+    PairGroup: require( 'MOLECULE_SHAPES/model/PairGroup' ),
+
+    // externals used for debugging
+    Element: require( 'NITROGLYCERIN/Element' )
   };
 } );

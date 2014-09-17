@@ -1,20 +1,19 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * The ideal local shape for a certain central atom and its (local) neighbors.
- * <p/>
+ *
  * Also contains the ability to push the local atoms into place, along with many helper functions
+ *
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+define( function( require ) {
+  'use strict';
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Permutation = require( 'DOT/Permutation' );
 
-// create a new scope
-(function() {
-  var model = phet.moleculeshapes.model;
-
-  phet.moleculeshapes.model.LocalShape = function( allowedPermutations, centralAtom, groups, idealOrientations ) {
+  function LocalShape( allowedPermutations, centralAtom, groups, idealOrientations ) {
     // denotes how we can map the groups into the orientation vectors. some combinations may not be possible
     this.allowedPermutations = allowedPermutations;
 
@@ -28,7 +27,23 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     this.idealOrientations = idealOrientations;
   };
 
-  var LocalShape = phet.moleculeshapes.model.LocalShape;
+  inherit( Object, LocalShape, {
+    /**
+     * Attracts the atoms to their ideal shape, and returns the current approximate "error" that they have at this state.
+     *
+     * Attraction done by adding in velocity.
+     *
+     * @param tpf Time elapsed.
+     * @return Amount of error (least squares-style)
+     */
+    applyAttraction: function( tpf ) {
+      return model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, false );
+    },
+
+    applyAngleAttractionRepulsion: function( tpf ) {
+      model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, true );
+    }
+  } );
 
   /**
    * Given a list of permutations, return all permutations that exist with the specified indices permuted in all different ways.
@@ -73,14 +88,14 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   // NOTE: I recommended double or triple bonds being put in "higher repulsion" spots over single bonds, but this was specifically rejected. -JO
   LocalShape.vseprPermutations = function( neighbors ) {
     var permutations = [];
-    permutations.push( dot.Permutation.identity( neighbors.length ) );
+    permutations.push( Permutation.identity( neighbors.length ) );
 
     var indexOf = function( group ) {
       return neighbors.indexOf( group );
     };
 
     // partition the neighbors into lone pairs and atoms.
-    var partitioned = phet.util.partition( neighbors, function( group ) {
+    var partitioned = _.partition( neighbors, function( group ) {
       return group.isLonePair;
     } );
     // this separation looks better in languages where you say "(lonePairs, atoms) = partition(...)"
@@ -88,59 +103,40 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     var atoms = partitioned[1];
 
     // permute away the lone pairs
-    permutations = LocalShape.permuteListWithIndices( permutations, phet.util.map( lonePairs, indexOf ) );
+    permutations = LocalShape.permuteListWithIndices( permutations, _.map( lonePairs, indexOf ) );
 
     // permute away the bonded groups
-    permutations = LocalShape.permuteListWithIndices( permutations, phet.util.map( atoms, indexOf ) );
+    permutations = LocalShape.permuteListWithIndices( permutations, _.map( atoms, indexOf ) );
     return permutations;
   };
 
   // allow switching of lone pairs with each other, and all other types of bonds with the same type of element
   LocalShape.realPermutations = function( neighbors ) {
     var permutations = [];
-    permutations.add( dot.Permutation.identity( neighbors.length ) );
+    permutations.add( Permutation.identity( neighbors.length ) );
 
     var indexOf = function( group ) {
       return neighbors.indexOf( group );
     };
 
     // allow interchanging of lone pairs
-    var lonePairs = phet.util.filter( neighbors, function( group ) { return group.isLonePair} );
-    permutations = LocalShape.permuteListWithIndices( permutations, phet.util.map( lonePairs, indexOf ) );
+    var lonePairs = _.filter( neighbors, function( group ) { return group.isLonePair} );
+    permutations = LocalShape.permuteListWithIndices( permutations, _.map( lonePairs, indexOf ) );
 
     // allow interchanging of pair groups when they have the same chemical element
-    var atoms = phet.util.filter( neighbors, function( group ) { return !group.isLonePair} );
+    var atoms = _.filter( neighbors, function( group ) { return !group.isLonePair } );
 
-    var usedElements = phet.util.unique( phet.util.map( atoms, function( group ) { return group.getElement();} ) );
+    var usedElements = phet.util.unique( _.map( atoms, function( group ) { return group.getElement(); } ) );
 
     for ( var i = 0; i < usedElements.length; i++ ) {
       var element = usedElements[i];
 
       // since the closure is being executed at this point, the warning in this line can be ignored
-      var atomsWithElement = phet.util.filter( atoms, function( group ) {return group.getElement() == element; } );
-      permutations = LocalShape.permuteListWithIndices( permutations, phet.util.map( atomsWithElement, indexOf ) );
+      var atomsWithElement = _.filter( atoms, function( group ) { return group.getElement() == element; } );
+      permutations = LocalShape.permuteListWithIndices( permutations, _.map( atomsWithElement, indexOf ) );
     }
 
     return permutations;
   };
 
-  LocalShape.prototype = {
-    constructor: LocalShape,
-
-    /**
-     * Attracts the atoms to their ideal shape, and returns the current approximate "error" that they have at this state.
-     * <p/>
-     * Attraction done by adding in velocity.
-     *
-     * @param tpf Time elapsed.
-     * @return Amount of error (least squares-style)
-     */
-    applyAttraction: function( tpf ) {
-      return model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position.get(), false );
-    },
-
-    applyAngleAttractionRepulsion: function( tpf ) {
-      model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position.get(), true );
-    }
-  };
-})();
+} );
