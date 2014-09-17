@@ -1,19 +1,39 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
+/**
+ * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs bonds)
+ *
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ */
+define( function( require ) {
+  'use strict';
 
-// create a new scope
-(function() {
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Permutation = require( 'DOT/Permutation' );
+  var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
+  var GeometryConfiguration = require( 'MOLECULE_SHAPES/model/GeometryConfiguration' );
+  var LocalShape = require( 'MOLECULE_SHAPES/model/LocalShape' );
 
-  var model = phet.moleculeshapes.model;
+  // strings
+  var shapeEmptyString = require( 'string!MOLECULE_SHAPES/shape.empty' );
+  var shapeDiatomicString = require( 'string!MOLECULE_SHAPES/shape.diatomic' );
+  var shapeLinearString = require( 'string!MOLECULE_SHAPES/shape.linear' );
+  var shapeBentString = require( 'string!MOLECULE_SHAPES/shape.bent' );
+  var shapeTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/shape.trigonalPlanar' );
+  var shapeTrigonalPyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalPyramidal' );
+  var shapeTShapedString = require( 'string!MOLECULE_SHAPES/shape.tShaped' );
+  var shapeTetrahedralString = require( 'string!MOLECULE_SHAPES/shape.tetrahedral' );
+  var shapeSeesawString = require( 'string!MOLECULE_SHAPES/shape.seesaw' );
+  var shapeSquarePlanarString = require( 'string!MOLECULE_SHAPES/shape.squarePlanar' );
+  var shapeTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalBipyramidal' );
+  var shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
+  var shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
 
-  phet.moleculeshapes.model.VseprConfiguration = function( x, e ) {
+  function VseprConfiguration( x, e ) {
     this.x = x;
     this.e = e;
 
-    this.geometry = model.GeometryConfiguration.getConfiguration( x + e ); // undefined?
+    this.geometry = GeometryConfiguration.getConfiguration( x + e ); // undefined?
     this.bondedUnitVectors = [];
     this.lonePairUnitVectors = [];
     for ( var i = 0; i < x + e; i++ ) {
@@ -27,115 +47,108 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     }
 
     // figure out what the name is
-    if ( x == 0 ) {
-      this.name = Strings.SHAPE__EMPTY;
+    if ( x === 0 ) {
+      this.name = shapeEmptyString;
     }
-    else if ( x == 1 ) {
-      this.name = Strings.SHAPE__DIATOMIC;
+    else if ( x === 1 ) {
+      this.name = shapeDiatomicString;
     }
-    else if ( x == 2 ) {
-      if ( e == 0 || e == 3 || e == 4 ) {
-        this.name = Strings.SHAPE__LINEAR;
+    else if ( x === 2 ) {
+      if ( e === 0 || e === 3 || e === 4 ) {
+        this.name = shapeLinearString;
       }
-      else if ( e == 1 || e == 2 ) {
-        this.name = Strings.SHAPE__BENT;
+      else if ( e === 1 || e === 2 ) {
+        this.name = shapeBentString;
       }
       else {
-        throw new Error( "invalid x: " + x + ", e: " + e );
+        throw new Error( 'invalid x: ' + x + ', e: ' + e );
       }
     }
-    else if ( x == 3 ) {
-      if ( e == 0 ) {
-        this.name = Strings.SHAPE__TRIGONAL_PLANAR;
+    else if ( x === 3 ) {
+      if ( e === 0 ) {
+        this.name = shapeTrigonalPlanarString;
       }
-      else if ( e == 1 ) {
-        this.name = Strings.SHAPE__TRIGONAL_PYRAMIDAL;
+      else if ( e === 1 ) {
+        this.name = shapeTrigonalPyramidalString;
       }
-      else if ( e == 2 || e == 3 ) {
-        this.name = Strings.SHAPE__T_SHAPED;
+      else if ( e === 2 || e === 3 ) {
+        this.name = shapeTShapedString;
       }
       else {
-        throw new Error( "invalid x: " + x + ", e: " + e );
+        throw new Error( 'invalid x: ' + x + ', e: ' + e );
       }
     }
-    else if ( x == 4 ) {
-      if ( e == 0 ) {
-        this.name = Strings.SHAPE__TETRAHEDRAL;
+    else if ( x === 4 ) {
+      if ( e === 0 ) {
+        this.name = shapeTetrahedralString;
       }
-      else if ( e == 1 ) {
-        this.name = Strings.SHAPE__SEESAW;
+      else if ( e === 1 ) {
+        this.name = shapeSeesawString;
       }
-      else if ( e == 2 ) {
-        this.name = Strings.SHAPE__SQUARE_PLANAR;
+      else if ( e === 2 ) {
+        this.name = shapeSquarePlanarString;
       }
       else {
-        throw new Error( "invalid x: " + x + ", e: " + e );
+        throw new Error( 'invalid x: ' + x + ', e: ' + e );
       }
     }
-    else if ( x == 5 ) {
-      if ( e == 0 ) {
-        this.name = Strings.SHAPE__TRIGONAL_BIPYRAMIDAL;
+    else if ( x === 5 ) {
+      if ( e === 0 ) {
+        this.name = shapeTrigonalBipyramidalString;
       }
-      else if ( e == 1 ) {
-        this.name = Strings.SHAPE__SQUARE_PYRAMIDAL;
+      else if ( e === 1 ) {
+        this.name = shapeSquarePyramidalString;
       }
       else {
-        throw new Error( "invalid x: " + x + ", e: " + e );
+        throw new Error( 'invalid x: ' + x + ', e: ' + e );
       }
     }
-    else if ( x == 6 ) {
-      if ( e == 0 ) {
-        this.name = Strings.SHAPE__OCTAHEDRAL;
+    else if ( x === 6 ) {
+      if ( e === 0 ) {
+        this.name = shapeOctahedralString;
       }
       else {
-        throw new Error( "invalid x: " + x + ", e: " + e );
+        throw new Error( 'invalid x: ' + x + ', e: ' + e );
       }
     }
     else {
       this.name = null;
     }
-  };
+  }
 
-  var VseprConfiguration = phet.moleculeshapes.model.VseprConfiguration;
-
-  var Strings = phet.moleculeshapes.strings;
-  var Vector3 = dot.Vector3;
-
-  VseprConfiguration.prototype = {
-    constructor: VseprConfiguration,
-
+  return inherit( Object, VseprConfiguration, {
     getAllUnitVectors: function() {
       return this.geometry.unitVectors;
     },
 
     getIdealBondUnitVectors: function() {
       var result = [];
-      for ( var i = e; i < x + e; i++ ) {
+      for ( var i = this.e; i < this.x + this.e; i++ ) {
         result.push( this.geometry.unitVectors.get( i ) );
       }
       return result;
     },
 
-    // for finding ideal rotations including matching for "bond-vs-bond" and "lone pair-vs-lone pair"
+    // for finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'
     getIdealGroupRotationToPositions: function( groups ) {
-      phet.assert( ( x + e ) == groups.length );
+      assert && assert( ( this.x + this.e ) === groups.length );
 
       // done currently only when the molecule is rebuilt, so we don't try to pass a lastPermutation in (not helpful)
-      return model.AttractorModel.findClosestMatchingConfiguration( model.AttractorModel.getOrientationsFromOrigin( groups ), this.geometry.unitVectors, model.LocalShape.vseprPermutations( groups ) );
+      return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ), this.geometry.unitVectors, LocalShape.vseprPermutations( groups ) );
     },
 
-    // for finding ideal rotations exclusively using the "bonded" portions
+    // for finding ideal rotations exclusively using the 'bonded' portions
     getIdealBondRotationToPositions: function( groups ) {
       // ideal vectors excluding lone pairs (just for the bonds)
-      phet.assert( ( x ) == groups.length );
+      assert && assert( ( this.x ) === groups.length );
       var idealModelBondVectors = this.getIdealBondUnitVectors();
 
       // currently only called when a real molecule is built, so we don't try to pass a lastPermutation in (not helpful)
-      return model.AttractorModel.findClosestMatchingConfiguration( model.AttractorModel.getOrientationsFromOrigin( groups ), idealModelBondVectors, dot.Permutation.permutations( idealModelBondVectors.length ) );
+      return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ), idealModelBondVectors, Permutation.permutations( idealModelBondVectors.length ) );
     },
 
     equals: function( other ) {
-      return this.x == other.x && this.e == other.e;
+      return this.x === other.x && this.e === other.e;
     }
-  };
-})();
+  } );
+} );

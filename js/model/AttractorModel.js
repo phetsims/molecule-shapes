@@ -10,112 +10,114 @@
 define( function( require ) {
   'use strict';
 
-  var inherit = require( 'PHET_CORE/inherit' );
+  var pairs = require( 'PHET_CORE/pairs' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var DotUtil = require( 'DOT/Util' );
+  var Matrix = require( 'DOT/Matrix' );
+  var SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
 
   // just static calls, so just create an empty object
-  var AttractorModel = {
+  var AttractorModel = {};
 
-    /**
-     * Apply an attraction to the closest ideal position, with the given time elapsed
-     *
-     * @param groups        An ordered list of pair groups that should be considered, along with the relevant permutations
-     * @param timeElapsed       Time elapsed
-     * @param idealOrientations   An ideal position, that may be rotated.
-     * @param allowablePermutations The un-rotated stable position that we are attracted towards
-     * @param center        The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
-     * @return A measure of total error (least squares-style)
-     */
-    applyAttractorForces: function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
-      var currentOrientations = _.map( groups, function( group ) {
-        return group.position.get().minus( center ).normalized();
-      } );
-      var mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
+  /**
+   * Apply an attraction to the closest ideal position, with the given time elapsed
+   *
+   * @param groups        An ordered list of pair groups that should be considered, along with the relevant permutations
+   * @param timeElapsed       Time elapsed
+   * @param idealOrientations   An ideal position, that may be rotated.
+   * @param allowablePermutations The un-rotated stable position that we are attracted towards
+   * @param center        The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
+   * @return A measure of total error (least squares-style)
+   */
+  AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
+    var currentOrientations = _.map( groups, function( group ) {
+      return group.position.minus( center ).normalized();
+    } );
+    var mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
 
-      var aroundCenterAtom = center.equals( new dot.Vector3() );
+    var aroundCenterAtom = center.equals( new Vector3() );
 
-      var totalDeltaMagnitude = 0;
-      var i;
+    var totalDeltaMagnitude = 0;
+    var i;
 
-      // for each electron pair, push it towards its computed target
-      for ( i = 0; i < groups.length; i++ ) {
+    // for each electron pair, push it towards its computed target
+    for ( i = 0; i < groups.length; i++ ) {
 
-        var pair = groups[i];
+      var pair = groups[i];
 
-        var targetOrientation = mapping.target.extractVector3( i );
-        var currentMagnitude = ( pair.position.get().minus( center ) ).magnitude();
-        var targetLocation = targetOrientation.times( currentMagnitude ).plus( center );
+      var targetOrientation = mapping.target.extractVector3( i );
+      var currentMagnitude = ( pair.position.minus( center ) ).magnitude();
+      var targetLocation = targetOrientation.times( currentMagnitude ).plus( center );
 
-        var delta = targetLocation.minus( pair.position.get() );
-        totalDeltaMagnitude += delta.magnitude() * delta.magnitude();
+      var delta = targetLocation.minus( pair.position );
+      totalDeltaMagnitude += delta.magnitude() * delta.magnitude();
 
-        /*
-         * NOTE: adding delta here effectively is squaring the distance, thus more force when far from the target,
-         * and less force when close to the target. This is important, since we want more force in a potentially
-         * otherwise-stable position, and less force where our coulomb-like repulsion will settle it into a stable
-         * position
-         */
-        var strength = timeElapsed * 3 * delta.magnitude();
+      /*
+       * NOTE: adding delta here effectively is squaring the distance, thus more force when far from the target,
+       * and less force when close to the target. This is important, since we want more force in a potentially
+       * otherwise-stable position, and less force where our coulomb-like repulsion will settle it into a stable
+       * position
+       */
+      var strength = timeElapsed * 3 * delta.magnitude();
 
-        // change the velocity of all of the pairs, unless it is an atom at the origin!
-        if ( pair.isLonePair || !pair.isCentralAtom() ) {
-          if ( aroundCenterAtom ) {
-            pair.addVelocity( delta.times( strength ) );
-          }
-        }
-
-        // position movement for faster convergence
-        if ( !pair.isCentralAtom() && aroundCenterAtom ) { // TODO: better way of not moving the center atom?
-          pair.position.set( pair.position.get().plus( delta.times( 2.0 * timeElapsed ) ) );
-        }
-
-        // if we are a terminal lone pair, move us just with this but much more quickly
-        if ( !pair.isCentralAtom() && !aroundCenterAtom ) {
-  //        pair.position.set( targetLocation );
-          pair.position.set( pair.position.get().plus( delta.times( Math.min( 20.0 * timeElapsed, 1 ) ) ) );
+      // change the velocity of all of the pairs, unless it is an atom at the origin!
+      if ( pair.isLonePair || !pair.isCentralAtom() ) {
+        if ( aroundCenterAtom ) {
+          pair.addVelocity( delta.times( strength ) );
         }
       }
 
-      var error = Math.sqrt( totalDeltaMagnitude );
-
-      // angle-based repulsion
-      if ( angleRepulsion && aroundCenterAtom ) {
-        var pairIndexList = phet.util.pairs( phet.util.rangeInclusive( 0, groups.length - 1 ) );
-        for ( i = 0; i < pairIndexList.length; i++ ) {
-          var pairIndices = pairIndexList[i];
-          var aIndex = pairIndices[0];
-          var bIndex = pairIndices[1];
-          var a = groups[ aIndex ];
-          var b = groups[bIndex ];
-
-          // current orientations w.r.t. the center
-          var aOrientation = a.position.get().minus( center ).normalized();
-          var bOrientation = b.position.get().minus( center ).normalized();
-
-          // desired orientations
-          var aTarget = mapping.target.extractVector3( aIndex ).normalized();
-          var bTarget = mapping.target.extractVector3( bIndex ).normalized();
-          var targetAngle = Math.acos( dot.clamp( aTarget.dot( bTarget ), -1, 1 ) );
-          var currentAngle = Math.acos( dot.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
-          var angleDifference = ( targetAngle - currentAngle );
-
-          var dirTowardsA = a.position.get().minus( b.position.get() ).normalized();
-          var timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
-
-          var extraClosePushFactor = dot.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
-
-          var push = dirTowardsA.times( timeFactor
-                                          * angleDifference
-                                          * PairGroup.ANGLE_REPULSION_SCALE
-                                          * ( currentAngle < targetAngle ? 2.0 : 0.5 )
-            * extraClosePushFactor );
-          a.addVelocity( push );
-          b.addVelocity( push.negated() );
-        }
+      // position movement for faster convergence
+      if ( !pair.isCentralAtom() && aroundCenterAtom ) { // TODO: better way of not moving the center atom?
+        pair.position = pair.position.plus( delta.times( 2.0 * timeElapsed ) );
       }
 
-      return error;
+      // if we are a terminal lone pair, move us just with this but much more quickly
+      if ( !pair.isCentralAtom() && !aroundCenterAtom ) {
+        pair.position = pair.position.plus( delta.times( Math.min( 20.0 * timeElapsed, 1 ) ) );
+      }
     }
+
+    var error = Math.sqrt( totalDeltaMagnitude );
+
+    // angle-based repulsion
+    if ( angleRepulsion && aroundCenterAtom ) {
+      var pairIndexList = pairs( DotUtil.rangeInclusive( 0, groups.length - 1 ) );
+      for ( i = 0; i < pairIndexList.length; i++ ) {
+        var pairIndices = pairIndexList[i];
+        var aIndex = pairIndices[0];
+        var bIndex = pairIndices[1];
+        var a = groups[ aIndex ];
+        var b = groups[ bIndex ];
+
+        // current orientations w.r.t. the center
+        var aOrientation = a.position.minus( center ).normalized();
+        var bOrientation = b.position.minus( center ).normalized();
+
+        // desired orientations
+        var aTarget = mapping.target.extractVector3( aIndex ).normalized();
+        var bTarget = mapping.target.extractVector3( bIndex ).normalized();
+        var targetAngle = Math.acos( DotUtil.clamp( aTarget.dot( bTarget ), -1, 1 ) );
+        var currentAngle = Math.acos( DotUtil.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
+        var angleDifference = ( targetAngle - currentAngle );
+
+        var dirTowardsA = a.position.minus( b.position ).normalized();
+        var timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
+
+        var extraClosePushFactor = DotUtil.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
+
+        var push = dirTowardsA.times( timeFactor *
+                                      angleDifference *
+                                      PairGroup.ANGLE_REPULSION_SCALE *
+                                      ( currentAngle < targetAngle ? 2.0 : 0.5 ) *
+                                      extraClosePushFactor );
+        a.addVelocity( push );
+        b.addVelocity( push.negated() );
+      }
+    }
+
+    return error;
   };
 
   /**
@@ -143,13 +145,13 @@ define( function( require ) {
     var n = currentOrientations.length; // number of total pairs
 
     // y == electron pair positions
-    var y = dot.Matrix.fromVectors3( currentOrientations );
+    var y = Matrix.fromVectors3( currentOrientations );
     var yTransposed = y.transpose();
 
     // closure over constant variables
     function calculateTarget( permutation ) {
       // x == configuration positions
-      var x = dot.Matrix.fromVectors3( permutation.apply( idealOrientations ) );
+      var x = Matrix.fromVectors3( permutation.apply( idealOrientations ) );
 
       // compute the rotation matrix
       var rot = AttractorModel.computeRotationMatrixWithTranspose( x, yTransposed );
@@ -174,11 +176,11 @@ define( function( require ) {
     for ( var pIndex = 0; pIndex < allowablePermutations.length; pIndex++ ) {
       var permutation = allowablePermutations[pIndex];
 
-      if ( n > 2 && bestResult != null && bestResult.permutation != permutation ) {
+      if ( n > 2 && bestResult !== null && bestResult.permutation !== permutation ) {
         var permutedOrientations = permutation.apply( idealOrientations );
         var errorLowBound = 4 - 4 * Math.cos( Math.abs(
-            Math.acos( permutedOrientations[0].dot( currentOrientations[0] ) )
-            - Math.acos( permutedOrientations[1].dot( currentOrientations[1] ) )
+            Math.acos( permutedOrientations[0].dot( currentOrientations[0] ) ) -
+            Math.acos( permutedOrientations[1].dot( currentOrientations[1] ) )
         ) );
 
         // throw out results where this arbitrarily-chosen lower bound rules out the entire permutation
@@ -189,7 +191,7 @@ define( function( require ) {
 
       var result = calculateTarget( permutation );
 
-      if ( bestResult == null || result.error < bestResult.error ) {
+      if ( bestResult === null || result.error < bestResult.error ) {
         bestResult = result;
       }
     }
@@ -197,8 +199,8 @@ define( function( require ) {
   };
 
   AttractorModel.getOrientationsFromOrigin = function( groups ) {
-    return phet.util.map( groups, function( group ) {
-      return group.position.get().normalized();
+    return _.map( groups, function( group ) {
+      return group.position.normalized();
     } );
   };
 
@@ -207,11 +209,11 @@ define( function( require ) {
     var s = x.times( yTransposed );
 
     // this code will loop infinitely on NaN, so we want to double-check
-    phet.assert( !isNaN( s.get( 0, 0 ) ) );
-    var svd = new dot.SingularValueDecomposition( s );
+    assert && assert( !isNaN( s.get( 0, 0 ) ) );
+    var svd = new SingularValueDecomposition( s );
     var det = svd.getV().times( svd.getU().transpose() ).det();
 
-    return svd.getV().times( new dot.Matrix( 3, 3, [1, 0, 0, 0, 1, 0, 0, 0, det] ).times( svd.getU().transpose() ) );
+    return svd.getV().times( new Matrix( 3, 3, [1, 0, 0, 0, 1, 0, 0, 0, det] ).times( svd.getU().transpose() ) );
   };
 
   // double error, Matrix target, Permutation permutation, Matrix rotation
@@ -226,7 +228,7 @@ define( function( require ) {
     constructor: AttractorModel.ResultMapping,
 
     rotateVector: function( v ) {
-      var x = dot.Matrix.columnVector3( v );
+      var x = Matrix.columnVector3( v );
       var rotated = this.rotation.times( x );
       return rotated.extractVector3( 0 );
     }
@@ -239,7 +241,7 @@ define( function( require ) {
    * @param callback Function to call
    */
   AttractorModel.forEachMultiplePermutations = function( lists, callback ) {
-    if ( lists.length == 0 ) {
+    if ( lists.length === 0 ) {
       callback.call( undefined, lists );
     }
     else {
@@ -270,7 +272,7 @@ define( function( require ) {
    * @param callback Function to call
    */
   AttractorModel.forEachPermutation = function( list, prefix, callback ) {
-    if ( list.length == 0 ) {
+    if ( list.length === 0 ) {
       callback.call( undefined, prefix );
     }
     else {

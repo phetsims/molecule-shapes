@@ -12,6 +12,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Permutation = require( 'DOT/Permutation' );
+  var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
 
   function LocalShape( allowedPermutations, centralAtom, groups, idealOrientations ) {
     // denotes how we can map the groups into the orientation vectors. some combinations may not be possible
@@ -25,7 +26,7 @@ define( function( require ) {
 
     // the ideal orientations (unit vectors) for the groups representing the ideal local shape
     this.idealOrientations = idealOrientations;
-  };
+  }
 
   inherit( Object, LocalShape, {
     /**
@@ -37,11 +38,11 @@ define( function( require ) {
      * @return Amount of error (least squares-style)
      */
     applyAttraction: function( tpf ) {
-      return model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, false );
+      return AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, false );
     },
 
     applyAngleAttractionRepulsion: function( tpf ) {
-      model.AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, true );
+      AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, true );
     }
   } );
 
@@ -71,7 +72,7 @@ define( function( require ) {
   LocalShape.sortedLonePairsFirst = function( groups ) {
     var result = groups.slice();
     result.sort( function( a, b ) {
-      if ( a.isLonePair == b.isLonePair ) {
+      if ( a.isLonePair === b.isLonePair ) {
         return 0;
       }
       else if ( a.isLonePair ) {
@@ -120,23 +121,24 @@ define( function( require ) {
     };
 
     // allow interchanging of lone pairs
-    var lonePairs = _.filter( neighbors, function( group ) { return group.isLonePair} );
+    var lonePairs = _.filter( neighbors, function( group ) { return group.isLonePair; } );
     permutations = LocalShape.permuteListWithIndices( permutations, _.map( lonePairs, indexOf ) );
 
     // allow interchanging of pair groups when they have the same chemical element
-    var atoms = _.filter( neighbors, function( group ) { return !group.isLonePair } );
+    var atoms = _.filter( neighbors, function( group ) { return !group.isLonePair; } );
 
-    var usedElements = phet.util.unique( _.map( atoms, function( group ) { return group.getElement(); } ) );
+    var usedElements = _.unique( _.map( atoms, function( group ) { return group.getElement(); } ) );
 
     for ( var i = 0; i < usedElements.length; i++ ) {
       var element = usedElements[i];
 
       // since the closure is being executed at this point, the warning in this line can be ignored
-      var atomsWithElement = _.filter( atoms, function( group ) { return group.getElement() == element; } );
+      var atomsWithElement = _.filter( atoms, function( group ) { return group.getElement() === element; } );
       permutations = LocalShape.permuteListWithIndices( permutations, _.map( atomsWithElement, indexOf ) );
     }
 
     return permutations;
   };
 
+  return LocalShape;
 } );

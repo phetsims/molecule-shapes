@@ -43,7 +43,7 @@ define( function( require ) {
     this.on( 'bondRemoved', function( bond ) { this.trigger1( 'bondChanged', bond ); } );
     this.on( 'groupAdded', function( group ) { this.trigger1( 'groupChanged', group ); } );
     this.on( 'groupRemoved', function( group ) { this.trigger1( 'groupChanged', group ); } );
-  };
+  }
 
   return inherit( Events, Molecule, {
     // abstract getLocalShape( atom )
@@ -80,7 +80,7 @@ define( function( require ) {
     getBonds: function( group ) {
       if ( group ) {
         // all bonds to the pair group, if specified
-        return _.filter( this.bonds, function( bond ) { return bond.contains( group ) } );
+        return _.filter( this.bonds, function( bond ) { return bond.contains( group ); } );
       }
       else {
         return this.bonds;
@@ -89,7 +89,7 @@ define( function( require ) {
 
     // all neighboring pair groups
     getNeighbors: function( group ) {
-      return _.map( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ) } );
+      return _.map( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ); } );
     },
 
     getAllNonCentralAtoms: function() {
@@ -98,7 +98,7 @@ define( function( require ) {
     },
 
     getAllLonePairs: function() {
-      return _.filter( groups, function( group ) { return group.isLonePair; } );
+      return _.filter( this.groups, function( group ) { return group.isLonePair; } );
     },
 
     // atoms surrounding the center atom
@@ -138,7 +138,8 @@ define( function( require ) {
       }
       else {
         var centralAtom = this.centralAtom;
-        return phet.util.firstOrNull( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } );
+        var result = _.filter( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[0];
+        return result || null;
       }
     },
 
@@ -219,7 +220,7 @@ define( function( require ) {
     removeAllGroups: function() {
       var groupsCopy = this.groups.slice();
       for ( var i = 0; i < groupsCopy; i++ ) {
-        if ( groupsCopy[i] != this.centralAtom ) {
+        if ( groupsCopy[i] !== this.centralAtom ) {
           this.removeGroup( groupsCopy[i] );
         }
       }

@@ -1,47 +1,50 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * Contains the "optimal" molecule structures (pair group directions stored as unit vectors),
  * in an order such that higher-repulsion pair groups (lone pairs)
  * will tend to occupy the 1st slots, and bonds will occupy the later slots.
+ *
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+define( function( require ) {
+  'use strict';
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
+  var Vector3 = require( 'DOT/Vector3' );
 
-// create a new scope
-(function() {
+  var geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
+  var geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
+  var geometryLinearString = require( 'string!MOLECULE_SHAPES/geometry.linear' );
+  var geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
+  var geometryTetrahedralString = require( 'string!MOLECULE_SHAPES/geometry.tetrahedral' );
+  var geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
+  var geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
+
   var TETRA_CONST = Math.PI * -19.471220333 / 180;
 
-  phet.moleculeshapes.model.GeometryConfiguration = function( name, unitVectors ) {
+  function GeometryConfiguration( name, unitVectors ) {
     this.name = name;
     this.unitVectors = unitVectors;
-  };
-
-  var GeometryConfiguration = phet.moleculeshapes.model.GeometryConfiguration;
-
-  var Strings = phet.moleculeshapes.strings;
-  var Vector3 = dot.Vector3;
+  }
 
   var geometries = {
-    0: new GeometryConfiguration( Strings.GEOMETRY__EMPTY, [] ),
+    0: new GeometryConfiguration( geometryEmptyString, [] ),
 
     1: new GeometryConfiguration(
-      Strings.GEOMETRY__DIATOMIC,
+      geometryDiatomicString,
       [
         new Vector3( 1, 0, 0 )
       ]
     ),
     2: new GeometryConfiguration(
-      Strings.GEOMETRY__LINEAR,
+      geometryLinearString,
       [
         new Vector3( 1, 0, 0 ),
         new Vector3( -1, 0, 0 )
       ]
     ),
     3: new GeometryConfiguration(
-      Strings.GEOMETRY__TRIGONAL_PLANAR,
+      geometryTrigonalPlanarString,
       [
         new Vector3( 1, 0, 0 ),
         new Vector3( Math.cos( Math.PI * 2 / 3 ), Math.sin( Math.PI * 2 / 3 ), 0 ),
@@ -49,7 +52,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       ]
     ),
     4: new GeometryConfiguration(
-      Strings.GEOMETRY__TETRAHEDRAL,
+      geometryTetrahedralString,
       [
         new Vector3( 0, 0, 1 ),
         new Vector3( Math.cos( 0 ) * Math.cos( TETRA_CONST ), Math.sin( 0 ) * Math.cos( TETRA_CONST ), Math.sin( TETRA_CONST ) ),
@@ -58,7 +61,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       ]
     ),
     5: new GeometryConfiguration(
-      Strings.GEOMETRY__TRIGONAL_BIPYRAMIDAL,
+      geometryTrigonalBipyramidalString,
       [
         // equitorial (fills up with lone pairs first)
         new Vector3( 0, 1, 0 ),
@@ -71,7 +74,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
       ]
     ),
     6: new GeometryConfiguration(
-      Strings.GEOMETRY__OCTAHEDRAL,
+      geometryOctahedralString,
       [
         // opposites first
         new Vector3( 0, 0, 1 ),
@@ -87,4 +90,6 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
   GeometryConfiguration.getConfiguration = function( numberOfGroups ) {
     return geometries[numberOfGroups];
   };
-})();
+
+  return GeometryConfiguration;
+} );
