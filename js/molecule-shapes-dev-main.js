@@ -16,6 +16,7 @@ define( function( require ) {
     LocalShape: require( 'MOLECULE_SHAPES/model/LocalShape' ),
     Molecule: require( 'MOLECULE_SHAPES/model/Molecule' ),
     PairGroup: require( 'MOLECULE_SHAPES/model/PairGroup' ),
+    RealMolecule: require( 'MOLECULE_SHAPES/model/RealMolecule' ),
     VseprConfiguration: require( 'MOLECULE_SHAPES/model/VseprConfiguration' ),
     VSEPRMolecule: require( 'MOLECULE_SHAPES/model/VSEPRMolecule' ),
 
