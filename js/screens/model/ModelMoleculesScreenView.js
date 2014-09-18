@@ -12,12 +12,28 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
   var Bounds2 = require( 'DOT/Bounds2' );
+  var Matrix4 = require( 'DOT/Matrix4' );
   var DOM = require( 'SCENERY/nodes/DOM' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var Display = require( 'MOBIUS/Display' );
   var ShaderProgram = require( 'MOBIUS/ShaderProgram' );
+  var StageCenteringCanvasTransform = require( 'MOBIUS/StageCenteringCanvasTransform' );
+
+  // frustum (camera) properties
+  var fieldOfViewDegrees = 45 / 2;
+  var nearPlane = 1;
+  var farPlane = 1000;
+
+  function getSceneProjectionMatrix( canvasSize, stageSize ) {
+    var fieldOfViewRadians = ( fieldOfViewDegrees / 180 * Math.PI );
+    var correctedFieldOfViewRadians = Math.atan( StageCenteringCanvasTransform.fieldOfViewYFactor( canvasSize, stageSize ) * Math.tan( fieldOfViewRadians ) );
+
+    return Matrix4.gluPerspective( correctedFieldOfViewRadians,
+        canvasSize.width / canvasSize.height,
+      nearPlane, farPlane );
+  }
 
   /**
    * Constructor for the ModelMoleculesScreenView
