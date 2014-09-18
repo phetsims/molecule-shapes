@@ -17,6 +17,7 @@ define( function( require ) {
     Molecule: require( 'MOLECULE_SHAPES/model/Molecule' ),
     PairGroup: require( 'MOLECULE_SHAPES/model/PairGroup' ),
     RealMolecule: require( 'MOLECULE_SHAPES/model/RealMolecule' ),
+    RealMoleculeShape: require( 'MOLECULE_SHAPES/model/RealMoleculeShape' ),
     VseprConfiguration: require( 'MOLECULE_SHAPES/model/VseprConfiguration' ),
     VSEPRMolecule: require( 'MOLECULE_SHAPES/model/VSEPRMolecule' ),
 

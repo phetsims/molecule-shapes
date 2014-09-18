@@ -1,25 +1,25 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Represents a "real" molecule with exact positions, as opposed to a molecule model (which is VSEPR-based
+ * Represents a 'real' molecule with exact positions, as opposed to a molecule model (which is VSEPR-based
  * and doesn't include other information).
  * <p/>
  * We display these real molecules to the user in 3D
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+define( function( require ) {
+  'use strict';
 
-var phet = phet || {};
-phet.moleculeshapes = phet.moleculeshapes || {};
-phet.moleculeshapes.model = phet.moleculeshapes.model || {};
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var DotUtil = require( 'DOT/Util' );
+  var Element = require( 'NITROGLYCERIN/Element' );
+  var Atom3D = require( 'MOLECULE_SHAPES/model/Atom' );
+  var Bond = require( 'MOLECULE_SHAPES/model/Bond' );
+  var GeometryConfiguration = require( 'MOLECULE_SHAPES/model/GeometryConfiguration' );
 
-// create a new scope
-(function() {
-
-  var model = phet.moleculeshapes.model;
-  var Vector3 = dot.Vector3;
-
-  phet.moleculeshapes.model.RealMoleculeShape = function( displayName, simplifiedBondLength ) {
+  function RealMoleculeShape( displayName, simplifiedBondLength ) {
     this.displayName = displayName;
     this.simplifiedBondLength = simplifiedBondLength;
 
@@ -29,21 +29,17 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     // instead of the absolute positioning, this (for now) sets the bond lengths to be the same, since for our purposes they are all very close
     this.useSimplifiedBondLength = true;
-  };
+  }
 
-  var RealMoleculeShape = phet.moleculeshapes.model.RealMoleculeShape;
-
-  RealMoleculeShape.prototype = {
-    constructor: RealMoleculeShape,
-
+  inherit( Object, RealMoleculeShape, {
     // actual Atom3D, not pair group
     addAtom: function( atom ) {
-      phet.assert( this.atoms.indexOf( atom ) == -1 );
+      assert && assert( this.atoms.indexOf( atom ) === -1 );
       this.atoms.push( atom );
     },
 
     addBond: function( a, b, order, bondLength ) {
-      this.bonds.push( new model.Bond( a, b, order, bondLength ) );
+      this.bonds.push( new Bond( a, b, order, bondLength ) );
     },
 
     getAtoms: function() {
@@ -61,15 +57,15 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     addRadialAtom: function( atom, bondOrder ) {
       if ( this.useSimplifiedBondLength ) {
-        atom.position.set( atom.position.get().normalized().times( this.simplifiedBondLength ) );
+        atom.position = atom.position.normalized().times( this.simplifiedBondLength );
       }
       this.addAtom( atom );
-      this.addBond( atom, this.centralAtom, bondOrder, this.useSimplifiedBondLength ? this.simplifiedBondLength : atom.position.get().magnitude() );
+      this.addBond( atom, this.centralAtom, bondOrder, this.useSimplifiedBondLength ? this.simplifiedBondLength : atom.position.magnitude() );
     },
 
     translate: function( offset ) {
       for ( var i = 0; i < this.atoms.length; i++ ) {
-        this.atoms[i].position.set( this.atoms[i].position.get().plus( offset ) );
+        this.atoms[i].position = this.atoms[i].position.plus( offset );
       }
     },
 
@@ -87,13 +83,14 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
 
     getCentralAtomCount: function() {
       var centralAtom = this.centralAtom;
-      return phet.util.count( this.bonds, function( bond ) {return bond.contains( centralAtom );} );
+      // TODO: better count function
+      return _.filter( this.bonds, function( bond ) { return bond.contains( centralAtom ); } ).length;
     },
 
     toString: function() {
       return this.displayName;
     }
-  };
+  } );
 
   var createMoleculeShape = function( name, length, callback ) {
     var shape = new RealMoleculeShape( name, length );
@@ -101,31 +98,25 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     return shape;
   };
 
-  var Atom3D = model.Atom;
-  var Element = phet.chemistry.Element;
   var B = Element.B;
   var Be = Element.Be;
-  var Br = Element.Br;
   var C = Element.C;
   var Cl = Element.Cl;
   var F = Element.F;
   var H = Element.H;
-  var I = Element.I;
   var N = Element.N;
   var O = Element.O;
   var P = Element.P;
   var S = Element.S;
-  var Si = Element.Si;
-  var Sn = Element.Sn;
   var Xe = Element.Xe;
 
-  RealMoleculeShape.BERYLLIUM_CHLORIDE = createMoleculeShape( "BeCl2", 1.8, function( shape ) { // TODO: more accurate numbers?
+  RealMoleculeShape.BERYLLIUM_CHLORIDE = createMoleculeShape( 'BeCl2', 1.8, function( shape ) { // TODO: more accurate numbers?
     shape.addCentralAtom( new Atom3D( Be, new Vector3() ) );
     shape.addRadialAtom( new Atom3D( Cl, new Vector3( 1.8, 0, 0 ), 3 ), 1 );
     shape.addRadialAtom( new Atom3D( Cl, new Vector3( -1.8, 0, 0 ), 3 ), 1 );
   } );
 
-  RealMoleculeShape.BORON_TRIFLUORIDE = createMoleculeShape( "BF3", 1.313, function( shape ) {
+  RealMoleculeShape.BORON_TRIFLUORIDE = createMoleculeShape( 'BF3', 1.313, function( shape ) {
     shape.addCentralAtom( new Atom3D( B, new Vector3() ) );
     var angle = 2 * Math.PI / 3;
     var bondLength = 1.313;
@@ -134,11 +125,11 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     shape.addRadialAtom( new Atom3D( F, new Vector3( bondLength * Math.cos( 2 * angle ), bondLength * Math.sin( 2 * angle ), 0 ), 3 ), 1 );
   } );
 
-  RealMoleculeShape.BROMINE_PENTAFLUORIDE = createMoleculeShape( "BrF5", 1.774, function( shape ) {
+  RealMoleculeShape.BROMINE_PENTAFLUORIDE = createMoleculeShape( 'BrF5', 1.774, function( shape ) {
     shape.addCentralAtom( new Atom3D( B, new Vector3(), 1 ) );
     var axialBondLength = 1.689;
     var radialBondLength = 1.774;
-    var angle = dot.toRadians( 84.8 );
+    var angle = DotUtil.toRadians( 84.8 );
     var radialDistance = Math.sin( angle ) * radialBondLength;
     var axialDistance = Math.cos( angle ) * radialBondLength;
     shape.addRadialAtom( new Atom3D( F, new Vector3( 0, -axialBondLength, 0 ), 3 ), 1 );
@@ -148,19 +139,19 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     shape.addRadialAtom( new Atom3D( F, new Vector3( 0, -axialDistance, -radialDistance ), 3 ), 1 );
   } );
 
-  RealMoleculeShape.METHANE = createMoleculeShape( "CH4", 1.087, function( shape ) {
+  RealMoleculeShape.METHANE = createMoleculeShape( 'CH4', 1.087, function( shape ) {
     shape.addCentralAtom( new Atom3D( C, new Vector3() ) );
     var bondLength = 1.087;
-    var vectors = model.GeometryConfiguration.getConfiguration( 4 ).unitVectors;
+    var vectors = GeometryConfiguration.getConfiguration( 4 ).unitVectors;
     for ( var i = 0; i < vectors.length; i++ ) {
       shape.addRadialAtom( new Atom3D( H, vectors[i].times( bondLength ), 0 ), 1 );
     }
   } );
 
-  RealMoleculeShape.CHLORINE_TRIFLUORIDE = createMoleculeShape( "ClF3", 1.698, function( shape ) {
+  RealMoleculeShape.CHLORINE_TRIFLUORIDE = createMoleculeShape( 'ClF3', 1.698, function( shape ) {
     shape.addCentralAtom( new Atom3D( Cl, new Vector3(), 2 ) );
     shape.addRadialAtom( new Atom3D( F, new Vector3( 0, -1.598, 0 ), 3 ), 1 );
-    var radialAngle = dot.toRadians( 87.5 );
+    var radialAngle = DotUtil.toRadians( 87.5 );
     var radialBondLength = 1.698;
     var radialDistance = Math.sin( radialAngle ) * radialBondLength;
     var axialDistance = Math.cos( radialAngle ) * radialBondLength;
@@ -168,25 +159,25 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     shape.addRadialAtom( new Atom3D( F, new Vector3( -radialDistance, -axialDistance, 0 ), 3 ), 1 );
   } );
 
-  RealMoleculeShape.CARBON_DIOXIDE = createMoleculeShape( "CO2", 1.163, function( shape ) {
+  RealMoleculeShape.CARBON_DIOXIDE = createMoleculeShape( 'CO2', 1.163, function( shape ) {
     shape.addCentralAtom( new Atom3D( C, new Vector3() ) );
     shape.addRadialAtom( new Atom3D( O, new Vector3( -1.163, 0, 0 ), 2 ), 2 );
     shape.addRadialAtom( new Atom3D( O, new Vector3( 1.163, 0, 0 ), 2 ), 2 );
   } );
 
-  RealMoleculeShape.WATER = createMoleculeShape( "H2O", 0.957, function( shape ) {
+  RealMoleculeShape.WATER = createMoleculeShape( 'H2O', 0.957, function( shape ) {
     shape.addCentralAtom( new Atom3D( O, new Vector3(), 2 ) );
     var radialBondLength = 0.957;
-    var radialAngle = dot.toRadians( 104.5 ) / 2;
+    var radialAngle = DotUtil.toRadians( 104.5 ) / 2;
     shape.addRadialAtom( new Atom3D( H, new Vector3( Math.sin( radialAngle ), -Math.cos( radialAngle ), 0 ).times( radialBondLength ) ), 1 );
     shape.addRadialAtom( new Atom3D( H, new Vector3( -( Math.sin( radialAngle ) ), -Math.cos( radialAngle ), 0 ).times( radialBondLength ) ), 1 );
   } );
 
-  RealMoleculeShape.AMMONIA = createMoleculeShape( "NH3", 1.017, function( shape ) {
+  RealMoleculeShape.AMMONIA = createMoleculeShape( 'NH3', 1.017, function( shape ) {
     shape.addCentralAtom( new Atom3D( N, new Vector3(), 1 ) );
     var radialBondLength = 1.017;
 
-    // to solve a "axial" angle (from the axis of symmetry), Solve[Cos[\[Beta]] == Cos[\[Alpha]]^2*Cos[\[Theta]] + Sin[\[Alpha]]^2, \[Alpha]]  where beta is our given intra-bond angle, alpha is solved for, and theta = 2 pi / n where n is our number of bonds (3 in this case)
+    // to solve a 'axial' angle (from the axis of symmetry), Solve[Cos[\[Beta]] == Cos[\[Alpha]]^2*Cos[\[Theta]] + Sin[\[Alpha]]^2, \[Alpha]]  where beta is our given intra-bond angle, alpha is solved for, and theta = 2 pi / n where n is our number of bonds (3 in this case)
     var axialAngle = 1.202623030417028; // lots of precision, from Mathematica
     var radialAngle = 2 * Math.PI / 3;
     var radialDistance = Math.sin( axialAngle ) * radialBondLength;
@@ -196,7 +187,7 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     shape.addRadialAtom( new Atom3D( H, new Vector3( radialDistance * Math.cos( 2 * radialAngle ), -axialDistance, radialDistance * Math.sin( 2 * radialAngle ) ) ), 1 );
   } );
 
-  RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE = createMoleculeShape( "PCl5", 2.02, function( shape ) {
+  RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE = createMoleculeShape( 'PCl5', 2.02, function( shape ) {
     shape.addCentralAtom( new Atom3D( P, new Vector3() ) );
     shape.addRadialAtom( new Atom3D( Cl, new Vector3( 2.14, 0, 0 ), 3 ), 1 );
     shape.addRadialAtom( new Atom3D( Cl, new Vector3( -2.14, 0, 0 ), 3 ), 1 );
@@ -207,10 +198,10 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     shape.addRadialAtom( new Atom3D( Cl, new Vector3( 0, Math.cos( 2 * radialAngle ), Math.sin( 2 * radialAngle ) ).times( radialBondLength ), 3 ), 1 );
   } );
 
-  RealMoleculeShape.SULFUR_TETRAFLUORIDE = createMoleculeShape( "SF4", 1.595, function( shape ) {
+  RealMoleculeShape.SULFUR_TETRAFLUORIDE = createMoleculeShape( 'SF4', 1.595, function( shape ) {
     shape.addCentralAtom( new Atom3D( S, new Vector3(), 1 ) );
-    var largeAngle = dot.toRadians( 173.1 ) / 2;
-    var smallAngle = dot.toRadians( 101.6 ) / 2;
+    var largeAngle = DotUtil.toRadians( 173.1 ) / 2;
+    var smallAngle = DotUtil.toRadians( 101.6 ) / 2;
 
     shape.addRadialAtom( new Atom3D( F, new Vector3( Math.sin( largeAngle ), -Math.cos( largeAngle ), 0 ).times( 1.646 ), 3 ), 1 );
     shape.addRadialAtom( new Atom3D( F, new Vector3( -Math.sin( largeAngle ), -Math.cos( largeAngle ), 0 ).times( 1.646 ), 3 ), 1 );
@@ -218,29 +209,29 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     shape.addRadialAtom( new Atom3D( F, new Vector3( 0, -Math.cos( smallAngle ), -Math.sin( smallAngle ) ).times( 1.545 ), 3 ), 1 );
   } );
 
-  RealMoleculeShape.SULFUR_HEXAFLUORIDE = createMoleculeShape( "SF6", 1.564, function( shape ) {
+  RealMoleculeShape.SULFUR_HEXAFLUORIDE = createMoleculeShape( 'SF6', 1.564, function( shape ) {
     shape.addCentralAtom( new Atom3D( S, new Vector3() ) );
-    var vectors = model.GeometryConfiguration.getConfiguration( 6 ).unitVectors;
+    var vectors = GeometryConfiguration.getConfiguration( 6 ).unitVectors;
     for ( var i = 0; i < vectors.length; i++ ) {
       shape.addRadialAtom( new Atom3D( F, vectors[i].times( 1.564 ), 3 ), 1 );
     }
   } );
 
-  RealMoleculeShape.SULFUR_DIOXIDE = createMoleculeShape( "SO2", 1.431, function( shape ) {
-    var bondAngle = dot.toRadians( 119 ) / 2;
+  RealMoleculeShape.SULFUR_DIOXIDE = createMoleculeShape( 'SO2', 1.431, function( shape ) {
+    var bondAngle = DotUtil.toRadians( 119 ) / 2;
     var bondLength = 1.431;
     shape.addCentralAtom( new Atom3D( S, new Vector3(), 1 ) );
     shape.addRadialAtom( new Atom3D( O, new Vector3( Math.sin( bondAngle ), -Math.cos( bondAngle ), 0 ).times( bondLength ), 2 ), 2 );
     shape.addRadialAtom( new Atom3D( O, new Vector3( -Math.sin( bondAngle ), -Math.cos( bondAngle ), 0 ).times( bondLength ), 2 ), 2 );
   } );
 
-  RealMoleculeShape.XENON_DIFLUORIDE = createMoleculeShape( "XeF2", 1.977, function( shape ) {
+  RealMoleculeShape.XENON_DIFLUORIDE = createMoleculeShape( 'XeF2', 1.977, function( shape ) {
     shape.addCentralAtom( new Atom3D( Xe, new Vector3(), 3 ) );
     shape.addRadialAtom( new Atom3D( F, new Vector3( 1.977, 0, 0 ), 3 ), 1 );
     shape.addRadialAtom( new Atom3D( F, new Vector3( -1.977, 0, 0 ), 3 ), 1 );
   } );
 
-  RealMoleculeShape.XENON_TETRAFLUORIDE = createMoleculeShape( "XeF4", 1.953, function( shape ) {
+  RealMoleculeShape.XENON_TETRAFLUORIDE = createMoleculeShape( 'XeF4', 1.953, function( shape ) {
     var bondLength = 1.953;
     shape.addCentralAtom( new Atom3D( Xe, new Vector3(), 2 ) );
     shape.addRadialAtom( new Atom3D( F, new Vector3( bondLength, 0, 0 ), 3 ), 1 );
@@ -273,4 +264,6 @@ phet.moleculeshapes.model = phet.moleculeshapes.model || {};
     RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE,
     RealMoleculeShape.SULFUR_HEXAFLUORIDE
   ];
-})();
+
+  return RealMoleculeShape;
+} );
