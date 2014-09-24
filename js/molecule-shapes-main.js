@@ -19,14 +19,11 @@ define( function( require ) {
 
   var simOptions = {
     credits: {
-
-      // all credits fields are optional
-      // TODO: while I like the credits here, we should probably fill this out
-      leadDesign: 'Groucho',
-      softwareDevelopment: 'Harpo',
-      designTeam: 'Curly, Larry, Mo',
-      interviews: 'Wile E. Coyote',
-      thanks: 'Thanks to the ACME Dynamite Company for funding this sim!'
+      // TODO: fill in credits
+      leadDesign: '',
+      softwareDevelopment: '',
+      team: '',
+      thanks: ''
     }
   };
 
