@@ -15,6 +15,5 @@
     "uglify-js": "~2.4.0",
     "requirejs": "~2.1.8"
   },
-  "requirejsNamespace": "MOLECULE_SHAPES",
   "simTitleStringKey": "MOLECULE_SHAPES/molecule-shapes.name"
 }
