@@ -18,6 +18,7 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
+  var GeometryNamePanel = require( 'MOLECULE_SHAPES/view/GeometryNamePanel' );
 
   /**
    * Constructor for the MoleculeShapesScreenView
@@ -80,6 +81,11 @@ define( function( require ) {
       listener: function() {
         model.reset();
       }
+    } ) );
+
+    this.addChild( new GeometryNamePanel( model.moleculeProperty, !model.isBasicsVersion, {
+      left: this.layoutBounds.minX + 10,
+      bottom: this.layoutBounds.maxY - 10
     } ) );
 
     /*---------------------------------------------------------------------------*
