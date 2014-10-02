@@ -66,7 +66,7 @@ define( function( require ) {
       if ( group.isLonePair ) {
         // TODO
       } else {
-        var atomView = new AtomView( group.element ? group.element.color : '#fff' );
+        var atomView = new AtomView( group.element ? group.element.color : MoleculeShapesColors.atom );
         atomView.group = group; // TODO: get rid of duck typing
         this.atomViews.push( atomView );
         this.add( atomView );

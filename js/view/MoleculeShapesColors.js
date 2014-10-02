@@ -15,12 +15,16 @@ define( function( require ) {
 
   var colors = {
     background: {
-      default: new Color( 0, 0, 0 ),
+      default: new Color( 30, 30, 30 ),
       basics: new Color( 252, 216, 124 ),
       projector: new Color( 255, 255, 255 )
     },
     centralAtom: {
       default: new Color( 159, 102, 218 )
+    },
+    atom: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 153, 153, 153 )
     }
   };
 
