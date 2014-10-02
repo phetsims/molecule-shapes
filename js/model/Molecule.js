@@ -30,6 +30,10 @@ define( function( require ) {
   var MAX_PAIRS = 6;
 
   function Molecule() {
+    Events.call( this );
+
+    var molecule = this;
+
     // all of the pair groups
     this.groups = [];
 
@@ -39,10 +43,10 @@ define( function( require ) {
     this.centralAtom = null; // will be filled in later
 
     // composite events
-    this.on( 'bondAdded', function( bond ) { this.trigger1( 'bondChanged', bond ); } );
-    this.on( 'bondRemoved', function( bond ) { this.trigger1( 'bondChanged', bond ); } );
-    this.on( 'groupAdded', function( group ) { this.trigger1( 'groupChanged', group ); } );
-    this.on( 'groupRemoved', function( group ) { this.trigger1( 'groupChanged', group ); } );
+    this.on( 'bondAdded', function( bond ) { molecule.trigger1( 'bondChanged', bond ); } );
+    this.on( 'bondRemoved', function( bond ) { molecule.trigger1( 'bondChanged', bond ); } );
+    this.on( 'groupAdded', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
+    this.on( 'groupRemoved', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
   }
 
   return inherit( Events, Molecule, {
@@ -158,11 +162,11 @@ define( function( require ) {
       // add the group, but delay notifications (inconsistent state)
       this.addGroupOnly( group, false );
 
-      bondLength = bondLength || group.position.get().minus( parent.position.get() ).magnitude() / PairGroup.REAL_TMP_SCALE;
+      bondLength = bondLength || group.position.minus( parent.position ).magnitude() / PairGroup.REAL_TMP_SCALE;
       this.addBondBetween( group, parent, bondOrder, bondLength );
 
       // notify after bond added, so we don't send notifications in an inconsistent state
-      this.onGroupAdded.updateListeners( group );
+      this.trigger1( 'groupAdded', group );
     },
 
     addGroupOnly: function( group, notify ) {
@@ -173,14 +177,14 @@ define( function( require ) {
 
       // notify
       if ( notify ) {
-        this.onGroupAdded.updateListeners( group );
+        this.trigger1( 'groupAdded', group );
       }
     },
 
     addBond: function( bond ) {
       this.bonds.push( bond );
 
-      this.onBondAdded.updateListeners( bond );
+      this.trigger1( 'bondAdded', bond );
     },
 
     addBondBetween: function( a, b, order, bondLength ) {
@@ -189,7 +193,8 @@ define( function( require ) {
 
     removeBond: function( bond ) {
       this.bonds.splice( this.bonds.indexOf( bond ), 1 );
-      this.onBondRemoved.updateListeners( bond );
+
+      this.trigger1( 'bondRemoved', bond );
     },
 
     getCentralAtom: function() {
@@ -210,10 +215,10 @@ define( function( require ) {
       this.groups.splice( this.groups.indexOf( group ) );
 
       // notify
-      this.onGroupRemoved.updateListeners( group );
+      this.trigger1( 'groupRemoved', group );
       for ( i = 0; i < bondList.length; i++ ) {
         // delayed notification for bond removal
-        this.onBondRemoved.updateListeners( bondList[i] );
+        this.trigger1( 'bondRemoved', bondList[i] );
       }
     },
 
@@ -273,7 +278,7 @@ define( function( require ) {
       var mapping = AttractorModel.findClosestMatchingConfiguration(
         // last vector should be lowest energy (best bond if ambiguous), and is negated for the proper coordinate frame
         [ atom.position.normalized() ], // TODO: why did this have to get changed to non-negated?
-        [ lonePairOrientations.get( lonePairOrientations.size() - 1 ).negated() ],
+        [ lonePairOrientations[lonePairOrientations.length - 1].negated() ],
         [ Permutation.identity( 1 ) ]
       );
 

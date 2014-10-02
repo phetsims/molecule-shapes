@@ -10,23 +10,30 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var MoleculeShapesModel = require( 'MOLECULE_SHAPES/model/MoleculeShapesModel' );
 
   /**
-   * Main constructor for ModelMoleculesModel, which creates the bar magnet..
    * @constructor
    */
-  function ModelMoleculesModel() {
+  function ModelMoleculesModel( isBasicsVersion ) {
+
+    // inherits PropertySet, these are made into properties
+    MoleculeShapesModel.call( this, isBasicsVersion, {
+      addSingleBondEnabled: true,
+      addDoubleBondEnabled: true,
+      addTripleBondEnabled: true,
+      addLonePairEnabled: true
+    } );
   }
 
-  return inherit( Object, ModelMoleculesModel, {
+  return inherit( MoleculeShapesModel, ModelMoleculesModel, {
 
-    // Resets all model elements
     reset: function() {
+      MoleculeShapesModel.call( this );
     },
 
-    // Called by the animation loop. Optional, so if your model has no animation, you can omit this.
-    step: function() {
-      // Handle model animation here.
+    step: function( dt ) {
+      MoleculeShapesModel.call( this, dt );
     }
   } );
 } );

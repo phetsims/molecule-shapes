@@ -10,11 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
 
   /**
    * Constructor for the RealMoleculesScreenView
@@ -22,12 +18,8 @@ define( function( require ) {
    * @constructor
    */
   function RealMoleculesScreenView( model ) {
-    ScreenView.call( this, {
-      layoutBounds: new Bounds2( 0, 0, 1024, 618 )
-    } );
-
-    this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10 } ) );
+    MoleculeShapesScreenView.call( this, model );
   }
 
-  return inherit( ScreenView, RealMoleculesScreenView );
+  return inherit( MoleculeShapesScreenView, RealMoleculesScreenView );
 } );

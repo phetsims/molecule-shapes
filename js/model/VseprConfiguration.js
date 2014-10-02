@@ -124,7 +124,7 @@ define( function( require ) {
     getIdealBondUnitVectors: function() {
       var result = [];
       for ( var i = this.e; i < this.x + this.e; i++ ) {
-        result.push( this.geometry.unitVectors.get( i ) );
+        result.push( this.geometry.unitVectors[i] );
       }
       return result;
     },

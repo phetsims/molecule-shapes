@@ -10,23 +10,34 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var MoleculeShapesModel = require( 'MOLECULE_SHAPES/model/MoleculeShapesModel' );
+  var RealMolecule = require( 'MOLECULE_SHAPES/model/RealMolecule' );
+  var RealMoleculeShape = require( 'MOLECULE_SHAPES/model/RealMoleculeShape' );
 
   /**
-   * Main constructor for RealMoleculesModel, which creates the bar magnet..
    * @constructor
    */
-  function RealMoleculesModel() {
+  function RealMoleculesModel( isBasicsVersion ) {
+    var startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[0] : RealMoleculeShape.TAB_2_MOLECULES[0];
+    var startingMolecule = new RealMolecule( startingMoleculeShape );
+
+    // inherits PropertySet, these are made into properties
+    MoleculeShapesModel.call( this, isBasicsVersion, {
+      molecule: startingMolecule, // @override {Molecule}
+      realMoleculeShape: startingMoleculeShape, // {RealMoleculeShape}
+      showRealView: true // whether the "Real" or "Model" view is shown
+    } );
   }
 
-  return inherit( Object, RealMoleculesModel, {
+  return inherit( MoleculeShapesModel, RealMoleculesModel, {
 
-    // Resets all model elements
     reset: function() {
+      MoleculeShapesModel.call( this );
     },
 
-    // Called by the animation loop. Optional, so if your model has no animation, you can omit this.
-    step: function() {
-      // Handle model animation here.
+    step: function( dt ) {
+      MoleculeShapesModel.call( this, dt );
     }
   } );
 } );
+

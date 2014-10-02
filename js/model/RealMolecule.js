@@ -22,7 +22,6 @@ define( function( require ) {
 
     this.realMolecule = realMolecule;
 
-    this.elementsUsed = {};
     this.localShapeMap = {};
 
     var numLonePairs = realMolecule.getCentralLonePairCount();
@@ -31,7 +30,7 @@ define( function( require ) {
     var idealCentralOrientations = [];
     var centralPairGroups = [];
 
-    this.addCentralAtom( new PairGroup( new Vector3(), false, false, realMolecule.getCentralAtom().getElement() ) );
+    this.addCentralAtom( new PairGroup( new Vector3(), false, false, realMolecule.getCentralAtom().element ) );
 
     // add in bonds
     var bonds = realMolecule.getBonds();
@@ -43,10 +42,9 @@ define( function( require ) {
       var bondLength = atom.position.magnitude();
 
       var atomLocation = normalizedPosition.times( PairGroup.REAL_TMP_SCALE * bondLength );
-      group = new PairGroup( atomLocation, false, false, atom.getElement() );
-      centralPairGroups.add( group );
+      group = new PairGroup( atomLocation, false, false, atom.element );
+      centralPairGroups.push( group );
       this.addGroupAndBond( group, this.getCentralAtom(), bond.order, bondLength );
-      this.elementsUsed.add( atom.getElement() );
 
       this.addTerminalLonePairs( group, atom.lonePairCount );
     }
@@ -59,11 +57,11 @@ define( function( require ) {
 
     // add in lone pairs in their correct "initial" positions
     for ( i = 0; i < numLonePairs; i++ ) {
-      normalizedPosition = mapping.rotateVector( idealModelVectors.get( i ) );
-      idealCentralOrientations.add( normalizedPosition );
+      normalizedPosition = mapping.rotateVector( idealModelVectors[i] );
+      idealCentralOrientations.push( normalizedPosition );
       group = new PairGroup( normalizedPosition.times( PairGroup.LONE_PAIR_DISTANCE ), true, false );
       this.addGroupAndBond( group, this.getCentralAtom(), 0, PairGroup.LONE_PAIR_DISTANCE / PairGroup.REAL_TMP_SCALE );
-      centralPairGroups.add( group );
+      centralPairGroups.push( group );
     }
 
     this.localShapeMap[this.getCentralAtom().id] = new LocalShape( LocalShape.realPermutations( centralPairGroups ), this.getCentralAtom(), centralPairGroups, idealCentralOrientations );

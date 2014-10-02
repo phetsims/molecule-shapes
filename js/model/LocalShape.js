@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
+  var partition = require( 'PHET_CORE/partition' );
   var Permutation = require( 'DOT/Permutation' );
   var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
 
@@ -96,7 +97,7 @@ define( function( require ) {
     };
 
     // partition the neighbors into lone pairs and atoms.
-    var partitioned = _.partition( neighbors, function( group ) {
+    var partitioned = partition( neighbors, function( group ) {
       return group.isLonePair;
     } );
     // this separation looks better in languages where you say "(lonePairs, atoms) = partition(...)"
@@ -114,7 +115,7 @@ define( function( require ) {
   // allow switching of lone pairs with each other, and all other types of bonds with the same type of element
   LocalShape.realPermutations = function( neighbors ) {
     var permutations = [];
-    permutations.add( Permutation.identity( neighbors.length ) );
+    permutations.push( Permutation.identity( neighbors.length ) );
 
     var indexOf = function( group ) {
       return neighbors.indexOf( group );
