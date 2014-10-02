@@ -42,7 +42,7 @@ define( function( require ) {
     }
     this.add( this.centerAtomView );
 
-    this.scale.set( 0.03, 0.03, 0.03 );
+    this.scale.set( 0.022, 0.022, 0.022 );
   }
 
   return inherit( THREE.Object3D, MoleculeView, {
