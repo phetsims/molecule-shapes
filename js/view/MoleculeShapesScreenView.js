@@ -10,16 +10,10 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector3 = require( 'DOT/Vector3' );
   var Bounds2 = require( 'DOT/Bounds2' );
-  var Matrix4 = require( 'DOT/Matrix4' );
   var DOM = require( 'SCENERY/nodes/DOM' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
-  var StageCenteringCanvasTransform = require( 'MOBIUS/StageCenteringCanvasTransform' );
-  var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
 
   /**
    * Constructor for the ModelMoleculesScreenView

@@ -44,7 +44,6 @@ require.config(
 
       // extra dependencies
       NITROGLYCERIN: '../../nitroglycerin/js',
-      MOBIUS: '../../mobius/js',
 
       // this sim
       MOLECULE_SHAPES: '.'
