@@ -18,8 +18,8 @@ define( function( require ) {
   function BondView( aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength, aColor, bColor ) {
     var view = this;
 
-    var aColor = new Color( aColor ).toNumber();
-    var bColor = new Color( bColor ).toNumber();
+    aColor = new Color( aColor ).toNumber();
+    bColor = new Color( bColor ).toNumber();
 
     var aMaterial = new THREE.MeshLambertMaterial( {
       color: aColor,

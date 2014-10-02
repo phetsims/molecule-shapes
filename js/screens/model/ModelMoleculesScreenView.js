@@ -38,7 +38,6 @@ define( function( require ) {
       top: this.layoutBounds.top + 10,
       listener: function() {
         var bondOrder = 1;
-        var rnd = Math.random() * Math.PI * 2;
         var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
         molecule.addGroupAndBond( pair, molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
       }

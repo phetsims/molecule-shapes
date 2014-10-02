@@ -16,7 +16,6 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
-  var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
 
   /**
    * Constructor for the MoleculeShapesScreenView

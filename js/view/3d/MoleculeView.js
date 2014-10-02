@@ -16,8 +16,6 @@ define( function( require ) {
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
 
   function MoleculeView( model, molecule ) {
-    var view = this;
-
     THREE.Object3D.call( this );
 
     this.model = model;
