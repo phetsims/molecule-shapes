@@ -38,7 +38,7 @@ define( function( require ) {
     if ( molecule.isReal ) {
       this.centerAtomView = new AtomView( molecule.getCentralAtom().element.color );
     } else {
-      this.centerAtomView = new AtomView( MoleculeShapesColors.centralAtom );
+      this.centerAtomView = new AtomView( MoleculeShapesColors.centralAtomProperty );
     }
     this.add( this.centerAtomView );
 
@@ -66,7 +66,7 @@ define( function( require ) {
       if ( group.isLonePair ) {
         // TODO
       } else {
-        var atomView = new AtomView( group.element ? group.element.color : MoleculeShapesColors.atom );
+        var atomView = new AtomView( group.element ? group.element.color : MoleculeShapesColors.atomProperty );
         atomView.group = group; // TODO: get rid of duck typing
         this.atomViews.push( atomView );
         this.add( atomView );
