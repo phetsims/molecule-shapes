@@ -249,7 +249,7 @@ define( function( require ) {
 
     getDistantLonePairs: function() {
       var closeLonePairs = this.getLonePairNeighbors( this.centralAtom );
-      return _.filter( this.getAllLonePairs(), function( lonePair ) { return !closeLonePairs.contains( lonePair ); } );
+      return _.filter( this.getAllLonePairs(), function( lonePair ) { return !_.contains( closeLonePairs, lonePair ); } );
     },
 
     getLocalVSEPRShape: function( atom ) {

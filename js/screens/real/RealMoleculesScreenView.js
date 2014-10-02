@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
+  var MoleculeView = require( 'MOLECULE_SHAPES/view/3d/MoleculeView' );
 
   /**
    * Constructor for the RealMoleculesScreenView
@@ -19,6 +20,9 @@ define( function( require ) {
    */
   function RealMoleculesScreenView( model ) {
     MoleculeShapesScreenView.call( this, model );
+
+    this.moleculeView = new MoleculeView( model, model.molecule );
+    this.threeScene.add( this.moleculeView );
   }
 
   return inherit( MoleculeShapesScreenView, RealMoleculesScreenView );

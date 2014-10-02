@@ -49,8 +49,6 @@ define( function( require ) {
     moonLight.position.set( 2.0, -1.0, 1.0 );
     this.threeScene.add( moonLight );
 
-    this.threeScene.add( new AtomView( '#fff', 0.1 ) );
-
     this.threeCamera.position.z = 40;
 
     this.domNode = new DOM( this.threeRenderer.domElement, {
@@ -64,10 +62,13 @@ define( function( require ) {
 
     this.addChild( this.domNode );
 
+    // TODO: mouse/touch handling
+
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10 } ) );
   }
 
   return inherit( ScreenView, ModelMoleculesScreenView, {
+
     layout: function( width, height ) {
       ScreenView.prototype.layout.call( this, width, height );
 
@@ -102,6 +103,7 @@ define( function( require ) {
 
       this.domNode.invalidateDOM();
     },
+
     step: function( dt ) {
       // render the 3D scene
       this.threeRenderer.render( this.threeScene, this.threeCamera );

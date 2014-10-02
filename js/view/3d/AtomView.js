@@ -11,7 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
 
-  function AtomView( color, radius ) {
+  function AtomView( color ) {
     var baseColor = new Color( color ).toNumber();
     var material = new THREE.MeshLambertMaterial( {
       color: baseColor,

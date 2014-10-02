@@ -11,18 +11,28 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/model/MoleculeShapesModel' );
+  var VSEPRMolecule = require( 'MOLECULE_SHAPES/model/VSEPRMolecule' );
 
   /**
    * @constructor
    */
   function ModelMoleculesModel( isBasicsVersion ) {
+    var model = this;
 
     // inherits PropertySet, these are made into properties
     MoleculeShapesModel.call( this, isBasicsVersion, {
+      molecule: new VSEPRMolecule(),
       addSingleBondEnabled: true,
       addDoubleBondEnabled: true,
       addTripleBondEnabled: true,
       addLonePairEnabled: true
+    } );
+
+    // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
+    this.molecule.on( 'bondChanged', function() {
+      if ( model.molecule.getRadialLonePairs.length === 0 ) {
+        model.showLonePairs = true;
+      }
     } );
   }
 
