@@ -16,6 +16,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
   /**
@@ -78,6 +79,33 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
         model.reset();
+      }
+    } ) );
+
+    /*---------------------------------------------------------------------------*
+    * Temporary
+    *----------------------------------------------------------------------------*/
+    this.addChild( new TextPushButton( 'Regular Colors', {
+      right: this.layoutBounds.right - 10,
+      bottom: this.layoutBounds.bottom - 210,
+      listener: function() {
+        MoleculeShapesColors.applyProfile( 'default' );
+      }
+    } ) );
+    this.addChild( new TextPushButton( 'Basics Colors', {
+      right: this.layoutBounds.right - 10,
+      bottom: this.layoutBounds.bottom - 160,
+      listener: function() {
+        MoleculeShapesColors.applyProfile( 'default' );
+        MoleculeShapesColors.applyProfile( 'basics' );
+      }
+    } ) );
+    this.addChild( new TextPushButton( 'Projector Colors', {
+      right: this.layoutBounds.right - 10,
+      bottom: this.layoutBounds.bottom - 110,
+      listener: function() {
+        MoleculeShapesColors.applyProfile( 'default' );
+        MoleculeShapesColors.applyProfile( 'projector' );
       }
     } ) );
 
