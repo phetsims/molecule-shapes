@@ -34,6 +34,7 @@ define( function( require ) {
     BondView: require( 'MOLECULE_SHAPES/view/3d/BondView' ),
     MoleculeView: require( 'MOLECULE_SHAPES/view/3d/MoleculeView' ),
 
+    MoleculeShapesColors: require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' ),
     MoleculeShapesScreenView: require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' ),
 
     // externals used for debugging

@@ -11,9 +11,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var Property = require( 'AXON/Property' );
-  var Color = require( 'SCENERY/util/Color' );
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
   function MoleculeView( model, molecule ) {
     THREE.Object3D.call( this );
@@ -38,7 +38,7 @@ define( function( require ) {
     if ( molecule.isReal ) {
       this.centerAtomView = new AtomView( molecule.getCentralAtom().element.color );
     } else {
-      this.centerAtomView = new AtomView( new Color( 159, 102, 218 ) ); // TODO: abstract away color
+      this.centerAtomView = new AtomView( MoleculeShapesColors.centralAtom );
     }
     this.add( this.centerAtomView );
 

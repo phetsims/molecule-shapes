@@ -16,6 +16,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
   /**
    * Constructor for the MoleculeShapesScreenView
@@ -42,6 +43,10 @@ define( function( require ) {
 
     this.threeRenderer = new THREE.WebGLRenderer( {
       antialias: true
+    } );
+
+    MoleculeShapesColors.link( 'background', function( color ) {
+      screenView.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 
     var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader

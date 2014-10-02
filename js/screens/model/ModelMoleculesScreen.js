@@ -14,6 +14,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var ModelMoleculesModel = require( 'MOLECULE_SHAPES/screens/model/ModelMoleculesModel' );
   var ModelMoleculesScreenView = require( 'MOLECULE_SHAPES/screens/model/ModelMoleculesScreenView' );
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
   // strings
   var screenTitle = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
@@ -22,15 +23,15 @@ define( function( require ) {
    * Creates the model and view for the ModelMoleculesScreen
    * @constructor
    */
-  return inherit( Screen, function ModelMoleculesScreen() {
+  return inherit( Screen, function ModelMoleculesScreen( isBasicsVersion ) {
     var screenIcon = Rectangle.rect( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, {
       fill: 'red'
     } );
 
     Screen.call( this, screenTitle, screenIcon,
-      function() { return new ModelMoleculesModel(); },
+      function() { return new ModelMoleculesModel( isBasicsVersion ); },
       function( model ) { return new ModelMoleculesScreenView( model ); },
-      { backgroundColor: '#000' }
+      { backgroundColor: MoleculeShapesColors.background.toCSS() }
     );
   } );
 } );

@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var ModelMoleculesScreen = require( 'MOLECULE_SHAPES/screens/model/ModelMoleculesScreen' );
   var RealMoleculesScreen = require( 'MOLECULE_SHAPES/screens/real/RealMoleculesScreen' );
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
@@ -34,8 +35,21 @@ define( function( require ) {
     }, simOptions );
   }
 
+  var isBasicsVersion = false;
+  if ( window.phetcommon.getQueryParameter( 'basics' ) ) {
+    isBasicsVersion = true;
+    MoleculeShapesColors.applyProfile( 'basics' );
+  }
+
+  if ( window.phetcommon.getQueryParameter( 'projector' ) ) {
+    MoleculeShapesColors.applyProfile( 'projector' );
+  }
+
   SimLauncher.launch( function() {
-    var sim = new Sim( simTitle, [ new ModelMoleculesScreen(), new RealMoleculesScreen() ], simOptions );
+    var sim = new Sim( simTitle, [
+      new ModelMoleculesScreen( isBasicsVersion ),
+      new RealMoleculesScreen( isBasicsVersion )
+      ], simOptions );
     sim.start();
   } );
 } );
