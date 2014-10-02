@@ -12,6 +12,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var DOM = require( 'SCENERY/nodes/DOM' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
@@ -27,6 +29,11 @@ define( function( require ) {
     } );
 
     var screenView = this;
+
+    this.backgroundEventTarget = Rectangle.bounds( this.layoutBounds, {} );
+    this.addChild( this.backgroundEventTarget );
+
+    this.activeScale = 1; // updated in layout
 
     this.screenWidth = null;
     this.screenHeight = null;
@@ -62,15 +69,38 @@ define( function( require ) {
 
     this.addChild( this.domNode );
 
-    // TODO: mouse/touch handling
+    this.addChild( new ResetAllButton( {
+      right: this.layoutBounds.maxX - 10,
+      bottom: this.layoutBounds.maxY - 10,
+      listener: function() {
+        model.reset();
+      }
+    } ) );
 
-    this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10 } ) );
+    this.addInputListener( new SimpleDragHandler( {
+      start: function( event, trail ) {
+        this.dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
+      },
+      translate: function( data ) {
+        var delta = data.delta;
+        var scale = 0.003 / screenView.activeScale;
+        var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
+        newQuaternion.multiply( screenView.moleculeView.quaternion );
+        screenView.moleculeView.quaternion.copy( newQuaternion );
+        screenView.moleculeView.updateMatrix();
+      },
+      end: function( event, trail ) {
+
+      }
+    } ) );
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
 
     layout: function( width, height ) {
       ScreenView.prototype.layout.call( this, width, height );
+
+      this.backgroundEventTarget.setRectBounds( this.globalToLocalBounds( new Bounds2( 0, 0, width, height ) ) );
 
       this.screenWidth = width;
       this.screenHeight = height;
@@ -85,6 +115,7 @@ define( function( require ) {
         return 1;
       }
       this.threeCamera.fov = sy > sx ? sy / sx : 1;
+      this.activeScale = sy > sx ? sx : sy;
 
       // aspect ratio
       this.threeCamera.aspect = canvasWidth / canvasHeight;

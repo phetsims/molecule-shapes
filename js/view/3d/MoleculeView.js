@@ -69,6 +69,7 @@ define( function( require ) {
         // TODO
       } else {
         var atomView = new AtomView( group.element ? group.element.color : '#fff' );
+        atomView.group = group; // TODO: get rid of duck typing
         this.atomViews.push( atomView );
         this.add( atomView );
 
@@ -84,7 +85,18 @@ define( function( require ) {
     },
 
     removeGroup: function( group ) {
+      if ( group.isLonePair ) {
+        // TODO
+      } else {
+        for ( var i = 0; i < this.atomViews.length; i++ ) {
+          if ( this.atomViews[i].group === group ) {
+            this.remove( this.atomViews[i] );
+            this.atomViews.splice( i, 1 );
+          }
+        }
 
+        // TODO: remove all angle nodes
+      }
     },
 
     addBond: function( bond ) {

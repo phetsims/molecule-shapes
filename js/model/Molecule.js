@@ -224,7 +224,7 @@ define( function( require ) {
 
     removeAllGroups: function() {
       var groupsCopy = this.groups.slice();
-      for ( var i = 0; i < groupsCopy; i++ ) {
+      for ( var i = 0; i < groupsCopy.length; i++ ) {
         if ( groupsCopy[i] !== this.centralAtom ) {
           this.removeGroup( groupsCopy[i] );
         }

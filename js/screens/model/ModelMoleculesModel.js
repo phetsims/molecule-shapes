@@ -10,8 +10,10 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Vector3 = require( 'DOT/Vector3' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/model/MoleculeShapesModel' );
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/model/VSEPRMolecule' );
+  var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
 
   /**
    * @constructor
@@ -19,14 +21,19 @@ define( function( require ) {
   function ModelMoleculesModel( isBasicsVersion ) {
     var model = this;
 
+    var initialMolecule = new VSEPRMolecule();
+
     // inherits PropertySet, these are made into properties
     MoleculeShapesModel.call( this, isBasicsVersion, {
-      molecule: new VSEPRMolecule(),
+      molecule: initialMolecule,
       addSingleBondEnabled: true,
       addDoubleBondEnabled: true,
       addTripleBondEnabled: true,
       addLonePairEnabled: true
     } );
+
+    this.molecule.addCentralAtom( new PairGroup( new Vector3(), false, false ) );
+    this.setupInitialMoleculeState();
 
     // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
     this.molecule.on( 'bondChanged', function() {
@@ -37,9 +44,20 @@ define( function( require ) {
   }
 
   return inherit( MoleculeShapesModel, ModelMoleculesModel, {
+    setupInitialMoleculeState: function() {
+
+      // start with two single bonds
+      var centralAtom = this.molecule.getCentralAtom();
+      this.molecule.addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false, false ), centralAtom, 1 );
+      var v = new Vector3( 2, 8, -5 );
+      this.molecule.addGroupAndBond( new PairGroup( v.normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false, false ), centralAtom, 1 );
+    },
 
     reset: function() {
       MoleculeShapesModel.prototype.reset.call( this );
+
+      this.molecule.removeAllGroups();
+      this.setupInitialMoleculeState();
     },
 
     step: function( dt ) {
