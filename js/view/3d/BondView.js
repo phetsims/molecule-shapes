@@ -30,7 +30,7 @@ define( function( require ) {
       ambient: bColor
     } );
 
-    var cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 1, 16, 1, false ); // 1 radius, 1 height, 16 segments, open-ended
+    var cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 1, 32, 1, false ); // 1 radius, 1 height, 32 segments, open-ended
 
     this.aPositionProperty = aPositionProperty;
     this.bPositionProperty = bPositionProperty;
@@ -48,8 +48,6 @@ define( function( require ) {
       this.aBonds.push( new THREE.Mesh( cylinderGeometry, aMaterial ) );
       this.bBonds.push( new THREE.Mesh( cylinderGeometry, bMaterial ) );
     }
-
-    var geometry = new THREE.SphereGeometry( 2, 64, 64 ); // may set to 32,32 for performance?
 
     THREE.Object3D.call( this );
 

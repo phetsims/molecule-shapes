@@ -209,10 +209,10 @@ define( function( require ) {
       // remove all of its bonds first
       var bondList = this.getBonds( group );
       for ( i = 0; i < bondList.length; i++ ) {
-        this.bonds.splice( this.bonds.indexOf( bondList[i] ) );
+        this.bonds.splice( this.bonds.indexOf( bondList[i] ), 1 );
       }
 
-      this.groups.splice( this.groups.indexOf( group ) );
+      this.groups.splice( this.groups.indexOf( group ), 1 );
 
       // notify
       this.trigger1( 'groupRemoved', group );
