@@ -17,23 +17,7 @@ define( function( require ) {
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
-  var Display = require( 'MOBIUS/Display' );
-  var ShaderProgram = require( 'MOBIUS/ShaderProgram' );
   var StageCenteringCanvasTransform = require( 'MOBIUS/StageCenteringCanvasTransform' );
-
-  // frustum (camera) properties
-  var fieldOfViewDegrees = 45 / 2;
-  var nearPlane = 1;
-  var farPlane = 1000;
-
-  function getSceneProjectionMatrix( canvasSize, stageSize ) {
-    var fieldOfViewRadians = ( fieldOfViewDegrees / 180 * Math.PI );
-    var correctedFieldOfViewRadians = Math.atan( StageCenteringCanvasTransform.fieldOfViewYFactor( canvasSize, stageSize ) * Math.tan( fieldOfViewRadians ) );
-
-    return Matrix4.gluPerspective( correctedFieldOfViewRadians,
-        canvasSize.width / canvasSize.height,
-      nearPlane, farPlane );
-  }
 
   /**
    * Constructor for the ModelMoleculesScreenView
@@ -45,49 +29,33 @@ define( function( require ) {
       layoutBounds: new Bounds2( 0, 0, 1024, 618 )
     } );
 
-    var display = this.display = new Display();
+    var screenView = this;
 
-    // correctly position it for our uses
-    display.canvas.style.position = 'absolute';
-    display.canvas.style.top = '0';
-    display.canvas.style.left = '0';
+    this.screenWidth = null;
+    this.screenHeight = null;
 
-    var gl = this.gl = display.gl;
-    var shaderProgram = this.shaderProgram = new ShaderProgram( gl,
-      // vertex shader
-      'attribute vec3 vertex;\n' +
-      'varying vec2 texCoord;\n' +
-      'void main() {\n' +
-      '  texCoord = vertex.xy * 0.5 + 0.5;\n' +
-      '  gl_Position = vec4( vertex, 1 );\n' +
-      '}',
+    this.threeScene = new THREE.Scene();
+    this.threeCamera = new THREE.PerspectiveCamera();
 
-      // fragment shader
-      'precision highp float;\n' +
-      'varying vec2 texCoord;\n' +
-      'uniform float red;\n' +
-      'void main() {\n' +
-      '  gl_FragColor = vec4( red, texCoord.x, texCoord.y, 1 );\n' +
-      '}',
+    this.threeRenderer = new THREE.WebGLRenderer();
 
-      ['vertex'], ['red'] );
+    var geometry = new THREE.SphereGeometry( 0.5, 32, 32 );
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var sphere = new THREE.Mesh(geometry, material);
+    this.threeScene.add( sphere );
 
-    var vertexBuffer = this.vertexBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, vertexBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( [
-      -1, -1,
-      -1, +1,
-      +1, -1,
-      +1, +1
-    ] ), gl.STATIC_DRAW );
+    this.threeCamera.position.z = 40;
 
-    var canvasNode = new DOM( display.canvas, {
-      preventTransform: true
+    this.domNode = new DOM( this.threeRenderer.domElement, {
+      preventTransform: true, // Scenery 0.2 override for transformation
+      invalidateDOM: function() {
+        this.invalidateSelf( new Bounds2( 0, 0, screenView.screenWidth, screenView.screenHeight ) );
+      }
     } );
-    canvasNode.updateCSSTransform = function(){}; // Scenery 0.1 override :()
+    // Scenery 0.1 override for transformation
+    this.domNode.updateCSSTransform = function() {};
 
-    this.addChild( canvasNode );
-
+    this.addChild( this.domNode );
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10 } ) );
   }
@@ -96,18 +64,50 @@ define( function( require ) {
     layout: function( width, height ) {
       ScreenView.prototype.layout.call( this, width, height );
 
-      this.display.setSize( Math.ceil( width ), Math.ceil( height ) );
+      this.screenWidth = width;
+      this.screenHeight = height;
+
+      var canvasWidth = Math.ceil( width );
+      var canvasHeight = Math.ceil( height );
+
+      // field of view (FOV) computation for the isometric view scaling we use
+      var sx = canvasWidth / this.layoutBounds.width;
+      var sy = canvasHeight / this.layoutBounds.height;
+      if ( sx === 0 || sy === 0 ) {
+        return 1;
+      }
+      this.threeCamera.fov = sy > sx ? sy / sx : 1;
+
+      // aspect ratio
+      this.threeCamera.aspect = canvasWidth / canvasHeight;
+
+      // near clipping plane
+      this.threeCamera.near = 1;
+
+      // far clipping plane
+      this.threeCamera.far = 100;
+
+      // three.js requires this to be called after changing the parameters
+      this.threeCamera.updateProjectionMatrix();
+
+      // update the size of the renderer
+      this.threeRenderer.setSize( Math.ceil( width ), Math.ceil( height ) );
+
+      this.domNode.invalidateDOM();
+
+      // render the 3D scene
+      this.threeRenderer.render( this.threeScene, this.threeCamera );
     },
     step: function( dt ) {
-      this.gl.clear( this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT );
+      // this.gl.clear( this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT );
 
-      this.display.switchToProgram( this.shaderProgram );
-      // TODO: improved way of setting this uniform!
-      this.gl.uniform1f( this.shaderProgram.uniformLocations.red, 1 );
+      // this.display.switchToProgram( this.shaderProgram );
+      // // TODO: improved way of setting this uniform!
+      // this.gl.uniform1f( this.shaderProgram.uniformLocations.red, 1 );
 
-      this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
-      this.gl.vertexAttribPointer( this.shaderProgram.attributeLocations.vertex, 2, this.gl.FLOAT, false, 0, 0 );
-      this.gl.drawArrays( this.gl.TRIANGLE_STRIP, 0, 4 );
+      // this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
+      // this.gl.vertexAttribPointer( this.shaderProgram.attributeLocations.vertex, 2, this.gl.FLOAT, false, 0, 0 );
+      // this.gl.drawArrays( this.gl.TRIANGLE_STRIP, 0, 4 );
     }
   } );
 } );
