@@ -32,11 +32,11 @@ define( function( require ) {
   return inherit( MoleculeShapesModel, RealMoleculesModel, {
 
     reset: function() {
-      MoleculeShapesModel.call( this );
+      MoleculeShapesModel.prototype.reset.call( this );
     },
 
     step: function( dt ) {
-      MoleculeShapesModel.call( this, dt );
+      MoleculeShapesModel.prototype.step.call( this, dt );
     }
   } );
 } );

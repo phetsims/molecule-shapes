@@ -57,7 +57,7 @@ define( function( require ) {
     update: function( tpf ) {
       var that = this;
       // TODO: don't filter for garbage collection. just continue in the for loop
-      var nonCentralGroups = _.fiter( this.groups, function( group ) { return group !== that.centralAtom; } );
+      var nonCentralGroups = _.filter( this.groups, function( group ) { return group !== that.centralAtom; } );
 
       // move based on velocity
       for ( var i = 0; i < nonCentralGroups.length; i++ ) {

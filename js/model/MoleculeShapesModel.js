@@ -40,7 +40,7 @@ define( function( require ) {
     },
 
     step: function( dt ) {
-
+      this.molecule.update( dt );
     }
   } );
 } );

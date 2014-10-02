@@ -37,7 +37,7 @@ define( function( require ) {
     if ( molecule.isReal ) {
       this.centerAtomView = new AtomView( molecule.getCentralAtom().element.color );
     } else {
-      this.centerAtomView = new AtomView( new Color( 159, 102, 218 ) );
+      this.centerAtomView = new AtomView( new Color( 159, 102, 218 ) ); // TODO: abstract away color
     }
     this.add( this.centerAtomView );
 
@@ -59,7 +59,7 @@ define( function( require ) {
       if ( group.isLonePair ) {
         // TODO
       } else {
-        var atomView = new AtomView( group.element.color );
+        var atomView = new AtomView( group.element ? group.element.color : '#fff' );
         this.atomViews.push( atomView );
         this.add( atomView );
 
