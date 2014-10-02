@@ -37,10 +37,27 @@ define( function( require ) {
     this.threeScene = new THREE.Scene();
     this.threeCamera = new THREE.PerspectiveCamera();
 
-    this.threeRenderer = new THREE.WebGLRenderer();
+    this.threeRenderer = new THREE.WebGLRenderer( {
+      antialias: true
+    } );
 
-    var geometry = new THREE.SphereGeometry( 0.5, 32, 32 );
-    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
+    this.threeScene.add( ambientLight );
+
+    var sunLight = new THREE.DirectionalLight( 0xffffff, 0.8 * 0.9 );
+    sunLight.position.set( -1.0, 0.5, 2.0 );
+    this.threeScene.add( sunLight );
+
+    var moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
+    moonLight.position.set( 2.0, -1.0, 1.0 );
+    this.threeScene.add( moonLight );
+
+    var material = new THREE.MeshLambertMaterial( {
+      // color: 0xff0000,
+      // ambient: 0xff000
+    } );
+
+    var geometry = new THREE.SphereGeometry( 0.1, 32, 32 );
     var sphere = new THREE.Mesh(geometry, material);
     this.threeScene.add( sphere );
 
@@ -94,20 +111,10 @@ define( function( require ) {
       this.threeRenderer.setSize( Math.ceil( width ), Math.ceil( height ) );
 
       this.domNode.invalidateDOM();
-
-      // render the 3D scene
-      this.threeRenderer.render( this.threeScene, this.threeCamera );
     },
     step: function( dt ) {
-      // this.gl.clear( this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT );
-
-      // this.display.switchToProgram( this.shaderProgram );
-      // // TODO: improved way of setting this uniform!
-      // this.gl.uniform1f( this.shaderProgram.uniformLocations.red, 1 );
-
-      // this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
-      // this.gl.vertexAttribPointer( this.shaderProgram.attributeLocations.vertex, 2, this.gl.FLOAT, false, 0, 0 );
-      // this.gl.drawArrays( this.gl.TRIANGLE_STRIP, 0, 4 );
+      // render the 3D scene
+      this.threeRenderer.render( this.threeScene, this.threeCamera );
     }
   } );
 } );
