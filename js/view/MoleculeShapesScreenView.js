@@ -14,6 +14,7 @@ define( function( require ) {
   var DOM = require( 'SCENERY/nodes/DOM' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
 
   /**
    * Constructor for the ModelMoleculesScreenView
@@ -48,14 +49,7 @@ define( function( require ) {
     moonLight.position.set( 2.0, -1.0, 1.0 );
     this.threeScene.add( moonLight );
 
-    var material = new THREE.MeshLambertMaterial( {
-      // color: 0xff0000,
-      // ambient: 0xff000
-    } );
-
-    var geometry = new THREE.SphereGeometry( 0.1, 32, 32 );
-    var sphere = new THREE.Mesh(geometry, material);
-    this.threeScene.add( sphere );
+    this.threeScene.add( new AtomView( '#fff', 0.1 ) );
 
     this.threeCamera.position.z = 40;
 

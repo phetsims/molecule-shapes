@@ -21,6 +21,19 @@ define( function( require ) {
     VseprConfiguration: require( 'MOLECULE_SHAPES/model/VseprConfiguration' ),
     VSEPRMolecule: require( 'MOLECULE_SHAPES/model/VSEPRMolecule' ),
 
+    ModelMoleculesModel: require( 'MOLECULE_SHAPES/screens/model/ModelMoleculesModel' ),
+    ModelMoleculesScreen: require( 'MOLECULE_SHAPES/screens/model/ModelMoleculesScreen' ),
+    ModelMoleculesScreenView: require( 'MOLECULE_SHAPES/screens/model/ModelMoleculesScreenView' ),
+
+    RealMoleculesModel: require( 'MOLECULE_SHAPES/screens/real/RealMoleculesModel' ),
+    RealMoleculesScreen: require( 'MOLECULE_SHAPES/screens/real/RealMoleculesScreen' ),
+    RealMoleculesScreenView: require( 'MOLECULE_SHAPES/screens/real/RealMoleculesScreenView' ),
+
+
+    AtomView: require( 'MOLECULE_SHAPES/view/3d/AtomView' ),
+
+    MoleculeShapesScreenView: require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' ),
+
     // externals used for debugging
     Element: require( 'NITROGLYCERIN/Element' )
   };
