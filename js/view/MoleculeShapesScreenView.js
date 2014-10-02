@@ -17,11 +17,11 @@ define( function( require ) {
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
 
   /**
-   * Constructor for the ModelMoleculesScreenView
+   * Constructor for the MoleculeShapesScreenView
    * @param {ModelMoleculesModel} model the model for the entire screen
    * @constructor
    */
-  function ModelMoleculesScreenView( model ) {
+  function MoleculeShapesScreenView( model ) {
     ScreenView.call( this, {
       layoutBounds: new Bounds2( 0, 0, 1024, 618 )
     } );
@@ -49,7 +49,7 @@ define( function( require ) {
     moonLight.position.set( 2.0, -1.0, 1.0 );
     this.threeScene.add( moonLight );
 
-    this.threeCamera.position.z = 40;
+    this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition );
 
     this.domNode = new DOM( this.threeRenderer.domElement, {
       preventTransform: true, // Scenery 0.2 override for transformation
@@ -67,7 +67,7 @@ define( function( require ) {
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10 } ) );
   }
 
-  return inherit( ScreenView, ModelMoleculesScreenView, {
+  return inherit( ScreenView, MoleculeShapesScreenView, {
 
     layout: function( width, height ) {
       ScreenView.prototype.layout.call( this, width, height );
@@ -105,8 +105,13 @@ define( function( require ) {
     },
 
     step: function( dt ) {
+      this.moleculeView.updateView();
+
       // render the 3D scene
       this.threeRenderer.render( this.threeScene, this.threeCamera );
     }
+  }, {
+    // where our camera is positioned in world coordinates
+    cameraPosition: new THREE.Vector3( 0, 0, 40 )
   } );
 } );

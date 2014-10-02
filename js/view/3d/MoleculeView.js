@@ -9,8 +9,11 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var Property = require( 'AXON/Property' );
   var Color = require( 'SCENERY/util/Color' );
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
+  var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
 
   function MoleculeView( model, molecule ) {
     var view = this;
@@ -46,6 +49,12 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, MoleculeView, {
 
+    updateView: function() {
+      for ( var i = 0; i < this.bondViews.length; i++ ) {
+        this.bondViews[i].updateView();
+      }
+    },
+
     intersect: function( ray3 ) {
       // TODO
     },
@@ -68,6 +77,7 @@ define( function( require ) {
         } );
 
         // TODO: rebuild bonds/angles?
+        this.rebuildBonds();
 
         // TODO: add in bond angle nodes for every other atom
       }
@@ -78,11 +88,35 @@ define( function( require ) {
     },
 
     addBond: function( bond ) {
-
+      this.rebuildBonds();
     },
 
     removeBond: function( bond ) {
+      this.rebuildBonds();
+    },
 
+    rebuildBonds: function() {
+      var view = this;
+      var molecule = this.molecule;
+
+      // basically remove all of the bonds and rebuild them
+      _.each( this.bondViews, function( bondView ) {
+        view.remove( bondView );
+      } );
+      this.bondViews.length = 0;
+
+      _.each( molecule.getRadialAtoms(), function( atom ) {
+        var bondView = new BondView(
+          new Property( new Vector3() ), // center position
+          atom.positionProperty,
+          molecule.getParentBond( atom ).order,
+          0.5,
+          molecule.getMaximumBondLength(),
+          '#fff',
+          '#fff' );
+        view.add( bondView );
+        view.bondViews.push( bondView );
+      } );
     }
   } );
 } );

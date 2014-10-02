@@ -31,6 +31,8 @@ define( function( require ) {
 
 
     AtomView: require( 'MOLECULE_SHAPES/view/3d/AtomView' ),
+    BondView: require( 'MOLECULE_SHAPES/view/3d/BondView' ),
+    MoleculeView: require( 'MOLECULE_SHAPES/view/3d/MoleculeView' ),
 
     MoleculeShapesScreenView: require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' ),
 
