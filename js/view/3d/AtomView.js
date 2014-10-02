@@ -17,7 +17,7 @@ define( function( require ) {
       color: baseColor,
       ambient: baseColor
     } );
-    var geometry = new THREE.SphereGeometry( 0.1, 64, 64 ); // may set to 32,32 for performance?
+    var geometry = new THREE.SphereGeometry( 2, 64, 64 ); // may set to 32,32 for performance?
 
     THREE.Mesh.call( this, geometry, material );
   }
