@@ -10,9 +10,16 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Vector3 = require( 'DOT/Vector3' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var VSEPRMolecule = require( 'MOLECULE_SHAPES/model/VSEPRMolecule' );
+  var VseprConfiguration = require( 'MOLECULE_SHAPES/model/VseprConfiguration' );
+  var RealMolecule = require( 'MOLECULE_SHAPES/model/RealMolecule' );
+  var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
+  var LocalShape = require( 'MOLECULE_SHAPES/model/LocalShape' );
+  var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/view/MoleculeShapesPanel' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
@@ -30,7 +37,9 @@ define( function( require ) {
    */
   function RealMoleculesScreenView( model ) {
     MoleculeShapesScreenView.call( this, model );
+    var screenView = this;
 
+    this.model = model;
     this.moleculeView = new MoleculeView( model, model.molecule );
     this.threeScene.add( this.moleculeView );
 
@@ -66,7 +75,99 @@ define( function( require ) {
       this.addChild( realRadioButton );
       this.addChild( modelRadioButton );
     }
+
+    model.showRealViewProperty.lazyLink( function() {
+      screenView.rebuildMolecule( false );
+    } );
+
+    model.realMoleculeShapeProperty.lazyLink( function() {
+      screenView.rebuildMolecule( true );
+    } );
   }
 
-  return inherit( MoleculeShapesScreenView, RealMoleculesScreenView );
+  return inherit( MoleculeShapesScreenView, RealMoleculesScreenView, {
+    // TODO: consider moving this to the model?
+    rebuildMolecule: function( switchedRealMolecule ) {
+      var model = this.model;
+
+      var originalViewQuaternion = this.moleculeView.quaternion;
+
+      // tear down the view
+      this.threeScene.remove( this.moleculeView );
+      this.moleculeView.dispose();
+
+      var molecule = this.model.molecule;
+
+      var numRadialAtoms = model.realMoleculeShape.getCentralAtomCount();
+      var numRadialLonePairs = model.realMoleculeShape.getCentralLonePairCount();
+      var vseprConfiguration = new VseprConfiguration( numRadialAtoms, numRadialLonePairs );
+
+      // get a copy of what might be the "old" molecule into whose space we need to rotate into
+      var mappingMolecule;
+      if ( switchedRealMolecule ) {
+        // rebuild from scratch
+        mappingMolecule = new RealMolecule( model.realMoleculeShape );
+      }
+      else {
+        // base the rotation on our original
+        mappingMolecule = molecule;
+      }
+
+      var newMolecule;
+      var mapping;
+      if ( model.showRealView ) {
+        newMolecule = new RealMolecule( model.realMoleculeShape );
+        if ( !switchedRealMolecule ) {
+          // NOTE: this might miss a couple improper mappings?
+
+          // compute the mapping from our "ideal" to our "old" molecule
+          // TODO: something in this mapping seems backwards... but it's working?
+          var groups = new RealMolecule( model.realMoleculeShape ).getRadialGroups();
+          mapping = AttractorModel.findClosestMatchingConfiguration(
+            AttractorModel.getOrientationsFromOrigin( mappingMolecule.getRadialGroups() ),
+            _.map( LocalShape.sortedLonePairsFirst( groups ), function( pair ) {
+              return pair.position.normalized();
+            } ),
+            LocalShape.vseprPermutations( mappingMolecule.getRadialGroups() ) );
+          _.each( newMolecule.getGroups(), function( group ) {
+            if ( group !== newMolecule.getCentralAtom() ) {
+              group.position = mapping.rotateVector( group.position );
+            }
+          } );
+        }
+
+      }
+      else {
+        mapping = vseprConfiguration.getIdealGroupRotationToPositions( LocalShape.sortedLonePairsFirst( mappingMolecule.getRadialGroups() ) );
+        var permutation = mapping.permutation.inverted();
+        var idealUnitVectors = vseprConfiguration.getAllUnitVectors();
+
+        newMolecule = new VSEPRMolecule();
+
+        var newCentralAtom = new PairGroup( new Vector3(), false, false );
+        newMolecule.addCentralAtom( newCentralAtom );
+        for ( var i = 0; i < numRadialAtoms + numRadialLonePairs; i++ ) {
+          var unitVector = mapping.rotateVector( idealUnitVectors[i] );
+          if ( i < numRadialLonePairs ) {
+            newMolecule.addGroupAndBond( new PairGroup( unitVector.times( PairGroup.LONE_PAIR_DISTANCE ), true, false ), newCentralAtom, 0 );
+          }
+          else {
+            // we need to dig the bond order out of the mapping molecule, and we need to pick the right one (thus the permutation being applied, at an offset)
+            var oldRadialGroup = mappingMolecule.getRadialAtoms()[permutation.apply( i ) - numRadialLonePairs];
+            var bond = mappingMolecule.getParentBond( oldRadialGroup );
+            var group = new PairGroup( unitVector.times( bond.length * PairGroup.REAL_TMP_SCALE ), false, false );
+            newMolecule.addGroupAndBond( group, newCentralAtom, bond.order, bond.length );
+
+            newMolecule.addTerminalLonePairs( group, _.filter( mappingMolecule.getNeighbors( oldRadialGroup ), function( group ) { return group.isLonePair; } ).length );
+          }
+        }
+      }
+      model.molecule = newMolecule;
+
+      // recreate the view
+      this.moleculeView = new MoleculeView( this.model, this.model.molecule );
+      this.moleculeView.quaternion.copy( originalViewQuaternion ); // sets the moleculeView's quaternion
+      this.threeScene.add( this.moleculeView );
+    }
+  } );
 } );

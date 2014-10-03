@@ -55,6 +55,10 @@ define( function( require ) {
       }
     },
 
+    dispose: function() {
+      // TODO? See what three.js needs, but also release listeners
+    },
+
     intersect: function( ray3 ) {
       // TODO
     },
