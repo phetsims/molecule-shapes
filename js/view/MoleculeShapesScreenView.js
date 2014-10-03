@@ -13,6 +13,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var DOM = require( 'SCENERY/nodes/DOM' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
@@ -43,9 +44,9 @@ define( function( require ) {
     this.threeScene = new THREE.Scene();
     this.threeCamera = new THREE.PerspectiveCamera();
 
-    this.threeRenderer = new THREE.WebGLRenderer( {
+    this.threeRenderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
       antialias: true
-    } );
+    } ) : new THREE.CanvasRenderer();
 
     MoleculeShapesColors.link( 'background', function( color ) {
       screenView.threeRenderer.setClearColor( color.toNumber(), 1 );

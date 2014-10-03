@@ -11,6 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var Color = require( 'SCENERY/util/Color' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
 
   /*
    * @param {string | Color | Property.<Color>} color
@@ -31,7 +32,8 @@ define( function( require ) {
       throw new Error( 'bad color passed to AtomView' );
     }
 
-    var geometry = new THREE.SphereGeometry( 2, 64, 64 ); // may set to 32,32 for performance?
+    var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
+    var geometry = new THREE.SphereGeometry( 2, numSamples, numSamples );
 
     THREE.Mesh.call( this, geometry, null );
 
@@ -39,7 +41,8 @@ define( function( require ) {
     colorProperty.link( function( color ) {
       atomView.material = new THREE.MeshLambertMaterial( {
         color: colorProperty.value.toNumber(),
-        ambient: colorProperty.value.toNumber()
+        ambient: colorProperty.value.toNumber(),
+        overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
       } );
     } );
   }

@@ -12,6 +12,7 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var Color = require( 'SCENERY/util/Color' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
 
 
   // maxLength is a number or null
@@ -23,14 +24,18 @@ define( function( require ) {
 
     var aMaterial = new THREE.MeshLambertMaterial( {
       color: aColor,
-      ambient: aColor
+      ambient: aColor,
+      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
     var bMaterial = new THREE.MeshLambertMaterial( {
       color: bColor,
-      ambient: bColor
+      ambient: bColor,
+      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
 
-    var cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 1, 32, 1, false ); // 1 radius, 1 height, 32 segments, open-ended
+    var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
+    var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
+    var cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
 
     this.aPositionProperty = aPositionProperty;
     this.bPositionProperty = bPositionProperty;
