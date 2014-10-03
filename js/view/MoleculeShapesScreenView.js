@@ -182,6 +182,6 @@ define( function( require ) {
     }
   }, {
     // where our camera is positioned in world coordinates
-    cameraPosition: new THREE.Vector3( 0, 0, 40 )
+    cameraPosition: new THREE.Vector3( 0.1, 0, 40 )
   } );
 } );
