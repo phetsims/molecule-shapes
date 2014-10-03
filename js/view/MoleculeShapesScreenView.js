@@ -11,6 +11,10 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
+  var Ray3 = require( 'DOT/Ray3' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var Plane3 = require( 'DOT/Plane3' );
+  var Sphere3 = require( 'DOT/Sphere3' );
   var DOM = require( 'SCENERY/nodes/DOM' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
@@ -33,6 +37,8 @@ define( function( require ) {
     } );
 
     var screenView = this;
+
+    this.model = model;
 
     this.backgroundEventTarget = Rectangle.bounds( this.layoutBounds, {} );
     this.addChild( this.backgroundEventTarget );
@@ -126,17 +132,33 @@ define( function( require ) {
       }
     } ) );
 
+    // for computing rays
+    this.projector = new THREE.Projector();
+
     var dragListener = new SimpleDragHandler( {
       start: function( event, trail ) {
-        this.dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
+        this.draggedPointer = event.pointer;
+
+        var pair = screenView.getElectronPairUnderPointer( event.pointer );
+        if ( pair ) {
+          this.dragMode = 'pairExistingSpherical';
+          this.draggedParticle = pair;
+        } else {
+          this.dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
+          this.draggedParticle = null;
+        }
       },
       translate: function( data ) {
-        var delta = data.delta;
-        var scale = 0.004 / screenView.activeScale;
-        var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
-        newQuaternion.multiply( screenView.moleculeView.quaternion );
-        screenView.moleculeView.quaternion.copy( newQuaternion );
-        screenView.moleculeView.updateMatrix();
+        if ( this.dragMode === 'modelRotate' ) {
+          var delta = data.delta;
+          var scale = 0.004 / screenView.activeScale;
+          var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
+          newQuaternion.multiply( screenView.moleculeView.quaternion );
+          screenView.moleculeView.quaternion.copy( newQuaternion );
+          screenView.moleculeView.updateMatrix();
+        } else if ( this.dragMode === 'pairExistingSpherical' ) {
+          this.draggedParticle.dragToPosition( screenView.getSphericalMoleculePosition( this.draggedPointer.point, this.draggedParticle ) );
+        }
       },
       end: function( event, trail ) {
 
@@ -146,6 +168,111 @@ define( function( require ) {
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
+    getRaycasterFromScreenPoint: function( screenPoint ) {
+      // normalized device coordinates
+      var ndcX = 2 * screenPoint.x / this.screenWidth - 1;
+      var ndcY = 2 * ( 1 - ( screenPoint.y / this.screenHeight ) ) - 1;
+
+      var mousePoint = new THREE.Vector3( ndcX, ndcY, 0 );
+      return this.projector.pickingRay( mousePoint, this.threeCamera );
+    },
+
+    getRayFromScreenPoint: function( screenPoint ) {
+      var threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
+      return new Ray3( new Vector3( threeRay.origin.x, threeRay.origin.y, threeRay.origin.z ),
+                       new Vector3( threeRay.direction.x, threeRay.direction.y, threeRay.direction.z ).normalize() );
+    },
+
+    getElectronPairUnderPointer: function( pointer ) {
+      var raycaster = this.getRaycasterFromScreenPoint( pointer.point );
+      return null;
+    },
+
+    /*
+     * @param {Vector2} screenPoint
+     * @returns {THREE.Vector3} in the moleculeView's local coordinate system
+     */
+    getPlanarMoleculePosition: function( screenPoint ) {
+      var cameraRay = this.getRayFromScreenPoint( screenPoint );
+      var intersection = Plane3.XY.intersectWithRay( cameraRay );
+      var position = new THREE.Vector3( intersection.x, intersection.y, 0 );
+
+      this.moleculeView.worldToLocal( position );
+
+      return position;
+    },
+
+    // @returns {Vector3}
+    getSphericalMoleculePosition: function( screenPoint, draggedParticle ) {
+      // our main transform matrix and inverse
+      var threeMatrix = new THREE.Matrix4();
+      var threeInverseMatrix = new THREE.Matrix4();
+      threeMatrix.makeRotationFromQuaternion( this.moleculeView.quaternion );
+      threeInverseMatrix.getInverse( threeMatrix );
+
+      var raycaster = this.getRaycasterFromScreenPoint( screenPoint );
+
+      var ray = raycaster.ray.clone();
+      ray.applyMatrix4( threeInverseMatrix ); // global to local
+
+      var localCameraPosition = new Vector3( ray.origin.x, ray.origin.y, ray.origin.z );
+      var localCameraDirection = new Vector3( ray.direction.x, ray.direction.y, ray.direction.z ).normalize();
+
+      // how far we will end up from the center atom
+      var finalDistance = this.model.molecule.getIdealDistanceFromCenter( draggedParticle );
+
+      // our sphere to cast our ray against
+
+      var sphere = new Sphere3( new Vector3(), finalDistance );
+
+      var epsilon = 0.000001;
+      var intersections = sphere.intersections( new Ray3( localCameraPosition, localCameraDirection ), epsilon );
+      if ( intersections.length === 0 ) {
+        /*
+         * Compute the point where the closest line through the camera and tangent to our bounding sphere intersects the sphere
+         * ie, think 2d. we have a unit sphere centered at the origin, and a camera at (d,0). Our tangent point satisfies two
+         * important conditions:
+         * - it lies on the sphere. x^2 + y^2 == 1
+         * - vector to the point (x,y) is tangent to the vector from (x,y) to our camera (d,0). thus (x,y) . (d-y, -y) == 0
+         * Solve, and we get x = 1/d  plug back in for y (call that height), and we have our 2d solution.
+         *
+         * Now, back to 3D. Since camera is (0,0,d), our z == 1/d and our x^2 + y^2 == (our 2D y := height), then rescale them out of the unit sphere
+         */
+
+        var distanceFromCamera = localCameraPosition.distance( Vector3.ZERO );
+
+        // first, calculate it in unit-sphere, as noted above
+        var d = distanceFromCamera / finalDistance; // scaled distance to the camera (from the origin)
+        var z = 1 / d; // our result z (down-scaled)
+        var height = Math.sqrt( d * d - 1 ) / d; // our result (down-scaled) magnitude of (x,y,0), which is the radius of the circle composed of all points that could be tangent
+
+        /*
+         * Since our camera isn't actually on the z-axis, we need to calculate two vectors. One is the direction towards
+         * the camera (planeNormal, easy!), and the other is the direction perpendicular to the planeNormal that points towards
+         * the mouse pointer (planeHitDirection).
+         */
+
+        // intersect our camera ray against our perpendicular plane (perpendicular to our camera position from the origin) to determine the orientations
+        var planeNormal = localCameraPosition.normalized();
+        var t = -( localCameraPosition.magnitude() ) / ( planeNormal.dot( localCameraDirection ) );
+        var planeHitDirection = localCameraPosition.plus( localCameraDirection.times( t ) ).normalized();
+
+        // use the above plane hit direction (perpendicular to the camera) and plane normal (collinear with the camera) to calculate the result
+        var downscaledResult = planeHitDirection.times( height ).plus( planeNormal.times( z ) );
+
+        // scale it back to our sized sphere
+        return downscaledResult.times( finalDistance );
+      }
+      else {
+        // TODO: copied from old model, but seems totally wrong:
+        var weirdlyTransformedPoint = new THREE.Vector3( draggedParticle.position.x, draggedParticle.position.y, draggedParticle.position.z );
+        weirdlyTransformedPoint.applyMatrix4( threeInverseMatrix ); // TODO: dear god, why the inverse? transforms a local point with globalToLocal?
+        var returnCloseHit = weirdlyTransformedPoint.z >= 0;
+
+        // pick our desired hitpoint (there are only 2), and return it (now by flipping the ray)
+        return returnCloseHit ? intersections[0].hitPoint : intersections[1].hitPoint;
+      }
+    },
 
     layout: function( width, height ) {
       ScreenView.prototype.layout.call( this, width, height );
