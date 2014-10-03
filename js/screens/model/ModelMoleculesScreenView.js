@@ -87,6 +87,33 @@ define( function( require ) {
         }
       }
     } ) );
+    this.addChild( new TextPushButton( 'Add a lone pair', {
+      right: this.layoutBounds.right - 10,
+      top: this.layoutBounds.top + 210,
+      listener: function() {
+        var bondOrder = 0;
+        var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
+        molecule.addGroupAndBond( pair, molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
+      }
+    } ) );
+    this.addChild( new TextPushButton( 'Remove a lone pair', {
+      right: this.layoutBounds.right - 10,
+      top: this.layoutBounds.top + 260,
+      listener: function() {
+        var bondOrder = 0;
+
+        var bonds = molecule.getBonds( molecule.getCentralAtom() );
+
+        for ( var i = bonds.length - 1; i >= 0; i-- ) {
+          if ( bonds[i].order === bondOrder ) {
+            var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
+
+            molecule.removeGroup( atom );
+            break;
+          }
+        }
+      }
+    } ) );
   }
 
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
