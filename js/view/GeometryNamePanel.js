@@ -95,29 +95,24 @@ define( function( require ) {
     return maxWidth;
   }
 
-  function getMaximumTextHeight( strings ) {
-    var maxHeight = 0;
-    _.each( strings, function( string ) {
-      maxHeight = Math.max( maxHeight, getTextLabel( string, scratchColorProperty ).height );
-    } );
-    return maxHeight;
-  }
-
   var maxGeometryWidth = getMaximumTextWidth( geometryStrings );
   var maxShapeWidth = getMaximumTextWidth( shapeStrings );
-  var maxTextHeight = Math.max( getMaximumTextHeight( geometryStrings ), getMaximumTextHeight( shapeStrings ) );
 
   function GeometryNamePanel( moleculeProperty, showElectronGeometry, options ) {
     var self = this;
 
+    // TODO: reset these!
     this.moleculeProperty = moleculeProperty;
     this.showElectronGeometry = showElectronGeometry;
 
     this.showMolecularShapeName = new Property( false );
     this.showElectronShapeName = new Property( false );
 
-    this.molecularText = new Text( '', { font: geometryNameFont } );
-    this.electronText = new Text( '', { font: geometryNameFont } );
+    this.molecularText = new Text( 'X', { font: geometryNameFont } );
+    this.electronText = new Text( 'Y', { font: geometryNameFont } );
+    this.showMolecularShapeName.link( function( enabled ) { self.molecularText.visible = enabled; } );
+    this.showElectronShapeName.link( function( enabled ) { self.electronText.visible = enabled; } );
+
     this.molecularTextLabel = new Text( moleculeGeometryString, { font: new PhetFont( 14 ) } );
     this.electronTextLabel = new Text( electronGeometryString, { font: new PhetFont( 14 ) } );
     MoleculeShapesColors.link( 'moleculeGeometryName', function( color ) {
@@ -130,9 +125,22 @@ define( function( require ) {
     this.molecularCheckbox = new CheckBox( this.molecularTextLabel, this.showMolecularShapeName, {} );
     this.electronCheckbox = new CheckBox( this.electronTextLabel, this.showElectronShapeName, {} );
 
+    maxGeometryWidth = Math.max( maxGeometryWidth, this.molecularCheckbox.width );
+    maxShapeWidth = Math.max( maxShapeWidth, this.electronCheckbox.width );
+    var checkBoxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
+
+    // layout
+    this.molecularCheckbox.centerX = maxGeometryWidth / 2;
+    this.electronCheckbox.centerX = maxGeometryWidth + 20 + maxShapeWidth / 2;
+    this.molecularText.top = this.electronText.top = checkBoxBottom + 10;
+
     var content = new Node();
     content.addChild( this.molecularCheckbox );
-    // TODO
+    content.addChild( this.molecularText );
+    if ( showElectronGeometry ) {
+      content.addChild( this.electronCheckbox );
+      content.addChild( this.electronText );
+    }
 
     MoleculeShapesPanel.call( this, geometryNameString, content, _.extend( {
       fill: MoleculeShapesColors.background
@@ -145,166 +153,44 @@ define( function( require ) {
       self.stroke = color;
     } );
 
+    var updateNames = this.updateNames.bind( this );
 
+    moleculeProperty.link( function( newMolecule, oldMolecule ) {
+      if ( oldMolecule ) {
+        oldMolecule.off( 'bondChanged', updateNames );
+      }
+      if ( newMolecule ) {
+        newMolecule.on( 'bondChanged', updateNames );
+      }
+      updateNames();
+    } );
   }
 
-/*
-        final PSwing molecularCheckbox = new PropertyCheckBoxNode( UserComponents.moleculeGeometryCheckBox, Strings.CONTROL__MOLECULE_GEOMETRY, showMolecularShapeName, MoleculeShapesColor.MOLECULAR_GEOMETRY_NAME ) {{
-            // center within it's "column"
-            setOffset( ( MAX_SHAPE_WIDTH - getFullBounds().getWidth() ) / 2, 0 );
-        }};
-
-        PSwing electronCheckbox = new PropertyCheckBoxNode( UserComponents.electronGeometryCheckBox, Strings.CONTROL__ELECTRON_GEOMETRY, showElectronShapeName, MoleculeShapesColor.ELECTRON_GEOMETRY_NAME ) {{
-            // center within it's "column"
-            setOffset( MAX_SHAPE_WIDTH + PADDING_BETWEEN_LABELS + ( MAX_GEOMETRY_WIDTH - getFullBounds().getWidth() ) / 2, 0 );
-        }};
-
-        // calculate where we should put our labels vertically
-        readoutHeight = Math.max( molecularCheckbox.getFullBounds().getHeight(), electronCheckbox.getFullBounds().getHeight() ) + VERTICAL_PADDING;
-
-        // create a spacer, so that our control panel will never shrink below this amount of room
-        final PNode spacer = new Spacer( 0, 0,
-                                         MAX_GEOMETRY_WIDTH + ( showElectronGeometry ? ( MAX_SHAPE_WIDTH + PADDING_BETWEEN_LABELS ) : 0 ),
-                                         readoutHeight + MAX_TEXT_HEIGHT );
-
-        addChild( spacer );
-        addChild( molecularCheckbox );
-        if ( showElectronGeometry ) {
-            addChild( electronCheckbox );
-        }
-
-        * visibility listeners
-
-        // listener will run things in the Swing thread
-        showMolecularShapeName.addObserver( new SimpleObserver() {
-            public void update() {
-                updateMolecularText( true );
-            }
-        }, false );
-        // but execute it now since we are being initialized
-        updateMolecularText( false );
-
-        // listener will run things in the Swing thread
-        showElectronShapeName.addObserver( new SimpleObserver() {
-            public void update() {
-                updateElectronText( false );
-            }
-        }, false );
-        // but execute it now since we are being initialized
-        updateElectronText( true );
-
-        * change listeners
-
-        final VoidFunction1<Bond<PairGroup>> updateFunction = new VoidFunction1<Bond<PairGroup>>() {
-            public void apply( Bond<PairGroup> bond ) {
-                updateMolecularText( true );
-                updateElectronText( true );
-            }
-        };
-        ChangeObserver<Molecule> onMoleculeChange = new ChangeObserver<Molecule>() {
-            public void update( Molecule newValue, Molecule oldValue ) {
-                if ( oldValue != null ) {
-                    oldValue.onBondChanged.removeListener( updateFunction );
-                }
-                newValue.onBondChanged.addListener( updateFunction );
-                updateMolecularText( true );
-                updateElectronText( true );
-            }
-        };
-        molecule.addObserver( onMoleculeChange );
-
-        // trigger adding listeners to the current molecule
-        onMoleculeChange.update( molecule.get(), null );
-    }
-
-    private void updateMolecularText( boolean useSwingThread ) {
-        final String name = molecule.get().getCentralVseprConfiguration().name;
-        final boolean visible = showMolecularShapeName.get();
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                // remove old readout
-                if ( molecularText != null ) {
-                    removeChild( molecularText );
-                }
-
-                molecularText = getTextLabel( ( name == null ? Strings.SHAPE__EMPTY : name ),
-                                              MoleculeShapesColor.MOLECULAR_GEOMETRY_NAME.getProperty() ); // replace the unknown value
-                molecularText.setOffset( ( MAX_SHAPE_WIDTH - molecularText.getFullBounds().getWidth() ) / 2, readoutHeight );
-                molecularText.setVisible( visible );
-
-                addChild( molecularText );
-            }
-        };
-
-        if ( useSwingThread ) {
-            SwingUtilities.invokeLater( runnable );
-        }
-        else {
-            runnable.run();
-        }
-    }
-
-    private void updateElectronText( boolean useSwingThread ) {
-        if ( !showElectronGeometry ) {
-            return;
-        }
-        final String name = molecule.get().getCentralVseprConfiguration().geometry.name;
-        final boolean visible = showElectronShapeName.get();
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                if ( electronText != null ) {
-                    removeChild( electronText );
-                }
-                double columnOffset = MAX_SHAPE_WIDTH + PADDING_BETWEEN_LABELS; // compensate for the extra needed room
-
-                electronText = getTextLabel( ( name == null ? Strings.GEOMETRY__EMPTY : name ),
-                                             MoleculeShapesColor.ELECTRON_GEOMETRY_NAME.getProperty() ); // replace the unknown value
-                electronText.setOffset( columnOffset + ( MAX_SHAPE_WIDTH - electronText.getFullBounds().getWidth() ) / 2, readoutHeight );
-                electronText.setVisible( visible );
-
-                addChild( electronText );
-            }
-        };
-        if ( useSwingThread ) {
-            SwingUtilities.invokeLater( runnable );
-        }
-        else {
-            runnable.run();
-        }
-    }
-
-    private static PText getTextLabel( final String label, final Property<Color> color ) {
-        return new PText( label ) {{
-            setFont( MoleculeShapesConstants.GEOMETRY_NAME_FONT );
-
-            color.addObserver( new SimpleObserver() {
-                public void update() {
-                    setTextPaint( color.get() );
-                }
-            } );
-        }};
-    }
-
-    private static double getMaximumTextWidth( List<String> strings ) {
-        double maxWidth = 0;
-        for ( String string : strings ) {
-            maxWidth = Math.max( maxWidth, getTextLabel( string, new Property<Color>( Color.WHITE ) ).getFullBounds().getWidth() );
-        }
-        return maxWidth;
-    }
-
-    private static double getMaximumTextHeight( List<String> strings ) {
-        double maxHeight = 0;
-        for ( String string : strings ) {
-            maxHeight = Math.max( maxHeight, getTextLabel( string, new Property<Color>( Color.WHITE ) ).getFullBounds().getHeight() );
-        }
-        return maxHeight;
-    }*/
-
   return inherit( MoleculeShapesPanel, GeometryNamePanel, {
+    updateNames: function() {
+      this.molecularText.text = this.getMolecularGeometryName();
+      this.electronText.text = this.getElectronGeometryName();
+      this.molecularText.centerX = this.molecularCheckbox.centerX;
+      this.electronText.centerX = this.electronCheckbox.centerX;
+    },
 
+    getMolecularGeometryName: function() {
+      var name = this.moleculeProperty.value.getCentralVseprConfiguration().name;
+      if ( name === null ) {
+        return shapeEmptyString;
+      } else {
+        return name;
+      }
+    },
+
+    getElectronGeometryName: function() {
+      var name = this.moleculeProperty.value.getCentralVseprConfiguration().geometry.name;
+      if ( name === null ) {
+        return geometryEmptyString;
+      } else {
+        return name;
+      }
+    }
   } );
 } );
 

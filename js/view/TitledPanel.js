@@ -16,7 +16,6 @@ define( function( require ) {
 
   function TitledPanel( titleNode, contentNode, options ) {
     Node.call( this );
-    var self = this;
 
     options = _.extend( {
       // TODO: remove duplication with panel, but we want these set before-hand! Extract defaults from Panel?

@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TitledPanel = require( 'MOLECULE_SHAPES/view/TitledPanel' );
@@ -30,7 +29,7 @@ define( function( require ) {
     }, options );
 
     var titleNode = new Text( titleString, {
-      font: new PhetFont( 20 )
+      font: new PhetFont( 18 )
     } );
     MoleculeShapesColors.link( 'controlPanelTitle', function( color ) {
       titleNode.fill = color;
