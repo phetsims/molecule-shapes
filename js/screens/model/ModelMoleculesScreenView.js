@@ -23,6 +23,9 @@ define( function( require ) {
    */
   function ModelMoleculesScreenView( model ) {
     MoleculeShapesScreenView.call( this, model );
+    var screenView = this;
+
+    this.model = model;
 
     this.moleculeView = new MoleculeView( model, model.molecule );
     this.threeScene.add( this.moleculeView );
@@ -37,86 +40,65 @@ define( function( require ) {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
       listener: function() {
-        var bondOrder = 1;
-        var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
-        molecule.addGroupAndBond( pair, molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
+        screenView.addPairGroup( 1 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Remove a single bond', {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 60,
       listener: function() {
-        var bondOrder = 1;
-
-        var bonds = molecule.getBonds( molecule.getCentralAtom() );
-
-        for ( var i = bonds.length - 1; i >= 0; i-- ) {
-          if ( bonds[i].order === bondOrder ) {
-            var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
-
-            molecule.removeGroup( atom );
-            break;
-          }
-        }
+        screenView.removePairGroup( 1 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Add a double bond', {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 110,
       listener: function() {
-        var bondOrder = 2;
-        var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
-        molecule.addGroupAndBond( pair, molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
+        screenView.addPairGroup( 2 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Remove a double bond', {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 160,
       listener: function() {
-        var bondOrder = 2;
-
-        var bonds = molecule.getBonds( molecule.getCentralAtom() );
-
-        for ( var i = bonds.length - 1; i >= 0; i-- ) {
-          if ( bonds[i].order === bondOrder ) {
-            var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
-
-            molecule.removeGroup( atom );
-            break;
-          }
-        }
+        screenView.removePairGroup( 2 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Add a lone pair', {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 210,
       listener: function() {
-        var bondOrder = 0;
-        var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
-        molecule.addGroupAndBond( pair, molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
+        screenView.addPairGroup( 0 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Remove a lone pair', {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 260,
       listener: function() {
-        var bondOrder = 0;
-
-        var bonds = molecule.getBonds( molecule.getCentralAtom() );
-
-        for ( var i = bonds.length - 1; i >= 0; i-- ) {
-          if ( bonds[i].order === bondOrder ) {
-            var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
-
-            molecule.removeGroup( atom );
-            break;
-          }
-        }
+        screenView.removePairGroup( 0 );
       }
     } ) );
   }
 
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
+    addPairGroup: function( bondOrder ) {
+      var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
+      this.model.molecule.addGroupAndBond( pair, this.model.molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
+    },
 
+    removePairGroup: function( bondOrder ) {
+      var molecule = this.model.molecule;
+
+      var bonds = molecule.getBonds( molecule.getCentralAtom() );
+
+      for ( var i = bonds.length - 1; i >= 0; i-- ) {
+        if ( bonds[i].order === bondOrder ) {
+          var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
+
+          molecule.removeGroup( atom );
+          break;
+        }
+      }
+    }
   } );
 } );
