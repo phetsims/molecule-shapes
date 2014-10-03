@@ -53,10 +53,12 @@ define( function( require ) {
   };
 
   var jsonLoader = new THREE.JSONLoader();
-  var lonePairGeometry = jsonLoader.parse( lonePairGeometryData ).geometry;
 
   function LonePairView() {
     THREE.Object3D.call( this );
+
+    // TODO: don't require parse on loading, but handle separately for each three.js scene?
+    var lonePairGeometry = jsonLoader.parse( lonePairGeometryData ).geometry;
 
     // electron centers 0.3,0,0 and -0.3,0,0, with 2 y? radius 0.1?
 
