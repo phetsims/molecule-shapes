@@ -33,8 +33,6 @@ define( function( require ) {
     this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } );
     this.panel = new Panel( contentNode, {
       // TODO: better way of not forwarding things like 'scale' that would be double-applied
-      fill: options.fill,
-      stroke: options.stroke,
       lineWidth: options.lineWidth,
       xMargin: options.xMargin,
       yMargin: options.yMargin,
@@ -42,6 +40,8 @@ define( function( require ) {
       resize: options.resize,
       backgroundPickable: options.backgroundPickable
     } );
+    this.setStroke( options.stroke );
+    this.setFill( options.fill );
 
     this.addChild( this.panel );
     this.addChild( this.titleBackgroundNode );
@@ -65,7 +65,7 @@ define( function( require ) {
     },
 
     setFill: function( fill ) {
-      this.panel.fill = fill;
+      this.panel.fill = 'rgba(0,0,0,0)'; // override the panel fill as being transparent, as we rely on the background
 
       this.titleBackgroundNode.fill = fill;
     }
