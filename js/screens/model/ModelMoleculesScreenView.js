@@ -66,6 +66,7 @@ define( function( require ) {
       } );
       function update() {
         addEnabled = model.molecule.wouldAllowBondOrder( bondOrder );
+        // TODO: change the fill's opacity, not the actual node's opacity!
         overlay.opacity = addEnabled ? 0.1 : 0.5;
         removeButton.visible = _.filter( model.molecule.getBonds( model.molecule.getCentralAtom() ), function( bond ) {
           return bond.order === bondOrder;
