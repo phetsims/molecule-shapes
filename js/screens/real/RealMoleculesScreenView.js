@@ -28,7 +28,7 @@ define( function( require ) {
     this.moleculeView = new MoleculeView( model, model.molecule );
     this.threeScene.add( this.moleculeView );
 
-    this.addChild( new MoleculeShapesPanel( optionsString, new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty ), {
+    this.addChild( new MoleculeShapesPanel( optionsString, new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty, model.isBasicsVersion ), {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10
     } ) );

@@ -19,7 +19,7 @@ define( function( require ) {
   var showLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
   var showBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
 
-  function GeometryNamePanel( showLonePairsProperty, showBondAnglesProperty, options ) {
+  function GeometryNamePanel( showLonePairsProperty, showBondAnglesProperty, isBasicsVersion, options ) {
 
     var showLonePairsLabel = new Text( showLonePairsString, {
       font: new PhetFont( 14 )
@@ -36,10 +36,7 @@ define( function( require ) {
     var showBondAnglesCheckbox = new CheckBox( showBondAnglesLabel, showBondAnglesProperty, {} );
 
     VBox.call( this, _.extend( {
-      children: [
-        showLonePairsCheckbox,
-        showBondAnglesCheckbox
-      ],
+      children: isBasicsVersion ? [showBondAnglesCheckbox] : [showLonePairsCheckbox, showBondAnglesCheckbox],
       spacing: 10,
       align: 'left'
     }, options ) );

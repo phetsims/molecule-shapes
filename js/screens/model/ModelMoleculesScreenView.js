@@ -82,7 +82,7 @@ define( function( require ) {
       return hbox;
     }
 
-    var optionsNode = new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty );
+    var optionsNode = new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty, model.isBasicsVersion );
     var bondingNode = new VBox( {
       children: [
         createPanelGroup( 1, {} ),
@@ -116,20 +116,24 @@ define( function( require ) {
       top: this.layoutBounds.top + 10,
       xMargin: ( maxWidth - bondingNode.width ) / 2 + 15
     } );
-    var lonePairPanel = new MoleculeShapesPanel( lonePairString, lonePairNode, {
-      right: this.layoutBounds.right - 10,
-      top: bondingPanel.bottom + 10,
-      xMargin: ( maxWidth - lonePairNode.width ) / 2 + 15
-    } );
+    var bottom = bondingPanel.bottom;
+    if ( !model.isBasicsVersion ) {
+      var lonePairPanel = new MoleculeShapesPanel( lonePairString, lonePairNode, {
+        right: this.layoutBounds.right - 10,
+        top: bondingPanel.bottom + 10,
+        xMargin: ( maxWidth - lonePairNode.width ) / 2 + 15
+      } );
+      this.addChild( lonePairPanel );
+      bottom = lonePairPanel.bottom;
+    }
     removeAllButton.centerX = bondingPanel.centerX;
-    removeAllButton.top = lonePairPanel.bottom + 15;
+    removeAllButton.top = bottom + 15;
     var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
       right: this.layoutBounds.right - 10,
       top: removeAllButton.bottom + 20,
       xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
     } );
     this.addChild( bondingPanel );
-    this.addChild( lonePairPanel );
     this.addChild( removeAllButton );
     this.addChild( optionsPanel );
   }

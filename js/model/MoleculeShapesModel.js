@@ -29,7 +29,7 @@ define( function( require ) {
     PropertySet.call( this, extend( {
       molecule: null, // {Molecule}
       showBondAngles: false,
-      showLonePairs: true,
+      showLonePairs: !isBasicsVersion,
       showAllLonePairs: false
     }, options ) );
   }
