@@ -69,9 +69,11 @@ define( function( require ) {
     this.domNode = new DOM( this.threeRenderer.domElement, {
       preventTransform: true, // Scenery 0.2 override for transformation
       invalidateDOM: function() {
-        this.invalidateSelf( new Bounds2( 0, 0, screenView.screenWidth, screenView.screenHeight ) );
-      }
+        this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
+      },
+      pickable: false
     } );
+    this.domNode.invalidateDOM();
     // Scenery 0.1 override for transformation
     this.domNode.updateCSSTransform = function() {};
 
@@ -124,7 +126,7 @@ define( function( require ) {
       }
     } ) );
 
-    this.addInputListener( new SimpleDragHandler( {
+    var dragListener = new SimpleDragHandler( {
       start: function( event, trail ) {
         this.dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
       },
@@ -139,7 +141,8 @@ define( function( require ) {
       end: function( event, trail ) {
 
       }
-    } ) );
+    } );
+    this.backgroundEventTarget.addInputListener( dragListener );
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
