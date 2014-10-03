@@ -11,6 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var Property = require( 'AXON/Property' );
+  var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/view/3d/LonePairView' );
@@ -43,10 +44,6 @@ define( function( require ) {
     }
     this.add( this.centerAtomView );
 
-    var testLonePair = new LonePairView();
-    testLonePair.position.y = 0;
-    this.add( testLonePair );
-
     this.scale.set( 0.022, 0.022, 0.022 );
   }
 
@@ -69,7 +66,35 @@ define( function( require ) {
       }
 
       if ( group.isLonePair ) {
-        // TODO
+        var parentAtom = this.molecule.getParent( group );
+
+        var lonePairView = new LonePairView();
+        lonePairView.group = group; // TODO: get rid of duck typing
+        this.lonePairViews.push( lonePairView );
+        this.add( lonePairView );
+
+        var visibilityProperty = parentAtom === this.molecule.getCentralAtom() ?
+                                 this.model.showLonePairsProperty :
+                                 this.model.showAllLonePairsProperty;
+        visibilityProperty.linkAttribute( lonePairView, 'visible' );
+
+        group.link( 'position', function( position ) {
+
+          var offsetFromParentAtom = position.minus( parentAtom.position );
+          var orientation = offsetFromParentAtom.normalized();
+
+          var translation;
+          if ( offsetFromParentAtom.magnitude() > PairGroup.LONE_PAIR_DISTANCE ) {
+            translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
+          }
+          else {
+            translation = parentAtom.position;
+          }
+
+          lonePairView.position.set( translation.x, translation.y, translation.z );
+          lonePairView.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
+                                                      new THREE.Vector3( orientation.x, orientation.y, orientation.z ) );
+        } );
       } else {
         var atomView = new AtomView( group.element ? group.element.color : MoleculeShapesColors.atomProperty );
         atomView.group = group; // TODO: get rid of duck typing
@@ -88,10 +113,16 @@ define( function( require ) {
     },
 
     removeGroup: function( group ) {
+      var i;
       if ( group.isLonePair ) {
-        // TODO
+        for ( i = 0; i < this.lonePairViews.length; i++ ) {
+          if ( this.lonePairViews[i].group === group ) {
+            this.remove( this.lonePairViews[i] );
+            this.lonePairViews.splice( i, 1 );
+          }
+        }
       } else {
-        for ( var i = 0; i < this.atomViews.length; i++ ) {
+        for ( i = 0; i < this.atomViews.length; i++ ) {
           if ( this.atomViews[i].group === group ) {
             this.remove( this.atomViews[i] );
             this.atomViews.splice( i, 1 );
