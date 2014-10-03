@@ -12,10 +12,14 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  var ComboBox = require( 'SUN/ComboBox' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var SubSupText = require( 'SCENERY_PHET/SubSupText' );
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/model/VSEPRMolecule' );
   var VseprConfiguration = require( 'MOLECULE_SHAPES/model/VseprConfiguration' );
+  var RealMoleculeShape = require( 'MOLECULE_SHAPES/model/RealMoleculeShape' );
   var RealMolecule = require( 'MOLECULE_SHAPES/model/RealMolecule' );
   var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
   var LocalShape = require( 'MOLECULE_SHAPES/model/LocalShape' );
@@ -26,6 +30,7 @@ define( function( require ) {
   var OptionsNode = require( 'MOLECULE_SHAPES/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/view/3d/MoleculeView' );
 
+  var moleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
   var optionsString = require( 'string!MOLECULE_SHAPES/control.options' );
   var realViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
   var modelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
@@ -43,10 +48,36 @@ define( function( require ) {
     this.moleculeView = new MoleculeView( model, model.molecule );
     this.threeScene.add( this.moleculeView );
 
-    this.addChild( new MoleculeShapesPanel( optionsString, new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty, model.isBasicsVersion ), {
+    var comboBoxListContainer = new Node();
+    var comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
+    var comboBox = new ComboBox( _.map( comboBoxMolecules,  function( realMoleculeShape ) {
+      return {
+        value: realMoleculeShape,
+        node: new SubSupText( realMoleculeShape.displayName, {
+          // TODO: font?
+        } )
+      };
+    } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
+
+    } );
+    var optionsNode = new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty, model.isBasicsVersion );
+
+    // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
+    var maxWidth = Math.max( optionsNode.width, comboBox.width );
+
+    var moleculePanel = new MoleculeShapesPanel( moleculeString, comboBox, {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 10
-    } ) );
+      top: this.layoutBounds.top + 10,
+      xMargin: ( maxWidth - comboBox.width ) / 2 + 15
+    } );
+    var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
+      right: this.layoutBounds.right - 10,
+      top: moleculePanel.bottom + 10,
+      xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
+    } );
+    this.addChild( moleculePanel );
+    this.addChild( optionsPanel );
+    this.addChild( comboBoxListContainer );
 
 
     if ( !model.isBasicsVersion ) {
