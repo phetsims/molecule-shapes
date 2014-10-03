@@ -125,6 +125,9 @@ define( function( require ) {
     this.molecularCheckbox = new CheckBox( this.molecularTextLabel, this.showMolecularShapeName, {} );
     this.electronCheckbox = new CheckBox( this.electronTextLabel, this.showElectronShapeName, {} );
 
+    this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = this.molecularCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.molecularCheckbox.localBounds.maxY + 40 );
+    this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = this.electronCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.electronCheckbox.localBounds.maxY + 40 );
+
     maxGeometryWidth = Math.max( maxGeometryWidth, this.molecularCheckbox.width );
     maxShapeWidth = Math.max( maxShapeWidth, this.electronCheckbox.width );
     var checkBoxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );

@@ -94,16 +94,19 @@ define( function( require ) {
 
       var horizontalSpacing = 30;
 
+      var radioButtonScale = 0.7;
       var realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
-        scale: 0.7,
+        scale: radioButtonScale,
         top: this.layoutBounds.top + 10,
         right: approximateVisualCenterX - horizontalSpacing / 2
       } );
       var modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
-        scale: 0.7,
+        scale: radioButtonScale,
         top: this.layoutBounds.top + 10,
         left: approximateVisualCenterX + horizontalSpacing / 2
       } );
+      realRadioButton.touchArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
+      modelRadioButton.touchArea = modelRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
       this.addChild( realRadioButton );
       this.addChild( modelRadioButton );
     }

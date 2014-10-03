@@ -64,6 +64,7 @@ define( function( require ) {
           screenView.removePairGroup( bondOrder );
         }
       } );
+      removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
       function update() {
         addEnabled = model.molecule.wouldAllowBondOrder( bondOrder );
         // TODO: change the fill's opacity, not the actual node's opacity!
@@ -103,6 +104,7 @@ define( function( require ) {
         model.molecule.removeAllGroups();
       }
     } );
+    removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
     function updateButtonEnabled() {
       removeAllButton.enabled = model.molecule.getRadialAtoms().length > 0;
     }

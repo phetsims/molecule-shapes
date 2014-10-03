@@ -82,7 +82,8 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
         model.reset();
-      }
+      },
+      touchExpansion: 20
     } ) );
 
     this.addChild( new GeometryNamePanel( model.moleculeProperty, !model.isBasicsVersion, {

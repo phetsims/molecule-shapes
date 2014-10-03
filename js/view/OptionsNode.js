@@ -35,6 +35,9 @@ define( function( require ) {
     var showLonePairsCheckbox = new CheckBox( showLonePairsLabel, showLonePairsProperty, {} );
     var showBondAnglesCheckbox = new CheckBox( showBondAnglesLabel, showBondAnglesProperty, {} );
 
+    showLonePairsCheckbox.touchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
+    showBondAnglesCheckbox.touchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
+
     VBox.call( this, _.extend( {
       children: isBasicsVersion ? [showBondAnglesCheckbox] : [showLonePairsCheckbox, showBondAnglesCheckbox],
       spacing: 10,
