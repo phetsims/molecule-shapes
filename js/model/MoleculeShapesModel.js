@@ -40,7 +40,7 @@ define( function( require ) {
     },
 
     step: function( dt ) {
-      this.molecule.update( dt );
+      this.molecule.update( Math.min( dt, 1 ) ); // cap at 1 second
     }
   } );
 } );

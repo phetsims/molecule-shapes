@@ -40,8 +40,8 @@ define( function( require ) {
     // TODO: clean up unused AtomViews!!! This leaks references
     colorProperty.link( function( color ) {
       atomView.material = new THREE.MeshLambertMaterial( {
-        color: colorProperty.value.toNumber(),
-        ambient: colorProperty.value.toNumber(),
+        color: color.toNumber(),
+        ambient: color.toNumber(),
         overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
       } );
     } );

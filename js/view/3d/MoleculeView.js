@@ -13,6 +13,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
+  var LonePairView = require( 'MOLECULE_SHAPES/view/3d/LonePairView' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
   function MoleculeView( model, molecule ) {
@@ -41,6 +42,10 @@ define( function( require ) {
       this.centerAtomView = new AtomView( MoleculeShapesColors.centralAtomProperty );
     }
     this.add( this.centerAtomView );
+
+    var testLonePair = new LonePairView();
+    testLonePair.position.y = 0;
+    this.add( testLonePair );
 
     this.scale.set( 0.022, 0.022, 0.022 );
   }
