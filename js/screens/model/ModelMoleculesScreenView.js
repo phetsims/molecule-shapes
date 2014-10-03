@@ -13,8 +13,12 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
+  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/view/MoleculeShapesPanel' );
+  var OptionsNode = require( 'MOLECULE_SHAPES/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/view/3d/MoleculeView' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
+
+  var optionsString = require( 'string!MOLECULE_SHAPES/control.options' );
 
   /**
    * Constructor for the ModelMoleculesScreenView
@@ -30,50 +34,52 @@ define( function( require ) {
     this.moleculeView = new MoleculeView( model, model.molecule );
     this.threeScene.add( this.moleculeView );
 
-    // molecule setup
-    var molecule = model.molecule;
+    this.addChild( new MoleculeShapesPanel( optionsString, new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty ), {
+      right: this.layoutBounds.right - 10,
+      top: this.layoutBounds.top + 10
+    } ) );
 
     /*---------------------------------------------------------------------------*
     * TEMPORARY
     *----------------------------------------------------------------------------*/
     this.addChild( new TextPushButton( 'Add a single bond', {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 10,
+      top: this.layoutBounds.top + 100 + 10,
       listener: function() {
         screenView.addPairGroup( 1 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Remove a single bond', {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 60,
+      top: this.layoutBounds.top + 100 + 60,
       listener: function() {
         screenView.removePairGroup( 1 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Add a double bond', {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 110,
+      top: this.layoutBounds.top + 100 + 110,
       listener: function() {
         screenView.addPairGroup( 2 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Remove a double bond', {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 160,
+      top: this.layoutBounds.top + 100 + 160,
       listener: function() {
         screenView.removePairGroup( 2 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Add a lone pair', {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 210,
+      top: this.layoutBounds.top + 100 + 210,
       listener: function() {
         screenView.addPairGroup( 0 );
       }
     } ) );
     this.addChild( new TextPushButton( 'Remove a lone pair', {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 260,
+      top: this.layoutBounds.top + 100 + 260,
       listener: function() {
         screenView.removePairGroup( 0 );
       }
