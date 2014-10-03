@@ -13,6 +13,7 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var ComboBox = require( 'SUN/ComboBox' );
+  var ChemUtils = require( 'NITROGLYCERIN/ChemUtils' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -53,7 +54,7 @@ define( function( require ) {
     var comboBox = new ComboBox( _.map( comboBoxMolecules,  function( realMoleculeShape ) {
       return {
         value: realMoleculeShape,
-        node: new SubSupText( realMoleculeShape.displayName, {
+        node: new SubSupText( ChemUtils.toSubscript( realMoleculeShape.displayName ), {
           // TODO: font?
         } )
       };
