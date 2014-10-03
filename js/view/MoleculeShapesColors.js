@@ -67,6 +67,7 @@ define( function( require ) {
     },
     electronGeometryName: {
       default: new Color( 255, 204, 102 ),
+      basics: new Color( 0, 0, 0 ),
       projector: new Color( 0, 102, 102 )
     },
     bondAngleReadout: {

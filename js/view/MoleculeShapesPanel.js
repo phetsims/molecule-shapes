@@ -38,10 +38,10 @@ define( function( require ) {
     TitledPanel.call( this, titleNode, contentNode, options );
 
     MoleculeShapesColors.link( 'controlPanelBorder', function( color ) {
-      self.panel.stroke = color;
+      self.setStroke( color );
     } );
     MoleculeShapesColors.link( 'background', function( color ) {
-      self.panel.fill = color;
+      self.setFill( color );
     } );
   }
 

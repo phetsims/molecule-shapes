@@ -60,9 +60,12 @@ define( function( require ) {
       this.titleBackgroundNode.setRectBounds( this.titleNode.bounds.dilatedX( 10 ) );
     },
 
-    // @override
+    setStroke: function( stroke ) {
+      this.panel.stroke = stroke;
+    },
+
     setFill: function( fill ) {
-      Panel.prototype.setFill.call( this, fill );
+      this.panel.fill = fill;
 
       this.titleBackgroundNode.fill = fill;
     }
