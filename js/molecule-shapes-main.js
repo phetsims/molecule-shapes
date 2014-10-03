@@ -35,6 +35,8 @@ define( function( require ) {
     }, simOptions );
   }
 
+  // NOTE: ?canvasOnly will trigger Canvas rendering with a reduced poly-count
+
   var isBasicsVersion = false;
   if ( window.phetcommon.getQueryParameter( 'basics' ) ) {
     isBasicsVersion = true;
