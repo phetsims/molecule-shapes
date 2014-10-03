@@ -14,6 +14,7 @@ define( function( require ) {
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/view/MoleculeShapesPanel' );
+  var RemovePairGroupButton = require( 'MOLECULE_SHAPES/screens/model/RemovePairGroupButton' );
   var OptionsNode = require( 'MOLECULE_SHAPES/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/view/3d/MoleculeView' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
@@ -49,7 +50,7 @@ define( function( require ) {
         screenView.addPairGroup( 1 );
       }
     } ) );
-    this.addChild( new TextPushButton( 'Remove a single bond', {
+    this.addChild( new RemovePairGroupButton( {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 100 + 60,
       listener: function() {
@@ -63,7 +64,7 @@ define( function( require ) {
         screenView.addPairGroup( 2 );
       }
     } ) );
-    this.addChild( new TextPushButton( 'Remove a double bond', {
+    this.addChild( new RemovePairGroupButton( {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 100 + 160,
       listener: function() {
@@ -77,7 +78,7 @@ define( function( require ) {
         screenView.addPairGroup( 0 );
       }
     } ) );
-    this.addChild( new TextPushButton( 'Remove a lone pair', {
+    this.addChild( new RemovePairGroupButton( {
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 100 + 260,
       listener: function() {
