@@ -93,23 +93,29 @@ define( function( require ) {
     * Temporary
     *----------------------------------------------------------------------------*/
     this.addChild( new TextPushButton( 'Regular Colors', {
+      baseColor: '#888',
       right: this.layoutBounds.right - 10,
-      bottom: this.layoutBounds.bottom - 210,
+      bottom: this.layoutBounds.bottom - 110,
+      scale: 0.5,
       listener: function() {
         MoleculeShapesColors.applyProfile( 'default' );
       }
     } ) );
     this.addChild( new TextPushButton( 'Basics Colors', {
+      baseColor: '#888',
       right: this.layoutBounds.right - 10,
-      bottom: this.layoutBounds.bottom - 160,
+      bottom: this.layoutBounds.bottom - 90,
+      scale: 0.5,
       listener: function() {
         MoleculeShapesColors.applyProfile( 'default' );
         MoleculeShapesColors.applyProfile( 'basics' );
       }
     } ) );
     this.addChild( new TextPushButton( 'Projector Colors', {
+      baseColor: '#888',
       right: this.layoutBounds.right - 10,
-      bottom: this.layoutBounds.bottom - 110,
+      bottom: this.layoutBounds.bottom - 70,
+      scale: 0.5,
       listener: function() {
         MoleculeShapesColors.applyProfile( 'default' );
         MoleculeShapesColors.applyProfile( 'projector' );

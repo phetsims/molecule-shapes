@@ -11,15 +11,24 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/view/MoleculeShapesPanel' );
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var RemovePairGroupButton = require( 'MOLECULE_SHAPES/screens/model/RemovePairGroupButton' );
   var OptionsNode = require( 'MOLECULE_SHAPES/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/view/3d/MoleculeView' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
 
+  var bondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
+  var lonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );
   var optionsString = require( 'string!MOLECULE_SHAPES/control.options' );
+  var removeAllString = require( 'string!MOLECULE_SHAPES/control.removeAll' );
 
   /**
    * Constructor for the ModelMoleculesScreenView
@@ -35,56 +44,94 @@ define( function( require ) {
     this.moleculeView = new MoleculeView( model, model.molecule );
     this.threeScene.add( this.moleculeView );
 
-    this.addChild( new MoleculeShapesPanel( optionsString, new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty ), {
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 10
-    } ) );
+    function createOverlay( listener, options ) {
+      var overlay = new Rectangle( 0, 0, 120, 40, 0, 0, _.extend( { fill: 'white', cursor: 'pointer' }, options ) );
+      overlay.addInputListener( new ButtonListener( {
+        fire: listener
+      } ) );
+      return overlay;
+    }
 
-    /*---------------------------------------------------------------------------*
-    * TEMPORARY
-    *----------------------------------------------------------------------------*/
-    this.addChild( new TextPushButton( 'Add a single bond', {
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 100 + 10,
-      listener: function() {
-        screenView.addPairGroup( 1 );
+    function createPanelGroup( bondOrder, options ) {
+      var addEnabled = true;
+      var overlay = createOverlay( function() {
+        if ( addEnabled ) {
+          screenView.addPairGroup( bondOrder );
+        }
+      } );
+      var removeButton = new RemovePairGroupButton( {
+        listener: function() {
+          screenView.removePairGroup( bondOrder );
+        }
+      } );
+      function update() {
+        addEnabled = model.molecule.wouldAllowBondOrder( bondOrder );
+        overlay.opacity = addEnabled ? 0.1 : 0.5;
+        removeButton.visible = _.filter( model.molecule.getBonds( model.molecule.getCentralAtom() ), function( bond ) {
+          return bond.order === bondOrder;
+        } ).length > 0;
       }
-    } ) );
-    this.addChild( new RemovePairGroupButton( {
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 100 + 60,
+      model.molecule.on( 'bondChanged', update );
+      update();
+
+      var hbox = new HBox( _.extend( {
+        children: [overlay, removeButton],
+        spacing: 10,
+        align: 'center'
+      }, options ) );
+      return hbox;
+    }
+
+    var optionsNode = new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty );
+    var bondingNode = new VBox( {
+      children: [
+        createPanelGroup( 1, {} ),
+        createPanelGroup( 2, {} ),
+        createPanelGroup( 3, {} )
+      ],
+      spacing: 10,
+      align: 'left'
+    } );
+    var lonePairNode = createPanelGroup( 0, {} );
+    // TODO: how to change the baseColor dynamically!
+    var removeAllButton = new TextPushButton( removeAllString, {
+      font: new PhetFont( 16 ),
+      textFill: MoleculeShapesColors.removeButtonText,
+      baseColor: MoleculeShapesColors.removeButtonBackground,
       listener: function() {
-        screenView.removePairGroup( 1 );
+        model.molecule.removeAllGroups();
       }
-    } ) );
-    this.addChild( new TextPushButton( 'Add a double bond', {
+    } );
+    function updateButtonEnabled() {
+      removeAllButton.enabled = model.molecule.getRadialAtoms().length > 0;
+    }
+    model.molecule.on( 'bondChanged', updateButtonEnabled );
+    updateButtonEnabled();
+
+    // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
+    var maxWidth = Math.max( optionsNode.width, Math.max( bondingNode.width, lonePairNode.width ) );
+
+    var bondingPanel = new MoleculeShapesPanel( bondingString, bondingNode, {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 100 + 110,
-      listener: function() {
-        screenView.addPairGroup( 2 );
-      }
-    } ) );
-    this.addChild( new RemovePairGroupButton( {
+      top: this.layoutBounds.top + 10,
+      xMargin: ( maxWidth - bondingNode.width ) / 2 + 15
+    } );
+    var lonePairPanel = new MoleculeShapesPanel( lonePairString, lonePairNode, {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 100 + 160,
-      listener: function() {
-        screenView.removePairGroup( 2 );
-      }
-    } ) );
-    this.addChild( new TextPushButton( 'Add a lone pair', {
+      top: bondingPanel.bottom + 10,
+      xMargin: ( maxWidth - lonePairNode.width ) / 2 + 15
+    } );
+    removeAllButton.centerX = bondingPanel.centerX;
+    removeAllButton.top = lonePairPanel.bottom + 15;
+    var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
       right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 100 + 210,
-      listener: function() {
-        screenView.addPairGroup( 0 );
-      }
-    } ) );
-    this.addChild( new RemovePairGroupButton( {
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 100 + 260,
-      listener: function() {
-        screenView.removePairGroup( 0 );
-      }
-    } ) );
+      top: removeAllButton.bottom + 20,
+      xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
+    } );
+    this.addChild( bondingPanel );
+    this.addChild( lonePairPanel );
+    this.addChild( removeAllButton );
+    this.addChild( optionsPanel );
   }
 
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {

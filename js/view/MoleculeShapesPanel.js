@@ -20,12 +20,13 @@ define( function( require ) {
 
     options = _.extend( {
       // TODO: remove duplication with panel, but we want these set before-hand! Extract defaults from Panel?
-      lineWidth: 1, // width of the background border
+      lineWidth: 1.5, // width of the background border
       xMargin: 15,
       yMargin: 15,
       cornerRadius: 15, // radius of the rounded corners on the background
       resize: true, // dynamically resize when content bounds change
-      backgroundPickable: false
+      backgroundPickable: false,
+      pickable: true // absorb the events?
     }, options );
 
     var titleNode = new Text( titleString, {
