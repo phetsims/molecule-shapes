@@ -46,8 +46,10 @@ define( function( require ) {
     }
     this.add( this.centerAtomView );
 
-    this.scale.set( 0.020, 0.020, 0.020 );
+    this.scale.set( MoleculeView.scale, MoleculeView.scale, MoleculeView.scale );
   }
+
+  MoleculeView.scale = 0.020;
 
   return inherit( THREE.Object3D, MoleculeView, {
 

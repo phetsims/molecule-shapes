@@ -308,7 +308,7 @@ define( function( require ) {
       if ( sx === 0 || sy === 0 ) {
         return 1;
       }
-      this.threeCamera.fov = sy > sx ? sy / sx : 1;
+      this.threeCamera.fov = sy > sx ? sy / sx : 1; // TODO: actually, this is in degrees! should be scaled up, camera repositioned
       this.activeScale = sy > sx ? sx : sy;
 
       // aspect ratio
