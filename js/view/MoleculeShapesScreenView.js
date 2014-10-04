@@ -59,16 +59,7 @@ define( function( require ) {
       screenView.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 
-    var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
-    this.threeScene.add( ambientLight );
-
-    var sunLight = new THREE.DirectionalLight( 0xffffff, 0.8 * 0.9 );
-    sunLight.position.set( -1.0, 0.5, 2.0 );
-    this.threeScene.add( sunLight );
-
-    var moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
-    moonLight.position.set( 2.0, -1.0, 1.0 );
-    this.threeScene.add( moonLight );
+    MoleculeShapesScreenView.addLightsToScene( this.threeScene );
 
     this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition );
 
@@ -346,6 +337,19 @@ define( function( require ) {
     }
   }, {
     // where our camera is positioned in world coordinates
-    cameraPosition: new THREE.Vector3( 0.1, 0, 40 )
+    cameraPosition: new THREE.Vector3( 0.1, 0, 40 ),
+
+    addLightsToScene: function( threeScene ) {
+      var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
+      threeScene.add( ambientLight );
+
+      var sunLight = new THREE.DirectionalLight( 0xffffff, 0.8 * 0.9 );
+      sunLight.position.set( -1.0, 0.5, 2.0 );
+      threeScene.add( sunLight );
+
+      var moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
+      moonLight.position.set( 2.0, -1.0, 1.0 );
+      threeScene.add( moonLight );
+    }
   } );
 } );
