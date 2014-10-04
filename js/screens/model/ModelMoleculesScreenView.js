@@ -65,7 +65,7 @@ define( function( require ) {
     } );
     removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
     function updateButtonEnabled() {
-      removeAllButton.enabled = model.molecule.getRadialAtoms().length > 0;
+      removeAllButton.enabled = model.molecule.getRadialGroups().length > 0;
     }
     model.molecule.on( 'bondChanged', updateButtonEnabled );
     updateButtonEnabled();
