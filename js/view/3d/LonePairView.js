@@ -75,6 +75,7 @@ define( function( require ) {
     } );
 
     shell.scale.x = shell.scale.y = shell.scale.z = 2.5;
+    shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
     this.add( shell );
 
     // refactor!
