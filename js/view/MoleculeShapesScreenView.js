@@ -337,7 +337,7 @@ define( function( require ) {
     }
   }, {
     // where our camera is positioned in world coordinates
-    cameraPosition: new THREE.Vector3( 0.1, 0, 40 ),
+    cameraPosition: new THREE.Vector3( 0.1, -0.025, 40 ),
 
     addLightsToScene: function( threeScene ) {
       var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
