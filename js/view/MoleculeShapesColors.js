@@ -15,7 +15,7 @@ define( function( require ) {
 
   var colors = {
     background: {
-      default: new Color( 30, 30, 30 ),
+      default: new Color( 0, 0, 0 ),
       basics: new Color( 252, 216, 124 ),
       projector: new Color( 255, 255, 255 )
     },
