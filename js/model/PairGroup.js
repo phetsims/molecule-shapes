@@ -158,6 +158,13 @@ define( function( require ) {
       this.addVelocity( this.getRepulsionImpulse( other, timeElapsed, trueLengthsRatioOverride ) );
     },
 
+    addPosition: function( positionChange ) {
+      // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
+      if ( !this.userControlled && !this.isCentralAtom() ) {
+        this.position = this.position.plus( positionChange );
+      }
+    },
+
     addVelocity: function( velocityChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
       if ( !this.userControlled && !this.isCentralAtom() ) {
@@ -178,6 +185,8 @@ define( function( require ) {
     },
 
     stepForward: function( timeElapsed ) {
+      if ( this.userControlled ) { return; }
+
       // velocity changes so that it doesn't point at all towards or away from the origin
       var velocityMagnitudeOutwards = this.velocity.dot( this.position.normalized() );
       if ( this.position.magnitude() > 0 ) {

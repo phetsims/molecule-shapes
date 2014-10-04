@@ -29,6 +29,8 @@ define( function( require ) {
     this.angleViews = [];
     this.angleReadouts = [];
 
+    this.radialViews = []; // all views that we would want to drag
+
     molecule.on( 'groupAdded', this.addGroup.bind( this ) );
     molecule.on( 'groupRemoved', this.removeGroup.bind( this ) );
     molecule.on( 'bondAdded', this.addBond.bind( this ) );
@@ -69,15 +71,21 @@ define( function( require ) {
         return;
       }
 
+      var parentAtom = this.molecule.getParent( group );
+      var centralAtom = this.molecule.getCentralAtom();
       if ( group.isLonePair ) {
-        var parentAtom = this.molecule.getParent( group );
 
         var lonePairView = new LonePairView();
         lonePairView.group = group; // TODO: get rid of duck typing
         this.lonePairViews.push( lonePairView );
         this.add( lonePairView );
 
-        var visibilityProperty = parentAtom === this.molecule.getCentralAtom() ?
+        // TODO: remove code duplication
+        if ( parentAtom === centralAtom ) {
+          this.radialViews.push( lonePairView );
+        }
+
+        var visibilityProperty = parentAtom === centralAtom ?
                                  this.model.showLonePairsProperty :
                                  this.model.showAllLonePairsProperty;
         visibilityProperty.linkAttribute( lonePairView, 'visible' );
@@ -104,6 +112,10 @@ define( function( require ) {
         atomView.group = group; // TODO: get rid of duck typing
         this.atomViews.push( atomView );
         this.add( atomView );
+
+        if ( parentAtom === centralAtom ) {
+          this.radialViews.push( atomView );
+        }
 
         group.link( 'position', function( position ) {
           atomView.position.set( position.x, position.y, position.z );
@@ -134,6 +146,12 @@ define( function( require ) {
         }
 
         // TODO: remove all angle nodes
+      }
+      // remove from radialViews if it is included
+      for ( i = 0; i < this.radialViews.length; i++ ) {
+        if ( this.radialViews[i].group === group ) {
+          this.radialViews.splice( i, 1 );
+        }
       }
     },
 

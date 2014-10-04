@@ -70,12 +70,12 @@ define( function( require ) {
 
       // position movement for faster convergence
       if ( !pair.isCentralAtom() && aroundCenterAtom ) { // TODO: better way of not moving the center atom?
-        pair.position = pair.position.plus( delta.times( 2.0 * timeElapsed ) );
+        pair.addPosition( delta.times( 2.0 * timeElapsed ) );
       }
 
       // if we are a terminal lone pair, move us just with this but much more quickly
       if ( !pair.isCentralAtom() && !aroundCenterAtom ) {
-        pair.position = pair.position.plus( delta.times( Math.min( 20.0 * timeElapsed, 1 ) ) );
+        pair.addPosition( delta.times( Math.min( 20.0 * timeElapsed, 1 ) ) );
       }
     }
 

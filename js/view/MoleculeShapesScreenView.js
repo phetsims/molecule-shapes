@@ -135,17 +135,31 @@ define( function( require ) {
     // for computing rays
     this.projector = new THREE.Projector();
 
+    // we only want to support dragging particles OR rotating the molecule (not both) at the same time
+    var draggedParticleCount = 0;
+    var isRotating = false;
+
     var dragListener = new SimpleDragHandler( {
       start: function( event, trail ) {
+        this.dragNode = null; // by default, don't do anything while dragging
+
+        // if we are already rotating the entire molecule, no more drags can be handled
+        if ( isRotating ) {
+          return;
+        }
+
         this.draggedPointer = event.pointer;
 
         var pair = screenView.getElectronPairUnderPointer( event.pointer );
-        if ( pair ) {
+        if ( pair && !pair.userControlled ) {
           this.dragMode = 'pairExistingSpherical';
           this.draggedParticle = pair;
-        } else {
+          pair.userControlled = true;
+          draggedParticleCount++;
+        } else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
           this.dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
           this.draggedParticle = null;
+          isRotating = true;
         }
       },
       translate: function( data ) {
@@ -161,7 +175,12 @@ define( function( require ) {
         }
       },
       end: function( event, trail ) {
-
+        if ( this.dragMode === 'pairExistingSpherical' ) {
+          this.draggedParticle.userControlled = false;
+          draggedParticleCount--;
+        } else if ( this.dragMode === 'modelRotate' ) {
+          isRotating = false;
+        }
       }
     } );
     this.backgroundEventTarget.addInputListener( dragListener );
@@ -185,7 +204,12 @@ define( function( require ) {
 
     getElectronPairUnderPointer: function( pointer ) {
       var raycaster = this.getRaycasterFromScreenPoint( pointer.point );
-      return null;
+      var intersections = raycaster.intersectObjects( this.moleculeView.radialViews, true ); // recursive (yes)
+      if ( intersections.length > 0 ) {
+        return intersections[0].object.group;
+      } else {
+        return null;
+      }
     },
 
     /*
@@ -205,9 +229,9 @@ define( function( require ) {
     // @returns {Vector3}
     getSphericalMoleculePosition: function( screenPoint, draggedParticle ) {
       // our main transform matrix and inverse
-      var threeMatrix = new THREE.Matrix4();
+      var threeMatrix = this.moleculeView.matrix.clone();
       var threeInverseMatrix = new THREE.Matrix4();
-      threeMatrix.makeRotationFromQuaternion( this.moleculeView.quaternion );
+      // threeMatrix.makeRotationFromQuaternion( this.moleculeView.quaternion );
       threeInverseMatrix.getInverse( threeMatrix );
 
       var raycaster = this.getRaycasterFromScreenPoint( screenPoint );
@@ -264,13 +288,10 @@ define( function( require ) {
         return downscaledResult.times( finalDistance );
       }
       else {
-        // TODO: copied from old model, but seems totally wrong:
-        var weirdlyTransformedPoint = new THREE.Vector3( draggedParticle.position.x, draggedParticle.position.y, draggedParticle.position.z );
-        weirdlyTransformedPoint.applyMatrix4( threeInverseMatrix ); // TODO: dear god, why the inverse? transforms a local point with globalToLocal?
-        var returnCloseHit = weirdlyTransformedPoint.z >= 0;
-
-        // pick our desired hitpoint (there are only 2), and return it (now by flipping the ray)
-        return returnCloseHit ? intersections[0].hitPoint : intersections[1].hitPoint;
+        // pick the hitPoint closer to our current point (won't flip to the other side of our sphere)
+        return intersections[0].hitPoint.distance( draggedParticle.position ) < intersections[1].hitPoint.distance( draggedParticle.position ) ?
+               intersections[0].hitPoint :
+               intersections[1].hitPoint;
       }
     },
 
