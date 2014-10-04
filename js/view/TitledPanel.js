@@ -65,7 +65,7 @@ define( function( require ) {
     },
 
     setFill: function( fill ) {
-      this.panel.fill = 'rgba(0,0,0,0)'; // override the panel fill as being transparent, as we rely on the background
+      this.panel.fill = fill;
 
       this.titleBackgroundNode.fill = fill;
     }

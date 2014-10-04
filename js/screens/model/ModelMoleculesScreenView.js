@@ -10,9 +10,11 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Vector3 = require( 'DOT/Vector3' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
+  var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/view/MoleculeShapesPanel' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
@@ -38,17 +40,20 @@ define( function( require ) {
     this.moleculeView = new MoleculeView( model, model.molecule );
     this.threeScene.add( this.moleculeView );
 
+    var addPairCallback = this.addPairGroup.bind( this );
+    var removePairCallback = this.removePairGroup.bind( this );
+
     var optionsNode = new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty, model.isBasicsVersion );
     var bondingNode = new VBox( {
       children: [
-        new BondGroupNode( model, 1, {} ),
-        new BondGroupNode( model, 2, {} ),
-        new BondGroupNode( model, 3, {} )
+        new BondGroupNode( model, 1, addPairCallback, removePairCallback, {} ),
+        new BondGroupNode( model, 2, addPairCallback, removePairCallback, {} ),
+        new BondGroupNode( model, 3, addPairCallback, removePairCallback, {} )
       ],
       spacing: 10,
       align: 'left'
     } );
-    var lonePairNode = new BondGroupNode( model, 0, {} );
+    var lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
     // TODO: how to change the baseColor dynamically!
     var removeAllButton = new TextPushButton( removeAllString, {
       font: new PhetFont( 16 ),
@@ -95,5 +100,31 @@ define( function( require ) {
     this.addChild( optionsPanel );
   }
 
-  return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {} );
+  return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
+    addPairGroup: function( bondOrder, globalBounds ) {
+      var screenPoint = globalBounds.leftCenter;
+      var threePoint = this.getPlanarMoleculePosition( screenPoint );
+
+      var extraFactor = 1.2;
+
+      // var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
+      var pair = new PairGroup( new Vector3( threePoint.x * extraFactor, threePoint.y * extraFactor, threePoint.z * extraFactor ), bondOrder === 0, false );
+      this.model.molecule.addGroupAndBond( pair, this.model.molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
+    },
+
+    removePairGroup: function( bondOrder ) {
+      var molecule = this.model.molecule;
+
+      var bonds = molecule.getBonds( molecule.getCentralAtom() );
+
+      for ( var i = bonds.length - 1; i >= 0; i-- ) {
+        if ( bonds[i].order === bondOrder ) {
+          var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
+
+          molecule.removeGroup( atom );
+          break;
+        }
+      }
+    }
+  } );
 } );

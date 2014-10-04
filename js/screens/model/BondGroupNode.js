@@ -92,9 +92,7 @@ define( function( require ) {
 
   // TODO: updating color scheme! invalidate
 
-  function BondGroupNode( model, bondOrder, options ) {
-    var self = this;
-
+  function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, options ) {
     this.model = model;
     this.bondOrder = bondOrder;
 
@@ -104,7 +102,7 @@ define( function( require ) {
     overlay.addInputListener( new ButtonListener( {
       fire: function() {
         if ( addEnabled ) {
-          self.addPairGroup();
+          addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) );
         }
       }
     } ) );
@@ -120,7 +118,9 @@ define( function( require ) {
 
     var thumbnail = new Node( { children: [image, overlay] } );
     var removeButton = new RemovePairGroupButton( {
-      listener: this.removePairGroup.bind( this )
+      listener: function() {
+        removePairCallback( bondOrder );
+      }
     } );
     removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
     function update() {
@@ -141,26 +141,6 @@ define( function( require ) {
     }, options ) );
   }
 
-  return inherit( HBox, BondGroupNode, {
-    addPairGroup: function() {
-      var pair = new PairGroup( new Vector3( 10, 20, 0 ), this.bondOrder === 0, false );
-      this.model.molecule.addGroupAndBond( pair, this.model.molecule.getCentralAtom(), this.bondOrder, ( this.bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
-    },
-
-    removePairGroup: function() {
-      var molecule = this.model.molecule;
-
-      var bonds = molecule.getBonds( molecule.getCentralAtom() );
-
-      for ( var i = bonds.length - 1; i >= 0; i-- ) {
-        if ( bonds[i].order === this.bondOrder ) {
-          var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
-
-          molecule.removeGroup( atom );
-          break;
-        }
-      }
-    }
-  } );
+  return inherit( HBox, BondGroupNode, {} );
 } );
 
