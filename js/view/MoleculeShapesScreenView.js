@@ -206,7 +206,12 @@ define( function( require ) {
       var raycaster = this.getRaycasterFromScreenPoint( pointer.point );
       var intersections = raycaster.intersectObjects( this.moleculeView.radialViews, true ); // recursive (yes)
       if ( intersections.length > 0 ) {
-        return intersections[0].object.group;
+        var ob = intersections[0].object;
+        while ( ob && !ob.group ) {
+          assert && assert( ob.parent !== ob );
+          ob = ob.parent;
+        }
+        return ob.group;
       } else {
         return null;
       }
