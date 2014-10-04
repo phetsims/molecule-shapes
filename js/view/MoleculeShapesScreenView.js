@@ -175,6 +175,13 @@ define( function( require ) {
       }
     } );
     this.backgroundEventTarget.addInputListener( dragListener );
+
+    // TODO: update the cursor even if we don't move? (only if we have mouse movement)
+    this.backgroundEventTarget.addInputListener( {
+      mousemove: function( event, trail ) {
+        screenView.backgroundEventTarget.cursor = screenView.getElectronPairUnderPointer( event.pointer ) ? 'pointer' : null;
+      }
+    } );
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
