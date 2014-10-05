@@ -15,7 +15,6 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var Util = require( 'SCENERY/util/Util' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/model/MoleculeShapesModel' );
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/model/VSEPRMolecule' );
@@ -39,7 +38,7 @@ define( function( require ) {
     } ) : new THREE.CanvasRenderer();
   renderer.setClearColor( 0x0, 0 ); // transparent
 
-  var backingScale = Util.backingScale( document.createElement( 'canvas' ).getContext( '2d' ) );
+  var devicePixelRatio = window.devicePixelRatio || 1;
 
   var camera = new THREE.OrthographicCamera();
   camera.position.set( 0, 0, 40 );
@@ -110,7 +109,7 @@ define( function( require ) {
       }
     } ) );
     var image = new Image( imageDataURLs[bondOrder], {
-      scale: 1 / imageScale / backingScale,
+      scale: 1 / imageScale / devicePixelRatio,
       center: overlay.center
     } );
 
