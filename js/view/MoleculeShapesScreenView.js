@@ -156,7 +156,7 @@ define( function( require ) {
       translate: function( data ) {
         if ( this.dragMode === 'modelRotate' ) {
           var delta = data.delta;
-          var scale = 0.004 / screenView.activeScale;
+          var scale = 0.007 / screenView.activeScale;
           var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
           newQuaternion.multiply( screenView.moleculeView.quaternion );
           screenView.moleculeView.quaternion.copy( newQuaternion );
