@@ -130,6 +130,7 @@ define( function( require ) {
     var draggedParticleCount = 0;
     var isRotating = false;
 
+    // TODO: we're failing to handle multiple drags due to SimpleDragHandler
     var dragListener = new SimpleDragHandler( {
       start: function( event, trail ) {
         this.dragNode = null; // by default, don't do anything while dragging
