@@ -101,9 +101,20 @@ define( function( require ) {
   var initialProperties = {};
   for ( var key in colors ) {
     initialProperties[key] = colors[key].default;
+
+    var hexColor = colors[key].default.toNumber().toString( 16 );
+    while ( hexColor.length < 6 ) {
+      hexColor = '0' + hexColor;
+    }
+
+    window.parent && window.parent.postMessage( JSON.stringify( {
+      type: 'reportColor',
+      name: key,
+      value: '#' + hexColor
+    } ), '*' );
   }
 
-  return extend( new PropertySet( initialProperties ), {
+  var MoleculeShapesColors = extend( new PropertySet( initialProperties ), {
     // @param {string} profileName - one of 'default', 'basics' or 'projector'
     applyProfile: function( profileName ) {
       assert && assert( profileName === 'default' || profileName === 'basics' || profileName === 'projector' );
@@ -115,5 +126,14 @@ define( function( require ) {
       }
     }
   } );
+
+  window.addEventListener( 'message', function( evt ) {
+    var data = JSON.parse( evt.data );
+    if ( data.type === 'setColor' ) {
+      MoleculeShapesColors[data.name] = new Color( data.value );
+    }
+  } );
+
+  return MoleculeShapesColors;
 } );
 
