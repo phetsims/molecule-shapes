@@ -24,6 +24,7 @@ define( function( require ) {
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/view/GeometryNamePanel' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   /**
    * Constructor for the MoleculeShapesScreenView
@@ -94,6 +95,7 @@ define( function( require ) {
     * Temporary
     *----------------------------------------------------------------------------*/
     this.addChild( new TextPushButton( 'Regular Colors', {
+      font: new PhetFont( 20 ),
       baseColor: '#888',
       right: this.layoutBounds.right - 10,
       bottom: this.layoutBounds.bottom - 110,
@@ -103,6 +105,7 @@ define( function( require ) {
       }
     } ) );
     this.addChild( new TextPushButton( 'Basics Colors', {
+      font: new PhetFont( 20 ),
       baseColor: '#888',
       right: this.layoutBounds.right - 10,
       bottom: this.layoutBounds.bottom - 90,
@@ -113,6 +116,7 @@ define( function( require ) {
       }
     } ) );
     this.addChild( new TextPushButton( 'Projector Colors', {
+      font: new PhetFont( 20 ),
       baseColor: '#888',
       right: this.layoutBounds.right - 10,
       bottom: this.layoutBounds.bottom - 70,
