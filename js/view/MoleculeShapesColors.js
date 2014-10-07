@@ -88,21 +88,30 @@ define( function( require ) {
     removeButtonBackground: {
       default: new Color( 255, 200, 0 ),
       basics: new Color( 204, 204, 204 )
-    },
-    sun: {
-      default: new Color( 255, 255, 255 ),
-      basics: new Color( 153, 153, 153 )
-    },
-    moon: {
-      default: new Color( 255, 255, 255 )
     }
   };
 
   var initialProperties = {};
   for ( var key in colors ) {
     initialProperties[key] = colors[key].default;
+  }
 
-    var hexColor = colors[key].default.toNumber().toString( 16 );
+  var MoleculeShapesColors = extend( new PropertySet( initialProperties ), {
+    // @param {string} profileName - one of 'default', 'basics' or 'projector'
+    applyProfile: function( profileName ) {
+      assert && assert( profileName === 'default' || profileName === 'basics' || profileName === 'projector' );
+
+      for ( var key in colors ) {
+        if ( profileName in colors[key] ) {
+          this[key] = colors[key][profileName];
+          reportColor( key );
+        }
+      }
+    }
+  } );
+
+  function reportColor( key ) {
+    var hexColor = MoleculeShapesColors[key].toNumber().toString( 16 );
     while ( hexColor.length < 6 ) {
       hexColor = '0' + hexColor;
     }
@@ -114,18 +123,9 @@ define( function( require ) {
     } ), '*' );
   }
 
-  var MoleculeShapesColors = extend( new PropertySet( initialProperties ), {
-    // @param {string} profileName - one of 'default', 'basics' or 'projector'
-    applyProfile: function( profileName ) {
-      assert && assert( profileName === 'default' || profileName === 'basics' || profileName === 'projector' );
-
-      for ( var key in colors ) {
-        if ( profileName in colors[key] ) {
-          this[key] = colors[key][profileName];
-        }
-      }
-    }
-  } );
+  for ( var colorName in colors ) {
+    reportColor( colorName );
+  }
 
   window.addEventListener( 'message', function( evt ) {
     var data = JSON.parse( evt.data );

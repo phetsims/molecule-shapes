@@ -84,16 +84,6 @@ define( function( require ) {
     return render( view, ( bondOrder === 0 ? lonePairWidth : atomWidth ) * imageScale, ( bondOrder === 0 ? lonePairHeight : atomHeight ) * imageScale, orthoSize );
   }
 
-  // indices match up with the bond order
-  var imageDataURLs = [
-    getBondDataURL( 0 ),
-    getBondDataURL( 1 ),
-    getBondDataURL( 2 ),
-    getBondDataURL( 3 )
-  ];
-
-  // TODO: updating color scheme! invalidate
-
   function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, options ) {
     this.model = model;
     this.bondOrder = bondOrder;
@@ -108,10 +98,22 @@ define( function( require ) {
         }
       }
     } ) );
-    var image = new Image( imageDataURLs[bondOrder], {
-      scale: 1 / imageScale / devicePixelRatio,
+    var image = new Image( getBondDataURL( bondOrder ), {
+      scale: 1 / imageScale / devicePixelRatio, // retina devices create large images, so for now we normalize the image scale
       center: overlay.center
     } );
+
+    // handle updates to our color scheme by recreating the images needed
+    function updateImage() {
+      image.image = getBondDataURL( bondOrder );
+    }
+    if ( bondOrder === 0 ) {
+      MoleculeShapesColors.lonePairShellProperty.lazyLink( updateImage );
+      MoleculeShapesColors.lonePairElectronProperty.lazyLink( updateImage );
+    } else {
+      MoleculeShapesColors.atomProperty.lazyLink( updateImage );
+      MoleculeShapesColors.bondProperty.lazyLink( updateImage );
+    }
 
     // move the lone pair over to the right more, so that it looks more centered
     if ( bondOrder === 0 ) {

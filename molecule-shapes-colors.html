@@ -68,7 +68,6 @@
     var data = JSON.parse( evt.data );
     if ( data.type === 'reportColor' ) {
       document.getElementById( 'color-' + data.name ).value = data.value;
-      console.log( data.name, data.value );
     }
   } );
 
