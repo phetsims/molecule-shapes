@@ -102,8 +102,8 @@ define( function( require ) {
     this.addChild( new TextPushButton( 'Regular Colors', {
       font: new PhetFont( 20 ),
       baseColor: '#888',
-      right: this.layoutBounds.right - 10,
-      bottom: this.layoutBounds.bottom - 110,
+      left: this.layoutBounds.left + 10,
+      top: this.layoutBounds.top + 10,
       scale: 0.5,
       listener: function() {
         MoleculeShapesColors.applyProfile( 'default' );
@@ -112,8 +112,8 @@ define( function( require ) {
     this.addChild( new TextPushButton( 'Basics Colors', {
       font: new PhetFont( 20 ),
       baseColor: '#888',
-      right: this.layoutBounds.right - 10,
-      bottom: this.layoutBounds.bottom - 90,
+      left: this.layoutBounds.left + 10,
+      top: this.layoutBounds.top + 30,
       scale: 0.5,
       listener: function() {
         MoleculeShapesColors.applyProfile( 'default' );
@@ -123,12 +123,22 @@ define( function( require ) {
     this.addChild( new TextPushButton( 'Projector Colors', {
       font: new PhetFont( 20 ),
       baseColor: '#888',
-      right: this.layoutBounds.right - 10,
-      bottom: this.layoutBounds.bottom - 70,
+      left: this.layoutBounds.left + 10,
+      top: this.layoutBounds.top + 50,
       scale: 0.5,
       listener: function() {
         MoleculeShapesColors.applyProfile( 'default' );
         MoleculeShapesColors.applyProfile( 'projector' );
+      }
+    } ) );
+    this.addChild( new TextPushButton( 'Toggle "Show All Lone Pairs"', {
+      font: new PhetFont( 20 ),
+      baseColor: '#888',
+      left: this.layoutBounds.left + 10,
+      top: this.layoutBounds.top + 70,
+      scale: 0.5,
+      listener: function() {
+        model.showAllLonePairs = !model.showAllLonePairs;
       }
     } ) );
 
