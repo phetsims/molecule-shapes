@@ -62,17 +62,14 @@ define( function( require ) {
 
     // electron centers 0.3,0,0 and -0.3,0,0, with 2 y? radius 0.1?
 
-    var shell = new THREE.Mesh( lonePairGeometry, null );
-
-    MoleculeShapesColors.link( 'lonePairShell', function( color ) {
-      shell.material = new THREE.MeshLambertMaterial( {
-        color: color.toNumber(),
-        ambient: color.toNumber(),
-        transparent: true,
-        opacity: 0.7,
-        overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
-      } );
+    var shellMaterial = new THREE.MeshLambertMaterial( {
+      transparent: true,
+      opacity: 0.7,
+      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
     } );
+    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( shellMaterial, MoleculeShapesColors.lonePairShellProperty );
+
+    var shell = new THREE.Mesh( lonePairGeometry, shellMaterial );
 
     shell.scale.x = shell.scale.y = shell.scale.z = 2.5;
     shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
@@ -81,40 +78,24 @@ define( function( require ) {
     // refactor!
     var electronScale = 2.5;
 
-    var electronView1 = new ElectronView();
-    var electronView2 = new ElectronView();
-    this.add( electronView1 );
-    this.add( electronView2 );
-    electronView1.scale.x = electronView1.scale.y = electronView1.scale.z = 2.5;
-    electronView2.scale.x = electronView2.scale.y = electronView2.scale.z = 2.5;
+    this.electronView1 = new ElectronView();
+    this.electronView2 = new ElectronView();
+    this.add( this.electronView1 );
+    this.add( this.electronView2 );
+    this.electronView1.scale.x = this.electronView1.scale.y = this.electronView1.scale.z = 2.5;
+    this.electronView2.scale.x = this.electronView2.scale.y = this.electronView2.scale.z = 2.5;
 
-    electronView1.position.x = 0.3 * electronScale;
-    electronView2.position.x = -0.3 * electronScale;
-    electronView1.position.y = electronView2.position.y = 2 * electronScale;
-
-    // consider two-sided
-    // var frontShell = new THREE.Mesh( lonePairGeometry, new THREE.MeshLambertMaterial( {
-    //   side: THREE.FrontSide,
-    //   transparent: true,
-    //   opacity: 0.4,
-    //   overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
-    // } ) );
-    // frontShell.scale.x = frontShell.scale.y = frontShell.scale.z = 2.5;
-    // this.add( frontShell );
-
-    // var backShell = new THREE.Mesh( lonePairGeometry, new THREE.MeshLambertMaterial( {
-    //   side: THREE.BackSide,
-    //   transparent: true,
-    //   opacity: 0.4,
-    //   overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
-    // } ) );
-    // backShell.scale.x = backShell.scale.y = backShell.scale.z = 2.5;
-    // this.add( backShell );
+    this.electronView1.position.x = 0.3 * electronScale;
+    this.electronView2.position.x = -0.3 * electronScale;
+    this.electronView1.position.y = this.electronView2.position.y = 2 * electronScale;
   }
 
   return inherit( THREE.Object3D, LonePairView, {
     dispose: function() {
+      this.unlinkColor();
 
+      this.electronView1.dispose();
+      this.electronView2.dispose();
     }
   } );
 } );

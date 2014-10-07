@@ -229,16 +229,20 @@ define( function( require ) {
       var i;
       if ( group.isLonePair ) {
         for ( i = 0; i < this.lonePairViews.length; i++ ) {
-          if ( this.lonePairViews[i].group === group ) {
-            this.remove( this.lonePairViews[i] );
+          var lonePairView = this.lonePairViews[i];
+          if ( lonePairView.group === group ) {
+            this.remove( lonePairView );
+            lonePairView.dispose();
             this.lonePairViews.splice( i, 1 );
             break;
           }
         }
       } else {
         for ( i = 0; i < this.atomViews.length; i++ ) {
-          if ( this.atomViews[i].group === group ) {
-            this.remove( this.atomViews[i] );
+          var atomView = this.atomViews[i];
+          if ( atomView.group === group ) {
+            this.remove( atomView );
+            atomView.dispose();
             this.atomViews.splice( i, 1 );
             break;
           }
@@ -250,6 +254,7 @@ define( function( require ) {
 
           if ( bondAngleView.aGroup === group || bondAngleView.bGroup === group ) {
             this.remove( bondAngleView );
+            bondAngleView.dispose();
             this.angleViews.splice( i, 1 );
           }
         }

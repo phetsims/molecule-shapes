@@ -24,12 +24,8 @@ define( function( require ) {
     var bMaterial = new THREE.MeshLambertMaterial( {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
-    aColorProperty.link( function( color ) {
-      aMaterial.color.setHex( color.toNumber() );
-    } );
-    bColorProperty.link( function( color ) {
-      bMaterial.color.setHex( color.toNumber() );
-    } );
+    this.unlinkAColor = MoleculeShapesGlobals.linkColor( aMaterial, aColorProperty );
+    this.unlinkBColor = MoleculeShapesGlobals.linkColor( bMaterial, bColorProperty );
 
     var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
     var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
@@ -59,7 +55,8 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, BondView, {
     dispose: function() {
-
+      this.unlinkAColor();
+      this.unlinkBColor();
     },
 
     updateView: function() {

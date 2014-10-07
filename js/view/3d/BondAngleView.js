@@ -20,8 +20,6 @@ define( function( require ) {
 
 
   function BondAngleView( model, molecule, aGroup, bGroup ) {
-    var self = this;
-
     THREE.Object3D.call( this );
 
     this.model = model;
@@ -41,29 +39,24 @@ define( function( require ) {
       opacity: 0.5,
         overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
     } );
-    MoleculeShapesColors.link( 'bondAngleSweep', function( color ) {
-      self.sectorMaterial.color.setHex( color.toNumber() );
-    } );
+    this.unlinkSectorColor = MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColors.bondAngleSweepProperty );
     this.arcMaterial = new THREE.LineBasicMaterial( {
       transparent: true,
       opacity: 0.7
     } );
-    MoleculeShapesColors.link( 'bondAngleArc', function( color ) {
-      self.arcMaterial.color.setHex( color.toNumber() );
-    } );
+    this.unlinkArcColor = MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColors.bondAngleArcProperty );
 
     this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial );
     this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial );
 
     this.add( this.sectorView );
     this.add( this.arcView );
-
-    // TODO: slightly nudge so z-order sorting works well
   }
 
   return inherit( THREE.Object3D, BondAngleView, {
     dispose: function() {
-
+      this.unlinkSectorColor();
+      this.unlinkArcColor();
     },
 
     updateView: function( lastMidpoint ) {

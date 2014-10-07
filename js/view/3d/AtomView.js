@@ -24,20 +24,14 @@ define( function( require ) {
     var material = new THREE.MeshLambertMaterial( {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
-    // TODO: clean up unused AtomViews!!! This leaks references
-    var colorListener = function( color ) {
-      material.color.setHex( color.toNumber() );
-      material.ambient.setHex( color.toNumber() );
-    };
-    colorProperty.link( colorListener );
-    this.dispose = function() {
-      colorProperty.unlink( colorListener );
-    };
+    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( material, colorProperty );
 
     THREE.Mesh.call( this, geometry, material );
   }
 
   return inherit( THREE.Mesh, AtomView, {
-
+    dispose: function() {
+      this.unlinkColor();
+    }
   } );
 } );
