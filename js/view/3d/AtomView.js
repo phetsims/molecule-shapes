@@ -15,24 +15,22 @@ define( function( require ) {
    * @param {string | Color | Property.<Color>} color
    */
   function AtomView( color ) {
-    var atomView = this;
-
     // for now, cast it into place
     var colorProperty = MoleculeShapesGlobals.toColorProperty( color );
 
     var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
     var geometry = new THREE.SphereGeometry( 2, numSamples, numSamples );
 
-    THREE.Mesh.call( this, geometry, null );
-
+    var material = new THREE.MeshLambertMaterial( {
+      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
+    } );
     // TODO: clean up unused AtomViews!!! This leaks references
     colorProperty.link( function( color ) {
-      atomView.material = new THREE.MeshLambertMaterial( {
-        color: color.toNumber(),
-        ambient: color.toNumber(),
-        overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
-      } );
+      material.color.setHex( color.toNumber() );
+      material.ambient.setHex( color.toNumber() );
     } );
+
+    THREE.Mesh.call( this, geometry, material );
   }
 
   return inherit( THREE.Mesh, AtomView, {
