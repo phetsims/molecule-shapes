@@ -19,7 +19,7 @@ define( function( require ) {
   var showLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
   var showBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
 
-  function OptionsNode( showLonePairsProperty, showBondAnglesProperty, isBasicsVersion, options ) {
+  function OptionsNode( model, options ) {
 
     var showLonePairsLabel = new Text( showLonePairsString, {
       font: new PhetFont( 14 )
@@ -30,14 +30,27 @@ define( function( require ) {
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
 
-    var showLonePairsCheckbox = new CheckBox( showLonePairsLabel, showLonePairsProperty, {} );
-    var showBondAnglesCheckbox = new CheckBox( showBondAnglesLabel, showBondAnglesProperty, {} );
+    var showLonePairsCheckbox = new CheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
+    var showBondAnglesCheckbox = new CheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
 
     showLonePairsCheckbox.touchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
     showBondAnglesCheckbox.touchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
 
+    function updateLonePairCheckboxVisibility() {
+      showLonePairsCheckbox.enabled = model.molecule.getRadialLonePairs().length > 0;
+    }
+    model.link( 'molecule', function( newMolecule, oldMolecule ) {
+      if ( oldMolecule ) {
+        oldMolecule.off( 'bondChanged', updateLonePairCheckboxVisibility );
+      }
+      if ( newMolecule ) {
+        newMolecule.on( 'bondChanged', updateLonePairCheckboxVisibility );
+      }
+      updateLonePairCheckboxVisibility();
+    } );
+
     VBox.call( this, _.extend( {
-      children: isBasicsVersion ? [showBondAnglesCheckbox] : [showLonePairsCheckbox, showBondAnglesCheckbox],
+      children: model.isBasicsVersion ? [showBondAnglesCheckbox] : [showLonePairsCheckbox, showBondAnglesCheckbox],
       spacing: 10,
       align: 'left'
     }, options ) );

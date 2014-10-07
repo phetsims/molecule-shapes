@@ -38,7 +38,7 @@ define( function( require ) {
       yMargin: options.yMargin,
       cornerRadius: options.cornerRadius,
       resize: options.resize,
-      backgroundPickable: options.backgroundPickable
+      backgroundPickable: true
     } );
     this.setStroke( options.stroke );
     this.setFill( options.fill );

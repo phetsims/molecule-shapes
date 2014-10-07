@@ -43,7 +43,7 @@ define( function( require ) {
     var addPairCallback = this.addPairGroup.bind( this );
     var removePairCallback = this.removePairGroup.bind( this );
 
-    var optionsNode = new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty, model.isBasicsVersion );
+    var optionsNode = new OptionsNode( model );
     var bondingNode = new VBox( {
       children: [
         new BondGroupNode( model, 1, addPairCallback, removePairCallback, {} ),

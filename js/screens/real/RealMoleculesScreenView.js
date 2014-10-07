@@ -61,7 +61,7 @@ define( function( require ) {
     } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
 
     } );
-    var optionsNode = new OptionsNode( model.showLonePairsProperty, model.showBondAnglesProperty, model.isBasicsVersion );
+    var optionsNode = new OptionsNode( model );
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
     var maxWidth = Math.max( optionsNode.width, comboBox.width );
