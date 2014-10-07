@@ -10,19 +10,29 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
+  var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/view/3d/LonePairView' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
+  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var BondAngleView = require( 'MOLECULE_SHAPES/view/3d/BondAngleView' );
 
-  function MoleculeView( model, molecule ) {
+  var angleDegreesString = require( 'string!MOLECULE_SHAPES/angle.degrees' );
+
+  // @param {MoleculeShapesScreenView} view
+  function MoleculeView( model, view, molecule, labelManager ) {
     THREE.Object3D.call( this );
 
+    assert && assert( labelManager );
+
     this.model = model;
+    this.view = view;
     this.molecule = molecule;
+    this.labelManager = labelManager;
 
     this.atomViews = [];
     this.lonePairViews = [];
@@ -64,6 +74,8 @@ define( function( require ) {
     },
 
     updateAngles: function() {
+      var i;
+
       // we need to handle the 2-atom case separately for proper support of 180-degree bonds
       var hasTwoBonds = this.molecule.getRadialAtoms().length === 2;
       if ( !hasTwoBonds ) {
@@ -71,7 +83,7 @@ define( function( require ) {
         this.lastMidpoint = null;
       }
 
-      for ( var i = 0; i < this.angleViews.length; i++ ) {
+      for ( i = 0; i < this.angleViews.length; i++ ) {
         var angleView = this.angleViews[i];
         angleView.updateView( this.lastMidpoint );
 
@@ -80,6 +92,46 @@ define( function( require ) {
           this.lastMidpoint = angleView.midpoint.normalized();
         }
       }
+
+      if ( this.model.showBondAngles ) {
+        // TODO: we're doing this too much, refactor into one place in MoleculeView!
+        var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
+        this.worldToLocal( cameraPosition ); // this mutates cameraPosition
+
+        var localCameraPosition = new Vector3( cameraPosition.x, cameraPosition.y, cameraPosition.z ).normalized();
+
+        for ( i = 0; i < this.angleViews.length; i++ ) {
+          var bondAngleView = this.angleViews[i];
+
+          var a = bondAngleView.aGroup;
+          var b = bondAngleView.bGroup;
+
+          var aDir = a.position.normalized();
+          var bDir = b.position.normalized();
+
+          var brightness = BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.getRadialAtoms().length );
+          if ( brightness === 0 ) {
+            continue;
+          }
+
+          // TODO: cleanup
+
+          var centerPoint = new THREE.Vector3(); // e.g. zero
+          var midPoint = new THREE.Vector3( bondAngleView.midpoint.x, bondAngleView.midpoint.y, bondAngleView.midpoint.z );
+
+          this.localToWorld( centerPoint );
+          this.localToWorld( midPoint );
+
+          this.view.convertScreenPointFromGlobalPoint( centerPoint );
+          this.view.convertScreenPointFromGlobalPoint( midPoint );
+
+          var angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
+
+          this.labelManager.showLabel( StringUtils.format( angleDegreesString, Util.toFixed( angle, 1 ) ), brightness, centerPoint, midPoint );
+        }
+      }
+
+      this.labelManager.finishedAddingLabels();
     },
 
     dispose: function() {

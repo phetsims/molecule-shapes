@@ -74,7 +74,8 @@ define( function( require ) {
       molecule: molecule
     } );
 
-    var view = new MoleculeView( model, molecule );
+    // TODO: ugly stub!
+    var view = new MoleculeView( model, {}, molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
     view.updateView();
     view.centerAtomView.visible = false; // TODO: remove this extra outside knowledge
 

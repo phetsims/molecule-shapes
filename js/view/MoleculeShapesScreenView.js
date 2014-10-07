@@ -12,11 +12,13 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Ray3 = require( 'DOT/Ray3' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Vector3 = require( 'DOT/Vector3' );
   var Plane3 = require( 'DOT/Plane3' );
   var Sphere3 = require( 'DOT/Sphere3' );
   var DOM = require( 'SCENERY/nodes/DOM' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -187,6 +189,53 @@ define( function( require ) {
         screenView.backgroundEventTarget.cursor = screenView.getElectronPairUnderPointer( event.pointer ) ? 'pointer' : null;
       }
     } );
+
+    var angleLabels = [];
+    var numAngleLabelsVisible = 0;
+    var angleLabelIndex = 0;
+    for ( var i = 0; i < 15; i++ ) {
+      angleLabels[i] = new Text( '', {
+        font: new PhetFont( 16 ),
+        visible: false
+      } );
+      this.addChild( angleLabels[i] );
+    }
+    MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
+      _.each( angleLabels, function( angleLabel ) {
+        angleLabel.fill = color;
+      } );
+    } );
+
+    // TODO: turn stub into handler
+    this.labelManager = {
+      showLabel: function( string, brightness, centerScreenPoint, midScreenPoint ) {
+        var globalCenter = new Vector2( ( centerScreenPoint.x + 1 ) * screenView.screenWidth / 2,
+                                        ( -centerScreenPoint.y + 1 ) * screenView.screenHeight / 2 );
+        var globalMidpoint = new Vector2( ( midScreenPoint.x + 1 ) * screenView.screenWidth / 2,
+                                          ( -midScreenPoint.y + 1 ) * screenView.screenHeight / 2 );
+
+        var localCenter = screenView.globalToLocalPoint( globalCenter );
+        var localMidpoint = screenView.globalToLocalPoint( globalMidpoint );
+
+        var label = angleLabels[angleLabelIndex++];
+        label.visible = true;
+        label.text = string;
+        label.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
+        // TODO: optimize?
+        label.fill = MoleculeShapesColors.bondAngleReadout.withAlpha( brightness );
+      },
+
+      finishedAddingLabels: function() {
+        // TODO: logic cleanup
+        var numVisible = angleLabelIndex;
+        while ( angleLabelIndex < numAngleLabelsVisible ) {
+          angleLabels[angleLabelIndex].visible = false;
+          angleLabelIndex++;
+        }
+        angleLabelIndex = 0;
+        numAngleLabelsVisible = numVisible;
+      }
+    };
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
@@ -197,6 +246,13 @@ define( function( require ) {
 
       var mousePoint = new THREE.Vector3( ndcX, ndcY, 0 );
       return this.projector.pickingRay( mousePoint, this.threeCamera );
+    },
+
+    // @param {THREE.Vector3} globalPoint
+    convertScreenPointFromGlobalPoint: function( globalPoint ) {
+      var point = globalPoint.clone();
+      this.projector.projectVector( globalPoint, this.threeCamera );
+      return point;
     },
 
     getRayFromScreenPoint: function( screenPoint ) {

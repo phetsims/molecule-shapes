@@ -37,7 +37,7 @@ define( function( require ) {
 
     this.model = model;
 
-    this.moleculeView = new MoleculeView( model, model.molecule );
+    this.moleculeView = new MoleculeView( model, this, model.molecule, this.labelManager );
     this.threeScene.add( this.moleculeView );
 
     var addPairCallback = this.addPairGroup.bind( this );

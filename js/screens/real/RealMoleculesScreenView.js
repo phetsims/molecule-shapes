@@ -46,7 +46,7 @@ define( function( require ) {
     var screenView = this;
 
     this.model = model;
-    this.moleculeView = new MoleculeView( model, model.molecule );
+    this.moleculeView = new MoleculeView( model, this, model.molecule, this.labelManager );
     this.threeScene.add( this.moleculeView );
 
     var comboBoxListContainer = new Node();
@@ -200,7 +200,7 @@ define( function( require ) {
       model.molecule = newMolecule;
 
       // recreate the view
-      this.moleculeView = new MoleculeView( this.model, this.model.molecule );
+      this.moleculeView = new MoleculeView( this.model, this, this.model.molecule, this.labelManager );
       this.moleculeView.quaternion.copy( originalViewQuaternion ); // sets the moleculeView's quaternion
       this.threeScene.add( this.moleculeView );
     }

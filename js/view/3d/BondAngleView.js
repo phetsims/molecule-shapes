@@ -26,6 +26,8 @@ define( function( require ) {
 
     this.model = model;
     this.molecule = molecule;
+
+    // @public
     this.aGroup = aGroup;
     this.bGroup = bGroup;
 
