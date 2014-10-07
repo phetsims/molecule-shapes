@@ -9,8 +9,6 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var Color = require( 'SCENERY/util/Color' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
 
   /*
@@ -20,17 +18,7 @@ define( function( require ) {
     var atomView = this;
 
     // for now, cast it into place
-    var colorProperty;
-    if ( typeof color === 'string' ) {
-      color = new Color( color );
-    }
-    if ( color instanceof Color ) {
-      colorProperty = new Property( color );
-    } else if ( color instanceof Property ) {
-      colorProperty = color;
-    } else {
-      throw new Error( 'bad color passed to AtomView' );
-    }
+    var colorProperty = MoleculeShapesGlobals.toColorProperty( color );
 
     var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
     var geometry = new THREE.SphereGeometry( 2, numSamples, numSamples );

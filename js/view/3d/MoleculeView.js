@@ -223,8 +223,8 @@ define( function( require ) {
           molecule.getParentBond( atom ).order,
           0.5,
           molecule.getMaximumBondLength(),
-          '#fff',
-          '#fff' );
+          MoleculeShapesColors.bondProperty,
+          MoleculeShapesColors.bondProperty );
         view.add( bondView );
         view.bondViews.push( bondView );
       } );

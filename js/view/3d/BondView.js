@@ -10,27 +10,25 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
-  var Color = require( 'SCENERY/util/Color' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
 
 
   // maxLength is a number or null
-  function BondView( aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength, aColor, bColor ) {
+  function BondView( aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength, aColorProperty, bColorProperty ) {
     var view = this;
 
-    aColor = new Color( aColor ).toNumber();
-    bColor = new Color( bColor ).toNumber();
-
     var aMaterial = new THREE.MeshLambertMaterial( {
-      color: aColor,
-      ambient: aColor,
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
     var bMaterial = new THREE.MeshLambertMaterial( {
-      color: bColor,
-      ambient: bColor,
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
+    } );
+    aColorProperty.link( function( color ) {
+      aMaterial.color.setHex( color.toNumber() );
+    } );
+    bColorProperty.link( function( color ) {
+      bMaterial.color.setHex( color.toNumber() );
     } );
 
     var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
@@ -42,8 +40,6 @@ define( function( require ) {
     this.bondOrder = bondOrder;
     this.bondRadius = bondRadius;
     this.maxLength = maxLength;
-    this.aColor = aColor;
-    this.bColor = bColor;
 
     this.aBonds = [];
     this.bBonds = [];
