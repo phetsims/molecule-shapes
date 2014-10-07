@@ -143,6 +143,7 @@ define( function( require ) {
     }
     model.molecule.on( 'bondChanged', update );
     model.link( 'showLonePairs', update );
+    MoleculeShapesColors.backgroundProperty.lazyLink( update );
 
     HBox.call( this, _.extend( {
       children: [thumbnail, removeButton],
