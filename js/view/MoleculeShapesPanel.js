@@ -23,7 +23,7 @@ define( function( require ) {
       yMargin: 15,
       cornerRadius: 15, // radius of the rounded corners on the background
       resize: true, // dynamically resize when content bounds change
-      backgroundPickable: false,
+      backgroundPickable: true,
       pickable: true // absorb the events?
     }, options );
 
