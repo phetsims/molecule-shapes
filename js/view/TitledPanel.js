@@ -60,15 +60,25 @@ define( function( require ) {
       this.titleBackgroundNode.setRectBounds( this.titleNode.bounds.dilatedX( 10 ) );
     },
 
+    getStroke: function() {
+      return this.panel.stroke;
+    },
+    get stroke() { return this.getStroke(); },
     setStroke: function( stroke ) {
       this.panel.stroke = stroke;
     },
+    set stroke( value ) { this.setStroke( value ); },
 
+    getFill: function() {
+      return this.panel.fill;
+    },
+    get fill() { return this.getFill(); },
     setFill: function( fill ) {
       this.panel.fill = fill;
 
       this.titleBackgroundNode.fill = fill;
-    }
+    },
+    set fill( value ) { this.setFill( value ); }
   } );
 } );
 

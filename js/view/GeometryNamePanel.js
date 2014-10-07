@@ -81,9 +81,7 @@ define( function( require ) {
     var text = new Text( label, {
       font: geometryNameFont
     } );
-    colorProperty.link( function( color ) {
-      text.fill = color;
-    } );
+    colorProperty.linkAttribute( text, 'fill' );
     return text;
   }
 
@@ -99,8 +97,6 @@ define( function( require ) {
   var maxShapeWidth = getMaximumTextWidth( shapeStrings );
 
   function GeometryNamePanel( moleculeProperty, showElectronGeometry, options ) {
-    var self = this;
-
     // TODO: reset these!
     this.moleculeProperty = moleculeProperty;
     this.showElectronGeometry = showElectronGeometry;
@@ -110,17 +106,15 @@ define( function( require ) {
 
     this.molecularText = new Text( 'X', { font: geometryNameFont } );
     this.electronText = new Text( 'Y', { font: geometryNameFont } );
-    this.showMolecularShapeName.link( function( enabled ) { self.molecularText.visible = enabled; } );
-    this.showElectronShapeName.link( function( enabled ) { self.electronText.visible = enabled; } );
+    MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
+    MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronText, 'fill' );
+    this.showMolecularShapeName.linkAttribute( this.molecularText, 'visible' );
+    this.showElectronShapeName.linkAttribute( this.electronText, 'visible' );
 
     this.molecularTextLabel = new Text( moleculeGeometryString, { font: new PhetFont( 14 ) } );
     this.electronTextLabel = new Text( electronGeometryString, { font: new PhetFont( 14 ) } );
-    MoleculeShapesColors.link( 'moleculeGeometryName', function( color ) {
-      self.molecularText.fill = self.molecularTextLabel.fill = color;
-    } );
-    MoleculeShapesColors.link( 'electronGeometryName', function( color ) {
-      self.electronText.fill = self.electronTextLabel.fill = color;
-    } );
+    MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
+    MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
 
     this.molecularCheckbox = new CheckBox( this.molecularTextLabel, this.showMolecularShapeName, {} );
     this.electronCheckbox = new CheckBox( this.electronTextLabel, this.showElectronShapeName, {} );
@@ -148,13 +142,6 @@ define( function( require ) {
     MoleculeShapesPanel.call( this, geometryNameString, content, _.extend( {
       fill: MoleculeShapesColors.background
     }, options ) );
-
-    MoleculeShapesColors.link( 'background', function( color ) {
-      self.fill = color;
-    } );
-    MoleculeShapesColors.link( 'controlPanelBorder', function( color ) {
-      self.stroke = color;
-    } );
 
     var updateNames = this.updateNames.bind( this );
 

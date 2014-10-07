@@ -88,9 +88,8 @@ define( function( require ) {
       // NOTE: these font sizes are scaled!
       var realViewLabel = new Text( realViewString, { font: new PhetFont( 28 ) } );
       var modelViewLabel = new Text( modelViewString, { font: new PhetFont( 28 ) } );
-      MoleculeShapesColors.link( 'controlPanelText', function( color ) {
-        realViewLabel.fill = modelViewLabel.fill = color;
-      } );
+      MoleculeShapesColors.linkAttribute( 'controlPanelText', realViewLabel, 'fill' );
+      MoleculeShapesColors.linkAttribute( 'controlPanelText', modelViewLabel, 'fill' );
 
       var horizontalSpacing = 30;
 

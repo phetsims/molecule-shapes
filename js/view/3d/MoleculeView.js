@@ -181,7 +181,6 @@ define( function( require ) {
         visibilityProperty.linkAttribute( lonePairView, 'visible' );
 
         group.link( 'position', function( position ) {
-
           var offsetFromParentAtom = position.minus( parentAtom.position );
           var orientation = offsetFromParentAtom.normalized();
 

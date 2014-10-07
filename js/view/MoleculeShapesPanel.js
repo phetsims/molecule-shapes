@@ -16,8 +16,6 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
   function MoleculeShapesPanel( titleString, contentNode, options ) {
-    var self = this;
-
     options = _.extend( {
       // TODO: remove duplication with panel, but we want these set before-hand! Extract defaults from Panel?
       lineWidth: 1.5, // width of the background border
@@ -32,18 +30,12 @@ define( function( require ) {
     var titleNode = new Text( titleString, {
       font: new PhetFont( 18 )
     } );
-    MoleculeShapesColors.link( 'controlPanelTitle', function( color ) {
-      titleNode.fill = color;
-    } );
+    MoleculeShapesColors.linkAttribute( 'controlPanelTitle', titleNode, 'fill' );
 
     TitledPanel.call( this, titleNode, contentNode, options );
 
-    MoleculeShapesColors.link( 'controlPanelBorder', function( color ) {
-      self.setStroke( color );
-    } );
-    MoleculeShapesColors.link( 'background', function( color ) {
-      self.setFill( color );
-    } );
+    MoleculeShapesColors.linkAttribute( 'background', this, 'fill' );
+    MoleculeShapesColors.linkAttribute( 'controlPanelBorder', this, 'stroke' );
   }
 
   return inherit( TitledPanel, MoleculeShapesPanel, {

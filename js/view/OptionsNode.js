@@ -19,18 +19,16 @@ define( function( require ) {
   var showLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
   var showBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
 
-  function GeometryNamePanel( showLonePairsProperty, showBondAnglesProperty, isBasicsVersion, options ) {
+  function OptionsNode( showLonePairsProperty, showBondAnglesProperty, isBasicsVersion, options ) {
 
     var showLonePairsLabel = new Text( showLonePairsString, {
       font: new PhetFont( 14 )
     } );
+    MoleculeShapesColors.linkAttribute( 'controlPanelText', showLonePairsLabel, 'fill' );
     var showBondAnglesLabel = new Text( showBondAnglesString, {
       font: new PhetFont( 14 )
     } );
-
-    MoleculeShapesColors.link( 'controlPanelText', function( color ) {
-      showLonePairsLabel.fill = showBondAnglesLabel.fill = color;
-    } );
+    MoleculeShapesColors.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
 
     var showLonePairsCheckbox = new CheckBox( showLonePairsLabel, showLonePairsProperty, {} );
     var showBondAnglesCheckbox = new CheckBox( showBondAnglesLabel, showBondAnglesProperty, {} );
@@ -45,7 +43,7 @@ define( function( require ) {
     }, options ) );
   }
 
-  return inherit( VBox, GeometryNamePanel, {
+  return inherit( VBox, OptionsNode, {
 
   } );
 } );
