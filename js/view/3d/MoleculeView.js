@@ -177,7 +177,7 @@ define( function( require ) {
 
         var visibilityProperty = parentAtom === centralAtom ?
                                  this.model.showLonePairsProperty :
-                                 this.model.showAllLonePairsProperty;
+                                 this.model.showOuterLonePairsProperty;
         visibilityProperty.linkAttribute( lonePairView, 'visible' );
 
         group.link( 'position', function( position ) {
