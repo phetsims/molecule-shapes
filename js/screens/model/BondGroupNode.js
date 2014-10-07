@@ -16,7 +16,6 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/model/MoleculeShapesModel' );
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/model/VSEPRMolecule' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
@@ -93,13 +92,13 @@ define( function( require ) {
     var addEnabled = true;
 
     var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? atomHeight : lonePairHeight, 0, 0, options );
-    overlay.addInputListener( new ButtonListener( {
-      fire: function() {
+    overlay.addInputListener( {
+      down: function() {
         if ( addEnabled ) {
           addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) );
         }
       }
-    } ) );
+    } );
     var image = new Image( getBondDataURL( bondOrder ), {
       scale: 1 / imageScale / devicePixelRatio // retina devices create large images, so for now we normalize the image scale
     } );
