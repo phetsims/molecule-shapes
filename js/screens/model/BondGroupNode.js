@@ -91,7 +91,7 @@ define( function( require ) {
 
     var addEnabled = true;
 
-    var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? atomHeight : lonePairHeight, 0, 0, _.extend( { cursor: 'pointer' }, options ) );
+    var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? atomHeight : lonePairHeight, 0, 0, options );
     overlay.addInputListener( new ButtonListener( {
       fire: function() {
         if ( addEnabled ) {
@@ -130,6 +130,11 @@ define( function( require ) {
     removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
     function update() {
       addEnabled = model.molecule.wouldAllowBondOrder( bondOrder );
+      if ( bondOrder === 0 ) {
+        addEnabled = addEnabled && model.showLonePairs;
+      }
+      overlay.cursor = addEnabled ? 'pointer' : null;
+
       // TODO: change the fill's opacity, not the actual node's opacity!
       overlay.fill = addEnabled ? 'rgba(0,0,0,0)' : MoleculeShapesColors.background.withAlpha( 0.4 );
       removeButton.visible = _.filter( model.molecule.getBonds( model.molecule.getCentralAtom() ), function( bond ) {
@@ -137,7 +142,7 @@ define( function( require ) {
       } ).length > 0;
     }
     model.molecule.on( 'bondChanged', update );
-    update();
+    model.link( 'showLonePairs', update );
 
     HBox.call( this, _.extend( {
       children: [thumbnail, removeButton],
