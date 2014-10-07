@@ -83,6 +83,9 @@ define( function( require ) {
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
+        // reset the molecule view's rotation
+        screenView.moleculeView.rotation.set( 0, 0, 0 );
+
         model.reset();
       },
       touchExpansion: 20
