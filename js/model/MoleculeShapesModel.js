@@ -37,6 +37,7 @@ define( function( require ) {
   return inherit( PropertySet, MoleculeShapesModel, {
 
     reset: function() {
+      PropertySet.prototype.reset.call( this );
     },
 
     step: function( dt ) {
