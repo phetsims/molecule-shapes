@@ -38,7 +38,6 @@ define( function( require ) {
     this.lonePairViews = [];
     this.bondViews = [];
     this.angleViews = [];
-    this.angleReadouts = [];
 
     this.radialViews = []; // all views that we would want to drag
 
@@ -135,6 +134,20 @@ define( function( require ) {
     },
 
     dispose: function() {
+      var i;
+      for ( i = 0; i < this.atomViews.length; i++ ) {
+        this.atomViews[i].dispose();
+      }
+      for ( i = 0; i < this.bondViews.length; i++ ) {
+        this.bondViews[i].dispose();
+      }
+      for ( i = 0; i < this.angleViews.length; i++ ) {
+        this.angleViews[i].dispose();
+      }
+      for ( i = 0; i < this.lonePairViews.length; i++ ) {
+        this.lonePairViews[i].dispose();
+      }
+      this.centerAtomView.dispose();
       // TODO? See what three.js needs, but also release listeners
     },
 

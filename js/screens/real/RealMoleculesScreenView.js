@@ -200,6 +200,9 @@ define( function( require ) {
       model.molecule = newMolecule;
 
       // recreate the view
+      if ( this.moleculeView ) {
+        this.moleculeView.dispose();
+      }
       this.moleculeView = new MoleculeView( this.model, this, this.model.molecule, this.labelManager );
       this.moleculeView.quaternion.copy( originalViewQuaternion ); // sets the moleculeView's quaternion
       this.threeScene.add( this.moleculeView );

@@ -62,6 +62,10 @@ define( function( require ) {
   }
 
   return inherit( THREE.Object3D, BondAngleView, {
+    dispose: function() {
+
+    },
+
     updateView: function( lastMidpoint ) {
       // TODO: we're doing this too much, refactor into one place in MoleculeView!
       var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition

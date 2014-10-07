@@ -113,6 +113,8 @@ define( function( require ) {
   }
 
   return inherit( THREE.Object3D, LonePairView, {
+    dispose: function() {
 
+    }
   } );
 } );

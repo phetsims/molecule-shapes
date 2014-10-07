@@ -25,10 +25,14 @@ define( function( require ) {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
     // TODO: clean up unused AtomViews!!! This leaks references
-    colorProperty.link( function( color ) {
+    var colorListener = function( color ) {
       material.color.setHex( color.toNumber() );
       material.ambient.setHex( color.toNumber() );
-    } );
+    };
+    colorProperty.link( colorListener );
+    this.dispose = function() {
+      colorProperty.unlink( colorListener );
+    };
 
     THREE.Mesh.call( this, geometry, material );
   }

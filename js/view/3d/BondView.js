@@ -58,6 +58,10 @@ define( function( require ) {
   }
 
   return inherit( THREE.Object3D, BondView, {
+    dispose: function() {
+
+    },
+
     updateView: function() {
       // TODO: we're doing this too much, refactor into one place in MoleculeView!
       var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
