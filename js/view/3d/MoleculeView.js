@@ -16,6 +16,7 @@ define( function( require ) {
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/view/3d/LonePairView' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
+  var BondAngleView = require( 'MOLECULE_SHAPES/view/3d/BondAngleView' );
 
   function MoleculeView( model, molecule ) {
     THREE.Object3D.call( this );
@@ -30,6 +31,8 @@ define( function( require ) {
     this.angleReadouts = [];
 
     this.radialViews = []; // all views that we would want to drag
+
+    this.lastMidpoint = null;
 
     molecule.on( 'groupAdded', this.addGroup.bind( this ) );
     molecule.on( 'groupRemoved', this.removeGroup.bind( this ) );
@@ -56,6 +59,26 @@ define( function( require ) {
     updateView: function() {
       for ( var i = 0; i < this.bondViews.length; i++ ) {
         this.bondViews[i].updateView();
+      }
+      this.updateAngles();
+    },
+
+    updateAngles: function() {
+      // we need to handle the 2-atom case separately for proper support of 180-degree bonds
+      var hasTwoBonds = this.molecule.getRadialAtoms().length === 2;
+      if ( !hasTwoBonds ) {
+        // if we don't have two bonds, just ignore the last midpoint
+        this.lastMidpoint = null;
+      }
+
+      for ( var i = 0; i < this.angleViews.length; i++ ) {
+        var angleView = this.angleViews[i];
+        angleView.updateView( this.lastMidpoint );
+
+        // if we have two bonds, store the last midpoint so we can keep the bond midpoint stable
+        if ( hasTwoBonds ) {
+          this.lastMidpoint = angleView.midpoint.normalized();
+        }
       }
     },
 
@@ -126,7 +149,14 @@ define( function( require ) {
         // TODO: rebuild bonds/angles?
         this.rebuildBonds();
 
-        // TODO: add in bond angle nodes for every other atom
+        for ( var i = 0; i < this.atomViews.length; i++ ) {
+          var otherView = this.atomViews[i];
+          if ( otherView !== atomView ) {
+            var bondAngleView = new BondAngleView( this.model, this.molecule, otherView.group, atomView.group );
+            this.add( bondAngleView );
+            this.angleViews.push( bondAngleView );
+          }
+        }
       }
     },
 
@@ -137,6 +167,7 @@ define( function( require ) {
           if ( this.lonePairViews[i].group === group ) {
             this.remove( this.lonePairViews[i] );
             this.lonePairViews.splice( i, 1 );
+            break;
           }
         }
       } else {
@@ -144,15 +175,25 @@ define( function( require ) {
           if ( this.atomViews[i].group === group ) {
             this.remove( this.atomViews[i] );
             this.atomViews.splice( i, 1 );
+            break;
           }
         }
 
-        // TODO: remove all angle nodes
+        // reverse for ease of removal (we may need to remove multiple ones)
+        for ( i = this.angleViews.length - 1; i >= 0; i-- ) {
+          var bondAngleView = this.angleViews[i];
+
+          if ( bondAngleView.aGroup === group || bondAngleView.bGroup === group ) {
+            this.remove( bondAngleView );
+            this.angleViews.splice( i, 1 );
+          }
+        }
       }
       // remove from radialViews if it is included
       for ( i = 0; i < this.radialViews.length; i++ ) {
         if ( this.radialViews[i].group === group ) {
           this.radialViews.splice( i, 1 );
+          break;
         }
       }
     },

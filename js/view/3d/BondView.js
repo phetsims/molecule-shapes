@@ -59,14 +59,13 @@ define( function( require ) {
     // bind won't work
     _.each( this.aBonds, function( bond ) { view.add( bond ); } );
     _.each( this.bBonds, function( bond ) { view.add( bond ); } );
-
-    this.updateView();
   }
 
   return inherit( THREE.Object3D, BondView, {
     updateView: function() {
+      // TODO: we're doing this too much, refactor into one place in MoleculeView!
       var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
-      this.worldToLocal( cameraPosition ); // this mutates cameraPosition
+      this.parent.worldToLocal( cameraPosition ); // this mutates cameraPosition
 
       // extract our start and end
       var start = this.aPositionProperty.value;
