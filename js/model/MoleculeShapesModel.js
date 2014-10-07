@@ -30,7 +30,9 @@ define( function( require ) {
       molecule: null, // {Molecule}
       showBondAngles: false,
       showLonePairs: !isBasicsVersion,
-      showAllLonePairs: false
+      showAllLonePairs: false,
+      showMolecularShapeName: false,
+      showElectronShapeName: false
     }, options ) );
   }
 

@@ -96,28 +96,23 @@ define( function( require ) {
   var maxGeometryWidth = getMaximumTextWidth( geometryStrings );
   var maxShapeWidth = getMaximumTextWidth( shapeStrings );
 
-  function GeometryNamePanel( moleculeProperty, showElectronGeometry, options ) {
-    // TODO: reset these!
-    this.moleculeProperty = moleculeProperty;
-    this.showElectronGeometry = showElectronGeometry;
-
-    this.showMolecularShapeName = new Property( false );
-    this.showElectronShapeName = new Property( false );
+  function GeometryNamePanel( model, options ) {
+    this.model = model;
 
     this.molecularText = new Text( 'X', { font: geometryNameFont } );
     this.electronText = new Text( 'Y', { font: geometryNameFont } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronText, 'fill' );
-    this.showMolecularShapeName.linkAttribute( this.molecularText, 'visible' );
-    this.showElectronShapeName.linkAttribute( this.electronText, 'visible' );
+    model.linkAttribute( 'showMolecularShapeName', this.molecularText, 'visible' );
+    model.linkAttribute( 'showElectronShapeName', this.electronText, 'visible' );
 
     this.molecularTextLabel = new Text( moleculeGeometryString, { font: new PhetFont( 14 ) } );
     this.electronTextLabel = new Text( electronGeometryString, { font: new PhetFont( 14 ) } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
 
-    this.molecularCheckbox = new CheckBox( this.molecularTextLabel, this.showMolecularShapeName, {} );
-    this.electronCheckbox = new CheckBox( this.electronTextLabel, this.showElectronShapeName, {} );
+    this.molecularCheckbox = new CheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
+    this.electronCheckbox = new CheckBox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
 
     this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = this.molecularCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.molecularCheckbox.localBounds.maxY + 40 );
     this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = this.electronCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.electronCheckbox.localBounds.maxY + 40 );
@@ -134,7 +129,7 @@ define( function( require ) {
     var content = new Node();
     content.addChild( this.molecularCheckbox );
     content.addChild( this.molecularText );
-    if ( showElectronGeometry ) {
+    if ( !model.isBasicsVersion ) {
       content.addChild( this.electronCheckbox );
       content.addChild( this.electronText );
     }
@@ -145,7 +140,7 @@ define( function( require ) {
 
     var updateNames = this.updateNames.bind( this );
 
-    moleculeProperty.link( function( newMolecule, oldMolecule ) {
+    model.link( 'molecule', function( newMolecule, oldMolecule ) {
       if ( oldMolecule ) {
         oldMolecule.off( 'bondChanged', updateNames );
       }
@@ -165,7 +160,7 @@ define( function( require ) {
     },
 
     getMolecularGeometryName: function() {
-      var name = this.moleculeProperty.value.getCentralVseprConfiguration().name;
+      var name = this.model.molecule.getCentralVseprConfiguration().name;
       if ( name === null ) {
         return shapeEmptyString;
       } else {
@@ -174,7 +169,7 @@ define( function( require ) {
     },
 
     getElectronGeometryName: function() {
-      var name = this.moleculeProperty.value.getCentralVseprConfiguration().geometry.name;
+      var name = this.model.molecule.getCentralVseprConfiguration().geometry.name;
       if ( name === null ) {
         return geometryEmptyString;
       } else {

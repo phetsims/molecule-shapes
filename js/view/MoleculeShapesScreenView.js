@@ -88,7 +88,7 @@ define( function( require ) {
       touchExpansion: 20
     } ) );
 
-    this.addChild( new GeometryNamePanel( model.moleculeProperty, !model.isBasicsVersion, {
+    this.addChild( new GeometryNamePanel( model, {
       left: this.layoutBounds.minX + 10,
       bottom: this.layoutBounds.maxY - 10
     } ) );
