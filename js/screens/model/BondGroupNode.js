@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Bounds2 = require( 'DOT/Bounds2' );
   var Vector3 = require( 'DOT/Vector3' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -100,9 +101,13 @@ define( function( require ) {
       }
     } ) );
     var image = new Image( getBondDataURL( bondOrder ), {
-      scale: 1 / imageScale / devicePixelRatio, // retina devices create large images, so for now we normalize the image scale
-      center: overlay.center
+      scale: 1 / imageScale / devicePixelRatio // retina devices create large images, so for now we normalize the image scale
     } );
+    // override local bounds because the correct bounds may not be loaded yet
+    image.localBounds = bondOrder === 0 ?
+                        new Bounds2( 0, 0, lonePairWidth * devicePixelRatio * imageScale, lonePairHeight * devicePixelRatio * imageScale ) :
+                        new Bounds2( 0, 0, atomWidth * devicePixelRatio * imageScale, atomHeight * devicePixelRatio * imageScale );
+    image.center = overlay.center;
 
     // handle updates to our color scheme by recreating the images needed
     function updateImage() {
