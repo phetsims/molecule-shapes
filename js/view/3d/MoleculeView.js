@@ -58,11 +58,7 @@ define( function( require ) {
       this.centerAtomView = new AtomView( this.renderer, AtomView.centralAtomLocalMaterial );
     }
     this.add( this.centerAtomView );
-
-    this.scale.set( MoleculeView.scale, MoleculeView.scale, MoleculeView.scale );
   }
-
-  MoleculeView.scale = 0.020;
 
   return inherit( THREE.Object3D, MoleculeView, {
 

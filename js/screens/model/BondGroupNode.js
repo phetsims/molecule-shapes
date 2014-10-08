@@ -80,8 +80,8 @@ define( function( require ) {
     view.centerAtomView.visible = false; // TODO: remove this extra outside knowledge
 
     var orthoSize = bondOrder === 0 ?
-                    ( MoleculeView.scale * PairGroup.LONE_PAIR_DISTANCE * 1.07 ):
-                    ( MoleculeView.scale * PairGroup.BONDED_PAIR_DISTANCE * 1.22 );
+                    ( PairGroup.LONE_PAIR_DISTANCE * 1.07 ):
+                    ( PairGroup.BONDED_PAIR_DISTANCE * 1.22 );
     var url = render( view, ( bondOrder === 0 ? lonePairWidth : atomWidth ) * imageScale, ( bondOrder === 0 ? lonePairHeight : atomHeight ) * imageScale, orthoSize );
     view.dispose();
     return url;

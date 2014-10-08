@@ -367,7 +367,7 @@ define( function( require ) {
       if ( sx === 0 || sy === 0 ) {
         return 1;
       }
-      this.threeCamera.fov = sy > sx ? sy / sx : 1; // TODO: actually, this is in degrees! should be scaled up, camera repositioned
+      this.threeCamera.fov = ( sy > sx ? sy / sx : 1 ) * 50;
       this.activeScale = sy > sx ? sx : sy;
 
       // aspect ratio
@@ -395,8 +395,8 @@ define( function( require ) {
       this.threeRenderer.render( this.threeScene, this.threeCamera );
     }
   }, {
-    // where our camera is positioned in world coordinates
-    cameraPosition: new THREE.Vector3( 0.1, -0.025, 40 ),
+    // where our camera is positioned in world coordinates (manually tuned)
+    cameraPosition: new THREE.Vector3( 0.12 * 50, -0.025 * 50, 40 ),
 
     addLightsToScene: function( threeScene ) {
       var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
