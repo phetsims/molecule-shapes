@@ -9,34 +9,50 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
+  var Color = require( 'SCENERY/util/Color' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
+  var LocalGeometry = require( 'MOLECULE_SHAPES/view/3d/LocalGeometry' );
+  var LocalMaterial = require( 'MOLECULE_SHAPES/view/3d/LocalMaterial' );
 
   var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
-  var globalAtomGeometry = new THREE.SphereGeometry( 2, numSamples, numSamples );
+  var localBondGeometry = new LocalGeometry( new THREE.SphereGeometry( 2, numSamples, numSamples ) );
+
+  var overdraw = MoleculeShapesGlobals.useWebGL ? 0 : 0.5;
+  var elementLocalMaterials = {
+    // filled in dynamically in getElementLocalMaterial
+  };
 
   /*
-   * @param {string | Color | Property.<Color>} color
+   * @param {LocalMaterial} localMaterial - preferably from one of AtomView's static methods/properties
    */
-  function AtomView( color ) {
-    // for now, cast it into place
-    var colorProperty = MoleculeShapesGlobals.toColorProperty( color );
-
-    this.atomGeometry = globalAtomGeometry.clone();
-
-    this.atomMaterial = new THREE.MeshLambertMaterial( {
-      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
-    } );
-    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( this.atomMaterial, colorProperty );
-
-    THREE.Mesh.call( this, this.atomGeometry, this.atomMaterial );
+  function AtomView( renderer, localMaterial ) {
+    THREE.Mesh.call( this, localBondGeometry.get( renderer ), localMaterial.get( renderer ) );
   }
 
   return inherit( THREE.Mesh, AtomView, {
     dispose: function() {
-      this.atomMaterial.dispose();
-      this.atomGeometry.dispose();
 
-      this.unlinkColor();
+    }
+  }, {
+    centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: overdraw } ), {
+      color: MoleculeShapesColors.centralAtomProperty,
+      ambient: MoleculeShapesColors.centralAtomProperty
+    } ),
+    atomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: overdraw } ), {
+      color: MoleculeShapesColors.atomProperty,
+      ambient: MoleculeShapesColors.atomProperty
+    } ),
+    getElementLocalMaterial: function( element ) {
+      var localMaterial = elementLocalMaterials[element.symbol];
+      if ( !localMaterial ) {
+        localMaterial = elementLocalMaterials[element.symbol] = new LocalMaterial( new THREE.MeshLambertMaterial( {
+          color: new Color( element.color ).toNumber(),
+          ambient: new Color( element.color ).toNumber(),
+          overdraw: overdraw
+        } ) );
+      }
+      return localMaterial;
     }
   } );
 } );

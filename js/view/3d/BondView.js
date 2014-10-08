@@ -12,25 +12,29 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
+  var LocalGeometry = require( 'MOLECULE_SHAPES/view/3d/LocalGeometry' );
+  var LocalMaterial = require( 'MOLECULE_SHAPES/view/3d/LocalMaterial' );
 
   var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
   var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
   var globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
 
+  var localBondGeometry = new LocalGeometry( globalBondGeometry );
+  var localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
+    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
+  } ), {
+    color: MoleculeShapesColors.bondProperty,
+    ambient: MoleculeShapesColors.bondProperty
+  } );
+
   // maxLength is a number or null
-  function BondView( aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength, aColorProperty, bColorProperty ) {
+  function BondView( renderer, aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength ) {
     var view = this;
 
-    this.aMaterial = new THREE.MeshLambertMaterial( {
-      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
-    } );
-    this.bMaterial = new THREE.MeshLambertMaterial( {
-      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
-    } );
-    this.unlinkAColor = MoleculeShapesGlobals.linkColor( this.aMaterial, aColorProperty );
-    this.unlinkBColor = MoleculeShapesGlobals.linkColor( this.bMaterial, bColorProperty );
-
-    this.bondGeometry = globalBondGeometry.clone();
+    this.aMaterial = localBondMaterial.get( renderer );
+    this.bMaterial = localBondMaterial.get( renderer );
+    this.bondGeometry = localBondGeometry.get( renderer );
 
     this.aPositionProperty = aPositionProperty;
     this.bPositionProperty = bPositionProperty;
@@ -56,12 +60,7 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, BondView, {
     dispose: function() {
-      this.bondGeometry.dispose();
-      this.aMaterial.dispose();
-      this.bMaterial.dispose();
 
-      this.unlinkAColor();
-      this.unlinkBColor();
     },
 
     updateView: function() {

@@ -11,26 +11,24 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
+  var LocalGeometry = require( 'MOLECULE_SHAPES/view/3d/LocalGeometry' );
+  var LocalMaterial = require( 'MOLECULE_SHAPES/view/3d/LocalMaterial' );
 
   var numSamples = MoleculeShapesGlobals.useWebGL ? 10 : 5;
-  var globalElectronGeometry = new THREE.SphereGeometry( 0.1, numSamples, numSamples );
+  var localElectronGeometry = new LocalGeometry( new THREE.SphereGeometry( 0.1, numSamples, numSamples ) );
+  var localElectronMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
+    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
+  } ), {
+    color: MoleculeShapesColors.lonePairElectronProperty
+  } );
 
-  function ElectronView() {
-    this.electronGeometry = globalElectronGeometry.clone();
-    this.electronMaterial = new THREE.MeshLambertMaterial( {
-      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
-    } );
-    this.unlinkColor = MoleculeShapesGlobals.linkColor( this.electronMaterial, MoleculeShapesColors.lonePairElectronProperty );
-
-    THREE.Mesh.call( this, this.electronGeometry, this.electronMaterial );
+  function ElectronView( renderer ) {
+    THREE.Mesh.call( this, localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
   }
 
   return inherit( THREE.Mesh, ElectronView, {
     dispose: function() {
-      this.electronGeometry.dispose();
-      this.electronMaterial.dispose();
 
-      this.unlinkColor();
     }
   } );
 } );

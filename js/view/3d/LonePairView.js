@@ -9,26 +9,30 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
+  var LonePairGeometryData = require( 'MOLECULE_SHAPES/data/LonePairGeometryData' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
   var ElectronView = require( 'MOLECULE_SHAPES/view/3d/ElectronView' );
-  var LonePairGeometryData = require( 'MOLECULE_SHAPES/data/LonePairGeometryData' );
+  var LocalGeometry = require( 'MOLECULE_SHAPES/view/3d/LocalGeometry' );
+  var LocalMaterial = require( 'MOLECULE_SHAPES/view/3d/LocalMaterial' );
 
   var jsonLoader = new THREE.JSONLoader();
 
-  var globalShellGeometry = jsonLoader.parse( LonePairGeometryData ).geometry;
+  var localShellGeometry = new LocalGeometry( jsonLoader.parse( LonePairGeometryData ).geometry );
+  var localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
+    transparent: true,
+    opacity: 0.7,
+    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
+  } ), {
+    color: MoleculeShapesColors.lonePairShellProperty,
+    ambient: MoleculeShapesColors.lonePairShellProperty
+  } );
 
-  function LonePairView() {
+  function LonePairView( renderer ) {
     THREE.Object3D.call( this );
 
-    this.shellGeometry = globalShellGeometry.clone();
-
-    this.shellMaterial = new THREE.MeshLambertMaterial( {
-      transparent: true,
-      opacity: 0.7,
-      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
-    } );
-    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( this.shellMaterial, MoleculeShapesColors.lonePairShellProperty );
+    this.shellGeometry = localShellGeometry.get( renderer );
+    this.shellMaterial = localShellMaterial.get( renderer );
 
     var shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial );
 
@@ -39,8 +43,8 @@ define( function( require ) {
     // refactor!
     var electronScale = 2.5;
 
-    this.electronView1 = new ElectronView();
-    this.electronView2 = new ElectronView();
+    this.electronView1 = new ElectronView( renderer );
+    this.electronView2 = new ElectronView( renderer );
     this.add( this.electronView1 );
     this.add( this.electronView2 );
     this.electronView1.scale.x = this.electronView1.scale.y = this.electronView1.scale.z = 2.5;
@@ -53,11 +57,6 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, LonePairView, {
     dispose: function() {
-      this.shellGeometry.dispose();
-      this.shellMaterial.dispose();
-
-      this.unlinkColor();
-
       this.electronView1.dispose();
       this.electronView2.dispose();
     }

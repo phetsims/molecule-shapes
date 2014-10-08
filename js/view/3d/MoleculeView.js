@@ -17,7 +17,6 @@ define( function( require ) {
   var AtomView = require( 'MOLECULE_SHAPES/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/view/3d/LonePairView' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var BondAngleView = require( 'MOLECULE_SHAPES/view/3d/BondAngleView' );
 
@@ -31,6 +30,7 @@ define( function( require ) {
 
     this.model = model;
     this.view = view;
+    this.renderer = view.threeRenderer;
     this.molecule = molecule;
     this.labelManager = labelManager;
 
@@ -52,9 +52,9 @@ define( function( require ) {
     _.each( molecule.getDistantLonePairs(), this.addGroup.bind( this ) );
 
     if ( molecule.isReal ) {
-      this.centerAtomView = new AtomView( molecule.getCentralAtom().element.color );
+      this.centerAtomView = new AtomView( this.renderer, AtomView.getElementLocalMaterial( molecule.getCentralAtom().element ) );
     } else {
-      this.centerAtomView = new AtomView( MoleculeShapesColors.centralAtomProperty );
+      this.centerAtomView = new AtomView( this.renderer, AtomView.centralAtomLocalMaterial );
     }
     this.add( this.centerAtomView );
 
@@ -165,7 +165,7 @@ define( function( require ) {
       var centralAtom = this.molecule.getCentralAtom();
       if ( group.isLonePair ) {
 
-        var lonePairView = new LonePairView();
+        var lonePairView = new LonePairView( this.renderer );
         lonePairView.group = group; // TODO: get rid of duck typing
         this.lonePairViews.push( lonePairView );
         this.add( lonePairView );
@@ -197,7 +197,9 @@ define( function( require ) {
                                                       new THREE.Vector3( orientation.x, orientation.y, orientation.z ) );
         } );
       } else {
-        var atomView = new AtomView( group.element ? group.element.color : MoleculeShapesColors.atomProperty );
+        var atomView = new AtomView( this.renderer, group.element ?
+                                                    AtomView.getElementLocalMaterial( group.element ) :
+                                                    AtomView.atomLocalMaterial );
         atomView.group = group; // TODO: get rid of duck typing
         this.atomViews.push( atomView );
         this.add( atomView );
@@ -287,13 +289,12 @@ define( function( require ) {
 
       _.each( molecule.getRadialAtoms(), function( atom ) {
         var bondView = new BondView(
+          view.renderer,
           new Property( new Vector3() ), // center position
           atom.positionProperty,
           molecule.getParentBond( atom ).order,
           0.5,
-          molecule.getMaximumBondLength(),
-          MoleculeShapesColors.bondProperty,
-          MoleculeShapesColors.bondProperty );
+          molecule.getMaximumBondLength() );
         view.add( bondView );
         view.bondViews.push( bondView );
       } );
