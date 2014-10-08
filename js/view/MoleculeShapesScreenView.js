@@ -133,16 +133,18 @@ define( function( require ) {
         MoleculeShapesColors.applyProfile( 'projector' );
       }
     } ) );
-    this.addChild( new TextPushButton( 'Toggle "Show Outer Lone Pairs"', {
-      font: new PhetFont( 20 ),
-      baseColor: '#888',
-      left: this.layoutBounds.left + 10,
-      top: this.layoutBounds.top + 70,
-      scale: 0.5,
-      listener: function() {
-        model.showOuterLonePairs = !model.showOuterLonePairs;
-      }
-    } ) );
+    if ( !model.isBasicsVersion ) {
+      this.addChild( new TextPushButton( 'Toggle "Show Outer Lone Pairs"', {
+        font: new PhetFont( 20 ),
+        baseColor: '#888',
+        left: this.layoutBounds.left + 10,
+        top: this.layoutBounds.top + 70,
+        scale: 0.5,
+        listener: function() {
+          model.showOuterLonePairs = !model.showOuterLonePairs;
+        }
+      } ) );
+    }
 
     // for computing rays
     this.projector = new THREE.Projector();
