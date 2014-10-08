@@ -37,17 +37,23 @@ define( function( require ) {
       side: THREE.DoubleSide,
       transparent: true,
       opacity: 0.5,
-        overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
+      depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
+      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
     } );
     this.unlinkSectorColor = MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColors.bondAngleSweepProperty );
     this.arcMaterial = new THREE.LineBasicMaterial( {
       transparent: true,
-      opacity: 0.7
+      opacity: 0.7,
+      depthWrite: false // don't write depth values, so we don't cause other transparent objects to render
     } );
     this.unlinkArcColor = MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColors.bondAngleArcProperty );
 
     this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial );
     this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial );
+
+    // render the bond angle views on top of everything (but still depth-testing), with arcs on top
+    this.sectorView.renderDepth = 10;
+    this.arcView.renderDepth = 11;
 
     this.add( this.sectorView );
     this.add( this.arcView );
@@ -75,25 +81,13 @@ define( function( require ) {
       var bDir = this.bGroup.position.normalized();
 
       var alpha = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.getRadialAtoms().length ) : 0;
-      if ( alpha > 0 ) {
-        this.sectorView.visible = true;
-        this.arcView.visible = true;
 
-        this.sectorMaterial.opacity = alpha / 2;
-        this.arcMaterial.opacity = alpha * 0.7;
+      this.sectorMaterial.opacity = alpha / 2;
+      this.arcMaterial.opacity = alpha * 0.7;
 
-        this.arcVertices.setPositions( aDir, bDir, lastMidpoint );
-        this.arcGeometry.updateView();
-        this.sectorGeometry.updateView();
-
-        var nudgeFactor = 0.0001;
-        this.position.set( this.arcVertices.midpoint.x * nudgeFactor,
-                           this.arcVertices.midpoint.y * nudgeFactor,
-                           this.arcVertices.midpoint.z * nudgeFactor );
-      } else {
-        this.sectorView.visible = false;
-        this.arcView.visible = false;
-      }
+      this.arcVertices.setPositions( aDir, bDir, lastMidpoint );
+      this.arcGeometry.updateView();
+      this.sectorGeometry.updateView();
     },
 
     get midpoint() { return this.arcVertices.midpoint; }

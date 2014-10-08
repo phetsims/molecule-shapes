@@ -22,6 +22,7 @@ define( function( require ) {
   var localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     transparent: true,
     opacity: 0.7,
+    depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
   } ), {
     color: MoleculeShapesColors.lonePairShellProperty,
