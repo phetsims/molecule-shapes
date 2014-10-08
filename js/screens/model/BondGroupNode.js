@@ -82,7 +82,9 @@ define( function( require ) {
     var orthoSize = bondOrder === 0 ?
                     ( MoleculeView.scale * PairGroup.LONE_PAIR_DISTANCE * 1.07 ):
                     ( MoleculeView.scale * PairGroup.BONDED_PAIR_DISTANCE * 1.22 );
-    return render( view, ( bondOrder === 0 ? lonePairWidth : atomWidth ) * imageScale, ( bondOrder === 0 ? lonePairHeight : atomHeight ) * imageScale, orthoSize );
+    var url = render( view, ( bondOrder === 0 ? lonePairWidth : atomWidth ) * imageScale, ( bondOrder === 0 ? lonePairHeight : atomHeight ) * imageScale, orthoSize );
+    view.dispose();
+    return url;
   }
 
   function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, options ) {
