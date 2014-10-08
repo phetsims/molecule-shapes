@@ -16,18 +16,20 @@ define( function( require ) {
   var colors = {
     background: {
       default: new Color( 0, 0, 0 ),
-      basics: new Color( 252, 216, 124 ),
+      basics: new Color( 198, 226, 246 ),
       projector: new Color( 255, 255, 255 )
     },
     centralAtom: {
-      default: new Color( 159, 102, 218 )
+      default: new Color( 159, 102, 218 ),
+      basics: new Color( 153, 90, 216 )
     },
     atom: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 153, 153, 153 )
     },
     bond: {
-      default: new Color( 255, 255, 255 )
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 230, 230, 230 )
     },
     controlPanelBorder: {
       default: new Color( 210, 210, 210 ),
@@ -62,7 +64,7 @@ define( function( require ) {
     },
     moleculeGeometryName: {
       default: new Color( 255, 255, 140 ),
-      basics: new Color( 54, 47, 14 ),
+      basics: new Color( 0, 0, 0 ),
       projector: new Color( 102, 0, 204 )
     },
     electronGeometryName: {
@@ -77,17 +79,18 @@ define( function( require ) {
     },
     bondAngleSweep: {
       default: new Color( 128, 128, 128 ),
+      basics: new Color( 84, 122, 165 ),
       projector: new Color( 156, 156, 156 )
     },
     bondAngleArc: {
-      default: new Color( 255, 0, 0 )
+      default: new Color( 255, 0, 0 ),
+      basics: new Color( 0, 0, 0 )
     },
     removeButtonText: {
       default: new Color( 0, 0, 0 )
     },
     removeButtonBackground: {
       default: new Color( 255, 200, 0 ),
-      basics: new Color( 204, 204, 204 )
     },
     checkBox: {
       default: new Color( 230, 230, 230 ),
