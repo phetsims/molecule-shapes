@@ -55,6 +55,11 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, BondAngleView, {
     dispose: function() {
+      this.arcGeometry.dispose();
+      this.sectorGeometry.dispose();
+      this.arcMaterial.dispose();
+      this.sectorMaterial.dispose();
+
       this.unlinkSectorColor();
       this.unlinkArcColor();
     },

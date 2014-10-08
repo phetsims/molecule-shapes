@@ -20,16 +20,16 @@ define( function( require ) {
     THREE.Object3D.call( this );
 
     // TODO: don't require parse on loading, but handle separately for each three.js scene?
-    var lonePairGeometry = jsonLoader.parse( LonePairGeometryData ).geometry;
+    this.shellGeometry = jsonLoader.parse( LonePairGeometryData ).geometry;
 
-    var shellMaterial = new THREE.MeshLambertMaterial( {
+    this.shellMaterial = new THREE.MeshLambertMaterial( {
       transparent: true,
       opacity: 0.7,
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
     } );
-    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( shellMaterial, MoleculeShapesColors.lonePairShellProperty );
+    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( this.shellMaterial, MoleculeShapesColors.lonePairShellProperty );
 
-    var shell = new THREE.Mesh( lonePairGeometry, shellMaterial );
+    var shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial );
 
     shell.scale.x = shell.scale.y = shell.scale.z = 2.5;
     shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
@@ -52,6 +52,9 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, LonePairView, {
     dispose: function() {
+      this.shellGeometry.dispose();
+      this.shellMaterial.dispose();
+
       this.unlinkColor();
 
       this.electronView1.dispose();

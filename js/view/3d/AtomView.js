@@ -19,18 +19,21 @@ define( function( require ) {
     var colorProperty = MoleculeShapesGlobals.toColorProperty( color );
 
     var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
-    var geometry = new THREE.SphereGeometry( 2, numSamples, numSamples );
+    this.atomGeometry = new THREE.SphereGeometry( 2, numSamples, numSamples );
 
-    var material = new THREE.MeshLambertMaterial( {
+    this.atomMaterial = new THREE.MeshLambertMaterial( {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
-    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( material, colorProperty );
+    this.unlinkColor = MoleculeShapesGlobals.linkColorAndAmbient( this.atomMaterial, colorProperty );
 
-    THREE.Mesh.call( this, geometry, material );
+    THREE.Mesh.call( this, this.atomGeometry, this.atomMaterial );
   }
 
   return inherit( THREE.Mesh, AtomView, {
     dispose: function() {
+      this.atomMaterial.dispose();
+      this.atomGeometry.dispose();
+
       this.unlinkColor();
     }
   } );

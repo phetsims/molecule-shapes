@@ -18,18 +18,18 @@ define( function( require ) {
   function BondView( aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength, aColorProperty, bColorProperty ) {
     var view = this;
 
-    var aMaterial = new THREE.MeshLambertMaterial( {
+    this.aMaterial = new THREE.MeshLambertMaterial( {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
-    var bMaterial = new THREE.MeshLambertMaterial( {
+    this.bMaterial = new THREE.MeshLambertMaterial( {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );
-    this.unlinkAColor = MoleculeShapesGlobals.linkColor( aMaterial, aColorProperty );
-    this.unlinkBColor = MoleculeShapesGlobals.linkColor( bMaterial, bColorProperty );
+    this.unlinkAColor = MoleculeShapesGlobals.linkColor( this.aMaterial, aColorProperty );
+    this.unlinkBColor = MoleculeShapesGlobals.linkColor( this.bMaterial, bColorProperty );
 
     var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
     var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
-    var cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
+    this.bondGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
 
     this.aPositionProperty = aPositionProperty;
     this.bPositionProperty = bPositionProperty;
@@ -42,8 +42,8 @@ define( function( require ) {
 
     for ( var i = 0; i < bondOrder; i++ ) {
       // they will have unit height and unit radius. We will scale, rotate and translate them later
-      this.aBonds.push( new THREE.Mesh( cylinderGeometry, aMaterial ) );
-      this.bBonds.push( new THREE.Mesh( cylinderGeometry, bMaterial ) );
+      this.aBonds.push( new THREE.Mesh( this.bondGeometry, this.aMaterial ) );
+      this.bBonds.push( new THREE.Mesh( this.bondGeometry, this.bMaterial ) );
     }
 
     THREE.Object3D.call( this );
@@ -55,6 +55,10 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, BondView, {
     dispose: function() {
+      this.bondGeometry.dispose();
+      this.aMaterial.dispose();
+      this.bMaterial.dispose();
+
       this.unlinkAColor();
       this.unlinkBColor();
     },
@@ -131,21 +135,6 @@ define( function( require ) {
         this.bBonds[i].scale.x = this.bBonds[i].scale.z = this.bondRadius;
 
         this.aBonds[i].scale.y = this.bBonds[i].scale.y = length / 2;
-
-        // var rotation = Matrix4F.fromMatrix3f( QuaternionF.getRotationQuaternion( Vector3.Z_UNIT, towardsEnd ).toRotationMatrix() );
-
-        // var aMatrix = Matrix4F.translation( bondCenter.plus( offsets[i] ).minus( colorOffset ) )
-        //                 // point the cylinder in the direction of the bond. Cylinder is symmetric, so sign doesn't matter
-        //                 .times( Matrix4F.fromMatrix3f( QuaternionF.getRotationQuaternion( Vector3.Z_UNIT, towardsEnd ).toRotationMatrix() ) )
-        //                 // since our cylinders point along the Z direction and have unit-length and unit-radius, we scale it out to the desired radius and half-length
-        //                 .times( Matrix4F.scaling( this.bondRadius, this.bondRadius, length / 2 ) );
-        // // this time, add in the color offset instead of subtracting
-        // var bMatrix = Matrix4F.translation( bondCenter.plus( offsets[i] ).plus( colorOffset ) )
-        //                 .times( Matrix4F.fromMatrix3f( QuaternionF.getRotationQuaternion( Vector3.Z_UNIT, towardsEnd ).toRotationMatrix() ) )
-        //                 .times( Matrix4F.scaling( this.bondRadius, this.bondRadius, length / 2 ) );
-
-        // this.aBonds[i].transform.set( );
-        // this.bBonds[i].transform.set( );
 
         this.aBonds[i].updateMatrix();
         this.bBonds[i].updateMatrix();
