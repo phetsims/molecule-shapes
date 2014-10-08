@@ -16,11 +16,12 @@ define( function( require ) {
 
   var jsonLoader = new THREE.JSONLoader();
 
+  var globalShellGeometry = jsonLoader.parse( LonePairGeometryData ).geometry;
+
   function LonePairView() {
     THREE.Object3D.call( this );
 
-    // TODO: don't require parse on loading, but handle separately for each three.js scene?
-    this.shellGeometry = jsonLoader.parse( LonePairGeometryData ).geometry;
+    this.shellGeometry = globalShellGeometry.clone();
 
     this.shellMaterial = new THREE.MeshLambertMaterial( {
       transparent: true,
