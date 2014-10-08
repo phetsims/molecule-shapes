@@ -13,13 +13,14 @@ define( function( require ) {
   var RealMoleculesScreen = require( 'MOLECULE_SHAPES/screens/real/RealMoleculesScreen' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
+  var GlobalOptionsNode = require( 'MOLECULE_SHAPES/view/GlobalOptionsNode' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
   var simTitle = require( 'string!MOLECULE_SHAPES/molecule-shapes.name' );
-  var showOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );
-  var projectorColorsString = require( 'string!MOLECULE_SHAPES/options.projectorColors' );
+
+  var isBasicsVersion = false;
 
   var simOptions = {
     credits: {
@@ -29,18 +30,7 @@ define( function( require ) {
       team: '',
       thanks: ''
     },
-    globalOptions: [
-      {
-        label: showOuterLonePairsString,
-        type: 'boolean',
-        property: MoleculeShapesGlobals.showOuterLonePairsProperty
-      },
-      {
-        label: projectorColorsString,
-        type: 'boolean',
-        property: MoleculeShapesGlobals.projectorColorsProperty
-      }
-    ]
+    optionsNode: new GlobalOptionsNode( isBasicsVersion )
   };
 
   // Appending '?dev' to the URL will enable developer-only features.
@@ -51,8 +41,6 @@ define( function( require ) {
   }
 
   // NOTE: ?canvasOnly will trigger Canvas rendering with a reduced poly-count
-
-  var isBasicsVersion = false;
 
   MoleculeShapesGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
     if ( useProjectorColors ) {
