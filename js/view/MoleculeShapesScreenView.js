@@ -56,7 +56,9 @@ define( function( require ) {
 
     this.threeRenderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
       antialias: true
-    } ) : new THREE.CanvasRenderer();
+    } ) : new THREE.CanvasRenderer( {
+      devicePixelRatio: 1 // hopefully helps performance a bit
+    } );
 
     MoleculeShapesColors.link( 'background', function( color ) {
       screenView.threeRenderer.setClearColor( color.toNumber(), 1 );
