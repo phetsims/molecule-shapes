@@ -12,9 +12,11 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
 
+  var numSamples = MoleculeShapesGlobals.useWebGL ? 10 : 5;
+  var globalElectronGeometry = new THREE.SphereGeometry( 0.1, numSamples, numSamples );
+
   function ElectronView() {
-    var numSamples = MoleculeShapesGlobals.useWebGL ? 10 : 5;
-    this.electronGeometry = new THREE.SphereGeometry( 0.1, numSamples, numSamples );
+    this.electronGeometry = globalElectronGeometry.clone();
     this.electronMaterial = new THREE.MeshLambertMaterial( {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
     } );

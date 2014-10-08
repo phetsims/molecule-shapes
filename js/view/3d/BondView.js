@@ -13,6 +13,9 @@ define( function( require ) {
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
 
+  var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
+  var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
+  var globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
 
   // maxLength is a number or null
   function BondView( aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength, aColorProperty, bColorProperty ) {
@@ -27,9 +30,7 @@ define( function( require ) {
     this.unlinkAColor = MoleculeShapesGlobals.linkColor( this.aMaterial, aColorProperty );
     this.unlinkBColor = MoleculeShapesGlobals.linkColor( this.bMaterial, bColorProperty );
 
-    var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
-    var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
-    this.bondGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
+    this.bondGeometry = globalBondGeometry.clone();
 
     this.aPositionProperty = aPositionProperty;
     this.bPositionProperty = bPositionProperty;

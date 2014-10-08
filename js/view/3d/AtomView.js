@@ -11,6 +11,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
 
+  var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
+  var globalAtomGeometry = new THREE.SphereGeometry( 2, numSamples, numSamples );
+
   /*
    * @param {string | Color | Property.<Color>} color
    */
@@ -18,8 +21,7 @@ define( function( require ) {
     // for now, cast it into place
     var colorProperty = MoleculeShapesGlobals.toColorProperty( color );
 
-    var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
-    this.atomGeometry = new THREE.SphereGeometry( 2, numSamples, numSamples );
+    this.atomGeometry = globalAtomGeometry.clone();
 
     this.atomMaterial = new THREE.MeshLambertMaterial( {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
