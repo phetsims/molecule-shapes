@@ -11,6 +11,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
+  var Util = require( 'DOT/Util' );
   var Quaternion = require( 'DOT/Quaternion' );
 
   function ArcVertices( startDir, endDir, radius, numSegments, lastMidpointDir ) {
@@ -38,7 +39,7 @@ define( function( require ) {
         // basically construct a an approximate semicircle based on the semicircleDir, so that our semicircle doesn't vary dramatically
 
         if ( !lastMidpointDir ) {
-          lastMidpointDir = new Vector3( 0, 1, 0 ); // TODO: don't allocate!
+          lastMidpointDir = Vector3.Y_UNIT;
         }
 
         // find a vector that is as orthogonal to both directions as possible
@@ -95,7 +96,7 @@ define( function( require ) {
     }
   }, {
     isApproximateSemicircle: function( startDir, endDir ) {
-      return Math.acos( startDir.dot( endDir ) ) >= 3.12414;
+      return Math.acos( Util.clamp( startDir.dot( endDir ), -1, 1 ) ) >= 3.12414;
     }
   } );
 } );

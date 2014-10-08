@@ -179,8 +179,8 @@ define( function( require ) {
       if ( n > 2 && bestResult !== null && bestResult.permutation !== permutation ) {
         var permutedOrientations = permutation.apply( idealOrientations );
         var errorLowBound = 4 - 4 * Math.cos( Math.abs(
-            Math.acos( permutedOrientations[0].dot( currentOrientations[0] ) ) -
-            Math.acos( permutedOrientations[1].dot( currentOrientations[1] ) )
+          Math.acos( DotUtil.clamp( permutedOrientations[0].dot( currentOrientations[0] ), -1, 1 ) ) -
+          Math.acos( DotUtil.clamp( permutedOrientations[1].dot( currentOrientations[1] ), -1, 1 ) )
         ) );
 
         // throw out results where this arbitrarily-chosen lower bound rules out the entire permutation
