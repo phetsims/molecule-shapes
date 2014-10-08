@@ -20,7 +20,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
@@ -104,52 +103,76 @@ define( function( require ) {
     var draggedParticleCount = 0;
     var isRotating = false;
 
-    // TODO: we're failing to handle multiple drags due to SimpleDragHandler
-    var dragListener = new SimpleDragHandler( {
-      start: function( event, trail ) {
-        this.dragNode = null; // by default, don't do anything while dragging
+    var multiDragListener = {
+      down: function( event, trail ) {
+        // ignore non-main-mouse-buttons
+        if ( event.pointer.isMouse && event.domEvent && event.domEvent.button !== 0 ) {
+          return;
+        }
 
         // if we are already rotating the entire molecule, no more drags can be handled
         if ( isRotating ) {
           return;
         }
 
-        this.draggedPointer = event.pointer;
+        var dragMode = null;
+        var draggedParticle = null;
 
         var pair = screenView.getElectronPairUnderPointer( event.pointer );
         if ( pair && !pair.userControlled ) {
-          this.dragMode = 'pairExistingSpherical';
-          this.draggedParticle = pair;
+          dragMode = 'pairExistingSpherical';
+          draggedParticle = pair;
           pair.userControlled = true;
           draggedParticleCount++;
         } else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
-          this.dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
-          this.draggedParticle = null;
+          dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
           isRotating = true;
+        } else {
+          // can't drag the pair OR rotate the molecule
+          return;
         }
-      },
-      translate: function( data ) {
-        if ( this.dragMode === 'modelRotate' ) {
-          var delta = data.delta;
-          var scale = 0.007 / screenView.activeScale;
-          var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
-          newQuaternion.multiply( screenView.moleculeView.quaternion );
-          screenView.moleculeView.quaternion.copy( newQuaternion );
-          screenView.moleculeView.updateMatrix();
-        } else if ( this.dragMode === 'pairExistingSpherical' ) {
-          this.draggedParticle.dragToPosition( screenView.getSphericalMoleculePosition( this.draggedPointer.point, this.draggedParticle ) );
-        }
-      },
-      end: function( event, trail ) {
-        if ( this.dragMode === 'pairExistingSpherical' ) {
-          this.draggedParticle.userControlled = false;
-          draggedParticleCount--;
-        } else if ( this.dragMode === 'modelRotate' ) {
-          isRotating = false;
-        }
+
+        var lastGlobalPoint = event.pointer.point.copy();
+
+        event.pointer.cursor = 'pointer';
+        event.pointer.addInputListener( {
+          up: function( event, trail ) {
+            this.endDrag( event, trail );
+          },
+
+          cancel: function( event, trail ) {
+            this.endDrag( event, trail );
+          },
+
+          move: function( event, trail ) {
+            if ( dragMode === 'modelRotate' ) {
+              var delta = event.pointer.point.minus( lastGlobalPoint );
+              lastGlobalPoint.set( event.pointer.point );
+
+              var scale = 0.007 / screenView.activeScale;
+              var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
+              newQuaternion.multiply( screenView.moleculeView.quaternion );
+              screenView.moleculeView.quaternion.copy( newQuaternion );
+              screenView.moleculeView.updateMatrix();
+            } else if ( dragMode === 'pairExistingSpherical' ) {
+              draggedParticle.dragToPosition( screenView.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
+            }
+          },
+
+          // not a Scenery event
+          endDrag: function( event, trail ) {
+            if ( dragMode === 'pairExistingSpherical' ) {
+              draggedParticle.userControlled = false;
+              draggedParticleCount--;
+            } else if ( dragMode === 'modelRotate' ) {
+              isRotating = false;
+            }
+            event.pointer.removeInputListener( this );
+          }
+        } );
       }
-    } );
-    this.backgroundEventTarget.addInputListener( dragListener );
+    };
+    this.backgroundEventTarget.addInputListener( multiDragListener );
 
     // TODO: update the cursor even if we don't move? (only if we have mouse movement)
     this.backgroundEventTarget.addInputListener( {
