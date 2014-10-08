@@ -47,5 +47,8 @@
 
   "angle.degrees": "{0}\u00B0",
   "angle.greaterThanDegrees": "greater than {0}\u00B0",
-  "angle.lessThanDegrees": "less than {0}\u00B0"
+  "angle.lessThanDegrees": "less than {0}\u00B0",
+
+  "options.showOuterLonePairs": "Show Outer Lone Pairs",
+  "options.projectorColors": "Projector Mode"
 }

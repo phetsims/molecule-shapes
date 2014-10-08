@@ -18,6 +18,7 @@ define( function( require ) {
   var BondView = require( 'MOLECULE_SHAPES/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/view/3d/LonePairView' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/view/MoleculeShapesScreenView' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/view/MoleculeShapesGlobals' );
   var BondAngleView = require( 'MOLECULE_SHAPES/view/3d/BondAngleView' );
 
   var angleDegreesString = require( 'string!MOLECULE_SHAPES/angle.degrees' );
@@ -177,7 +178,7 @@ define( function( require ) {
 
         var visibilityProperty = parentAtom === centralAtom ?
                                  this.model.showLonePairsProperty :
-                                 this.model.showOuterLonePairsProperty;
+                                 MoleculeShapesGlobals.showOuterLonePairsProperty;
         visibilityProperty.linkAttribute( lonePairView, 'visible' );
 
         group.link( 'position', function( position ) {

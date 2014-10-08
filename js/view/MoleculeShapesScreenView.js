@@ -23,7 +23,6 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/view/GeometryNamePanel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -97,54 +96,6 @@ define( function( require ) {
       left: this.layoutBounds.minX + 10,
       bottom: this.layoutBounds.maxY - 10
     } ) );
-
-    /*---------------------------------------------------------------------------*
-    * Temporary
-    *----------------------------------------------------------------------------*/
-    this.addChild( new TextPushButton( 'Regular Colors', {
-      font: new PhetFont( 20 ),
-      baseColor: '#888',
-      left: this.layoutBounds.left + 10,
-      top: this.layoutBounds.top + 10,
-      scale: 0.5,
-      listener: function() {
-        MoleculeShapesColors.applyProfile( 'default' );
-      }
-    } ) );
-    this.addChild( new TextPushButton( 'Basics Colors', {
-      font: new PhetFont( 20 ),
-      baseColor: '#888',
-      left: this.layoutBounds.left + 10,
-      top: this.layoutBounds.top + 30,
-      scale: 0.5,
-      listener: function() {
-        MoleculeShapesColors.applyProfile( 'default' );
-        MoleculeShapesColors.applyProfile( 'basics' );
-      }
-    } ) );
-    this.addChild( new TextPushButton( 'Projector Colors', {
-      font: new PhetFont( 20 ),
-      baseColor: '#888',
-      left: this.layoutBounds.left + 10,
-      top: this.layoutBounds.top + 50,
-      scale: 0.5,
-      listener: function() {
-        MoleculeShapesColors.applyProfile( 'default' );
-        MoleculeShapesColors.applyProfile( 'projector' );
-      }
-    } ) );
-    if ( !model.isBasicsVersion ) {
-      this.addChild( new TextPushButton( 'Toggle "Show Outer Lone Pairs"', {
-        font: new PhetFont( 20 ),
-        baseColor: '#888',
-        left: this.layoutBounds.left + 10,
-        top: this.layoutBounds.top + 70,
-        scale: 0.5,
-        listener: function() {
-          model.showOuterLonePairs = !model.showOuterLonePairs;
-        }
-      } ) );
-    }
 
     // for computing rays
     this.projector = new THREE.Projector();

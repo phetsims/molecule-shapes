@@ -9,10 +9,17 @@ define( function( require ) {
   'use strict';
 
   var Property = require( 'AXON/Property' );
+  var PropertySet = require( 'AXON/PropertySet' );
   var Color = require( 'SCENERY/util/Color' );
   var Util = require( 'SCENERY/util/Util' );
 
-  return {
+  // TODO: MOVE me out of view
+  var MoleculeShapesGlobals = new PropertySet( {
+    showOuterLonePairs: !!window.phetcommon.getQueryParameter( 'showOuterLonePairs' ) || false,
+    projectorColors: !!window.phetcommon.getQueryParameter( 'projector' ) || false
+  } );
+
+  return _.extend( MoleculeShapesGlobals, {
     useWebGL: !window.phetcommon.getQueryParameter( 'canvasOnly' ) && Util.isWebGLSupported(),
 
     /*
@@ -65,6 +72,6 @@ define( function( require ) {
       }
       return colorProperty;
     }
-  };
+  } );
 } );
 
