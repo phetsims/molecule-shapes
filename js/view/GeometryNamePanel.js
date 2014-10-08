@@ -15,7 +15,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Color = require( 'SCENERY/util/Color' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/view/MoleculeShapesCheckBox' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/view/MoleculeShapesPanel' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
@@ -111,8 +111,8 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
 
-    this.molecularCheckbox = new CheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
-    this.electronCheckbox = new CheckBox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
+    this.molecularCheckbox = new MoleculeShapesCheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
+    this.electronCheckbox = new MoleculeShapesCheckBox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
 
     this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = this.molecularCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.molecularCheckbox.localBounds.maxY + 40 );
     this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = this.electronCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.electronCheckbox.localBounds.maxY + 40 );

@@ -88,6 +88,21 @@ define( function( require ) {
     removeButtonBackground: {
       default: new Color( 255, 200, 0 ),
       basics: new Color( 204, 204, 204 )
+    },
+    checkBox: {
+      default: new Color( 230, 230, 230 ),
+      basics: new Color( 0, 0, 0 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    checkBoxDisabled: {
+      default: new Color( 100, 100, 100 ),
+      basics: new Color( 128, 128, 128 ),
+      projector: new Color( 128, 128, 128 )
+    },
+    checkBoxBackground: {
+      default: new Color( 30, 30, 30 ),
+      basics: new Color( 255, 255, 255 ),
+      projector: new Color( 255, 255, 255 )
     }
   };
 

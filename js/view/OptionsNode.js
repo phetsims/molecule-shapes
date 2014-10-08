@@ -13,7 +13,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/view/MoleculeShapesCheckBox' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/view/MoleculeShapesColors' );
 
   var showLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
@@ -30,8 +30,8 @@ define( function( require ) {
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
 
-    var showLonePairsCheckbox = new CheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
-    var showBondAnglesCheckbox = new CheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
+    var showLonePairsCheckbox = new MoleculeShapesCheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
+    var showBondAnglesCheckbox = new MoleculeShapesCheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
 
     showLonePairsCheckbox.touchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
     showBondAnglesCheckbox.touchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
