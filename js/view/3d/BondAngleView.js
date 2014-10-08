@@ -75,7 +75,7 @@ define( function( require ) {
       var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
       this.parent.worldToLocal( cameraPosition ); // this mutates cameraPosition
 
-      var localCameraPosition = new Vector3( cameraPosition.x, cameraPosition.y, cameraPosition.z ).normalized();
+      var localCameraPosition = new Vector3().set( cameraPosition ).normalized();
 
       var aDir = this.aGroup.position.normalized();
       var bDir = this.bGroup.position.normalized();

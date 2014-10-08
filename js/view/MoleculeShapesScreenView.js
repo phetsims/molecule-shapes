@@ -248,8 +248,8 @@ define( function( require ) {
 
     getRayFromScreenPoint: function( screenPoint ) {
       var threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
-      return new Ray3( new Vector3( threeRay.origin.x, threeRay.origin.y, threeRay.origin.z ),
-                       new Vector3( threeRay.direction.x, threeRay.direction.y, threeRay.direction.z ).normalize() );
+      return new Ray3( new Vector3().set( threeRay.origin ),
+                       new Vector3().set( threeRay.direction ).normalize() );
     },
 
     getElectronPairUnderPointer: function( pointer ) {
@@ -294,8 +294,8 @@ define( function( require ) {
       var ray = raycaster.ray.clone();
       ray.applyMatrix4( threeInverseMatrix ); // global to local
 
-      var localCameraPosition = new Vector3( ray.origin.x, ray.origin.y, ray.origin.z );
-      var localCameraDirection = new Vector3( ray.direction.x, ray.direction.y, ray.direction.z ).normalize();
+      var localCameraPosition = new Vector3().set( ray.origin );
+      var localCameraDirection = new Vector3().set( ray.direction ).normalize();
 
       // how far we will end up from the center atom
       var finalDistance = this.model.molecule.getIdealDistanceFromCenter( draggedParticle );
