@@ -27,7 +27,8 @@ define( function( require ) {
     this.isBasicsVersion = isBasicsVersion;
 
     PropertySet.call( this, extend( {
-      molecule: null, // {Molecule}
+      molecule: null, // {Molecule}, assumed not to change in the 1st screen (model)
+      moleculeQuaternion: new THREE.Quaternion(), // {THREE.Quaternion}, describes the rotation of the molecule view
       showBondAngles: false,
       showLonePairs: !isBasicsVersion,
       showMolecularShapeName: false,

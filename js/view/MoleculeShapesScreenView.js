@@ -83,9 +83,6 @@ define( function( require ) {
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
-        // reset the molecule view's rotation
-        screenView.moleculeView.rotation.set( 0, 0, 0 );
-
         model.reset();
       },
       touchExpansion: 20
@@ -151,9 +148,8 @@ define( function( require ) {
 
               var scale = 0.007 / screenView.activeScale;
               var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
-              newQuaternion.multiply( screenView.moleculeView.quaternion );
-              screenView.moleculeView.quaternion.copy( newQuaternion );
-              screenView.moleculeView.updateMatrix();
+              newQuaternion.multiply( model.moleculeQuaternion );
+              model.moleculeQuaternion = newQuaternion;
             } else if ( dragMode === 'pairExistingSpherical' ) {
               draggedParticle.dragToPosition( screenView.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
             }
@@ -197,6 +193,15 @@ define( function( require ) {
       } );
     } );
 
+    // update the molecule view's rotation when the model's rotation changes
+    model.moleculeQuaternionProperty.link( function( quaternion ) {
+      // moleculeView is created in the subtype (not yet). will handle initial rotation in addMoleculeView
+      if ( screenView.moleculeView ) {
+        screenView.moleculeView.quaternion.copy( quaternion );
+        screenView.moleculeView.updateMatrix();
+      }
+    } );
+
     // TODO: turn stub into handler
     this.labelManager = {
       showLabel: function( string, brightness, centerScreenPoint, midScreenPoint ) {
@@ -230,6 +235,17 @@ define( function( require ) {
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
+    addMoleculeView: function( moleculeView ) {
+      this.threeScene.add( moleculeView );
+
+      this.moleculeView.quaternion.copy( this.model.moleculeQuaternion );
+      this.moleculeView.updateMatrix();
+    },
+
+    removeMoleculeView: function( moleculeView ) {
+      this.threeScene.remove( moleculeView );
+    },
+
     getRaycasterFromScreenPoint: function( screenPoint ) {
       // normalized device coordinates
       var ndcX = 2 * screenPoint.x / this.screenWidth - 1;

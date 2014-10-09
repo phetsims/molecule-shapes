@@ -47,7 +47,7 @@ define( function( require ) {
 
     this.model = model;
     this.moleculeView = new MoleculeView( model, this, model.molecule, this.labelManager );
-    this.threeScene.add( this.moleculeView );
+    this.addMoleculeView( this.moleculeView );
 
     var comboBoxListContainer = new Node();
     var comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
@@ -124,10 +124,8 @@ define( function( require ) {
     rebuildMolecule: function( switchedRealMolecule ) {
       var model = this.model;
 
-      var originalViewQuaternion = this.moleculeView.quaternion;
-
       // tear down the view
-      this.threeScene.remove( this.moleculeView );
+      this.removeMoleculeView( this.moleculeView );
       this.moleculeView.dispose();
 
       var molecule = this.model.molecule;
@@ -203,8 +201,7 @@ define( function( require ) {
         this.moleculeView.dispose();
       }
       this.moleculeView = new MoleculeView( this.model, this, this.model.molecule, this.labelManager );
-      this.moleculeView.quaternion.copy( originalViewQuaternion ); // sets the moleculeView's quaternion
-      this.threeScene.add( this.moleculeView );
+      this.addMoleculeView( this.moleculeView );
     }
   } );
 } );
