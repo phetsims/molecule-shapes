@@ -20,7 +20,7 @@ define( function( require ) {
   } );
 
   return _.extend( MoleculeShapesGlobals, {
-    useWebGL: !( window.phetcommon.getQueryParameter( 'webgl' ) === 'false' ) && Util.isWebGLSupported(),
+    useWebGL: ( window.phetcommon.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported(),
 
     /*
      * Applies color changes to the material's color field, and also does so immediately upon being called.
