@@ -17,7 +17,7 @@ define( function( require ) {
    * @param {Vector2} position - The initial position for the atom
    * @param {number} [lonePairCount]
    */
-  function AtomLocation( element, position, lonePairCount ) {
+  function RealAtomLocation( element, position, lonePairCount ) {
     NitroglycerinAtom.call( this, element );
 
     this.position = position;
@@ -29,5 +29,5 @@ define( function( require ) {
     }
   }
 
-  return inherit( NitroglycerinAtom, AtomLocation );
+  return inherit( NitroglycerinAtom, RealAtomLocation );
 } );
