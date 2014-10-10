@@ -67,9 +67,9 @@ define( function( require ) {
   var lonePairHeight = 55;
   function getBondDataURL( bondOrder ) {
     var molecule = new VSEPRMolecule();
-    var centralAtom = new PairGroup( new Vector3(), false, false );
+    var centralAtom = new PairGroup( new Vector3(), false );
     molecule.addCentralAtom( centralAtom );
-    molecule.addGroupAndBond( new PairGroup( Vector3.X_UNIT.times( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ), bondOrder === 0, false ), centralAtom, bondOrder );
+    molecule.addGroupAndBond( new PairGroup( Vector3.X_UNIT.times( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ), bondOrder === 0 ), centralAtom, bondOrder );
     var model = new MoleculeShapesModel( false, {
       molecule: molecule
     } );

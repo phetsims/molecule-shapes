@@ -107,8 +107,7 @@ define( function( require ) {
 
       var extraFactor = 1.2;
 
-      // var pair = new PairGroup( new Vector3( 10, 20, 0 ), bondOrder === 0, false );
-      var pair = new PairGroup( new Vector3( threePoint.x * extraFactor, threePoint.y * extraFactor, threePoint.z * extraFactor ), bondOrder === 0, false );
+      var pair = new PairGroup( new Vector3().set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
       this.model.molecule.addGroupAndBond( pair, this.model.molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) / PairGroup.REAL_TMP_SCALE );
     },
 

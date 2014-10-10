@@ -32,7 +32,7 @@ define( function( require ) {
       addLonePairEnabled: true
     } );
 
-    this.molecule.addCentralAtom( new PairGroup( new Vector3(), false, false ) );
+    this.molecule.addCentralAtom( new PairGroup( new Vector3(), false ) );
     this.setupInitialMoleculeState();
 
     // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
@@ -48,9 +48,9 @@ define( function( require ) {
 
       // start with two single bonds
       var centralAtom = this.molecule.getCentralAtom();
-      this.molecule.addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false, false ), centralAtom, 1 );
+      this.molecule.addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
       var v = new Vector3( 2, 8, -5 );
-      this.molecule.addGroupAndBond( new PairGroup( v.normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false, false ), centralAtom, 1 );
+      this.molecule.addGroupAndBond( new PairGroup( v.normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
     },
 
     reset: function() {

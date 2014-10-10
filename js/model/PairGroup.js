@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A group of electron pairs. The pairs may be part of a bond, or may be a lone electron pair.
+ * A pair of electrons in VSEPR, which are either an atom (the electrons are constrained by the bond) or a lone pair.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -14,14 +14,22 @@ define( function( require ) {
 
   var nextId = 0;
 
-  function PairGroup( position, isLonePair, startDragged, element ) {
+  /**
+   * @constructor
+   * @param {Vector3} position - Initial position
+   * @param {boolean} isLonePair - True for a lone pair, false for an atom
+   * @param {Element} [element] - The NITROGLYCERIN element if applicable (e.g. real model), or undefined
+   */
+  function PairGroup( position, isLonePair, element ) {
+    assert && assert( element || element === undefined );
+
     // unique identifier
     this.id = nextId++;
 
     PropertySet.call( this, {
       position: position,
       velocity: Vector3.ZERO,
-      userControlled: startDragged
+      userControlled: false
     } );
 
     this.isLonePair = isLonePair;

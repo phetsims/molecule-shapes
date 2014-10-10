@@ -176,18 +176,18 @@ define( function( require ) {
 
         newMolecule = new VSEPRMolecule();
 
-        var newCentralAtom = new PairGroup( new Vector3(), false, false );
+        var newCentralAtom = new PairGroup( new Vector3(), false );
         newMolecule.addCentralAtom( newCentralAtom );
         for ( var i = 0; i < numRadialAtoms + numRadialLonePairs; i++ ) {
           var unitVector = mapping.rotateVector( idealUnitVectors[i] );
           if ( i < numRadialLonePairs ) {
-            newMolecule.addGroupAndBond( new PairGroup( unitVector.times( PairGroup.LONE_PAIR_DISTANCE ), true, false ), newCentralAtom, 0 );
+            newMolecule.addGroupAndBond( new PairGroup( unitVector.times( PairGroup.LONE_PAIR_DISTANCE ), true ), newCentralAtom, 0 );
           }
           else {
             // we need to dig the bond order out of the mapping molecule, and we need to pick the right one (thus the permutation being applied, at an offset)
             var oldRadialGroup = mappingMolecule.getRadialAtoms()[permutation.apply( i ) - numRadialLonePairs];
             var bond = mappingMolecule.getParentBond( oldRadialGroup );
-            var group = new PairGroup( unitVector.times( bond.length * PairGroup.REAL_TMP_SCALE ), false, false );
+            var group = new PairGroup( unitVector.times( bond.length * PairGroup.REAL_TMP_SCALE ), false );
             newMolecule.addGroupAndBond( group, newCentralAtom, bond.order, bond.length );
 
             newMolecule.addTerminalLonePairs( group, _.filter( mappingMolecule.getNeighbors( oldRadialGroup ), function( group ) { return group.isLonePair; } ).length );

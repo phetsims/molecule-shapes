@@ -285,7 +285,7 @@ define( function( require ) {
       for ( var i = 0; i < quantity; i++ ) {
         // mapped into our coordinates
         var lonePairOrientation = mapping.rotateVector( lonePairOrientations[i] );
-        this.addGroupAndBond( new PairGroup( atom.position.plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true, false ), atom, 0 );
+        this.addGroupAndBond( new PairGroup( atom.position.plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
       }
     }
   } );
