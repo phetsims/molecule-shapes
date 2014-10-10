@@ -1,7 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * 3D data for the "Lone Pair" cloud.
+ * 3D data for the "Lone Pair" cloud, generated from balloon2.obj. See /assets/balloon-README.txt for details. Modeled
+ * in Blender by PhET.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
