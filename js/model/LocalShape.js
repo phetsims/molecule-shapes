@@ -15,6 +15,13 @@ define( function( require ) {
   var Permutation = require( 'DOT/Permutation' );
   var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
 
+  /*
+   * @constructor
+   * @param {Permutation[]} allowedPermutations
+   * @param {PairGroup} centralAtom
+   * @param {PairGroup[]} groups
+   * @param {Vector3[]} idealOrientations
+   */
   function LocalShape( allowedPermutations, centralAtom, groups, idealOrientations ) {
     // denotes how we can map the groups into the orientation vectors. some combinations may not be possible
     this.allowedPermutations = allowedPermutations;

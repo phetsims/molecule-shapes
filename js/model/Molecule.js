@@ -55,18 +55,19 @@ define( function( require ) {
     // abstract isReal()
 
     update: function( tpf ) {
-      var that = this;
-      // TODO: don't filter for garbage collection. just continue in the for loop
-      var nonCentralGroups = _.filter( this.groups, function( group ) { return group !== that.centralAtom; } );
+      var numGroups = this.groups.length;
+      for ( var i = 0; i < numGroups; i++ ) {
+        var group = this.groups[i];
 
-      // move based on velocity
-      for ( var i = 0; i < nonCentralGroups.length; i++ ) {
-        var group = nonCentralGroups[i];
+        // ignore processing on the central atom
+        if ( group === this.centralAtom ) {
+          continue;
+        }
 
         var parentBond = this.getParentBond( group );
-        var origin = parentBond.getOtherAtom( group ).position;
+        var parentGroup = parentBond.getOtherAtom( group );
 
-        var oldDistance = ( group.position.minus( origin ) ).magnitude();
+        var oldDistance = group.position.distance( parentGroup.position );
         group.stepForward( tpf );
         group.attractToIdealDistance( tpf, oldDistance, parentBond );
       }
