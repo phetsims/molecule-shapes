@@ -63,7 +63,7 @@ define( function( require ) {
     return a * ( 1 - ratio ) + b * ratio;
   }
 
-  // Returns a vector that is the component of "vector" that is perpendicular to the "position" vector
+  // Returns the component of "vector" that is perpendicular to the "position"
   PairGroup.getTangentDirection = function( position, vector ) {
     var normalizedPosition = position.normalized();
     return vector.minus( normalizedPosition.times( vector.dot( normalizedPosition ) ) );

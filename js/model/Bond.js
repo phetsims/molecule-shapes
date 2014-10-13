@@ -26,7 +26,7 @@ define( function( require ) {
 
   return inherit( Object, Bond, {
     toString: function() {
-      return "{" + this.a.toString() + " => " + this.b.toString() + "}";
+      return '{' + this.a.toString() + ' => ' + this.b.toString() + '}';
     },
 
     contains: function( atom ) {

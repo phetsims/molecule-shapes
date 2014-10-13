@@ -17,26 +17,40 @@ define( function( require ) {
   var Bond = require( 'MOLECULE_SHAPES/model/Bond' );
   var GeometryConfiguration = require( 'MOLECULE_SHAPES/model/GeometryConfiguration' );
 
-  function RealMoleculeShape( displayName, simplifiedBondLength ) {
+  // Instead of the absolute positioning, this (for now) sets the bond lengths to be the same, since for our purposes
+  // they are all very close.
+  var useSimplifiedBondLength = true;
+
+  /*
+   * @constructor
+   * @param {string} displayName - The displayed chemical name. Digits will be turned into subscripts, so use "H20", etc.
+   * @param {number | null} bondLengthOverride - If useSimplifiedBondLength, this will be used as the bond length for
+   *                                             all atoms.
+   */
+  function RealMoleculeShape( displayName, bondLengthOverride ) {
     this.displayName = displayName;
-    this.simplifiedBondLength = simplifiedBondLength * 5.5;
+    this.bondLengthOverride = bondLengthOverride * 5.5; // upscale the true size to our model units
 
     this.atoms = []; // {RealAtomLocation[]}
     this.bonds = []; // {Bond[]}
     this.centralAtom = null; // {RealAtomLocation}
 
-    // instead of the absolute positioning, this (for now) sets the bond lengths to be the same, since for our purposes they are all very close
-    this.useSimplifiedBondLength = true;
+    this.centralAtomCount = 0;
   }
 
   inherit( Object, RealMoleculeShape, {
     addAtom: function( atom ) {
       assert && assert( this.atoms.indexOf( atom ) === -1 );
+
       this.atoms.push( atom );
     },
 
     addBond: function( a, b, order, bondLength ) {
       this.bonds.push( new Bond( a, b, order, bondLength ) );
+
+      if ( a === this.centralAtom || b === this.centralAtom ) {
+        this.centralAtomCount++;
+      }
     },
 
     getAtoms: function() {
@@ -53,35 +67,12 @@ define( function( require ) {
     },
 
     addRadialAtom: function( atom, bondOrder ) {
-      if ( this.useSimplifiedBondLength ) {
-        atom.position.normalize().multiplyScalar( this.simplifiedBondLength );
+      if ( useSimplifiedBondLength ) {
+        // adjust the position's magnitude to the proper scale
+        atom.position.normalize().multiplyScalar( this.bondLengthOverride );
       }
       this.addAtom( atom );
-      this.addBond( atom, this.centralAtom, bondOrder, this.useSimplifiedBondLength ? this.simplifiedBondLength : atom.position.magnitude() );
-    },
-
-    translate: function( offset ) {
-      for ( var i = 0; i < this.atoms.length; i++ ) {
-        this.atoms[i].position = this.atoms[i].position.plus( offset );
-      }
-    },
-
-    getDisplayName: function() {
-      return this.displayName;
-    },
-
-    getCentralAtom: function() {
-      return this.centralAtom;
-    },
-
-    getCentralLonePairCount: function() {
-      return this.getCentralAtom().lonePairCount;
-    },
-
-    getCentralAtomCount: function() {
-      var centralAtom = this.centralAtom;
-      // TODO: better count function
-      return _.filter( this.bonds, function( bond ) { return bond.contains( centralAtom ); } ).length;
+      this.addBond( atom, this.centralAtom, bondOrder, useSimplifiedBondLength ? this.bondLengthOverride : atom.position.magnitude() );
     },
 
     toString: function() {
@@ -107,7 +98,7 @@ define( function( require ) {
   var S = Element.S;
   var Xe = Element.Xe;
 
-  RealMoleculeShape.BERYLLIUM_CHLORIDE = createMoleculeShape( 'BeCl2', 1.8, function( shape ) { // TODO: more accurate numbers?
+  RealMoleculeShape.BERYLLIUM_CHLORIDE = createMoleculeShape( 'BeCl2', 1.8, function( shape ) {
     shape.addCentralAtom( new RealAtomLocation( Be, new Vector3() ) );
     shape.addRadialAtom( new RealAtomLocation( Cl, new Vector3( 1.8, 0, 0 ), 3 ), 1 );
     shape.addRadialAtom( new RealAtomLocation( Cl, new Vector3( -1.8, 0, 0 ), 3 ), 1 );

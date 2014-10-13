@@ -15,6 +15,7 @@ define( function( require ) {
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
   var VseprConfiguration = require( 'MOLECULE_SHAPES/model/VseprConfiguration' );
 
+  // TODO: rename parameter to RealMoleculeShape
   function RealMolecule( realMolecule ) {
     var i, group, normalizedPosition;
 
@@ -24,19 +25,19 @@ define( function( require ) {
 
     this.localShapeMap = {};
 
-    var numLonePairs = realMolecule.getCentralLonePairCount();
+    var numLonePairs = realMolecule.centralAtom.lonePairCount;
     var numBonds = realMolecule.getBonds().length;
 
     var idealCentralOrientations = [];
     var centralPairGroups = [];
 
-    this.addCentralAtom( new PairGroup( new Vector3(), false, realMolecule.getCentralAtom().element ) );
+    this.addCentralAtom( new PairGroup( new Vector3(), false, realMolecule.centralAtom.element ) );
 
     // add in bonds
     var bonds = realMolecule.getBonds();
     for ( i = 0; i < bonds.length; i++ ) {
       var bond = bonds[i];
-      var atom = bond.getOtherAtom( realMolecule.getCentralAtom() );
+      var atom = bond.getOtherAtom( realMolecule.centralAtom );
       normalizedPosition = atom.position.normalized();
       idealCentralOrientations.push( normalizedPosition );
       var bondLength = atom.position.magnitude();
