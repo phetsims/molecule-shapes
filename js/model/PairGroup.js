@@ -59,14 +59,11 @@ define( function( require ) {
   PairGroup.JITTER_SCALE = 0.001;
   PairGroup.DAMPING_FACTOR = 0.1;
 
-  // TODO: this is horrible. refactor it!
-  PairGroup.REAL_TMP_SCALE = 5.5; // TODO: deal with units correctly in the 1st tab model so we can remove this
-
   function interpolate( a, b, ratio ) {
     return a * ( 1 - ratio ) + b * ratio;
   }
 
-  // Returns a unit vector that is the component of "vector" that is perpendicular to the "position" vector
+  // Returns a vector that is the component of "vector" that is perpendicular to the "position" vector
   PairGroup.getTangentDirection = function( position, vector ) {
     var normalizedPosition = position.normalized();
     return vector.minus( normalizedPosition.times( vector.dot( normalizedPosition ) ) );
@@ -88,7 +85,7 @@ define( function( require ) {
 
       var isTerminalLonePair = !origin.equals( Vector3.ZERO );
 
-      var idealDistanceFromCenter = bond.length * PairGroup.REAL_TMP_SCALE;
+      var idealDistanceFromCenter = bond.length;
 
       /*---------------------------------------------------------------------------*
        * prevent movement away from our ideal distance

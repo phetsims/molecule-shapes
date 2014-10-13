@@ -162,7 +162,7 @@ define( function( require ) {
       // add the group, but delay notifications (inconsistent state)
       this.addGroupOnly( group, false );
 
-      bondLength = bondLength || group.position.minus( parent.position ).magnitude() / PairGroup.REAL_TMP_SCALE;
+      bondLength = bondLength || group.position.minus( parent.position ).magnitude();
       this.addBondBetween( group, parent, bondOrder, bondLength );
 
       // notify after bond added, so we don't send notifications in an inconsistent state
@@ -269,7 +269,7 @@ define( function( require ) {
       var bond = this.getParentBond( group );
       assert && assert( bond.contains( this.centralAtom ) );
 
-      return group.isLonePair ? PairGroup.LONE_PAIR_DISTANCE : bond.length * PairGroup.REAL_TMP_SCALE;
+      return group.isLonePair ? PairGroup.LONE_PAIR_DISTANCE : bond.length;
     },
 
     addTerminalLonePairs: function( atom, quantity ) {

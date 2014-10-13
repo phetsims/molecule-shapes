@@ -41,7 +41,7 @@ define( function( require ) {
       idealCentralOrientations.push( normalizedPosition );
       var bondLength = atom.position.magnitude();
 
-      var atomLocation = normalizedPosition.times( PairGroup.REAL_TMP_SCALE * bondLength );
+      var atomLocation = normalizedPosition.times( bondLength );
       group = new PairGroup( atomLocation, false, atom.element );
       centralPairGroups.push( group );
       this.addGroupAndBond( group, this.getCentralAtom(), bond.order, bondLength );
@@ -60,7 +60,7 @@ define( function( require ) {
       normalizedPosition = mapping.rotateVector( idealModelVectors[i] );
       idealCentralOrientations.push( normalizedPosition );
       group = new PairGroup( normalizedPosition.times( PairGroup.LONE_PAIR_DISTANCE ), true );
-      this.addGroupAndBond( group, this.getCentralAtom(), 0, PairGroup.LONE_PAIR_DISTANCE / PairGroup.REAL_TMP_SCALE );
+      this.addGroupAndBond( group, this.getCentralAtom(), 0, PairGroup.LONE_PAIR_DISTANCE );
       centralPairGroups.push( group );
     }
 

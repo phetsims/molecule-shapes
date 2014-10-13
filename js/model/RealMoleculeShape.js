@@ -19,7 +19,7 @@ define( function( require ) {
 
   function RealMoleculeShape( displayName, simplifiedBondLength ) {
     this.displayName = displayName;
-    this.simplifiedBondLength = simplifiedBondLength;
+    this.simplifiedBondLength = simplifiedBondLength * 5.5;
 
     this.atoms = []; // {RealAtomLocation[]}
     this.bonds = []; // {Bond[]}
