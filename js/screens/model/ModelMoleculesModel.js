@@ -17,6 +17,7 @@ define( function( require ) {
 
   /**
    * @constructor
+   * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function ModelMoleculesModel( isBasicsVersion ) {
     var model = this;

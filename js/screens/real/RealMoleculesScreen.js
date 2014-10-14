@@ -22,6 +22,7 @@ define( function( require ) {
   /**
    * Creates the model and view for the RealMoleculesScreen
    * @constructor
+   * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   return inherit( Screen, function RealMoleculesScreen( isBasicsVersion ) {
     var screenIcon = Rectangle.rect( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, {

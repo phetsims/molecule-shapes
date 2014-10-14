@@ -16,6 +16,7 @@ define( function( require ) {
 
   /**
    * @constructor
+   * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function RealMoleculesModel( isBasicsVersion ) {
     var startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[0] : RealMoleculeShape.TAB_2_MOLECULES[0];
