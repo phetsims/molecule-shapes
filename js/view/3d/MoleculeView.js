@@ -53,7 +53,7 @@ define( function( require ) {
     _.each( molecule.getDistantLonePairs(), this.addGroup.bind( this ) );
 
     if ( molecule.isReal ) {
-      this.centerAtomView = new AtomView( this.renderer, AtomView.getElementLocalMaterial( molecule.getCentralAtom().element ) );
+      this.centerAtomView = new AtomView( this.renderer, AtomView.getElementLocalMaterial( molecule.centralAtom.element ) );
     } else {
       this.centerAtomView = new AtomView( this.renderer, AtomView.centralAtomLocalMaterial );
     }
@@ -154,12 +154,12 @@ define( function( require ) {
 
     addGroup: function( group ) {
       // ignore the central atom, we add it in the constructor by default
-      if ( group === this.molecule.getCentralAtom() ) {
+      if ( group === this.molecule.centralAtom ) {
         return;
       }
 
       var parentAtom = this.molecule.getParent( group );
-      var centralAtom = this.molecule.getCentralAtom();
+      var centralAtom = this.molecule.centralAtom;
       if ( group.isLonePair ) {
 
         var lonePairView = new LonePairView( this.renderer );

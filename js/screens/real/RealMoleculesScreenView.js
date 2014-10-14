@@ -162,7 +162,7 @@ define( function( require ) {
             } ),
             LocalShape.vseprPermutations( mappingMolecule.getRadialGroups() ) );
           _.each( newMolecule.getGroups(), function( group ) {
-            if ( group !== newMolecule.getCentralAtom() ) {
+            if ( group !== newMolecule.centralAtom ) {
               group.position = mapping.rotateVector( group.position );
             }
           } );

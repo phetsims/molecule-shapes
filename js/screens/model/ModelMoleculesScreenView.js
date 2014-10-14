@@ -108,17 +108,17 @@ define( function( require ) {
       var extraFactor = 1.2;
 
       var pair = new PairGroup( new Vector3().set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
-      this.model.molecule.addGroupAndBond( pair, this.model.molecule.getCentralAtom(), bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
+      this.model.molecule.addGroupAndBond( pair, this.model.molecule.centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
     },
 
     removePairGroup: function( bondOrder ) {
       var molecule = this.model.molecule;
 
-      var bonds = molecule.getBonds( molecule.getCentralAtom() );
+      var bonds = molecule.getBonds( molecule.centralAtom );
 
       for ( var i = bonds.length - 1; i >= 0; i-- ) {
         if ( bonds[i].order === bondOrder ) {
-          var atom = bonds[i].getOtherAtom( molecule.getCentralAtom() );
+          var atom = bonds[i].getOtherAtom( molecule.centralAtom );
 
           molecule.removeGroup( atom );
           break;

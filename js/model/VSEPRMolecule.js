@@ -39,7 +39,7 @@ define( function( require ) {
               for ( var k = 0; k < radialGroups.length; k++ ) {
                 var otherGroup = radialGroups[k];
 
-                if ( otherGroup !== group && group !== this.getCentralAtom() ) {
+                if ( otherGroup !== group && group !== this.centralAtom ) {
                   group.repulseFrom( otherGroup, tpf, trueLengthsRatioOverride );
                 }
               }

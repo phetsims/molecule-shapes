@@ -45,9 +45,8 @@ define( function( require ) {
 
   return inherit( MoleculeShapesModel, ModelMoleculesModel, {
     setupInitialMoleculeState: function() {
-
       // start with two single bonds
-      var centralAtom = this.molecule.getCentralAtom();
+      var centralAtom = this.molecule.centralAtom;
       this.molecule.addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
       var v = new Vector3( 2, 8, -5 );
       this.molecule.addGroupAndBond( new PairGroup( v.normalized().times( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );

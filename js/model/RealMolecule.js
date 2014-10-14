@@ -45,7 +45,7 @@ define( function( require ) {
       var atomLocation = normalizedPosition.times( bondLength );
       group = new PairGroup( atomLocation, false, atom.element );
       centralPairGroups.push( group );
-      this.addGroupAndBond( group, this.getCentralAtom(), bond.order, bondLength );
+      this.addGroupAndBond( group, this.centralAtom, bond.order, bondLength );
 
       this.addTerminalLonePairs( group, atom.lonePairCount );
     }
@@ -54,18 +54,18 @@ define( function( require ) {
     var vseprConfiguration = new VseprConfiguration( numBonds, numLonePairs );
     var idealModelVectors = vseprConfiguration.getAllUnitVectors();
 
-    var mapping = vseprConfiguration.getIdealBondRotationToPositions( LocalShape.sortedLonePairsFirst( this.getNeighboringAtoms( this.getCentralAtom() ) ) );
+    var mapping = vseprConfiguration.getIdealBondRotationToPositions( LocalShape.sortedLonePairsFirst( this.getNeighboringAtoms( this.centralAtom ) ) );
 
     // add in lone pairs in their correct "initial" positions
     for ( i = 0; i < numLonePairs; i++ ) {
       normalizedPosition = mapping.rotateVector( idealModelVectors[i] );
       idealCentralOrientations.push( normalizedPosition );
       group = new PairGroup( normalizedPosition.times( PairGroup.LONE_PAIR_DISTANCE ), true );
-      this.addGroupAndBond( group, this.getCentralAtom(), 0, PairGroup.LONE_PAIR_DISTANCE );
+      this.addGroupAndBond( group, this.centralAtom, 0, PairGroup.LONE_PAIR_DISTANCE );
       centralPairGroups.push( group );
     }
 
-    this.localShapeMap[this.getCentralAtom().id] = new LocalShape( LocalShape.realPermutations( centralPairGroups ), this.getCentralAtom(), centralPairGroups, idealCentralOrientations );
+    this.localShapeMap[this.centralAtom.id] = new LocalShape( LocalShape.realPermutations( centralPairGroups ), this.centralAtom, centralPairGroups, idealCentralOrientations );
 
     // basically only use VSEPR model for the attraction on non-central atoms
     var radialAtoms = this.getRadialAtoms();

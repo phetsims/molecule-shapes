@@ -41,7 +41,7 @@ define( function( require ) {
     // bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond, so we just have order 0
     this.bonds = [];
 
-    // cached subsets (changed on modifications)
+    // cached subsets of groups (changed on modifications)
     this.atoms = [];
     this.lonePairs = [];
 
@@ -96,11 +96,6 @@ define( function( require ) {
     // all neighboring pair groups
     getNeighbors: function( group ) {
       return _.map( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ); } );
-    },
-
-    getAllNonCentralAtoms: function() {
-      var centralAtom = this.centralAtom;
-      return _.filter( this.groups, function( group ) { return !group.isLonePair && group !== centralAtom; } );
     },
 
     // atoms surrounding the center atom
@@ -161,7 +156,8 @@ define( function( require ) {
       this.addGroup( group, false );
 
       bondLength = bondLength || group.position.minus( parent.position ).magnitude();
-      this.addBondBetween( group, parent, bondOrder, bondLength );
+
+      this.addBond( new Bond( group, parent, bondOrder, bondLength ) );
 
       // notify after bond added, so we don't send notifications in an inconsistent state
       this.trigger1( 'groupAdded', group );
@@ -190,18 +186,10 @@ define( function( require ) {
       this.trigger1( 'bondAdded', bond );
     },
 
-    addBondBetween: function( a, b, order, bondLength ) {
-      this.addBond( new Bond( a, b, order, bondLength ) );
-    },
-
     removeBond: function( bond ) {
       this.bonds.splice( this.bonds.indexOf( bond ), 1 );
 
       this.trigger1( 'bondRemoved', bond );
-    },
-
-    getCentralAtom: function() {
-      return this.centralAtom;
     },
 
     removeGroup: function( group ) {
