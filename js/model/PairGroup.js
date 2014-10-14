@@ -158,7 +158,7 @@ define( function( require ) {
       var repulsionFactor = 1;
 
       // mimic Coulomb's Law
-      var coulombVelocityDelta = delta.normalized().times( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE * repulsionFactor / ( delta.magnitude() * delta.magnitude() ) );
+      var coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE * repulsionFactor / ( delta.magnitude() * delta.magnitude() ) );
 
       // apply a nonphysical reduction on coulomb's law when the frame-rate is low, so we can avoid oscillation
       var coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed ); // TODO: isolate the "standard" tpf?
