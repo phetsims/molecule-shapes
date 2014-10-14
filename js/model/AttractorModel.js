@@ -211,9 +211,12 @@ define( function( require ) {
     // this code will loop infinitely on NaN, so we want to double-check
     assert && assert( !isNaN( s.get( 0, 0 ) ) );
     var svd = new SingularValueDecomposition( s );
-    var det = svd.getV().times( svd.getU().transpose() ).det();
 
-    return svd.getV().times( new Matrix( 3, 3, [1, 0, 0, 0, 1, 0, 0, 0, det] ).times( svd.getU().transpose() ) );
+    // kept for reference, in case we handle chiral molecules in the future
+    // var det = svd.getV().times( svd.getU().transpose() ).det();
+    // return svd.getV().times( new Matrix( 3, 3, [1, 0, 0, 0, 1, 0, 0, 0, det] ).times( svd.getU().transpose() ) );
+
+    return svd.getV().times( svd.getU().transpose() );
   };
 
   // double error, Matrix target, Permutation permutation, Matrix rotation
