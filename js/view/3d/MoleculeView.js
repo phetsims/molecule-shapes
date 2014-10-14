@@ -49,7 +49,7 @@ define( function( require ) {
     molecule.on( 'bondAdded', this.addBond.bind( this ) );
     molecule.on( 'bondRemoved', this.removeBond.bind( this ) );
 
-    _.each( molecule.getRadialGroups(), this.addGroup.bind( this ) );
+    _.each( molecule.radialGroups, this.addGroup.bind( this ) );
     _.each( molecule.getDistantLonePairs(), this.addGroup.bind( this ) );
 
     if ( molecule.isReal ) {

@@ -154,13 +154,13 @@ define( function( require ) {
 
           // compute the mapping from our "ideal" to our "old" molecule
           // TODO: something in this mapping seems backwards... but it's working?
-          var groups = new RealMolecule( model.realMoleculeShape ).getRadialGroups();
+          var groups = new RealMolecule( model.realMoleculeShape ).radialGroups;
           mapping = AttractorModel.findClosestMatchingConfiguration(
-            AttractorModel.getOrientationsFromOrigin( mappingMolecule.getRadialGroups() ),
+            AttractorModel.getOrientationsFromOrigin( mappingMolecule.radialGroups ),
             _.map( LocalShape.sortedLonePairsFirst( groups ), function( pair ) {
               return pair.position.normalized();
             } ),
-            LocalShape.vseprPermutations( mappingMolecule.getRadialGroups() ) );
+            LocalShape.vseprPermutations( mappingMolecule.radialGroups ) );
           _.each( newMolecule.getGroups(), function( group ) {
             if ( group !== newMolecule.centralAtom ) {
               group.position = mapping.rotateVector( group.position );
@@ -170,7 +170,7 @@ define( function( require ) {
 
       }
       else {
-        mapping = vseprConfiguration.getIdealGroupRotationToPositions( LocalShape.sortedLonePairsFirst( mappingMolecule.getRadialGroups() ) );
+        mapping = vseprConfiguration.getIdealGroupRotationToPositions( LocalShape.sortedLonePairsFirst( mappingMolecule.radialGroups ) );
         var permutation = mapping.permutation.inverted();
         var idealUnitVectors = vseprConfiguration.getAllUnitVectors();
 

@@ -35,13 +35,13 @@ define( function( require ) {
 
     var molecule = this;
 
-    // all of the pair groups
+    // @public - all of the pair groups
     this.groups = [];
 
-    // bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond, so we just have order 0
+    // @public - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond, so we just have order 0
     this.bonds = [];
 
-    // cached subsets of groups (changed on modifications)
+    // @public - cached subsets of groups (changed on modifications)
     this.atoms = []; // !isLonePair
     this.lonePairs = []; // isLonePair
     this.radialGroups = []; // bonded with centralAtom
@@ -100,11 +100,11 @@ define( function( require ) {
     },
 
     getNeighboringAtoms: function( group ) {
-      return _.filter( this.getRadialGroups(), function( group ) { return !group.isLonePair; } );
+      return _.filter( this.radialGroups, function( group ) { return !group.isLonePair; } );
     },
 
     getLonePairNeighbors: function( group ) {
-      return _.filter( this.getRadialGroups(), function( group ) { return group.isLonePair; } );
+      return _.filter( this.radialGroups, function( group ) { return group.isLonePair; } );
     },
 
     getRadialLonePairs: function() {
@@ -180,11 +180,19 @@ define( function( require ) {
     addBond: function( bond ) {
       this.bonds.push( bond );
 
+      if ( bond.contains( this.centralAtom ) ) {
+        this.radialGroups.push( bond.getOtherAtom( this.centralAtom ) );
+      }
+
       this.trigger1( 'bondAdded', bond );
     },
 
     removeBond: function( bond ) {
       arrayRemove( this.bonds, bond );
+
+      if ( bond.contains( this.centralAtom ) ) {
+        arrayRemove( this.radialGroups, bond.getOtherAtom( this.centralAtom ) );
+      }
 
       this.trigger1( 'bondRemoved', bond );
     },
@@ -251,10 +259,6 @@ define( function( require ) {
       var numLonePairs = _.filter( groups, function( group ) { return group.isLonePair; } ).length;
       var numAtoms = groups.length - numLonePairs;
       return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( new VseprConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
-    },
-
-    getRadialGroups: function() {
-      return this.getNeighbors( this.centralAtom );
     },
 
     getIdealDistanceFromCenter: function( group ) {

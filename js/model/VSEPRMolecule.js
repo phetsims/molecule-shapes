@@ -22,7 +22,7 @@ define( function( require ) {
     update: function( tpf ) {
       Molecule.prototype.update.call( this, tpf );
 
-      var radialGroups = this.getRadialGroups();
+      var radialGroups = this.radialGroups;
 
       for ( var i = 0; i < this.atoms.length; i++ ) {
         var atom = this.atoms[i];
