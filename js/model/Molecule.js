@@ -85,14 +85,8 @@ define( function( require ) {
     },
 
     getBondsAround: function( group ) {
-      if ( group ) {
-        // all bonds to the pair group, if specified
-        return _.filter( this.bonds, function( bond ) { return bond.contains( group ); } );
-      }
-      else {
-        debugger;
-        return this.bonds;
-      }
+      // all bonds to the pair group, if specified
+      return _.filter( this.bonds, function( bond ) { return bond.contains( group ); } );
     },
 
     // all neighboring pair groups
