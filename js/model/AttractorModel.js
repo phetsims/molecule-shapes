@@ -205,7 +205,7 @@ define( function( require ) {
   };
 
   AttractorModel.computeRotationMatrixWithTranspose = function( x, yTransposed ) {
-    // S = X * Y^T
+    // S = X * Y^T, in our case always 3x3
     var s = x.times( yTransposed );
 
     // this code will loop infinitely on NaN, so we want to double-check
