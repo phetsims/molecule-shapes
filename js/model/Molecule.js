@@ -41,10 +41,12 @@ define( function( require ) {
     // @public - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond, so we just have order 0
     this.bonds = [];
 
-    // @public - cached subsets of groups (changed on modifications)
+    // @public - cached subsets of groups (changed on modifications) that we need to iterate through without GC
     this.atoms = []; // !isLonePair
     this.lonePairs = []; // isLonePair
     this.radialGroups = []; // bonded with centralAtom
+    this.radialAtoms = []; // !isLonePair, bonded with centralAtom
+    this.radialLonePairs = []; // isLonePair, bonded with centralAtom
 
     this.centralAtom = null; // will be filled in later
 
@@ -94,21 +96,12 @@ define( function( require ) {
       return _.map( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ); } );
     },
 
-    // atoms surrounding the center atom
-    getRadialAtoms: function() {
-      return this.getNeighboringAtoms( this.centralAtom );
-    },
-
     getNeighboringAtoms: function( group ) {
       return _.filter( this.radialGroups, function( group ) { return !group.isLonePair; } );
     },
 
     getLonePairNeighbors: function( group ) {
       return _.filter( this.radialGroups, function( group ) { return group.isLonePair; } );
-    },
-
-    getRadialLonePairs: function() {
-      return this.getLonePairNeighbors( this.centralAtom );
     },
 
     getGeometryConfiguration: function( group ) {
@@ -181,7 +174,13 @@ define( function( require ) {
       this.bonds.push( bond );
 
       if ( bond.contains( this.centralAtom ) ) {
-        this.radialGroups.push( bond.getOtherAtom( this.centralAtom ) );
+        var group = bond.getOtherAtom( this.centralAtom );
+        this.radialGroups.push( group );
+        if ( group.isLonePair ) {
+          this.radialLonePairs.push( group );
+        } else {
+          this.radialAtoms.push( group );
+        }
       }
 
       this.trigger1( 'bondAdded', bond );
@@ -191,7 +190,13 @@ define( function( require ) {
       arrayRemove( this.bonds, bond );
 
       if ( bond.contains( this.centralAtom ) ) {
-        arrayRemove( this.radialGroups, bond.getOtherAtom( this.centralAtom ) );
+        var group = bond.getOtherAtom( this.centralAtom );
+        arrayRemove( this.radialGroups, group );
+        if ( group.isLonePair ) {
+          arrayRemove( this.radialLonePairs, group );
+        } else {
+          arrayRemove( this.radialAtoms, group );
+        }
       }
 
       this.trigger1( 'bondRemoved', bond );
@@ -237,7 +242,7 @@ define( function( require ) {
     },
 
     getCorrespondingIdealGeometryVectors: function() {
-      return new VseprConfiguration( this.getRadialAtoms().length, this.getRadialLonePairs().length ).geometry.unitVectors;
+      return new VseprConfiguration( this.radialAtoms.length, this.radialLonePairs.length ).geometry.unitVectors;
     },
 
     /**

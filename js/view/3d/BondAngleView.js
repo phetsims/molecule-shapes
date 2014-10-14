@@ -80,7 +80,7 @@ define( function( require ) {
       var aDir = this.aGroup.position.normalized();
       var bDir = this.bGroup.position.normalized();
 
-      var alpha = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.getRadialAtoms().length ) : 0;
+      var alpha = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.radialAtoms.length ) : 0;
 
       this.sectorMaterial.opacity = alpha / 2;
       this.arcMaterial.opacity = alpha * 0.7;

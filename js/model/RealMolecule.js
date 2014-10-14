@@ -68,7 +68,7 @@ define( function( require ) {
     this.localShapeMap[this.centralAtom.id] = new LocalShape( LocalShape.realPermutations( centralPairGroups ), this.centralAtom, centralPairGroups, idealCentralOrientations );
 
     // basically only use VSEPR model for the attraction on non-central atoms
-    var radialAtoms = this.getRadialAtoms();
+    var radialAtoms = this.radialAtoms;
     for ( i = 0; i < radialAtoms.length; i++ ) {
       this.localShapeMap[radialAtoms[i].id] = this.getLocalVSEPRShape( radialAtoms[i] );
     }

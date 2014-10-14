@@ -37,7 +37,7 @@ define( function( require ) {
 
     // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
     this.molecule.on( 'bondChanged', function() {
-      if ( model.molecule.getRadialLonePairs.length === 0 ) {
+      if ( model.molecule.radialLonePairs.length === 0 ) {
         model.showLonePairs = true;
       }
     } );

@@ -73,7 +73,7 @@ define( function( require ) {
       var i;
 
       // we need to handle the 2-atom case separately for proper support of 180-degree bonds
-      var hasTwoBonds = this.molecule.getRadialAtoms().length === 2;
+      var hasTwoBonds = this.molecule.radialAtoms.length === 2;
       if ( !hasTwoBonds ) {
         // if we don't have two bonds, just ignore the last midpoint
         this.lastMidpoint = null;
@@ -105,7 +105,7 @@ define( function( require ) {
           var aDir = a.position.normalized();
           var bDir = b.position.normalized();
 
-          var brightness = BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.getRadialAtoms().length );
+          var brightness = BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.radialAtoms.length );
           if ( brightness === 0 ) {
             continue;
           }
@@ -284,7 +284,7 @@ define( function( require ) {
       } );
       this.bondViews.length = 0;
 
-      _.each( molecule.getRadialAtoms(), function( atom ) {
+      _.each( molecule.radialAtoms, function( atom ) {
         var bondView = new BondView(
           view.renderer,
           new Property( new Vector3() ), // center position

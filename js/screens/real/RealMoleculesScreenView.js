@@ -185,7 +185,8 @@ define( function( require ) {
           }
           else {
             // we need to dig the bond order out of the mapping molecule, and we need to pick the right one (thus the permutation being applied, at an offset)
-            var oldRadialGroup = mappingMolecule.getRadialAtoms()[permutation.apply( i ) - numRadialLonePairs];
+            // TODO: verify that this ordering is correct (in radialAtoms)
+            var oldRadialGroup = mappingMolecule.radialAtoms[permutation.apply( i ) - numRadialLonePairs];
             var bond = mappingMolecule.getParentBond( oldRadialGroup );
             var group = new PairGroup( unitVector.times( bond.length ), false );
             newMolecule.addGroupAndBond( group, newCentralAtom, bond.order, bond.length );

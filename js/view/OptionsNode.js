@@ -37,7 +37,7 @@ define( function( require ) {
     showBondAnglesCheckbox.touchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
 
     function updateLonePairCheckboxVisibility() {
-      showLonePairsCheckbox.enabled = model.molecule.getRadialLonePairs().length > 0;
+      showLonePairsCheckbox.enabled = model.molecule.radialLonePairs.length > 0;
     }
     model.link( 'molecule', function( newMolecule, oldMolecule ) {
       if ( oldMolecule ) {
