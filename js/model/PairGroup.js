@@ -63,13 +63,13 @@ define( function( require ) {
   /*---------------------------------------------------------------------------*
    * constants
    *----------------------------------------------------------------------------*/
-  PairGroup.BONDED_PAIR_DISTANCE = 10.0;
-  PairGroup.LONE_PAIR_DISTANCE = 7.0;
+  PairGroup.BONDED_PAIR_DISTANCE = 10.0; // ideal distance from atom to atom (model screen)
+  PairGroup.LONE_PAIR_DISTANCE = 7.0; // ideal distance from atom to lone pair (both screens)
 
-  PairGroup.ELECTRON_PAIR_REPULSION_SCALE = 30000;
-  PairGroup.ANGLE_REPULSION_SCALE = 3;
-  PairGroup.JITTER_SCALE = 0.001;
-  PairGroup.DAMPING_FACTOR = 0.1;
+  PairGroup.ELECTRON_PAIR_REPULSION_SCALE = 30000; // Control on Coulomb effect. Tuned for stability and aesthetic.
+  PairGroup.ANGLE_REPULSION_SCALE = 3; // Tuned control of fake force to push angles between pair groups to their ideal.
+  PairGroup.JITTER_SCALE = 0.001; // Tuned control for force to jitter locations of atoms (planar cases otherwise stable)
+  PairGroup.DAMPING_FACTOR = 0.1; // Tuned control to reduce velocity, in order to ensure stability.
 
   function interpolate( a, b, ratio ) {
     return a * ( 1 - ratio ) + b * ratio;
@@ -161,7 +161,7 @@ define( function( require ) {
       var coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE * repulsionFactor / ( delta.magnitude() * delta.magnitude() ) );
 
       // apply a nonphysical reduction on coulomb's law when the frame-rate is low, so we can avoid oscillation
-      var coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed ); // TODO: isolate the "standard" tpf?
+      var coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed );
       return coulombVelocityDelta.times( coulombDowngrade );
     },
 
