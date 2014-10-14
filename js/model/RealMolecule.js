@@ -26,7 +26,7 @@ define( function( require ) {
     this.localShapeMap = {};
 
     var numLonePairs = realMolecule.centralAtom.lonePairCount;
-    var numBonds = realMolecule.getBonds().length;
+    var numBonds = realMolecule.bonds.length;
 
     var idealCentralOrientations = [];
     var centralPairGroups = [];
@@ -34,7 +34,7 @@ define( function( require ) {
     this.addCentralAtom( new PairGroup( new Vector3(), false, realMolecule.centralAtom.element ) );
 
     // add in bonds
-    var bonds = realMolecule.getBonds();
+    var bonds = realMolecule.bonds;
     for ( i = 0; i < bonds.length; i++ ) {
       var bond = bonds[i];
       var atom = bond.getOtherAtom( realMolecule.centralAtom );

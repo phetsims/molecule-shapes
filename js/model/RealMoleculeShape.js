@@ -53,14 +53,6 @@ define( function( require ) {
       }
     },
 
-    getAtoms: function() {
-      return this.atoms;
-    },
-
-    getBonds: function() {
-      return this.bonds;
-    },
-
     addCentralAtom: function( atom ) {
       this.addAtom( atom );
       this.centralAtom = atom;
