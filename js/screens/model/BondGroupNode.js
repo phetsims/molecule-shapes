@@ -143,7 +143,7 @@ define( function( require ) {
 
       // TODO: change the fill's opacity, not the actual node's opacity!
       overlay.fill = addEnabled ? 'rgba(0,0,0,0)' : MoleculeShapesColors.background.withAlpha( 0.4 );
-      removeButton.visible = _.filter( model.molecule.getBonds( model.molecule.centralAtom ), function( bond ) {
+      removeButton.visible = _.filter( model.molecule.getBondsAround( model.molecule.centralAtom ), function( bond ) {
         return bond.order === bondOrder;
       } ).length > 0;
     }

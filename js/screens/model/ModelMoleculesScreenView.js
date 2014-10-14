@@ -114,7 +114,7 @@ define( function( require ) {
     removePairGroup: function( bondOrder ) {
       var molecule = this.model.molecule;
 
-      var bonds = molecule.getBonds( molecule.centralAtom );
+      var bonds = molecule.getBondsAround( molecule.centralAtom );
 
       for ( var i = bonds.length - 1; i >= 0; i-- ) {
         if ( bonds[i].order === bondOrder ) {

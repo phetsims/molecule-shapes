@@ -42,8 +42,9 @@ define( function( require ) {
     this.bonds = [];
 
     // cached subsets of groups (changed on modifications)
-    this.atoms = [];
-    this.lonePairs = [];
+    this.atoms = []; // !isLonePair
+    this.lonePairs = []; // isLonePair
+    this.radialGroups = []; // bonded with centralAtom
 
     this.centralAtom = null; // will be filled in later
 
@@ -80,22 +81,23 @@ define( function( require ) {
 
     // the number of surrounding pair groups
     getStericNumber: function( group ) {
-      return this.getBonds( group ).length;
+      return this.getBondsAround( group ).length;
     },
 
-    getBonds: function( group ) {
+    getBondsAround: function( group ) {
       if ( group ) {
         // all bonds to the pair group, if specified
         return _.filter( this.bonds, function( bond ) { return bond.contains( group ); } );
       }
       else {
+        debugger;
         return this.bonds;
       }
     },
 
     // all neighboring pair groups
     getNeighbors: function( group ) {
-      return _.map( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ); } );
+      return _.map( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ); } );
     },
 
     // atoms surrounding the center atom
@@ -131,11 +133,11 @@ define( function( require ) {
     getParentBond: function( group ) {
       // assumes we have simple atoms (star-shaped) with terminal lone pairs
       if ( group.isLonePair ) {
-        return this.getBonds( group )[0];
+        return this.getBondsAround( group )[0];
       }
       else {
         var centralAtom = this.centralAtom;
-        var result = _.filter( this.getBonds( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[0];
+        var result = _.filter( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[0];
         return result || null;
       }
     },
@@ -199,7 +201,7 @@ define( function( require ) {
       assert && assert( this.centralAtom !== group );
 
       // remove all of its bonds first
-      var bondList = this.getBonds( group );
+      var bondList = this.getBondsAround( group );
       for ( i = 0; i < bondList.length; i++ ) {
         this.removeBond( bondList[i] );
       }
