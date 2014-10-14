@@ -24,9 +24,8 @@ define( function( require ) {
 
       var radialGroups = this.getRadialGroups();
 
-      var atoms = this.getAtoms();
-      for ( var i = 0; i < atoms.length; i++ ) {
-        var atom = atoms[i];
+      for ( var i = 0; i < this.atoms.length; i++ ) {
+        var atom = this.atoms[i];
         if ( this.getNeighbors( atom ).length > 1 ) {
           if ( atom.isCentralAtom() ) {
             // attractive force to the correct position

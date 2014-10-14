@@ -79,9 +79,8 @@ define( function( require ) {
       Molecule.prototype.update.call( this, tpf );
 
       // angle-based repulsion
-      var atoms = this.getAtoms();
-      for ( var i = 0; i < atoms.length; i++ ) {
-        var atom = atoms[i];
+      for ( var i = 0; i < this.atoms.length; i++ ) {
+        var atom = this.atoms[i];
         var neighbors = this.getNeighbors( atom );
         if ( neighbors.length > 1 ) {
           var localShape = this.getLocalShape( atom );

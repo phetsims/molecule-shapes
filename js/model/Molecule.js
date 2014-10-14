@@ -18,6 +18,7 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
+  var arrayRemove = require( 'PHET_CORE/arrayRemove' );
   var Permutation = require( 'DOT/Permutation' );
   var Events = require( 'AXON/Events' );
   var Bond = require( 'MOLECULE_SHAPES/model/Bond' );
@@ -39,6 +40,10 @@ define( function( require ) {
 
     // bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond, so we just have order 0
     this.bonds = [];
+
+    // cached subsets (changed on modifications)
+    this.atoms = [];
+    this.lonePairs = [];
 
     this.centralAtom = null; // will be filled in later
 
@@ -73,10 +78,6 @@ define( function( require ) {
       }
     },
 
-    getAtoms: function() {
-      return _.filter( this.groups, function( group ) { return !group.isLonePair; } );
-    },
-
     // the number of surrounding pair groups
     getStericNumber: function( group ) {
       return this.getBonds( group ).length;
@@ -100,10 +101,6 @@ define( function( require ) {
     getAllNonCentralAtoms: function() {
       var centralAtom = this.centralAtom;
       return _.filter( this.groups, function( group ) { return !group.isLonePair && group !== centralAtom; } );
-    },
-
-    getAllLonePairs: function() {
-      return _.filter( this.groups, function( group ) { return group.isLonePair; } );
     },
 
     // atoms surrounding the center atom
@@ -156,12 +153,12 @@ define( function( require ) {
     // add in the central atom
     addCentralAtom: function( group ) {
       this.centralAtom = group;
-      this.addGroupOnly( group, true );
+      this.addGroup( group, true );
     },
 
     addGroupAndBond: function( group, parent, bondOrder, bondLength ) {
       // add the group, but delay notifications (inconsistent state)
-      this.addGroupOnly( group, false );
+      this.addGroup( group, false );
 
       bondLength = bondLength || group.position.minus( parent.position ).magnitude();
       this.addBondBetween( group, parent, bondOrder, bondLength );
@@ -170,11 +167,16 @@ define( function( require ) {
       this.trigger1( 'groupAdded', group );
     },
 
-    addGroupOnly: function( group, notify ) {
+    addGroup: function( group, notify ) {
       // always add the central group first
       assert && assert( this.centralAtom !== null );
 
       this.groups.push( group );
+      if ( group.isLonePair ) {
+        this.lonePairs.push( group );
+      } else {
+        this.atoms.push( group );
+      }
 
       // notify
       if ( notify ) {
@@ -213,7 +215,12 @@ define( function( require ) {
         this.bonds.splice( this.bonds.indexOf( bondList[i] ), 1 );
       }
 
-      this.groups.splice( this.groups.indexOf( group ), 1 );
+      arrayRemove( this.groups, group );
+      if ( group.isLonePair ) {
+        arrayRemove( this.lonePairs, group );
+      } else {
+        arrayRemove( this.atoms, group );
+      }
 
       // notify
       this.trigger1( 'groupRemoved', group );
@@ -250,7 +257,7 @@ define( function( require ) {
 
     getDistantLonePairs: function() {
       var closeLonePairs = this.getLonePairNeighbors( this.centralAtom );
-      return _.filter( this.getAllLonePairs(), function( lonePair ) { return !_.contains( closeLonePairs, lonePair ); } );
+      return _.filter( this.lonePairs, function( lonePair ) { return !_.contains( closeLonePairs, lonePair ); } );
     },
 
     getLocalVSEPRShape: function( atom ) {
