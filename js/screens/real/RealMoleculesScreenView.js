@@ -158,7 +158,7 @@ define( function( require ) {
           mapping = AttractorModel.findClosestMatchingConfiguration(
             AttractorModel.getOrientationsFromOrigin( mappingMolecule.radialGroups ),
             _.map( LocalShape.sortedLonePairsFirst( groups ), function( pair ) {
-              return pair.position.normalized();
+              return pair.orientation;
             } ),
             LocalShape.vseprPermutations( mappingMolecule.radialGroups ) );
           _.each( newMolecule.getGroups(), function( group ) {

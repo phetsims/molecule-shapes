@@ -29,7 +29,7 @@ define( function( require ) {
     this.aGroup = aGroup;
     this.bGroup = bGroup;
 
-    this.arcVertices = new ArcVertices( aGroup.position.normalized(), bGroup.position.normalized(), 5, 24, null ); // radius of 5, 24 segments
+    this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, 5, 24, null ); // radius of 5, 24 segments
     this.arcGeometry = new ArcGeometry( this.arcVertices );
     this.sectorGeometry = new SectorGeometry( this.arcVertices );
 
@@ -77,8 +77,8 @@ define( function( require ) {
 
       var localCameraPosition = new Vector3().set( cameraPosition ).normalized();
 
-      var aDir = this.aGroup.position.normalized();
-      var bDir = this.bGroup.position.normalized();
+      var aDir = this.aGroup.orientation;
+      var bDir = this.bGroup.orientation;
 
       var alpha = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.radialAtoms.length ) : 0;
 

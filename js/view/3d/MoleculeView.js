@@ -102,8 +102,8 @@ define( function( require ) {
           var a = bondAngleView.aGroup;
           var b = bondAngleView.bGroup;
 
-          var aDir = a.position.normalized();
-          var bDir = b.position.normalized();
+          var aDir = a.orientation;
+          var bDir = b.orientation;
 
           var brightness = BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.radialAtoms.length );
           if ( brightness === 0 ) {

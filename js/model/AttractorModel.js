@@ -200,7 +200,7 @@ define( function( require ) {
 
   AttractorModel.getOrientationsFromOrigin = function( groups ) {
     return _.map( groups, function( group ) {
-      return group.position.normalized();
+      return group.orientation;
     } );
   };
 

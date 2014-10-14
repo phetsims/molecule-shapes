@@ -23,6 +23,8 @@ define( function( require ) {
   function PairGroup( position, isLonePair, element ) {
     assert && assert( element || element === undefined );
 
+    var group = this;
+
     // unique identifier
     this.id = nextId++;
 
@@ -30,6 +32,16 @@ define( function( require ) {
       position: position,
       velocity: Vector3.ZERO,
       userControlled: false
+    } );
+
+    // @public (read-only) - normalized position (unit vector)
+    this.orientation = new Vector3();
+    this.link( 'position', function( position ) {
+      group.orientation.set( position );
+
+      if ( position.magnitude() > 0 ) {
+        group.orientation.normalize();
+      }
     } );
 
     this.isLonePair = isLonePair;
@@ -63,12 +75,6 @@ define( function( require ) {
     return a * ( 1 - ratio ) + b * ratio;
   }
 
-  // Returns the component of "vector" that is perpendicular to the "position"
-  PairGroup.getTangentDirection = function( position, vector ) {
-    var normalizedPosition = position.normalized();
-    return vector.minus( normalizedPosition.times( vector.dot( normalizedPosition ) ) );
-  };
-
   // helps avoid oscillation when the frame-rate is low, due to how the damping is implemented
   PairGroup.getTimescaleImpulseFactor = function( timeElapsed ) {
     return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
@@ -95,7 +101,7 @@ define( function( require ) {
       if ( currentError > oldError ) {
         // our error is getting worse! for now, don't let us slide AWAY from the ideal distance ever
         // set our distance to the old one, so it is easier to process
-        this.position = this.position.normalized().times( oldDistance ).plus( origin );
+        this.position = this.orientation.times( oldDistance ).plus( origin );
       }
 
       /*---------------------------------------------------------------------------*
@@ -139,8 +145,8 @@ define( function( require ) {
       var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.position.magnitude(), trueLengthsRatioOverride );
 
       // adjusted positions
-      var adjustedPosition = this.position.normalized().times( adjustedMagnitude );
-      var adjustedOtherPosition = other.position.magnitude() === 0 ? new Vector3() : other.position.normalized().times( adjustedOtherMagnitude );
+      var adjustedPosition = this.orientation.times( adjustedMagnitude );
+      var adjustedOtherPosition = other.position.magnitude() === 0 ? new Vector3() : other.orientation.times( adjustedOtherMagnitude );
 
       // from other => this (adjusted)
       var delta = adjustedPosition.minus( adjustedOtherPosition );
@@ -193,9 +199,9 @@ define( function( require ) {
       if ( this.userControlled ) { return; }
 
       // velocity changes so that it doesn't point at all towards or away from the origin
-      var velocityMagnitudeOutwards = this.velocity.dot( this.position.normalized() );
+      var velocityMagnitudeOutwards = this.velocity.dot( this.orientation );
       if ( this.position.magnitude() > 0 ) {
-        this.velocity = this.velocity.minus( this.position.normalized().times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
+        this.velocity = this.velocity.minus( this.orientation.times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
       }
 
       // move position forward by scaled velocity

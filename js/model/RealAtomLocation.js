@@ -21,6 +21,7 @@ define( function( require ) {
     NitroglycerinAtom.call( this, element );
 
     this.position = position;
+    this.orientation = position.magnitude() > 0 ? position.normalized() : position.copy();
     this.lonePairCount = lonePairCount || 0;
 
     // we should be immutable

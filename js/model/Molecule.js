@@ -75,7 +75,9 @@ define( function( require ) {
         var parentBond = this.getParentBond( group );
         var parentGroup = parentBond.getOtherAtom( group );
 
+        // store the old distance before stepping in time
         var oldDistance = group.position.distance( parentGroup.position );
+
         group.stepForward( tpf );
         group.attractToIdealDistance( tpf, oldDistance, parentBond );
       }
@@ -279,7 +281,7 @@ define( function( require ) {
       var lonePairOrientations = pairConfig.geometry.unitVectors;
       var mapping = AttractorModel.findClosestMatchingConfiguration(
         // last vector should be lowest energy (best bond if ambiguous), and is negated for the proper coordinate frame
-        [ atom.position.normalized() ], // TODO: why did this have to get changed to non-negated?
+        [ atom.orientation ], // TODO: why did this have to get changed to non-negated?
         [ lonePairOrientations[lonePairOrientations.length - 1].negated() ],
         [ Permutation.identity( 1 ) ]
       );

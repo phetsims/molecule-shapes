@@ -77,19 +77,21 @@ define( function( require ) {
     return result;
   };
 
+  function lonePairFirstSort( a, b ) {
+    if ( a.isLonePair === b.isLonePair ) {
+      return 0;
+    }
+    else if ( a.isLonePair ) {
+      return -1;
+    }
+    else {
+      return 1;
+    }
+  }
+
   LocalShape.sortedLonePairsFirst = function( groups ) {
     var result = groups.slice();
-    result.sort( function( a, b ) {
-      if ( a.isLonePair === b.isLonePair ) {
-        return 0;
-      }
-      else if ( a.isLonePair ) {
-        return -1;
-      }
-      else {
-        return 1;
-      }
-    } );
+    result.sort( lonePairFirstSort );
     return result;
   };
 

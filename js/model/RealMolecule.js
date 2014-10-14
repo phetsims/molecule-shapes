@@ -17,7 +17,7 @@ define( function( require ) {
 
   // TODO: rename parameter to RealMoleculeShape
   function RealMolecule( realMolecule ) {
-    var i, group, normalizedPosition;
+    var i, group;
 
     Molecule.call( this );
 
@@ -38,11 +38,10 @@ define( function( require ) {
     for ( i = 0; i < bonds.length; i++ ) {
       var bond = bonds[i];
       var atom = bond.getOtherAtom( realMolecule.centralAtom );
-      normalizedPosition = atom.position.normalized();
-      idealCentralOrientations.push( normalizedPosition );
+      idealCentralOrientations.push( atom.orientation );
       var bondLength = atom.position.magnitude();
 
-      var atomLocation = normalizedPosition.times( bondLength );
+      var atomLocation = atom.orientation.times( bondLength );
       group = new PairGroup( atomLocation, false, atom.element );
       centralPairGroups.push( group );
       this.addGroupAndBond( group, this.centralAtom, bond.order, bondLength );
@@ -58,9 +57,9 @@ define( function( require ) {
 
     // add in lone pairs in their correct "initial" positions
     for ( i = 0; i < numLonePairs; i++ ) {
-      normalizedPosition = mapping.rotateVector( idealModelVectors[i] );
-      idealCentralOrientations.push( normalizedPosition );
-      group = new PairGroup( normalizedPosition.times( PairGroup.LONE_PAIR_DISTANCE ), true );
+      var orientation = mapping.rotateVector( idealModelVectors[i] );
+      idealCentralOrientations.push( orientation );
+      group = new PairGroup( orientation.times( PairGroup.LONE_PAIR_DISTANCE ), true );
       this.addGroupAndBond( group, this.centralAtom, 0, PairGroup.LONE_PAIR_DISTANCE );
       centralPairGroups.push( group );
     }
@@ -79,7 +78,8 @@ define( function( require ) {
       Molecule.prototype.update.call( this, tpf );
 
       // angle-based repulsion
-      for ( var i = 0; i < this.atoms.length; i++ ) {
+      var numAtoms = this.atoms.length;
+      for ( var i = 0; i < numAtoms; i++ ) {
         var atom = this.atoms[i];
         var neighbors = this.getNeighbors( atom );
         if ( neighbors.length > 1 ) {
