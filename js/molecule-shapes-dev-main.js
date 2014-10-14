@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   return {
-    AtomLocation: require( 'MOLECULE_SHAPES/model/AtomLocation' ),
+    RealAtomLocation: require( 'MOLECULE_SHAPES/model/RealAtomLocation' ),
     AttractorModel: require( 'MOLECULE_SHAPES/model/AttractorModel' ),
     Bond: require( 'MOLECULE_SHAPES/model/Bond' ),
     GeometryConfiguration: require( 'MOLECULE_SHAPES/model/GeometryConfiguration' ),
