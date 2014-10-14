@@ -137,13 +137,13 @@ define( function( require ) {
     // allow interchanging of pair groups when they have the same chemical element
     var atoms = _.filter( neighbors, function( group ) { return !group.isLonePair; } );
 
-    var usedElements = _.unique( _.map( atoms, function( group ) { return group.getElement(); } ) );
+    var usedElements = _.unique( _.map( atoms, function( group ) { return group.element; } ) );
 
     for ( var i = 0; i < usedElements.length; i++ ) {
       var element = usedElements[i];
 
       // since the closure is being executed at this point, the warning in this line can be ignored
-      var atomsWithElement = _.filter( atoms, function( group ) { return group.getElement() === element; } );
+      var atomsWithElement = _.filter( atoms, function( group ) { return group.element === element; } );
       permutations = LocalShape.permuteListWithIndices( permutations, _.map( atomsWithElement, indexOf ) );
     }
 

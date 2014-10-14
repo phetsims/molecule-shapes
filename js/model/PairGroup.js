@@ -183,18 +183,6 @@ define( function( require ) {
       }
     },
 
-    getPushFactor: function() {
-      return this.isLonePair ? 1 : 1;
-    },
-
-    estimatePush: function( angle ) {
-      var result = 10 / ( angle * angle );
-      if ( isNaN( result ) ) {
-        return 0;
-      }
-      return result;
-    },
-
     stepForward: function( timeElapsed ) {
       if ( this.userControlled ) { return; }
 
@@ -222,10 +210,6 @@ define( function( require ) {
 
     isCentralAtom: function() {
       return !this.isLonePair && this.position.equals( Vector3.ZERO );
-    },
-
-    getElement: function() {
-      return this.element;
     }
   } );
 } );
