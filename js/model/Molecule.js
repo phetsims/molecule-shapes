@@ -187,7 +187,7 @@ define( function( require ) {
     },
 
     removeBond: function( bond ) {
-      this.bonds.splice( this.bonds.indexOf( bond ), 1 );
+      arrayRemove( this.bonds, bond );
 
       this.trigger1( 'bondRemoved', bond );
     },
@@ -200,7 +200,7 @@ define( function( require ) {
       // remove all of its bonds first
       var bondList = this.getBonds( group );
       for ( i = 0; i < bondList.length; i++ ) {
-        this.bonds.splice( this.bonds.indexOf( bondList[i] ), 1 );
+        arrayRemove( this.bonds, bondList[i] );
       }
 
       arrayRemove( this.groups, group );
