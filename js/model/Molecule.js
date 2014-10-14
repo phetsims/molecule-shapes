@@ -157,6 +157,7 @@ define( function( require ) {
 
       bondLength = bondLength || group.position.minus( parent.position ).magnitude();
 
+      // add the bond after the group so we can reference things properly
       this.addBond( new Bond( group, parent, bondOrder, bondLength ) );
 
       // notify after bond added, so we don't send notifications in an inconsistent state
@@ -200,7 +201,7 @@ define( function( require ) {
       // remove all of its bonds first
       var bondList = this.getBonds( group );
       for ( i = 0; i < bondList.length; i++ ) {
-        arrayRemove( this.bonds, bondList[i] );
+        this.removeBond( bondList[i] );
       }
 
       arrayRemove( this.groups, group );
