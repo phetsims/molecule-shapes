@@ -141,6 +141,30 @@
       result[8] = m8;
     }
 
+    function reorderColumns3( matrix, result, idx0, idx1, idx2 ) {
+      var m0 = matrix[idx0];
+      var m3 = matrix[idx0 + 3];
+      var m6 = matrix[idx0 + 6];
+
+      var m1 = matrix[idx1];
+      var m4 = matrix[idx1 + 3];
+      var m7 = matrix[idx1 + 6];
+
+      var m2 = matrix[idx2];
+      var m5 = matrix[idx2 + 3];
+      var m8 = matrix[idx2 + 6];
+
+      result[0] = m0;
+      result[1] = m1;
+      result[2] = m2;
+      result[3] = m3;
+      result[4] = m4;
+      result[5] = m5;
+      result[6] = m6;
+      result[7] = m7;
+      result[8] = m8;
+    }
+
     function setIdentity3( result ) {
       result[0] = result[4] = result[8] = 1; // diagonal
       result[1] = result[2] = result[3] = result[5] = result[6] = result[7] = 0; // non-diagonal
@@ -192,6 +216,61 @@
         applyJacobi3( curS, curQ, 0, 2 );
         applyJacobi3( curS, curQ, 1, 2 );
       }
+    }
+
+    var scratchS = new Arr( 9 );
+    var scratchQ = new Arr( 9 );
+    var scratchV = new Arr( 9 );
+    var scratchB = new Arr( 9 );
+    function svd3( a, jacobiIterationCount ) {
+      var s = scratchS;
+      var q = scratchQ;
+      var v = scratchV;
+      var b = scratchB;
+      mult3LeftTranspose( a, a, s );
+      setIdentity3( q );
+
+      jacobiIteration3( s, q, jacobiIterationCount );
+      transpose3( q, v );
+
+      mult3( a, v, b ); // B = AV
+
+      // sort based on singular values
+      var mag0 = b[0] * b[0] + b[3] * b[3] + b[6] * b[6]; // column vector magnitudes
+      var mag1 = b[1] * b[1] + b[4] * b[4] + b[7] * b[7];
+      var mag2 = b[2] * b[2] + b[5] * b[5] + b[8] * b[8];
+      var tmpMag;
+      var idx0 = 0;
+      var idx1 = 1;
+      var idx2 = 2;
+      if ( mag0 < mag1 ) {
+        // swap magnitudes
+        tmpMag = mag0;
+        mag0 = mag1;
+        mag1 = tmpMag;
+        // swap indices
+        idx0 = 1;
+        idx1 = 0;
+      }
+      if ( mag0 < mag2 ) {
+        // swap magnitudes
+        tmpMag = mag0;
+        mag0 = mag2;
+        mag2 = tmpMag;
+        // swap indices
+        idx2 = idx0;
+        idx0 = 2;
+      }
+      if ( mag1 < mag2 ) {
+        // swap indices
+        var tmpIdx = idx1;
+        idx1 = idx2;
+        idx2 = tmpIdx;
+      }
+
+      // TODO: change sign properly when swapping columns, in order to maintain the determinant!
+      reorderColumns3( v, v, idx0, idx1, idx2 );
+      reorderColumns3( b, b, idx0, idx1, idx2 );
     }
 
     var a = new Arr( [1, 2, 7, 5, 2, 6, -1, -5, 4] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
