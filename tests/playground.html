@@ -20,6 +20,198 @@
 </head>
 <body>
   <script>
+    var Arr = window.Float64Array || Array;
+
+    /*
+     * Row-major indices:
+     * 0 1 2
+     * 3 4 5
+     * 6 7 8
+     */
+
+    // 0-indexed
+    function index( row, column ) {
+      return 3 * row + column;
+    }
+
+    // transpose( matrix )
+    function transpose3( matrix, result ) {
+      var m1 = matrix[3];
+      var m2 = matrix[6];
+      var m3 = matrix[1];
+      var m5 = matrix[7];
+      var m6 = matrix[2];
+      var m7 = matrix[5];
+      result[0] = matrix[0];
+      result[1] = m1;
+      result[2] = m2;
+      result[3] = m3;
+      result[4] = matrix[4];
+      result[5] = m5;
+      result[6] = m6;
+      result[7] = m7;
+      result[8] = matrix[8];
+    }
+
+    // left * right
+    function mult3( left, right, result ) {
+      var m0 = left[0] * right[0] + left[1] * right[3] + left[2] * right[6];
+      var m1 = left[0] * right[1] + left[1] * right[4] + left[2] * right[7];
+      var m2 = left[0] * right[2] + left[1] * right[5] + left[2] * right[8];
+      var m3 = left[3] * right[0] + left[4] * right[3] + left[5] * right[6];
+      var m4 = left[3] * right[1] + left[4] * right[4] + left[5] * right[7];
+      var m5 = left[3] * right[2] + left[4] * right[5] + left[5] * right[8];
+      var m6 = left[6] * right[0] + left[7] * right[3] + left[8] * right[6];
+      var m7 = left[6] * right[1] + left[7] * right[4] + left[8] * right[7];
+      var m8 = left[6] * right[2] + left[7] * right[5] + left[8] * right[8];
+      result[0] = m0;
+      result[1] = m1;
+      result[2] = m2;
+      result[3] = m3;
+      result[4] = m4;
+      result[5] = m5;
+      result[6] = m6;
+      result[7] = m7;
+      result[8] = m8;
+    }
+
+    // transpose( left ) * right
+    function mult3LeftTranspose( left, right, result ) {
+      var m0 = left[0] * right[0] + left[3] * right[3] + left[6] * right[6];
+      var m1 = left[0] * right[1] + left[3] * right[4] + left[6] * right[7];
+      var m2 = left[0] * right[2] + left[3] * right[5] + left[6] * right[8];
+      var m3 = left[1] * right[0] + left[4] * right[3] + left[7] * right[6];
+      var m4 = left[1] * right[1] + left[4] * right[4] + left[7] * right[7];
+      var m5 = left[1] * right[2] + left[4] * right[5] + left[7] * right[8];
+      var m6 = left[2] * right[0] + left[5] * right[3] + left[8] * right[6];
+      var m7 = left[2] * right[1] + left[5] * right[4] + left[8] * right[7];
+      var m8 = left[2] * right[2] + left[5] * right[5] + left[8] * right[8];
+      result[0] = m0;
+      result[1] = m1;
+      result[2] = m2;
+      result[3] = m3;
+      result[4] = m4;
+      result[5] = m5;
+      result[6] = m6;
+      result[7] = m7;
+      result[8] = m8;
+    }
+
+    //  left * transpose( right )
+    function mult3RightTranspose( left, right, result ) {
+      var m0 = left[0] * right[0] + left[1] * right[1] + left[2] * right[2];
+      var m1 = left[0] * right[3] + left[1] * right[4] + left[2] * right[5];
+      var m2 = left[0] * right[6] + left[1] * right[7] + left[2] * right[8];
+      var m3 = left[3] * right[0] + left[4] * right[1] + left[5] * right[2];
+      var m4 = left[3] * right[3] + left[4] * right[4] + left[5] * right[5];
+      var m5 = left[3] * right[6] + left[4] * right[7] + left[5] * right[8];
+      var m6 = left[6] * right[0] + left[7] * right[1] + left[8] * right[2];
+      var m7 = left[6] * right[3] + left[7] * right[4] + left[8] * right[5];
+      var m8 = left[6] * right[6] + left[7] * right[7] + left[8] * right[8];
+      result[0] = m0;
+      result[1] = m1;
+      result[2] = m2;
+      result[3] = m3;
+      result[4] = m4;
+      result[5] = m5;
+      result[6] = m6;
+      result[7] = m7;
+      result[8] = m8;
+    }
+
+    //  transpose( left ) * transpose( right ) === transpose( right * left )
+    function mult3BothTranspose( left, right, result ) {
+      var m0 = left[0] * right[0] + left[3] * right[1] + left[6] * right[2];
+      var m1 = left[0] * right[3] + left[3] * right[4] + left[6] * right[5];
+      var m2 = left[0] * right[6] + left[3] * right[7] + left[6] * right[8];
+      var m3 = left[1] * right[0] + left[4] * right[1] + left[7] * right[2];
+      var m4 = left[1] * right[3] + left[4] * right[4] + left[7] * right[5];
+      var m5 = left[1] * right[6] + left[4] * right[7] + left[7] * right[8];
+      var m6 = left[2] * right[0] + left[5] * right[1] + left[8] * right[2];
+      var m7 = left[2] * right[3] + left[5] * right[4] + left[8] * right[5];
+      var m8 = left[2] * right[6] + left[5] * right[7] + left[8] * right[8];
+      result[0] = m0;
+      result[1] = m1;
+      result[2] = m2;
+      result[3] = m3;
+      result[4] = m4;
+      result[5] = m5;
+      result[6] = m6;
+      result[7] = m7;
+      result[8] = m8;
+    }
+
+    function setIdentity3( result ) {
+      result[0] = result[4] = result[8] = 1; // diagonal
+      result[1] = result[2] = result[3] = result[5] = result[6] = result[7] = 0; // non-diagonal
+    }
+
+    function setGivens3( result, cos, sin, idx1, idx2 ) {
+      assert && assert( idx1 < idx2 );
+      setIdentity3( result );
+      result[index(idx1,idx1)] = cos;
+      result[index(idx2,idx2)] = cos;
+      result[index(idx1,idx2)] = sin;
+      result[index(idx2,idx1)] = -sin;
+    }
+
+    var givensScratch = new Arr( 9 );
+    var sqrtHalf = Math.sqrt( 0.5 );
+    function applyJacobi3( curS, curQ, idx1, idx2 ) {
+      var a11 = curS[index(idx1,idx1)];
+      var a12 = curS[index(idx1,idx2)];
+      var a22 = curS[index(idx2,idx2)];
+
+      // approximate givens angle
+      var lhs = a12 * a12;
+      var rhs = a11 - a22;
+      rhs = rhs * rhs;
+      var useAngle = lhs < rhs;
+      var w = 1 / Math.sqrt( lhs + rhs );
+      setGivens3( givensScratch, b ? ( w * ( a11 - a22 ) ) : sqrtHalf, b ? ( w * a12 ) : sqrtHalf, idx1, idx2 );
+
+      // // exact givens angle
+      // var theta = 0.5 * Math.atan( 2 * a12 / ( a11 - a22 ) );
+      // if ( Math.abs( theta ) > Math.PI / 4 ) {
+      //   theta = theta > 0 ? Math.PI / 4 : -Math.PI / 4;
+      // }
+      // setGivens3( givensScratch, Math.cos( theta ), Math.sin( theta ), idx1, idx2 );
+
+      // S' = Q * S * transpose( Q )
+      mult3( givensScratch, curS, curS );
+      mult3RightTranspose( curS, givensScratch, curS );
+
+      // Q' = Q * curQ
+      mult3( givensScratch, curQ, curQ );
+    }
+    // TODO: if necessary, hand-code the application of the givens for each index pair
+    function jacobiIteration3( curS, curQ, n ) {
+      // for 3x3, we eliminate non-diagonal entries iteratively
+      for ( var i = 0; i < n; i++ ) {
+        applyJacobi3( curS, curQ, 0, 1 );
+        applyJacobi3( curS, curQ, 0, 2 );
+        applyJacobi3( curS, curQ, 1, 2 );
+      }
+    }
+
+    var a = new Arr( [1, 2, 7, 5, 2, 6, -1, -5, 4] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
+    var b = new Arr( [4, 3, 1, -7, 2, -1, -1, 0, -2] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}
+    var c = new Arr( 9 );
+
+    mult3( a, b, c );
+    console.log( c ); // {{-17, 7, -15}, {0, 19, -9}, {27, -13, -4}}
+    mult3LeftTranspose( a, b, c );
+    console.log( c ); // {{-30, 13, -2}, {-1, 10, 10}, {-18, 33, -7}}
+    mult3RightTranspose( a, b, c );
+    console.log( c ); // {{17, -10, -15}, {32, -37, -17}, {-15, -7, -7}}
+    mult3BothTranspose( a, b, c );
+    console.log( c ); // {{18, 4, 1}, {9, -5, 8}, {50, -41, -15}}
+
+    var s = new Arr( 9 );
+    var q = new Arr( 9 );
+    mult3LeftTranspose( a, a, s );
+    setIdentity3( q );
+
     // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
     function check() {
       if ( window.loadedMoleculeShapesConfig ) {
