@@ -322,8 +322,8 @@ define( function( require ) {
       for ( var i = 0; i < n; i++ ) {
         var vector = columnVectors[i];
         result[i] = vector.x;
-        result[i + n] = vector.x;
-        result[i + 2 * n] = vector.x;
+        result[i + n] = vector.y;
+        result[i + 2 * n] = vector.z;
       }
     },
 
@@ -387,6 +387,20 @@ define( function( require ) {
             x += left[this.index( m, n, row, k )] * right[this.index( p, n, col, k )];
           }
           result[this.index( m, p, row, col )] = x;
+        }
+      }
+    },
+
+    // {Permutation} required
+    permuteColumns: function( m, n, matrix, permutation, result ) {
+      assert && assert( matrix !== result, 'In-place modification not implemented yet' );
+      assert && assert( matrix.length >= m * n );
+      assert && assert( result.length >= m * n );
+
+      for ( var col = 0; col < n; col++ ) {
+        var permutedColumnIndex = permutation.indices[col];
+        for ( var row = 0; row < m; row++ ) {
+          result[this.index( m, n, row, col )] = matrix[this.index( m, n, row, permutedColumnIndex )];
         }
       }
     }

@@ -120,6 +120,10 @@ define( function( require ) {
     return error;
   };
 
+  // maximum size of most computations is 3x6
+  var scratch18A = new FastMath.Array( 18 );
+  var scratch18B = new FastMath.Array( 18 );
+  var scratch18C = new FastMath.Array( 18 );
   /**
    * Find the closest VSEPR configuration for a particular molecule. Conceptually, we iterate through
    * each possible valid 1-to-1 mapping from electron pair to direction in our VSEPR geometry. For each
@@ -145,24 +149,32 @@ define( function( require ) {
     var n = currentOrientations.length; // number of total pairs
 
     // y == electron pair positions
-    var y = Matrix.fromVectors3( currentOrientations );
+    var y = scratch18A;
+    FastMath.setVectors3( currentOrientations, y );
+
+    var x = scratch18B;
+
+    var ideals = scratch18C;
+    FastMath.setVectors3( idealOrientations, ideals );
+
 
     // closure over constant variables
     function calculateTarget( permutation ) {
       // x == configuration positions
-      var x = Matrix.fromVectors3( permutation.apply( idealOrientations ) );
+      FastMath.permuteColumns( 3, n, ideals, permutation, x );
 
       // compute the rotation matrix
       var rot = new Matrix( 3, 3 );
-      AttractorModel.computeRotationMatrixWithTranspose( n, x.entries, y.entries, rot.entries );
+      AttractorModel.computeRotationMatrixWithTranspose( n, x, y, rot.entries );
 
       // target matrix, same shape as our y (current position) matrix
-      var target = rot.times( x );
+      var target = new Matrix( 3, n );
+      FastMath.mult( 3, 3, n, rot.entries, x, target.entries ); // target = rot * x
 
       // calculate the error
       var error = 0;
-      for ( var i = 0; i < y.entries.length; i++ ) {
-        var diff = y.entries[i] - target.entries[i];
+      for ( var i = 0; i < n * 3; i++ ) {
+        var diff = y[i] - target.entries[i];
         error += diff * diff;
       }
 
