@@ -355,12 +355,25 @@ define( function( require ) {
       matrix[idx1 + 6] = f;
     },
 
-    applyJacobi3: function( curS, curQ, idx0, idx1 ) {
-      var a11 = curS[3 * idx0 + idx0];
-      var a12 = curS[3 * idx0 + idx1];
-      var a22 = curS[3 * idx1 + idx1];
+    /*
+     * Zeros out the [idx0,idx1] and [idx1,idx0] entries of the matrix mS by applying a Givens rotation as part of the
+     * Jacobi iteration. In addition, the Givens rotation is prepended to mQ so we can track the accumulated rotations
+     * applied (this is how we get V in the SVD).
+     *
+     * @param {FastMath.Array} mS - [input AND output] Symmetric 3x3 Matrix
+     * @param {FastMath.Array} mQ - [input AND output] Unitary 3x3 Matrix
+     * @param {number} idx0 - [input] The smaller row/column index
+     * @param {number} idx1 - [input] The larger row/column index
+     */
+    applyJacobi3: function( mS, mQ, idx0, idx1 ) {
+      // submatrix entries for idx0,idx1
+      var a11 = mS[3 * idx0 + idx0];
+      var a12 = mS[3 * idx0 + idx1]; // we assume mS is symmetric, so we don't need a21
+      var a22 = mS[3 * idx1 + idx1];
 
-      // approximate givens angle
+      // Approximate givens angle, see https://graphics.cs.wisc.edu/Papers/2011/MSTTS11/SVD_TR1690.pdf (section 2.3)
+      // "Computing the Singular Value Decomposition of 3x3 matrices with minimal branching and elementary floating point operations"
+      // Aleka McAdams, Andrew Selle, Rasmus Tamstorf, Joseph Teran, Eftychios Sifakis
       var lhs = a12 * a12;
       var rhs = a11 - a22;
       rhs = rhs * rhs;
@@ -371,27 +384,45 @@ define( function( require ) {
       var sin = useAngle ? ( w * a12 ) : SQRT_HALF;
 
       // S' = Q * S * transpose( Q )
-      this.preMult3Givens( curS, cos, sin, idx0, idx1 );
-      this.postMult3Givens( curS, cos, sin, idx0, idx1 );
+      this.preMult3Givens( mS, cos, sin, idx0, idx1 );
+      this.postMult3Givens( mS, cos, sin, idx0, idx1 );
 
-      // Q' = Q * curQ
-      this.preMult3Givens( curQ, cos, sin, idx0, idx1 );
+      // Q' = Q * mQ
+      this.preMult3Givens( mQ, cos, sin, idx0, idx1 );
     },
 
-    // TODO: if necessary, hand-code the application of the givens for each index pair
-    jacobiIteration3: function( curS, curQ, n ) {
+    /*
+     * The Jacobi method, which in turn zeros out all the non-diagonal entries repeatedly until mS converges into
+     * a diagonal matrix. We track the applied Givens rotations in mQ, so that when given mS and mQ=identity, we will
+     * maintain the value mQ * mS * mQ^T
+     *
+     * @param {FastMath.Array} mS - [input AND output] Symmetric 3x3 Matrix
+     * @param {FastMath.Array} mQ - [input AND output] Unitary 3x3 Matrix
+     * @param {number} n - [input] The number of iterations to run
+     */
+    jacobiIteration3: function( mS, mQ, n ) {
       // for 3x3, we eliminate non-diagonal entries iteratively
       for ( var i = 0; i < n; i++ ) {
-        this.applyJacobi3( curS, curQ, 0, 1 );
-        this.applyJacobi3( curS, curQ, 0, 2 );
-        this.applyJacobi3( curS, curQ, 1, 2 );
+        this.applyJacobi3( mS, mQ, 0, 1 );
+        this.applyJacobi3( mS, mQ, 0, 2 );
+        this.applyJacobi3( mS, mQ, 1, 2 );
       }
     },
 
+    /*
+     * One step in computing the QR decomposition. Zeros out the (row,col) entry in 'r', while maintaining the
+     * value of (q * r). We will end up with an orthogonal Q and upper-triangular R (or in the SVD case,
+     * R will be diagonal)
+     *
+     * @param {FastMath.Array} q - [input AND ouput] 3x3 Matrix
+     * @param {FastMath.Array} r - [input AND ouput] 3x3 Matrix
+     * @param {number} row - [input] The row of the entry to zero out
+     * @param {number} col - [input] The column of the entry to zero out
+     */
     qrAnnihilate3: function( q, r, row, col ) {
       assert && assert( row > col ); // only in the lower-triangular area
 
-      var epsilon = 0.0000000001; // TODO: see how far we can reduce this?
+      var epsilon = 0.0000000001;
       var cos, sin;
 
       var diagonalValue = r[this.index3(col, col)];
@@ -399,6 +430,7 @@ define( function( require ) {
       var diagonalSquared = diagonalValue * diagonalValue;
       var targetSquared = targetValue * targetValue;
 
+      // handle the case where both (row,col) and (col,col) are very small (would cause instabilities)
       if ( diagonalSquared + targetSquared < epsilon ) {
         cos = diagonalValue > 0 ? 1 : 0;
         sin = 0;
@@ -409,28 +441,43 @@ define( function( require ) {
       }
 
       this.setGivens3( scratchGivens, cos, sin, col, row );
-
+      // TODO: use the Givens mutation methods, as they will be more efficient?
       this.mult3( scratchGivens, r, r );
       this.mult3RightTranspose( q, scratchGivens, q );
     },
 
+    /*
+     * 3x3 Singular Value Decomposition, handling singular cases.
+     * Based on https://graphics.cs.wisc.edu/Papers/2011/MSTTS11/SVD_TR1690.pdf
+     * "Computing the Singular Value Decomposition of 3x3 matrices with minimal branching and elementary floating point operations"
+     * Aleka McAdams, Andrew Selle, Rasmus Tamstorf, Joseph Teran, Eftychios Sifakis
+     *
+     * @param {FastMath.Array} a - [input] 3x3 Matrix that we want the SVD of.
+     * @param {number} jacobiIterationCount - [input] How many Jacobi iterations to run (larger is more accurate to a point)
+     * @param {FastMath.Array} resultU - [output] 3x3 U matrix (unitary)
+     * @param {FastMath.Array} resultSigma - [output] 3x3 diagonal matrix of singular values
+     * @param {FastMath.Array} resultV - [output] 3x3 V matrix (unitary)
+     */
     svd3: function( a, jacobiIterationCount, resultU, resultSigma, resultV ) {
+      // shorthands
       var q = resultU;
       var v = resultV;
       var r = resultSigma;
 
-
-      // for now, use 'r' as our S == transpose( A ) * A
+      // for now, use 'r' as our S == transpose( A ) * A, so we don't have to use scratch matrices
       this.mult3LeftTranspose( a, a, r );
       // we'll accumulate into 'q' == transpose( V ) during the Jacobi iteration
       this.setIdentity3( q );
 
+      // Jacobi iteration turns Q into V^T and R into Sigma^2 (we'll ditch R since the QR decomposition will be beter)
       this.jacobiIteration3( r, q, jacobiIterationCount );
+      // final determination of V
       this.transpose3( q, v ); // done with this 'q' until we reuse the scratch matrix later below for the QR decomposition
 
       this.mult3( a, v, r ); // R = AV
 
-      // sort based on singular values
+      // Sort columns of R and V based on singular values (needed for the QR step, and useful anyways).
+      // Their product will remain unchanged.
       var mag0 = r[0] * r[0] + r[3] * r[3] + r[6] * r[6]; // column vector magnitudes
       var mag1 = r[1] * r[1] + r[4] * r[4] + r[7] * r[7];
       var mag2 = r[2] * r[2] + r[5] * r[5] + r[8] * r[8];
@@ -458,10 +505,12 @@ define( function( require ) {
 
       // QR decomposition
       this.setIdentity3( q ); // reusing Q now for the QR
+      // Zero out all three strictly lower-triangular values. Should turn the matrix diagonal
       this.qrAnnihilate3( q, r, 1, 0 );
       this.qrAnnihilate3( q, r, 2, 0 );
       this.qrAnnihilate3( q, r, 2, 1 );
 
+      // checks for a singular U value, we'll add in the needed 1 entries to make sure our U is orthogonal
       var bigEpsilon = 0.001; // they really should be around 1
       if ( q[0] * q[0] + q[1] * q[1] + q[2] * q[2] < bigEpsilon ) {
         q[0] = 1;
@@ -478,6 +527,12 @@ define( function( require ) {
     * 3xN matrix math
     *----------------------------------------------------------------------------*/
 
+    /*
+     * Sets the 3xN result matrix to be made out of column vectors
+     *
+     * @param {Vector3[]} columnVectors - [input] List of 3D column vectors
+     * @param {FastMath.Array} result - [output] 3xN Matrix, where N is the number of column vectors
+     */
     setVectors3: function( columnVectors, result ) {
       var m = 3;
       var n = columnVectors.length;
@@ -492,6 +547,15 @@ define( function( require ) {
       }
     },
 
+    /*
+     * Retrieves column vector values from a 3xN matrix.
+     *
+     * @param {number} m - [input] The number of rows in the matrix (sanity check, should always be 3)
+     * @param {number} n - [input] The number of columns in the matrix
+     * @param {FastMath.Array} matrix - [input] 3xN Matrix
+     * @param {number} columnIndex - [input] 3xN Matrix
+     * @param {Vector3} result - [output] Vector to store the x,y,z
+     */
     getColumnVector3: function( m, n, matrix, columnIndex, result ) {
       assert && assert( m === 3 && columnIndex < n );
 
@@ -504,10 +568,26 @@ define( function( require ) {
     * Arbitrary dimension matrix math
     *----------------------------------------------------------------------------*/
 
+    /*
+     * From 0-indexed row and column indices, returns the index into the flat array
+     *
+     * @param {number} m - Number of rows in the matrix
+     * @param {number} n - Number of columns in the matrix
+     * @param {number} row
+     * @param {number} col
+     */
     index: function( m, n, row, col ) {
       return n * row + col;
     },
 
+    /*
+     * Writes the transpose of the matrix into the result.
+     *
+     * @param {number} m - Number of rows in the original matrix
+     * @param {number} n - Number of columns in the original matrix
+     * @param {FastMath.Array} matrix - [input] MxN Matrix
+     * @param {FastMath.Array} result - [output] NxM Matrix
+     */
     transpose: function( m, n, matrix, result ) {
       assert && assert( matrix.length >= m * n );
       assert && assert( result.length >= n * m );
@@ -520,7 +600,16 @@ define( function( require ) {
       }
     },
 
-    // left is mxn, right is nxp, result is mxp
+    /*
+     * Writes the matrix multiplication of ( left * right ) into result
+     *
+     * @param {number} m - Number of rows in the left matrix
+     * @param {number} n - Number of columns in the left matrix, number of rows in the right matrix
+     * @param {number} p - Number of columns in the right matrix
+     * @param {FastMath.Array} left - [input] MxN Matrix
+     * @param {FastMath.Array} right - [input] NxP Matrix
+     * @param {FastMath.Array} result - [output] MxP Matrix
+     */
     mult: function( m, n, p, left, right, result ) {
       assert && assert( left.length >= m * n );
       assert && assert( right.length >= n * p );
@@ -538,7 +627,16 @@ define( function( require ) {
       }
     },
 
-    // left is mxn, right is pxn, result is mxp
+    /*
+     * Writes the matrix multiplication of ( left * transpose( right ) ) into result
+     *
+     * @param {number} m - Number of rows in the left matrix
+     * @param {number} n - Number of columns in the left matrix, number of columns in the right matrix
+     * @param {number} p - Number of rows in the right matrix
+     * @param {FastMath.Array} left - [input] MxN Matrix
+     * @param {FastMath.Array} right - [input] PxN Matrix
+     * @param {FastMath.Array} result - [output] MxP Matrix
+     */
     multRightTranspose: function( m, n, p, left, right, result ) {
       assert && assert( left.length >= m * n );
       assert && assert( right.length >= n * p );
@@ -556,7 +654,15 @@ define( function( require ) {
       }
     },
 
-    // {Permutation} required
+    /*
+     * Writes the matrix into the result, permuting the columns.
+     *
+     * @param {number} m - Number of rows in the original matrix
+     * @param {number} n - Number of columns in the original matrix
+     * @param {FastMath.Array} matrix - [input] MxN Matrix
+     * @param {Permutation} permutation - [input] Permutation
+     * @param {FastMath.Array} result - [output] MxN Matrix
+     */
     permuteColumns: function( m, n, matrix, permutation, result ) {
       assert && assert( matrix !== result, 'In-place modification not implemented yet' );
       assert && assert( matrix.length >= m * n );
