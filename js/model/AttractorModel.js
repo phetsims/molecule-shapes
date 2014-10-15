@@ -188,10 +188,11 @@ define( function( require ) {
       var permutation = allowablePermutations[pIndex];
 
       if ( n > 2 && bestResult !== null && bestResult.permutation !== permutation ) {
-        var permutedOrientations = permutation.apply( idealOrientations );
+        var permutedOrientation0 = idealOrientations[ permutation.indices[0] ];
+        var permutedOrientation1 = idealOrientations[ permutation.indices[1] ];
         var errorLowBound = 4 - 4 * Math.cos( Math.abs(
-          Math.acos( DotUtil.clamp( permutedOrientations[0].dot( currentOrientations[0] ), -1, 1 ) ) -
-          Math.acos( DotUtil.clamp( permutedOrientations[1].dot( currentOrientations[1] ), -1, 1 ) )
+          Math.acos( DotUtil.clamp( permutedOrientation0.dot( currentOrientations[0] ), -1, 1 ) ) -
+          Math.acos( DotUtil.clamp( permutedOrientation1.dot( currentOrientations[1] ), -1, 1 ) )
         ) );
 
         // throw out results where this arbitrarily-chosen lower bound rules out the entire permutation
