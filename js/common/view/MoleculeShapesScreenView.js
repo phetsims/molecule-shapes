@@ -135,10 +135,12 @@ define( function( require ) {
         event.pointer.addInputListener( {
           up: function( event, trail ) {
             this.endDrag( event, trail );
+            event.pointer.cursor = null;
           },
 
           cancel: function( event, trail ) {
             this.endDrag( event, trail );
+            event.pointer.cursor = null;
           },
 
           move: function( event, trail ) {
