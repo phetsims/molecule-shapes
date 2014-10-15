@@ -19,14 +19,13 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var arrayRemove = require( 'PHET_CORE/arrayRemove' );
-  var Permutation = require( 'DOT/Permutation' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var Events = require( 'AXON/Events' );
   var Bond = require( 'MOLECULE_SHAPES/model/Bond' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
   var GeometryConfiguration = require( 'MOLECULE_SHAPES/model/GeometryConfiguration' );
   var VseprConfiguration = require( 'MOLECULE_SHAPES/model/VseprConfiguration' );
   var LocalShape = require( 'MOLECULE_SHAPES/model/LocalShape' );
-  var AttractorModel = require( 'MOLECULE_SHAPES/model/AttractorModel' );
 
   var MAX_PAIRS = 6;
 
@@ -279,16 +278,13 @@ define( function( require ) {
     addTerminalLonePairs: function( atom, quantity ) {
       var pairConfig = new VseprConfiguration( 1, quantity );
       var lonePairOrientations = pairConfig.geometry.unitVectors;
-      var mapping = AttractorModel.findClosestMatchingConfiguration(
-        // last vector should be lowest energy (best bond if ambiguous), and is negated for the proper coordinate frame
-        [ atom.orientation ], // TODO: why did this have to get changed to non-negated?
-        [ lonePairOrientations[lonePairOrientations.length - 1].negated() ],
-        [ Permutation.identity( 1 ) ]
-      );
+
+      // we want to rotate the ideal configuration of lone pairs to the atom's orientation
+      var matrix = Matrix3.rotateAToB( lonePairOrientations[lonePairOrientations.length - 1].negated(), atom.orientation );
 
       for ( var i = 0; i < quantity; i++ ) {
         // mapped into our coordinates
-        var lonePairOrientation = mapping.rotateVector( lonePairOrientations[i] );
+        var lonePairOrientation = matrix.timesVector3( lonePairOrientations[i] );
         this.addGroupAndBond( new PairGroup( atom.position.plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
       }
     }
