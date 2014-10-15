@@ -36,7 +36,7 @@ define( function( require ) {
     } );
     var mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
 
-    var aroundCenterAtom = center.equals( new Vector3() );
+    var aroundCenterAtom = center.equals( Vector3.ZERO );
 
     var totalDeltaMagnitude = 0;
     var i;
@@ -146,7 +146,6 @@ define( function( require ) {
 
     // y == electron pair positions
     var y = Matrix.fromVectors3( currentOrientations );
-    var yTransposed = y.transpose();
 
     // closure over constant variables
     function calculateTarget( permutation ) {
@@ -154,7 +153,8 @@ define( function( require ) {
       var x = Matrix.fromVectors3( permutation.apply( idealOrientations ) );
 
       // compute the rotation matrix
-      var rot = AttractorModel.computeRotationMatrixWithTranspose( x, yTransposed );
+      var rot = new Matrix( 3, 3 );
+      AttractorModel.computeRotationMatrixWithTranspose( n, x.entries, y.entries, rot.entries );
 
       // target matrix, same shape as our y (current position) matrix
       var target = rot.times( x );
@@ -204,24 +204,25 @@ define( function( require ) {
     } );
   };
 
-  AttractorModel.computeRotationMatrixWithTranspose = function( x, yTransposed ) {
+  var scratchMatrix = new FastMath.Array( 9 );
+  var scratchU = new FastMath.Array( 9 );
+  var scratchSigma = new FastMath.Array( 9 );
+  var scratchV = new FastMath.Array( 9 );
+  AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) {
     // S = X * Y^T, in our case always 3x3
-    var s = x.times( yTransposed );
-
-    var fastU = new FastMath.Array( 9 );
-    var fastSigma = new FastMath.Array( 9 );
-    var fastV = new FastMath.Array( 9 );
-    var fastA = new FastMath.Array( s.entries );
+    var s = scratchMatrix;
+    FastMath.multRightTranspose( 3, n, 3, x, y, s );
 
     // this code may loop infinitely on NaN, so we want to double-check
-    assert && assert( !isNaN( s.get( 0, 0 ) ) );
+    assert && assert( !isNaN( s[0] ) );
 
-    FastMath.svd3( fastA, 5, fastU, fastSigma, fastV );
+    // Sets U, Sigma, V
+    FastMath.svd3( s, 5, scratchU, scratchSigma, scratchV );
+
     // If last fastSigma entry is negative, a reflection would have been a better match. Consider [1,0,0 0,1,0 0,0,-1]
     // multiplied in-between to reverse if that will help in the future.
-    FastMath.mult3RightTranspose( fastV, fastU, fastA );
-
-    return new Matrix( 3, 3, fastA, true );
+    // result = V * U^T
+    FastMath.mult3RightTranspose( scratchV, scratchU, result );
   };
 
   // double error, Matrix target, Permutation permutation, Matrix rotation

@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   /*
-   * Matrices are stored with row-major indices:
+   * Matrices are stored with row-major indices. For example, for a 3x3:
    * [0] [1] [2]
    * [3] [4] [5]
    * [6] [7] [8]
@@ -18,11 +18,15 @@ define( function( require ) {
    var FastMathArray = window.Float64Array || Array;
 
    // a matrix used in FastMath SVD computations
-   var givensScratch = new FastMathArray( 9 );
+   var scratchGivens = new FastMathArray( 9 );
    var SQRT_HALF = Math.sqrt( 0.5 );
 
    return {
     Array: FastMathArray,
+
+    /*---------------------------------------------------------------------------*
+    * 3x3 matrix math
+    *----------------------------------------------------------------------------*/
 
     // 0-indexed rows and columns
     index3: function( row, column ) {
@@ -142,6 +146,16 @@ define( function( require ) {
       result[8] = m8;
     },
 
+    // vector3 => vector3
+    mult3Vector3: function( matrix, vector, result ) {
+      var x = matrix[0] * vector.x + matrix[1] * vector.y + matrix[2] * vector.z;
+      var y = matrix[3] * vector.x + matrix[4] * vector.y + matrix[5] * vector.z;
+      var z = matrix[6] * vector.x + matrix[7] * vector.y + matrix[8] * vector.z;
+      result.x = x;
+      result.y = y;
+      result.z = z;
+    },
+
     // in-place
     swapNegateColumn: function( matrix, idx0, idx1 ) {
       var tmp0 = matrix[idx0];
@@ -182,21 +196,21 @@ define( function( require ) {
       rhs = rhs * rhs;
       var useAngle = lhs < rhs;
       var w = 1 / Math.sqrt( lhs + rhs );
-      this.setGivens3( givensScratch, useAngle ? ( w * ( a11 - a22 ) ) : SQRT_HALF, useAngle ? ( w * a12 ) : SQRT_HALF, idx1, idx2 );
+      this.setGivens3( scratchGivens, useAngle ? ( w * ( a11 - a22 ) ) : SQRT_HALF, useAngle ? ( w * a12 ) : SQRT_HALF, idx1, idx2 );
 
       // // exact givens angle
       // var theta = 0.5 * Math.atan( 2 * a12 / ( a11 - a22 ) );
       // if ( Math.abs( theta ) > Math.PI / 4 ) {
       //   theta = theta > 0 ? Math.PI / 4 : -Math.PI / 4;
       // }
-      // this.setGivens3( givensScratch, Math.cos( theta ), Math.sin( theta ), idx1, idx2 );
+      // this.setGivens3( scratchGivens, Math.cos( theta ), Math.sin( theta ), idx1, idx2 );
 
       // S' = Q * S * transpose( Q )
-      this.mult3( givensScratch, curS, curS );
-      this.mult3RightTranspose( curS, givensScratch, curS );
+      this.mult3( scratchGivens, curS, curS );
+      this.mult3RightTranspose( curS, scratchGivens, curS );
 
       // Q' = Q * curQ
-      this.mult3( givensScratch, curQ, curQ );
+      this.mult3( scratchGivens, curQ, curQ );
     },
 
     // TODO: if necessary, hand-code the application of the givens for each index pair
@@ -229,10 +243,10 @@ define( function( require ) {
         sin = rsqr * targetValue;
       }
 
-      this.setGivens3( givensScratch, cos, sin, col, row );
+      this.setGivens3( scratchGivens, cos, sin, col, row );
 
-      this.mult3( givensScratch, r, r );
-      this.mult3RightTranspose( q, givensScratch, q );
+      this.mult3( scratchGivens, r, r );
+      this.mult3RightTranspose( q, scratchGivens, q );
     },
 
     svd3: function( a, jacobiIterationCount, resultU, resultSigma, resultV ) {
@@ -292,6 +306,88 @@ define( function( require ) {
       }
       if ( q[6] * q[6] + q[7] * q[7] + q[8] * q[8] < bigEpsilon ) {
         q[8] = 1;
+      }
+    },
+
+    /*---------------------------------------------------------------------------*
+    * 3xN matrix math
+    *----------------------------------------------------------------------------*/
+
+    setVectors3: function( columnVectors, result ) {
+      var m = 3;
+      var n = columnVectors.length;
+
+      assert && assert( result.length >= m * n, 'Array length check' );
+
+      for ( var i = 0; i < n; i++ ) {
+        var vector = columnVectors[i];
+        result[i] = vector.x;
+        result[i + n] = vector.x;
+        result[i + 2 * n] = vector.x;
+      }
+    },
+
+    getColumnVector3: function( m, n, matrix, columnIndex, result ) {
+      assert && assert( m === 3 && columnIndex < n );
+
+      result.x = matrix[columnIndex];
+      result.y = matrix[columnIndex + n];
+      result.z = matrix[columnIndex + 2 * n];
+    },
+
+    /*---------------------------------------------------------------------------*
+    * Arbitrary dimension matrix math
+    *----------------------------------------------------------------------------*/
+
+    index: function( m, n, row, col ) {
+      return n * row + col;
+    },
+
+    transpose: function( m, n, matrix, result ) {
+      assert && assert( matrix.length >= m * n );
+      assert && assert( result.length >= n * m );
+      assert && assert( matrix !== result, 'In-place modification not implemented yet' );
+
+      for ( var row = 0; row < m; row++ ) {
+        for ( var col = 0; col < n; col++ ) {
+          result[m * col + row] = matrix[n * row + col];
+        }
+      }
+    },
+
+    // left is mxn, right is nxp, result is mxp
+    mult: function( m, n, p, left, right, result ) {
+      assert && assert( left.length >= m * n );
+      assert && assert( right.length >= n * p );
+      assert && assert( result.length >= m * p );
+      assert && assert( left !== result && right !== result, 'In-place modification not implemented yet' );
+
+      for ( var row = 0; row < m; row++ ) {
+        for ( var col = 0; col < p; col++ ) {
+          var x = 0;
+          for ( var k = 0; k < n; k++ ) {
+            x += left[this.index( m, n, row, k )] * right[this.index( n, p, k, col )];
+          }
+          result[this.index( m, p, row, col )] = x;
+        }
+      }
+    },
+
+    // left is mxn, right is pxn, result is mxp
+    multRightTranspose: function( m, n, p, left, right, result ) {
+      assert && assert( left.length >= m * n );
+      assert && assert( right.length >= n * p );
+      assert && assert( result.length >= m * p );
+      assert && assert( left !== result && right !== result, 'In-place modification not implemented yet' );
+
+      for ( var row = 0; row < m; row++ ) {
+        for ( var col = 0; col < p; col++ ) {
+          var x = 0;
+          for ( var k = 0; k < n; k++ ) {
+            x += left[this.index( m, n, row, k )] * right[this.index( p, n, col, k )];
+          }
+          result[this.index( m, p, row, col )] = x;
+        }
       }
     }
   };
