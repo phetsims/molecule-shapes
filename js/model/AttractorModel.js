@@ -14,7 +14,7 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var DotUtil = require( 'DOT/Util' );
   var Matrix = require( 'DOT/Matrix' );
-  var SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );
+  var FastMath = require( 'MOLECULE_SHAPES/model/FastMath' );
   var PairGroup = require( 'MOLECULE_SHAPES/model/PairGroup' );
 
   // just static calls, so just create an empty object
@@ -208,15 +208,20 @@ define( function( require ) {
     // S = X * Y^T, in our case always 3x3
     var s = x.times( yTransposed );
 
-    // this code will loop infinitely on NaN, so we want to double-check
+    var fastU = new FastMath.Array( 9 );
+    var fastSigma = new FastMath.Array( 9 );
+    var fastV = new FastMath.Array( 9 );
+    var fastA = new FastMath.Array( s.entries );
+
+    // this code may loop infinitely on NaN, so we want to double-check
     assert && assert( !isNaN( s.get( 0, 0 ) ) );
-    var svd = new SingularValueDecomposition( s );
 
-    // kept for reference, in case we handle chiral molecules in the future
-    // var det = svd.getV().times( svd.getU().transpose() ).det();
-    // return svd.getV().times( new Matrix( 3, 3, [1, 0, 0, 0, 1, 0, 0, 0, det] ).times( svd.getU().transpose() ) );
+    FastMath.svd3( fastA, 5, fastU, fastSigma, fastV );
+    // If last fastSigma entry is negative, a reflection would have been a better match. Consider [1,0,0 0,1,0 0,0,-1]
+    // multiplied in-between to reverse if that will help in the future.
+    FastMath.mult3RightTranspose( fastV, fastU, fastA );
 
-    return svd.getV().times( svd.getU().transpose() );
+    return new Matrix( 3, 3, fastA, true );
   };
 
   // double error, Matrix target, Permutation permutation, Matrix rotation

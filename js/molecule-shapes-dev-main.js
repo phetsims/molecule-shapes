@@ -12,6 +12,7 @@ define( function( require ) {
     RealAtomLocation: require( 'MOLECULE_SHAPES/model/RealAtomLocation' ),
     AttractorModel: require( 'MOLECULE_SHAPES/model/AttractorModel' ),
     Bond: require( 'MOLECULE_SHAPES/model/Bond' ),
+    FastMath: require( 'MOLECULE_SHAPES/model/FastMath' ),
     GeometryConfiguration: require( 'MOLECULE_SHAPES/model/GeometryConfiguration' ),
     LocalShape: require( 'MOLECULE_SHAPES/model/LocalShape' ),
     Molecule: require( 'MOLECULE_SHAPES/model/Molecule' ),
