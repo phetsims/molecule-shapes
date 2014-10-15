@@ -23,11 +23,11 @@ define( function( require ) {
   /**
    * Apply an attraction to the closest ideal position, with the given time elapsed
    *
-   * @param groups        An ordered list of pair groups that should be considered, along with the relevant permutations
-   * @param timeElapsed       Time elapsed
-   * @param idealOrientations   An ideal position, that may be rotated.
-   * @param allowablePermutations The un-rotated stable position that we are attracted towards
-   * @param center        The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
+   * @param {PairGroup[]} groups - An ordered list of pair groups that should be considered, along with the relevant permutations
+   * @param {number} timeElapsed - Time elapsed (seconds)
+   * @param {Vector3[]} idealOrientations - An ideal position, that may be rotated.
+   * @param {Permutation[]} allowablePermutations - The un-rotated stable position that we are attracted towards
+   * @param {Vector3} center - The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
    * @return A measure of total error (least squares-style)
    */
   AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
@@ -121,9 +121,10 @@ define( function( require ) {
   };
 
   // maximum size of most computations is 3x6
-  var scratch18A = new FastMath.Array( 18 );
-  var scratch18B = new FastMath.Array( 18 );
-  var scratch18C = new FastMath.Array( 18 );
+  var scratchXArray = new FastMath.Array( 18 );
+  var scratchYArray = new FastMath.Array( 18 );
+  var scratchIdealsArray = new FastMath.Array( 18 );
+
   /**
    * Find the closest VSEPR configuration for a particular molecule. Conceptually, we iterate through
    * each possible valid 1-to-1 mapping from electron pair to direction in our VSEPR geometry. For each
@@ -140,21 +141,21 @@ define( function( require ) {
    * but with the repulsion-ordering constraint (no single bond will be assigned a lower-index slot than a lone pair)
    * so we end up splitting the potential slots into bins for each repulsion type and iterating over all of the permutations.
    *
-   * @param currentOrientations   An ordered list of orientations (normalized) that should be considered, along with the relevant permutations
-   * @param idealOrientations   The un-rotated stable position that we are attracted towards
-   * @param allowablePermutations A list of permutations that map stable positions to pair groups in order.
-   * @return Result mapping (see docs there)
+   * @param {Vector3[]} currentOrientations - An ordered list of orientations (normalized) that should be considered, along with the relevant permutations
+   * @param {Vector3[]} idealOrientations - The un-rotated stable position that we are attracted towards
+   * @param {Permutation[]} allowablePermutations - A list of permutations that map stable positions to pair groups in order.
+   * @return {ResultMapping} (see docs there)
    */
   AttractorModel.findClosestMatchingConfiguration = function( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) {
     var n = currentOrientations.length; // number of total pairs
 
     // y == electron pair positions
-    var y = scratch18A;
+    var y = scratchYArray;
     FastMath.setVectors3( currentOrientations, y );
 
-    var x = scratch18B;
+    var x = scratchXArray;
 
-    var ideals = scratch18C;
+    var ideals = scratchIdealsArray;
     FastMath.setVectors3( idealOrientations, ideals );
 
 
@@ -216,10 +217,12 @@ define( function( require ) {
     } );
   };
 
+  // scratch matrices for the SVD calculations
   var scratchMatrix = new FastMath.Array( 9 );
   var scratchU = new FastMath.Array( 9 );
   var scratchSigma = new FastMath.Array( 9 );
   var scratchV = new FastMath.Array( 9 );
+
   AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) {
     // S = X * Y^T, in our case always 3x3
     var s = scratchMatrix;

@@ -29,6 +29,9 @@ define( function( require ) {
 
   var MAX_PAIRS = 6;
 
+  /*
+   * @constructor
+   */
   function Molecule() {
     Events.call( this );
 
@@ -47,6 +50,7 @@ define( function( require ) {
     this.radialAtoms = []; // !isLonePair, bonded with centralAtom
     this.radialLonePairs = []; // isLonePair, bonded with centralAtom
 
+    // @public
     this.centralAtom = null; // will be filled in later
 
     // composite events
