@@ -14,6 +14,7 @@
 
   <script type="text/javascript" src="../../../sherpa/jquery-2.1.0.js"></script>
   <script type="text/javascript" src="../../../sherpa/lodash-2.4.1.js"></script>
+  <script type="text/javascript" src="../../../sherpa/three-r68.js"></script>
   <script type="text/javascript" src="../../../sherpa/has.js"></script>
   <script type="text/javascript">
     has.add( 'assert.basic', function( global, document, anElement ) { return true; } );
@@ -75,11 +76,12 @@
       // make sure the full sim code doesn't launch immediately
       window.delayMoleculeShapesLaunch = true;
 
-      require( [ 'molecule-shapes-dev-main', 'SCENERY/main', 'KITE/main', 'DOT/main', 'PHET_CORE/main' ], function( bam, scenery, kite, dot, core ) {
+      require( [ 'molecule-shapes-dev-main', 'SCENERY/main', 'KITE/main', 'DOT/main', 'PHET_CORE/main' ], function( ms, scenery, kite, dot, core ) {
         window.scenery = scenery;
         window.kite = kite;
         window.dot = dot;
         window.core = core;
+        window.ms = ms; // molecule-shapes prefix
 
         runMoleculeShapesTests( '.' );
         runSceneryTests( '../../../scenery/tests/qunit' );

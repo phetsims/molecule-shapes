@@ -33,6 +33,18 @@ define( function( require ) {
       return 3 * row + column;
     },
 
+    set3: function( matrix, result ) {
+      result[0] = matrix[0];
+      result[1] = matrix[1];
+      result[2] = matrix[2];
+      result[3] = matrix[3];
+      result[4] = matrix[4];
+      result[5] = matrix[5];
+      result[6] = matrix[6];
+      result[7] = matrix[7];
+      result[8] = matrix[8];
+    },
+
     // transpose( matrix )
     transpose3: function( matrix, result ) {
       var m1 = matrix[3];
@@ -185,10 +197,46 @@ define( function( require ) {
       result[this.index3(idx2,idx1)] = -sin;
     },
 
+    // pre-multiplies the givens rotation in-place (optimized)
+    preMult3Givens: function( matrix, cos, sin, idx1, idx2 ) {
+      var baseA = idx1 * 3;
+      var baseB = idx2 * 3;
+      // lexicographically in column-major order for "affine" section
+      var a = cos * matrix[baseA + 0] + sin * matrix[baseB + 0];
+      var b = cos * matrix[baseB + 0] - sin * matrix[baseA + 0];
+      var c = cos * matrix[baseA + 1] + sin * matrix[baseB + 1];
+      var d = cos * matrix[baseB + 1] - sin * matrix[baseA + 1];
+      var e = cos * matrix[baseA + 2] + sin * matrix[baseB + 2];
+      var f = cos * matrix[baseB + 2] - sin * matrix[baseA + 2];
+      matrix[baseA + 0] = a;
+      matrix[baseB + 0] = b;
+      matrix[baseA + 1] = c;
+      matrix[baseB + 1] = d;
+      matrix[baseA + 2] = e;
+      matrix[baseB + 2] = f;
+    },
+
+    // post-multiplies the transpose of the givens rotation in-place (optimized)
+    postMult3Givens: function( matrix, cos, sin, idx1, idx2 ) {
+      // lexicographically in row-major order for the "transposed affine" section
+      var a = cos * matrix[idx1 + 0] + sin * matrix[idx2 + 0];
+      var b = cos * matrix[idx2 + 0] - sin * matrix[idx1 + 0];
+      var c = cos * matrix[idx1 + 3] + sin * matrix[idx2 + 3];
+      var d = cos * matrix[idx2 + 3] - sin * matrix[idx1 + 3];
+      var e = cos * matrix[idx1 + 6] + sin * matrix[idx2 + 6];
+      var f = cos * matrix[idx2 + 6] - sin * matrix[idx1 + 6];
+      matrix[idx1 + 0] = a;
+      matrix[idx2 + 0] = b;
+      matrix[idx1 + 3] = c;
+      matrix[idx2 + 3] = d;
+      matrix[idx1 + 6] = e;
+      matrix[idx2 + 6] = f;
+    },
+
     applyJacobi3: function( curS, curQ, idx1, idx2 ) {
-      var a11 = curS[this.index3(idx1,idx1)];
-      var a12 = curS[this.index3(idx1,idx2)];
-      var a22 = curS[this.index3(idx2,idx2)];
+      var a11 = curS[3 * idx1 + idx1];
+      var a12 = curS[3 * idx1 + idx2];
+      var a22 = curS[3 * idx2 + idx2];
 
       // approximate givens angle
       var lhs = a12 * a12;
@@ -196,21 +244,16 @@ define( function( require ) {
       rhs = rhs * rhs;
       var useAngle = lhs < rhs;
       var w = 1 / Math.sqrt( lhs + rhs );
-      this.setGivens3( scratchGivens, useAngle ? ( w * ( a11 - a22 ) ) : SQRT_HALF, useAngle ? ( w * a12 ) : SQRT_HALF, idx1, idx2 );
-
-      // // exact givens angle
-      // var theta = 0.5 * Math.atan( 2 * a12 / ( a11 - a22 ) );
-      // if ( Math.abs( theta ) > Math.PI / 4 ) {
-      //   theta = theta > 0 ? Math.PI / 4 : -Math.PI / 4;
-      // }
-      // this.setGivens3( scratchGivens, Math.cos( theta ), Math.sin( theta ), idx1, idx2 );
+      // NOTE: exact Givens angle is 0.5 * Math.atan( 2 * a12 / ( a11 - a22 ) ), but clamped to withing +-Math.PI / 4
+      var cos = useAngle ? ( w * ( a11 - a22 ) ) : SQRT_HALF;
+      var sin = useAngle ? ( w * a12 ) : SQRT_HALF;
 
       // S' = Q * S * transpose( Q )
-      this.mult3( scratchGivens, curS, curS );
-      this.mult3RightTranspose( curS, scratchGivens, curS );
+      this.preMult3Givens( curS, cos, sin, idx1, idx2 );
+      this.postMult3Givens( curS, cos, sin, idx1, idx2 );
 
       // Q' = Q * curQ
-      this.mult3( scratchGivens, curQ, curQ );
+      this.preMult3Givens( curQ, cos, sin, idx1, idx2 );
     },
 
     // TODO: if necessary, hand-code the application of the givens for each index pair
