@@ -161,10 +161,9 @@ define( function( require ) {
 
       // calculate the error
       var error = 0;
-      var offsets = y.minus( target );
-      var squaredOffsets = offsets.arrayTimes( offsets );
-      for ( var i = 0; i < n; i++ ) {
-        error += squaredOffsets.get( 0, i ) + squaredOffsets.get( 1, i ) + squaredOffsets.get( 2, i );
+      for ( var i = 0; i < y.entries.length; i++ ) {
+        var diff = y.entries[i] - target.entries[i];
+        error += diff * diff;
       }
 
       return new AttractorModel.ResultMapping( error, target, permutation, rot );
