@@ -25,6 +25,8 @@ define( function( require ) {
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   return inherit( Screen, function RealMoleculesScreen( isBasicsVersion ) {
+    var screen = this;
+
     var screenIcon = Rectangle.rect( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, {
       fill: 'blue'
     } );
@@ -34,5 +36,9 @@ define( function( require ) {
       function( model ) { return new RealMoleculesScreenView( model ); },
       { backgroundColor: MoleculeShapesColors.background.toCSS() }
     );
+
+    MoleculeShapesColors.link( 'background', function( color ) {
+      screen.backgroundColor = color;
+    } );
   } );
 } );
