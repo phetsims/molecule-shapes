@@ -53,6 +53,10 @@
       result[8] = matrix[8];
     }
 
+    function det3( matrix ) {
+      return matrix[0] * matrix[4] * matrix[8] + matrix[1] * matrix[5] * matrix[6] + matrix[2] * matrix[3] * matrix[7] - matrix[2] * matrix[4] * matrix[6] - matrix[1] * matrix[3] * matrix[8] - matrix[0] * matrix[5] * matrix[7]
+    }
+
     // left * right
     function mult3( left, right, result ) {
       var m0 = left[0] * right[0] + left[1] * right[3] + left[2] * right[6];
@@ -141,6 +145,21 @@
       result[8] = m8;
     }
 
+    // in-place
+    function swapNegateColumn( matrix, idx0, idx1 ) {
+      var tmp0 = matrix[idx0];
+      var tmp1 = matrix[idx0 + 3];
+      var tmp2 = matrix[idx0 + 6];
+
+      matrix[idx0] = matrix[idx1];
+      matrix[idx0 + 3] = matrix[idx1 + 3];
+      matrix[idx0 + 6] = matrix[idx1 + 6];
+
+      matrix[idx1] = -tmp0;
+      matrix[idx1 + 3] = -tmp1;
+      matrix[idx1 + 6] = -tmp2;
+    }
+
     function reorderColumns3( matrix, result, idx0, idx1, idx2 ) {
       var m0 = matrix[idx0];
       var m3 = matrix[idx0 + 3];
@@ -218,6 +237,32 @@
       }
     }
 
+    function qrAnnihilate( q, r, row, col ) {
+      assert && assert( row > col ); // only in the lower-triangular area
+
+      var epsilon = 0.0000000001; // TODO: see how far we can reduce this?
+      var cos, sin;
+
+      var diagonalValue = r[index(col, col)];
+      var targetValue = r[index(row, col)];
+      var diagonalSquared = diagonalValue * diagonalValue;
+      var targetSquared = targetValue * targetValue;
+
+      if ( diagonalSquared + targetSquared < epsilon ) {
+        cos = diagonalValue > 0 ? 1 : 0;
+        sin = 0;
+      } else {
+        var rsqr = 1 / Math.sqrt( diagonalSquared + targetSquared );
+        cos = rsqr * diagonalValue;
+        sin = rsqr * targetValue;
+      }
+
+      setGivens3( givensScratch, cos, sin, col, row );
+
+      mult3( givensScratch, r, r );
+      mult3RightTranspose( q, givensScratch, q );
+    }
+
     var scratchS = new Arr( 9 );
     var scratchQ = new Arr( 9 );
     var scratchV = new Arr( 9 );
@@ -231,7 +276,7 @@
       setIdentity3( q );
 
       jacobiIteration3( s, q, jacobiIterationCount );
-      transpose3( q, v );
+      transpose3( q, v ); // done with this Q until we reuse the scratch matrix later below for the QR decomposition
 
       mult3( a, v, b ); // B = AV
 
@@ -240,37 +285,40 @@
       var mag1 = b[1] * b[1] + b[4] * b[4] + b[7] * b[7];
       var mag2 = b[2] * b[2] + b[5] * b[5] + b[8] * b[8];
       var tmpMag;
-      var idx0 = 0;
-      var idx1 = 1;
-      var idx2 = 2;
       if ( mag0 < mag1 ) {
         // swap magnitudes
         tmpMag = mag0;
         mag0 = mag1;
         mag1 = tmpMag;
-        // swap indices
-        idx0 = 1;
-        idx1 = 0;
+        swapNegateColumn( b, 0, 1 );
+        swapNegateColumn( v, 0, 1 );
       }
       if ( mag0 < mag2 ) {
         // swap magnitudes
         tmpMag = mag0;
         mag0 = mag2;
         mag2 = tmpMag;
-        // swap indices
-        idx2 = idx0;
-        idx0 = 2;
+        swapNegateColumn( b, 0, 2 );
+        swapNegateColumn( v, 0, 2 );
       }
       if ( mag1 < mag2 ) {
-        // swap indices
-        var tmpIdx = idx1;
-        idx1 = idx2;
-        idx2 = tmpIdx;
+        swapNegateColumn( b, 1, 2 );
+        swapNegateColumn( v, 1, 2 );
       }
 
-      // TODO: change sign properly when swapping columns, in order to maintain the determinant!
-      reorderColumns3( v, v, idx0, idx1, idx2 );
-      reorderColumns3( b, b, idx0, idx1, idx2 );
+      // QR decomposition
+      var r = b;
+      setIdentity3( q ); // reusing Q now for the QR
+      qrAnnihilate( q, r, 1, 0 );
+      qrAnnihilate( q, r, 2, 0 );
+      qrAnnihilate( q, r, 2, 1 );
+
+      // just references
+      return {
+        u: q,
+        s: r,
+        v: v
+      }
     }
 
     var a = new Arr( [1, 2, 7, 5, 2, 6, -1, -5, 4] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
