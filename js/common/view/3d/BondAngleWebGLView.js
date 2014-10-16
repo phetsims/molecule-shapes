@@ -10,13 +10,42 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
+  var Util = require( 'DOT/Util' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var ArcVertices = require( 'MOLECULE_SHAPES/common/view/3d/ArcVertices' );
-  var ArcGeometry = require( 'MOLECULE_SHAPES/common/view/3d/ArcGeometry' );
-  var SectorGeometry = require( 'MOLECULE_SHAPES/common/view/3d/SectorGeometry' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
+  var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
+
+  var radialVertexCount = 24;
+  var radius = 5;
+
+  var sectorGeometry = new THREE.Geometry();
+
+  // center vertex
+  sectorGeometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+  // radial vertices
+  for ( var i = 0; i < radialVertexCount; i++ ) {
+    sectorGeometry.vertices.push( new THREE.Vector3( i / ( radialVertexCount - 1 ), radius, 0 ) );
+  }
+
+  // faces
+  var zeroVector = new THREE.Vector3();
+  for ( var j = 0; j < radialVertexCount - 1; j++ ) {
+    sectorGeometry.faces.push( new THREE.Face3( 0, j + 1, j + 2 ) );
+    sectorGeometry.faceVertexUvs[ 0 ].push( [ zeroVector, zeroVector, zeroVector ]);
+  }
+  var localSectorGeometry = new LocalGeometry( sectorGeometry );
+
+  var arcGeometry = new THREE.Geometry();
+
+  // radial vertices
+  for ( var k = 0; k < radialVertexCount; k++ ) {
+    arcGeometry.vertices.push( new THREE.Vector3( k / ( radialVertexCount - 1 ), radius, 0 ) );
+  }
+
+  var localArcGeometry = new LocalGeometry( arcGeometry );
 
   function BondAngleWebGLView( renderer, model, molecule, aGroup, bGroup ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
@@ -32,13 +61,17 @@ define( function( require ) {
     this.aGroup = aGroup;
     this.bGroup = bGroup;
 
-    this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, 5, 24, null ); // radius of 5, 24 segments
-    this.arcGeometry = new ArcGeometry( this.arcVertices );
-    this.sectorGeometry = new SectorGeometry( this.arcVertices );
+    this.arcGeometry = localArcGeometry.get( renderer );
+    this.sectorGeometry = localSectorGeometry.get( renderer );
 
     var vertexShader = [
+      'uniform float angle;',
+      'uniform vec3 midpointUnit;',
+      'uniform vec3 planarUnit;',
       'void main() {',
-      '  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
+      '  float theta = ( position.x - 0.5 ) * angle;',
+      '  vec3 location = position.y * ( cos( theta ) * midpointUnit + sin( theta ) * planarUnit );',
+      '  gl_Position = projectionMatrix * modelViewMatrix * vec4( location, 1.0 );',
       '}'
     ].join( '\n' );
 
@@ -59,6 +92,18 @@ define( function( require ) {
       color: {
         type: '3f',
         value: [1,1,1]
+      },
+      angle: {
+        type: 'f',
+        value: Math.PI / 2
+      },
+      midpointUnit: {
+        type: '3f',
+        value: [0,1,0]
+      },
+      planarUnit: {
+        type: '3f',
+        value: [1,0,0]
       }
     };
 
@@ -103,8 +148,6 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, BondAngleWebGLView, {
     dispose: function() {
-      this.arcGeometry.dispose();
-      this.sectorGeometry.dispose();
       this.sectorMaterial.dispose();
       this.arcMaterial.dispose();
 
@@ -127,11 +170,45 @@ define( function( require ) {
       this.sectorMaterial.uniforms.opacity.value = alpha * 0.5;
       this.arcMaterial.uniforms.opacity.value = alpha * 0.7;
 
-      this.arcVertices.setPositions( aDir, bDir, lastMidpoint );
-      this.arcGeometry.updateView();
-      this.sectorGeometry.updateView();
+      var angle = Math.acos( Util.clamp( aDir.dot( bDir ), -1, 1 ) );
+      this.sectorMaterial.uniforms.angle.value = angle;
+      this.arcMaterial.uniforms.angle.value = angle;
 
-      this.midpoint = this.arcVertices.midpoint;
+      var isApproximateSemicircle = ArcVertices.isApproximateSemicircle( aDir, bDir );
+      var midpointUnit, planarUnit;
+      if ( isApproximateSemicircle ) {
+        if ( !lastMidpoint ) {
+          lastMidpoint = Vector3.Y_UNIT.times( radius );
+        }
+        var lastMidpointDir = lastMidpoint.normalized();
+
+        // find a vector that is as orthogonal to both directions as possible
+        var badCross = aDir.cross( lastMidpointDir ).plus( lastMidpointDir.cross( bDir ) );
+        var averageCross = badCross.magnitude() > 0 ? badCross.normalized() : new Vector3( 0, 0, 1 );
+
+        // find a vector that gives us a balance between aDir and bDir (so our semicircle will balance out at the endpoints)
+        var averagePointDir = aDir.minus( bDir ).normalized();
+
+        // (basis vector 1) make that average point planar to our arc surface
+        planarUnit = averagePointDir.minus( averageCross.times( averageCross.dot( averagePointDir ) ) ).normalized();
+
+        // (basis vector 2) find a new midpoint direction that is planar to our arc surface
+        midpointUnit = averageCross.cross( planarUnit ).normalized();
+      } else {
+        midpointUnit = aDir.plus( bDir ).normalized();
+        planarUnit = aDir.minus( midpointUnit.times( aDir.dot( midpointUnit ) ) ).normalized();
+      }
+
+      var midpointUnitArray = [midpointUnit.x, midpointUnit.y, midpointUnit.z];
+      var planarUnitArray = [planarUnit.x, planarUnit.y, planarUnit.z];
+
+      this.sectorMaterial.uniforms.midpointUnit.value = midpointUnitArray;
+      this.arcMaterial.uniforms.midpointUnit.value = midpointUnitArray;
+
+      this.sectorMaterial.uniforms.planarUnit.value = planarUnitArray;
+      this.arcMaterial.uniforms.planarUnit.value = planarUnitArray;
+
+      this.midpoint = midpointUnit.times( radius );
     }
   } );
 } );
