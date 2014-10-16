@@ -270,19 +270,30 @@ define( function( require ) {
                        new Vector3().set( threeRay.direction ).normalize() );
     },
 
-    getElectronPairUnderPointer: function( pointer ) {
+    // TODO: isTouch
+    getElectronPairUnderPointer: function( pointer, isTouch ) {
       var raycaster = this.getRaycasterFromScreenPoint( pointer.point );
-      var intersections = raycaster.intersectObjects( this.moleculeView.radialViews, true ); // recursive (yes)
-      if ( intersections.length > 0 ) {
-        var ob = intersections[0].object;
-        while ( ob && !ob.group ) {
-          assert && assert( ob.parent !== ob );
-          ob = ob.parent;
+      var worldRay = raycaster.ray;
+      var cameraOrigin = worldRay.origin; // THREE.Vector3
+
+      var shortestDistanceSquared = Number.POSITIVE_INFINITY;
+      var closestGroup = null;
+
+      var length = this.moleculeView.radialViews.length;
+      for ( var i = 0; i < length; i++ ) {
+        var view = this.moleculeView.radialViews[i];
+
+        var intersectionPoint = view.intersect( worldRay, isTouch ); // THREE.Vector3
+        if ( intersectionPoint ) {
+          var distance = cameraOrigin.distanceToSquared( intersectionPoint );
+          if ( distance < shortestDistanceSquared ) {
+            shortestDistanceSquared = distance;
+            closestGroup = view.group;
+          }
         }
-        return ob.group;
-      } else {
-        return null;
       }
+
+      return closestGroup;
     },
 
     /*

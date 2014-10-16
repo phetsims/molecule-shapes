@@ -18,7 +18,9 @@ define( function( require ) {
 
   var jsonLoader = new THREE.JSONLoader();
 
-  var localShellGeometry = new LocalGeometry( jsonLoader.parse( LonePairGeometryData ).geometry );
+  var masterShellGeometry = jsonLoader.parse( LonePairGeometryData ).geometry;
+
+  var localShellGeometry = new LocalGeometry( masterShellGeometry );
   var localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     transparent: true,
     opacity: 0.7,
@@ -35,11 +37,11 @@ define( function( require ) {
     this.shellGeometry = localShellGeometry.get( renderer );
     this.shellMaterial = localShellMaterial.get( renderer );
 
-    var shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial );
+    this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial );
 
-    shell.scale.x = shell.scale.y = shell.scale.z = 2.5;
-    shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
-    this.add( shell );
+    this.shell.scale.x = this.shell.scale.y = this.shell.scale.z = 2.5;
+    this.shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
+    this.add( this.shell );
 
     // refactor!
     var electronScale = 2.5;
@@ -60,6 +62,38 @@ define( function( require ) {
     dispose: function() {
       this.electronView1.dispose();
       this.electronView2.dispose();
+    },
+
+    /*
+     * @param {THREE.Ray} worldRay - Camera ray in world space
+     * @param {boolean} isTouch - Whether expanded touch regions should be included
+     * @returns {THREE.Vector3|null} - The first intersection point (in world coordinates) found if it exists, otherwise
+     *                                 null. Note that we short-circuit the handling, so it may pick an intersection
+     *                                 point on the opposite side - for now that's deemed an acceptable trade-off for
+     *                                 performance.
+     */
+    intersect: function( worldRay, isTouch ) {
+      var inverseMatrix = new THREE.Matrix4();
+      var ray = new THREE.Ray();
+
+      inverseMatrix.getInverse( this.shell.matrixWorld );
+      ray.copy( worldRay ).applyMatrix4( inverseMatrix );
+
+      var vertices = masterShellGeometry.vertices;
+      var faceCount = masterShellGeometry.faces.length;
+
+      for ( var f = 0; f < faceCount; f++ ) {
+        var face = masterShellGeometry.faces[f];
+        var a = vertices[ face.a ];
+        var b = vertices[ face.b ];
+        var c = vertices[ face.c ];
+        var intersectionPoint = ray.intersectTriangle( a, b, c, false ); // don't cull
+        if ( intersectionPoint !== null ) {
+          return intersectionPoint.applyMatrix4( this.matrixWorld );
+        }
+      }
+
+      return null;
     }
   } );
 } );
