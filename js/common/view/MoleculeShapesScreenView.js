@@ -115,7 +115,7 @@ define( function( require ) {
         var dragMode = null;
         var draggedParticle = null;
 
-        var pair = screenView.getElectronPairUnderPointer( event.pointer );
+        var pair = screenView.getElectronPairUnderPointer( event.pointer, !event.pointer.isMouse );
         if ( pair && !pair.userControlled ) {
           dragMode = 'pairExistingSpherical';
           draggedParticle = pair;
@@ -175,7 +175,7 @@ define( function( require ) {
     // TODO: update the cursor even if we don't move? (only if we have mouse movement)
     this.backgroundEventTarget.addInputListener( {
       mousemove: function( event, trail ) {
-        screenView.backgroundEventTarget.cursor = screenView.getElectronPairUnderPointer( event.pointer ) ? 'pointer' : null;
+        screenView.backgroundEventTarget.cursor = screenView.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
       }
     } );
 
@@ -270,7 +270,6 @@ define( function( require ) {
                        new Vector3().set( threeRay.direction ).normalize() );
     },
 
-    // TODO: isTouch
     getElectronPairUnderPointer: function( pointer, isTouch ) {
       var raycaster = this.getRaycasterFromScreenPoint( pointer.point );
       var worldRay = raycaster.ray;

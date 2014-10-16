@@ -18,7 +18,7 @@ define( function( require ) {
 
   var jsonLoader = new THREE.JSONLoader();
 
-  var masterShellGeometry = jsonLoader.parse( LonePairGeometryData ).geometry;
+  var masterShellGeometry = jsonLoader.parse( LonePairGeometryData.highDetail ).geometry;
 
   var localShellGeometry = new LocalGeometry( masterShellGeometry );
   var localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
@@ -30,6 +30,9 @@ define( function( require ) {
     color: MoleculeShapesColors.lonePairShellProperty,
     ambient: MoleculeShapesColors.lonePairShellProperty
   } );
+
+  var mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetail ).geometry;
+  var touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetailExtruded ).geometry;
 
   function LonePairView( renderer ) {
     THREE.Object3D.call( this );
@@ -76,14 +79,16 @@ define( function( require ) {
       var inverseMatrix = new THREE.Matrix4();
       var ray = new THREE.Ray();
 
+      var geometry = isTouch ? touchHitTestGeometry : mouseHitTestGeometry;
+
       inverseMatrix.getInverse( this.shell.matrixWorld );
       ray.copy( worldRay ).applyMatrix4( inverseMatrix );
 
-      var vertices = masterShellGeometry.vertices;
-      var faceCount = masterShellGeometry.faces.length;
+      var vertices = geometry.vertices;
+      var faceCount = geometry.faces.length;
 
       for ( var f = 0; f < faceCount; f++ ) {
-        var face = masterShellGeometry.faces[f];
+        var face = geometry.faces[f];
         var a = vertices[ face.a ];
         var b = vertices[ face.b ];
         var c = vertices[ face.c ];
