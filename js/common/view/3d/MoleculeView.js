@@ -20,6 +20,7 @@ define( function( require ) {
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
+  var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
 
   var angleDegreesString = require( 'string!MOLECULE_SHAPES/angle.degrees' );
 
@@ -215,7 +216,9 @@ define( function( require ) {
         for ( var i = 0; i < this.atomViews.length; i++ ) {
           var otherView = this.atomViews[i];
           if ( otherView !== atomView ) {
-            var bondAngleView = new BondAngleView( this.model, this.molecule, otherView.group, atomView.group );
+            var bondAngleView = MoleculeShapesGlobals.useWebGL ?
+                                new BondAngleWebGLView( this.renderer, this.model, this.molecule, otherView.group, atomView.group ) :
+                                new BondAngleView( this.model, this.molecule, otherView.group, atomView.group );
             this.add( bondAngleView );
             this.angleViews.push( bondAngleView );
           }

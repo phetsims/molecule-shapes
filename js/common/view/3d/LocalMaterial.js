@@ -31,8 +31,14 @@ define( function( require ) {
       } );
     }
     if ( options.ambient ) {
-      MoleculeShapesGlobals.toColorProperty( options.color ).link( function( color ) {
+      MoleculeShapesGlobals.toColorProperty( options.ambient ).link( function( color ) {
         self.setAmbient( color );
+      } );
+    }
+    // assumes RGB
+    if ( options.uniformColor ) {
+      MoleculeShapesGlobals.toColorProperty( options.uniformColor ).link( function( color ) {
+        self.setUniformColor( color );
       } );
     }
   }
@@ -52,6 +58,11 @@ define( function( require ) {
       return material;
     },
 
+    setUniform: function( name, value ) {
+      this.masterMaterial.uniforms[name].value = value;
+      _.each( this.materials, function( material ) { material.uniforms[name].value = value; } );
+    },
+
     setColor: function( color ) {
       var hex = color.toNumber();
       this.masterMaterial.color.setHex( hex );
@@ -62,6 +73,11 @@ define( function( require ) {
       var hex = color.toNumber();
       this.masterMaterial.ambient.setHex( hex );
       _.each( this.materials, function( material ) { material.ambient.setHex( hex ); } );
+    },
+
+    setUniformColor: function( color ) {
+      var colorArray = [color.r / 255, color.g / 255, color.b / 255];
+      this.setUniform( 'color', colorArray );
     }
   } );
 } );
