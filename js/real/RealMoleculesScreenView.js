@@ -104,8 +104,8 @@ define( function( require ) {
         top: this.layoutBounds.top + 20,
         left: approximateVisualCenterX + horizontalSpacing / 2
       } );
-      realRadioButton.touchArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
-      modelRadioButton.touchArea = modelRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
+      realRadioButton.touchArea = realRadioButton.mouseArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
+      modelRadioButton.touchArea = modelRadioButton.mouseArea = modelRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
       this.addChild( realRadioButton );
       this.addChild( modelRadioButton );
     }
