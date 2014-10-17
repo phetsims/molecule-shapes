@@ -31,27 +31,29 @@ define( function( require ) {
 
     this.model = model;
     this.screenView = screenView;
-    this.renderer = screenView.threeRenderer;
+    this.renderer = screenView.threeRenderer; // {THREE.Renderer}
     this.molecule = molecule;
 
-    this.atomViews = [];
-    this.lonePairViews = [];
-    this.bondViews = [];
-    this.angleViews = [];
+    this.atomViews = []; // {AtomView[]}
+    this.lonePairViews = []; // {LonePairView[]}
+    this.bondViews = []; // {BondView[]}
+    this.angleViews = []; // {BondAngleWebGLView[] | BondAngleFallbackView[]}
 
     this.radialViews = []; // all views that we would want to drag
 
-    this.lastMidpoint = null;
+    this.lastMidpoint = null; // track the last bond-angle midpoint for a 2-atom system globally
 
     molecule.on( 'groupAdded', this.addGroup.bind( this ) );
     molecule.on( 'groupRemoved', this.removeGroup.bind( this ) );
     molecule.on( 'bondAdded', this.addBond.bind( this ) );
     molecule.on( 'bondRemoved', this.removeBond.bind( this ) );
 
+    // initial setup
     _.each( molecule.radialGroups, this.addGroup.bind( this ) );
     _.each( molecule.getDistantLonePairs(), this.addGroup.bind( this ) );
     _.each( molecule.getBondsAround( molecule.centralAtom ), this.addBond.bind( this ) );
 
+    // the center atom is special
     if ( molecule.isReal ) {
       this.centerAtomView = new AtomView( this.renderer, AtomView.getElementLocalMaterial( molecule.centralAtom.element ) );
     } else {
@@ -75,8 +77,6 @@ define( function( require ) {
     },
 
     updateAngles: function( localCameraOrientation ) {
-      var i;
-
       // we need to handle the 2-atom case separately for proper support of 180-degree bonds
       var hasTwoBonds = this.molecule.radialAtoms.length === 2;
       if ( !hasTwoBonds ) {
@@ -84,7 +84,7 @@ define( function( require ) {
         this.lastMidpoint = null;
       }
 
-      for ( i = 0; i < this.angleViews.length; i++ ) {
+      for ( var i = 0; i < this.angleViews.length; i++ ) {
         var angleView = this.angleViews[i];
         angleView.updateView( this.lastMidpoint, localCameraOrientation );
 
@@ -111,11 +111,6 @@ define( function( require ) {
         this.lonePairViews[i].dispose();
       }
       this.centerAtomView.dispose();
-      // TODO? See what three.js needs, but also release listeners
-    },
-
-    intersect: function( ray3 ) {
-      // TODO
     },
 
     addGroup: function( group ) {
@@ -133,7 +128,7 @@ define( function( require ) {
         this.lonePairViews.push( lonePairView );
         this.add( lonePairView );
 
-        // TODO: remove code duplication
+        // TODO: remove code duplication with below
         if ( parentAtom === centralAtom ) {
           this.radialViews.push( lonePairView );
         }
