@@ -17,6 +17,7 @@ define( function( require ) {
   var LiberationSansRegularSubset = require( 'MOLECULE_SHAPES/common/data/LiberationSansRegularSubset' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
 
   var padding = 4;
   var glyphs = {};
@@ -97,16 +98,21 @@ define( function( require ) {
     };
   }
 
-  var texture = THREE.ImageUtils.loadTexture( canvas.toDataURL() );
-  texture.minFilter = THREE.LinearMipMapLinearFilter;
+  var localTexture = new LocalTexture( function() {
+    var texture = THREE.ImageUtils.loadTexture( canvas.toDataURL() );
+    texture.minFilter = THREE.LinearMipMapLinearFilter;
+    return texture;
+  } );
 
   var periodCompensationFactor = 0.7;
   var shortXOffset = glyphs['0'].advance;
   var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance * periodCompensationFactor + glyphs['°'].advance * periodCompensationFactor;
   var longWidth = glyphs['0'].advance + shortWidth;
 
-  function LabelView() {
+  function LabelView( renderer ) {
     var view = this;
+
+    var texture = localTexture.get( renderer );
 
     var geometry = new THREE.Geometry();
     var x = 0;

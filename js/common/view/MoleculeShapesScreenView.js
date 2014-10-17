@@ -192,7 +192,7 @@ define( function( require ) {
     var angleLabelIndex = 0;
     for ( var i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGL ) {
-        labelViews[i] = new LabelView();
+        labelViews[i] = new LabelView( this.threeRenderer );
         this.overlayScene.add( labelViews[i] );
         labelViews[i].unsetLabel();
       } else {
