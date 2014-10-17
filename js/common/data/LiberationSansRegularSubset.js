@@ -2,6 +2,9 @@
 
 /**
  * Numeric subset of Liberation Sans Regular
+ * (uses the SIL Open Font License, http://en.wikipedia.org/wiki/SIL_Open_Font_License)
+ *
+ * Extracted paths and x-advances for the glyphs using FreeType.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
