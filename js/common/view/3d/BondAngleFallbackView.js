@@ -12,16 +12,43 @@ define( function( require ) {
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var ArcVertices = require( 'MOLECULE_SHAPES/common/view/3d/ArcVertices' );
-  var ArcGeometry = require( 'MOLECULE_SHAPES/common/view/3d/ArcGeometry' );
-  var SectorGeometry = require( 'MOLECULE_SHAPES/common/view/3d/SectorGeometry' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
+
+  function createArcGeometry( arcVertices ) {
+    var geometry = new THREE.Geometry();
+
+    for ( var i = 0; i < arcVertices.vertices.length; i++ ) {
+      geometry.vertices.push( arcVertices.vertices[i] );
+    }
+    geometry.dynamic = true; // so we can be updated
+
+    return geometry;
+  }
+
+  function createSectorGeometry( arcVertices ) {
+    var geometry = new THREE.Geometry();
+
+    // center
+    geometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+    for ( var i = 0; i < arcVertices.vertices.length; i++ ) {
+      // unclear whether concat would be supported
+      geometry.vertices.push( arcVertices.vertices[i] );
+    }
+    // faces
+    for ( var j = 0; j < arcVertices.vertices.length - 1; j++ ) {
+      geometry.faces.push( new THREE.Face3( 0, j + 1, j + 2 ) );
+    }
+    geometry.dynamic = true; // so we can be updated
+
+    return geometry;
+  }
 
   function BondAngleFallbackView( screenView, model, molecule, aGroup, bGroup, label ) {
     BondAngleView.call( this, screenView, model, molecule, aGroup, bGroup, label );
 
     this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, BondAngleView.radius, 24, null ); // radius of 5, 24 segments
-    this.arcGeometry = new ArcGeometry( this.arcVertices );
-    this.sectorGeometry = new SectorGeometry( this.arcVertices );
+    this.arcGeometry = createArcGeometry( this.arcVertices );
+    this.sectorGeometry = createSectorGeometry( this.arcVertices );
 
     this.sectorMaterial = new THREE.MeshBasicMaterial( {
       side: THREE.DoubleSide,
@@ -69,8 +96,8 @@ define( function( require ) {
       this.arcMaterial.opacity = this.viewOpacity * 0.7;
 
       this.arcVertices.setPositions( this.midpointUnit, this.planarUnit, this.viewAngle );
-      this.arcGeometry.updateView();
-      this.sectorGeometry.updateView();
+      this.arcGeometry.verticesNeedUpdate = true;
+      this.sectorGeometry.verticesNeedUpdate = true;
     }
   } );
 } );
