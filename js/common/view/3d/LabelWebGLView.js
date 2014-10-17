@@ -109,7 +109,7 @@ define( function( require ) {
   var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance * periodCompensationFactor + glyphs['°'].advance * periodCompensationFactor;
   var longWidth = glyphs['0'].advance + shortWidth;
 
-  function LabelView( renderer ) {
+  function LabelWebGLView( renderer ) {
     var view = this;
 
     var texture = localTexture.get( renderer );
@@ -262,7 +262,7 @@ define( function( require ) {
     this.position.y = 200;
   }
 
-  return inherit( THREE.Mesh, LabelView, {
+  return inherit( THREE.Mesh, LabelWebGLView, {
     setLabel: function( string, brightness, centerScreenPoint, midScreenPoint, layoutScale ) {
       this.setString( string );
       this.materialUniforms.opacity.value = brightness;

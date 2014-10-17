@@ -24,7 +24,7 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
-  var LabelView = require( 'MOLECULE_SHAPES/common/view/3d/LabelView' );
+  var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   /**
@@ -192,7 +192,7 @@ define( function( require ) {
     var angleLabelIndex = 0;
     for ( var i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGL ) {
-        labelViews[i] = new LabelView( this.threeRenderer );
+        labelViews[i] = new LabelWebGLView( this.threeRenderer );
         this.overlayScene.add( labelViews[i] );
         labelViews[i].unsetLabel();
       } else {
