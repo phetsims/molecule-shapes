@@ -61,13 +61,18 @@ define( function( require ) {
   return inherit( THREE.Object3D, MoleculeView, {
 
     updateView: function() {
+      // angle and bond views need to know information about the camera's position
+      var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
+      this.worldToLocal( cameraPosition ); // this mutates cameraPosition
+      var localCameraOrientation = new Vector3().set( cameraPosition ).normalized();
+
       for ( var i = 0; i < this.bondViews.length; i++ ) {
-        this.bondViews[i].updateView();
+        this.bondViews[i].updateView( cameraPosition );
       }
-      this.updateAngles();
+      this.updateAngles( localCameraOrientation );
     },
 
-    updateAngles: function() {
+    updateAngles: function( localCameraOrientation ) {
       var i;
 
       // we need to handle the 2-atom case separately for proper support of 180-degree bonds
@@ -75,14 +80,6 @@ define( function( require ) {
       if ( !hasTwoBonds ) {
         // if we don't have two bonds, just ignore the last midpoint
         this.lastMidpoint = null;
-      }
-
-      // TODO: having this is unclean
-      var localCameraOrientation = null;
-      if ( this.angleViews.length ) {
-        var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
-        this.worldToLocal( cameraPosition ); // this mutates cameraPosition
-        localCameraOrientation = new Vector3().set( cameraPosition ).normalized();
       }
 
       for ( i = 0; i < this.angleViews.length; i++ ) {

@@ -18,21 +18,23 @@ define( function( require ) {
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 
-  var RADIUS = 2;
-  var TOUCH_RADIUS = 3;
-
+  var displayRadius = 2;
+  var touchRadius = 3;
   var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
-  var localBondGeometry = new LocalGeometry( new THREE.SphereGeometry( RADIUS, numSamples, numSamples ) );
-
   var overdraw = MoleculeShapesGlobals.useWebGL ? 0 : 0.5;
+
+  // renderer-local access
+  var localBondGeometry = new LocalGeometry( new THREE.SphereGeometry( displayRadius, numSamples, numSamples ) );
+
   var elementLocalMaterials = {
     // filled in dynamically in getElementLocalMaterial
   };
 
-  var mouseHitTestSphere = new Sphere3( Vector3.ZERO, RADIUS );
-  var touchHitTestSphere = new Sphere3( Vector3.ZERO, TOUCH_RADIUS );
+  var mouseHitTestSphere = new Sphere3( Vector3.ZERO, displayRadius );
+  var touchHitTestSphere = new Sphere3( Vector3.ZERO, touchRadius );
 
   /*
+   * @param {THREE.Renderer} renderer - To know which geometries/materials to use for which renderer (can't share)
    * @param {LocalMaterial} localMaterial - preferably from one of AtomView's static methods/properties
    */
   function AtomView( renderer, localMaterial ) {
@@ -66,6 +68,7 @@ define( function( require ) {
       return new THREE.Vector3( localPoint.x, localPoint.y, localPoint.z ).applyMatrix4( this.matrixWorld );
     }
   }, {
+    // renderer-local access
     centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: overdraw } ), {
       color: MoleculeShapesColors.centralAtomProperty,
       ambient: MoleculeShapesColors.centralAtomProperty
@@ -75,6 +78,10 @@ define( function( require ) {
       ambient: MoleculeShapesColors.atomProperty
     } ),
     getElementLocalMaterial: function( element ) {
+      // Lazily create LocalMaterials for each element.
+      // We'll want one material for each renderer-element pair, since we can't share across renderers, and we want to
+      // share the material with the same element when possible.
+
       var localMaterial = elementLocalMaterials[element.symbol];
       if ( !localMaterial ) {
         localMaterial = elementLocalMaterials[element.symbol] = new LocalMaterial( new THREE.MeshLambertMaterial( {

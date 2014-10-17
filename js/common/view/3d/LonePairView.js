@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * View of a lone pair {THREE.Object3D}
+ * View of a lone pair
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -18,8 +18,10 @@ define( function( require ) {
 
   var jsonLoader = new THREE.JSONLoader();
 
+  // geometry used for display
   var masterShellGeometry = jsonLoader.parse( LonePairGeometryData.highDetail ).geometry;
 
+  // renderer-local access
   var localShellGeometry = new LocalGeometry( masterShellGeometry );
   var localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     transparent: true,
@@ -31,6 +33,7 @@ define( function( require ) {
     ambient: MoleculeShapesColors.lonePairShellProperty
   } );
 
+  // geometries used for hit testing (includes a larger touch hit mesh)
   var mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetail ).geometry;
   var touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetailExtruded ).geometry;
 

@@ -10,7 +10,6 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
@@ -20,6 +19,7 @@ define( function( require ) {
   var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
   var globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
 
+  // renderer-local access
   var localBondGeometry = new LocalGeometry( globalBondGeometry );
   var localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
@@ -64,11 +64,7 @@ define( function( require ) {
 
     },
 
-    updateView: function() {
-      // TODO: we're doing this too much, refactor into one place in MoleculeView!
-      var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
-      this.parent.worldToLocal( cameraPosition ); // this mutates cameraPosition
-
+    updateView: function( cameraPosition ) {
       // extract our start and end
       var start = this.aPositionProperty.value;
       var end = this.bPositionProperty.value;

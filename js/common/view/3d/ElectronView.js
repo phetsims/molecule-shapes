@@ -15,6 +15,8 @@ define( function( require ) {
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 
   var numSamples = MoleculeShapesGlobals.useWebGL ? 10 : 5;
+
+  // renderer-local access
   var localElectronGeometry = new LocalGeometry( new THREE.SphereGeometry( 0.1, numSamples, numSamples ) );
   var localElectronMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5

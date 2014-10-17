@@ -203,6 +203,7 @@ define( function( require ) {
       this.sectorMaterial.uniforms.angle.value = this.viewAngle;
       this.arcMaterial.uniforms.angle.value = this.viewAngle;
 
+      // vector uniforms in three.js use arrays
       var midpointUnitArray = [this.midpointUnit.x, this.midpointUnit.y, this.midpointUnit.z];
       var planarUnitArray = [this.planarUnit.x, this.planarUnit.y, this.planarUnit.z];
 

@@ -55,8 +55,11 @@ define( function( require ) {
 
       this.viewOpacity = this.showBondAnglesProperty.value ? BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length ) : 0;
 
+      // angle in radians between the two orientations, clamped to avoid Math.acos of something slightly greater than 1
       this.viewAngle = Math.acos( Util.clamp( aDir.dot( bDir ), -1, 1 ) );
 
+      // If we have an approximate semicircle, we'll need to use the last midpoint to provide a stable position to
+      // display the 180-degree semicircle. Otherwise, it would be unstable and wildly vary.
       var isApproximateSemicircle = BondAngleView.isApproximateSemicircle( aDir, bDir );
       if ( isApproximateSemicircle ) {
         if ( !lastMidpoint ) {
@@ -88,6 +91,7 @@ define( function( require ) {
         var centerDevicePoint = new THREE.Vector3(); // e.g. zero
         var midDevicePoint = new THREE.Vector3( this.midpoint.x, this.midpoint.y, this.midpoint.z );
 
+        // transform to world coordinates
         this.parent.localToWorld( centerDevicePoint );
         this.parent.localToWorld( midDevicePoint );
 
@@ -99,16 +103,19 @@ define( function( require ) {
 
         var angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
 
-        var globalCenter = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
-                                        ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
-        var globalMidpoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+        // screen coordinates
+        var screenCenterPoint = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+                                             ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
+        var screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
                                           ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
 
         var labelString = Util.toFixed( angle, 1 ) + '°';
         while ( labelString.length < 5 ) {
+          // handle single-digit labels by padding them
           labelString = '0' + labelString;
         }
-        this.label.setLabel( labelString, this.viewOpacity, globalCenter, globalMidpoint, layoutScale );
+
+        this.label.setLabel( labelString, this.viewOpacity, screenCenterPoint, screenMidPoint, layoutScale );
       } else {
         this.label.unsetLabel();
       }

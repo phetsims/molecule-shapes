@@ -98,6 +98,7 @@ define( function( require ) {
     };
   }
 
+  // renderer-local access
   var localTexture = new LocalTexture( function() {
     var texture = THREE.ImageUtils.loadTexture( canvas.toDataURL() );
     texture.minFilter = THREE.LinearMipMapLinearFilter;
