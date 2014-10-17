@@ -233,7 +233,7 @@ define( function( require ) {
       },
       opacity: {
         type: 'f',
-        value: 1
+        value: 0
       },
       color: {
         type: '3f'

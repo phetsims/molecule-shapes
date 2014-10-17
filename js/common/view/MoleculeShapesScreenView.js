@@ -12,7 +12,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Ray3 = require( 'DOT/Ray3' );
-  var Vector2 = require( 'DOT/Vector2' );
   var Vector3 = require( 'DOT/Vector3' );
   var Plane3 = require( 'DOT/Plane3' );
   var Sphere3 = require( 'DOT/Sphere3' );
@@ -191,12 +190,11 @@ define( function( require ) {
       if ( screenView.moleculeView ) {
         screenView.moleculeView.quaternion.copy( quaternion );
         screenView.moleculeView.updateMatrix();
+        screenView.moleculeView.updateMatrixWorld();
       }
     } );
 
     var angleLabels = [];
-    var numAngleLabelsVisible = 0;
-    var angleLabelIndex = 0;
     for ( var i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGL ) {
         angleLabels[i] = new LabelWebGLView( this.threeRenderer );
@@ -208,26 +206,17 @@ define( function( require ) {
       }
     }
 
-    // TODO: turn stub into handler
     this.labelManager = {
-      showLabel: function( string, brightness, centerDevicePoint, midDevicePoint ) {
-        var globalCenter = new Vector2( ( centerDevicePoint.x + 1 ) * screenView.screenWidth / 2,
-                                        ( -centerDevicePoint.y + 1 ) * screenView.screenHeight / 2 );
-        var globalMidpoint = new Vector2( ( midDevicePoint.x + 1 ) * screenView.screenWidth / 2,
-                                          ( -midDevicePoint.y + 1 ) * screenView.screenHeight / 2 );
-
-        var layoutScale = screenView.getLayoutScale( screenView.screenWidth, screenView.screenHeight );
-        angleLabels[angleLabelIndex++].setLabel( string, brightness, globalCenter, globalMidpoint, layoutScale );
+      checkOutLabel: function() {
+        var label = angleLabels.pop();
+        assert && assert( label );
+        return label;
       },
 
-      finishedAddingLabels: function() {
-        // TODO: logic cleanup
-        var numVisible = angleLabelIndex;
-        while ( angleLabelIndex < numAngleLabelsVisible ) {
-          angleLabels[angleLabelIndex++].unsetLabel();
-        }
-        angleLabelIndex = 0;
-        numAngleLabelsVisible = numVisible;
+      returnLabel: function( label ) {
+        assert && assert( !_.contains( angleLabels, label ) );
+        angleLabels.push( label );
+        label.unsetLabel();
       }
     };
   }
@@ -238,6 +227,7 @@ define( function( require ) {
 
       this.moleculeView.quaternion.copy( this.model.moleculeQuaternion );
       this.moleculeView.updateMatrix();
+      this.moleculeView.updateMatrixWorld();
     },
 
     removeMoleculeView: function( moleculeView ) {

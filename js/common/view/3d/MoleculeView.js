@@ -10,20 +10,15 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
-  var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/common/view/3d/LonePairView' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
-  var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
   var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
   var BondAngleFallbackView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleFallbackView' );
-
-  var angleDegreesString = require( 'string!MOLECULE_SHAPES/angle.degrees' );
 
   // @param {MoleculeShapesScreenView} view
   function MoleculeView( model, view, molecule, labelManager ) {
@@ -99,40 +94,6 @@ define( function( require ) {
           this.lastMidpoint = angleView.midpoint.normalized();
         }
       }
-
-      if ( this.model.showBondAngles ) {
-        for ( i = 0; i < this.angleViews.length; i++ ) {
-          var bondAngleView = this.angleViews[i];
-
-          var a = bondAngleView.aGroup;
-          var b = bondAngleView.bGroup;
-
-          var aDir = a.orientation;
-          var bDir = b.orientation;
-
-          var brightness = BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length );
-          if ( brightness === 0 ) {
-            continue;
-          }
-
-          // TODO: cleanup
-
-          var centerPoint = new THREE.Vector3(); // e.g. zero
-          var midPoint = new THREE.Vector3( bondAngleView.midpoint.x, bondAngleView.midpoint.y, bondAngleView.midpoint.z );
-
-          this.localToWorld( centerPoint );
-          this.localToWorld( midPoint );
-
-          this.view.convertScreenPointFromGlobalPoint( centerPoint );
-          this.view.convertScreenPointFromGlobalPoint( midPoint );
-
-          var angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
-
-          this.labelManager.showLabel( StringUtils.format( angleDegreesString, Util.toFixed( angle, 1 ) ), brightness, centerPoint, midPoint );
-        }
-      }
-
-      this.labelManager.finishedAddingLabels();
     },
 
     dispose: function() {
@@ -144,6 +105,7 @@ define( function( require ) {
         this.bondViews[i].dispose();
       }
       for ( i = 0; i < this.angleViews.length; i++ ) {
+        this.labelManager.returnLabel( this.angleViews[i].label );
         this.angleViews[i].dispose();
       }
       for ( i = 0; i < this.lonePairViews.length; i++ ) {
@@ -218,8 +180,8 @@ define( function( require ) {
           var otherView = this.atomViews[i];
           if ( otherView !== atomView ) {
             var bondAngleView = MoleculeShapesGlobals.useWebGL ?
-                                new BondAngleWebGLView( this.renderer, this.model, this.molecule, otherView.group, atomView.group ) :
-                                new BondAngleFallbackView( this.model, this.molecule, otherView.group, atomView.group );
+                                new BondAngleWebGLView( this.view, this.renderer, this.model, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() ) :
+                                new BondAngleFallbackView( this.view, this.model, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() );
             this.add( bondAngleView );
             this.angleViews.push( bondAngleView );
           }
@@ -256,6 +218,7 @@ define( function( require ) {
 
           if ( bondAngleView.aGroup === group || bondAngleView.bGroup === group ) {
             this.remove( bondAngleView );
+            this.labelManager.returnLabel( bondAngleView.label );
             bondAngleView.dispose();
             this.angleViews.splice( i, 1 );
           }

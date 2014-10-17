@@ -129,9 +129,9 @@ define( function( require ) {
     }
   };
 
-  function BondAngleWebGLView( renderer, model, molecule, aGroup, bGroup ) {
+  function BondAngleWebGLView( screenView, renderer, model, molecule, aGroup, bGroup, label ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
-    BondAngleView.call( this, model, molecule, aGroup, bGroup );
+    BondAngleView.call( this, screenView, model, molecule, aGroup, bGroup, label );
 
     var view = this;
 

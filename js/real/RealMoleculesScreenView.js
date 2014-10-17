@@ -198,9 +198,6 @@ define( function( require ) {
       model.molecule = newMolecule;
 
       // recreate the view
-      if ( this.moleculeView ) {
-        this.moleculeView.dispose();
-      }
       this.moleculeView = new MoleculeView( this.model, this, this.model.molecule, this.labelManager );
       this.addMoleculeView( this.moleculeView );
     }

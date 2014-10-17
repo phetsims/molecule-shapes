@@ -9,19 +9,22 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Vector3 = require( 'DOT/Vector3' );
   var Util = require( 'DOT/Util' );
 
-  function BondAngleView( model, molecule, aGroup, bGroup ) {
+  function BondAngleView( screenView, model, molecule, aGroup, bGroup, label ) {
     THREE.Object3D.call( this );
 
     // @public
     this.aGroup = aGroup;
     this.bGroup = bGroup;
+    this.label = label;
     this.midpoint = null; // {Vector3} updated in updateView
     this.radius = 5;
 
     // @protected
+    this.screenView = screenView;
     this.model = model;
     this.molecule = molecule;
 
@@ -70,6 +73,36 @@ define( function( require ) {
       }
 
       this.midpoint = this.midpointUnit.times( BondAngleView.radius );
+
+      // label handling
+      if ( this.viewOpacity !== 0 ) {
+        var centerDevicePoint = new THREE.Vector3(); // e.g. zero
+        var midDevicePoint = new THREE.Vector3( this.midpoint.x, this.midpoint.y, this.midpoint.z );
+
+        this.parent.localToWorld( centerDevicePoint );
+        this.parent.localToWorld( midDevicePoint );
+
+        // TODO: failure of encapsulation here!
+        // inverse projection into normalized device coordinates
+        this.screenView.convertScreenPointFromGlobalPoint( centerDevicePoint );
+        this.screenView.convertScreenPointFromGlobalPoint( midDevicePoint );
+        var layoutScale = this.screenView.getLayoutScale( this.screenView.screenWidth, this.screenView.screenHeight );
+
+        var angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
+
+        var globalCenter = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+                                        ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
+        var globalMidpoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+                                          ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
+
+        var labelString = Util.toFixed( angle, 1 ) + '°';
+        while ( labelString.length < 5 ) {
+          labelString = '0' + labelString;
+        }
+        this.label.setLabel( labelString, this.viewOpacity, globalCenter, globalMidpoint, layoutScale );
+      } else {
+        this.label.unsetLabel();
+      }
     },
   }, {
     lowThresholds: [0, 0, 0, 0, 0.35, 0.45, 0.5],

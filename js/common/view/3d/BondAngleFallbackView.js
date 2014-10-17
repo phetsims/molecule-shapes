@@ -16,8 +16,8 @@ define( function( require ) {
   var SectorGeometry = require( 'MOLECULE_SHAPES/common/view/3d/SectorGeometry' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
 
-  function BondAngleFallbackView( model, molecule, aGroup, bGroup ) {
-    BondAngleView.call( this, model, molecule, aGroup, bGroup );
+  function BondAngleFallbackView( screenView, model, molecule, aGroup, bGroup, label ) {
+    BondAngleView.call( this, screenView, model, molecule, aGroup, bGroup, label );
 
     this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, BondAngleView.radius, 24, null ); // radius of 5, 24 segments
     this.arcGeometry = new ArcGeometry( this.arcVertices );
