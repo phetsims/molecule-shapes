@@ -99,6 +99,7 @@ define( function( require ) {
   function GeometryNamePanel( model, options ) {
     this.model = model;
 
+    // text fields that will show the name of the geometry
     this.molecularText = new Text( 'X', { font: geometryNameFont } );
     this.electronText = new Text( 'Y', { font: geometryNameFont } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
@@ -106,6 +107,7 @@ define( function( require ) {
     model.linkAttribute( 'showMolecularShapeName', this.molecularText, 'visible' );
     model.linkAttribute( 'showElectronShapeName', this.electronText, 'visible' );
 
+    // labels for the types of geometries
     this.molecularTextLabel = new Text( moleculeGeometryString, { font: new PhetFont( 14 ) } );
     this.electronTextLabel = new Text( electronGeometryString, { font: new PhetFont( 14 ) } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
@@ -114,14 +116,22 @@ define( function( require ) {
     this.molecularCheckbox = new MoleculeShapesCheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
     this.electronCheckbox = new MoleculeShapesCheckBox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
 
-    this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = this.molecularCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.molecularCheckbox.localBounds.maxY + 40 );
-    this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = this.electronCheckbox.localBounds.dilatedXY( 10, 15 ).withMaxY( this.electronCheckbox.localBounds.maxY + 40 );
+    var pointerAreaXPadding = 10;
+    var pointerAreaYPadding = 15;
+    var pointerAreaBottomExtension = 40;
+    var molecularPointerArea = this.molecularCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
+                                   .withMaxY( this.molecularCheckbox.localBounds.maxY + pointerAreaBottomExtension );
+    this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = molecularPointerArea;
+    var electronPointerArea = this.electronCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
+                                  .withMaxY( this.electronCheckbox.localBounds.maxY + pointerAreaBottomExtension );
+    this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = electronPointerArea;
 
+    // increase our maximums if our check box labels are larger than the shape names
     maxGeometryWidth = Math.max( maxGeometryWidth, this.molecularCheckbox.width );
     maxShapeWidth = Math.max( maxShapeWidth, this.electronCheckbox.width );
-    var checkBoxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
 
     // layout
+    var checkBoxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
     this.molecularCheckbox.centerX = maxGeometryWidth / 2;
     this.electronCheckbox.centerX = maxGeometryWidth + 20 + maxShapeWidth / 2;
     this.molecularText.top = this.electronText.top = checkBoxBottom + 10;
@@ -130,6 +140,7 @@ define( function( require ) {
     content.addChild( this.molecularCheckbox );
     content.addChild( this.molecularText );
     if ( !model.isBasicsVersion ) {
+      // basics version excludes lone-pair (electron) geometries
       content.addChild( this.electronCheckbox );
       content.addChild( this.electronText );
     }
@@ -139,7 +150,6 @@ define( function( require ) {
     }, options ) );
 
     var updateNames = this.updateNames.bind( this );
-
     model.link( 'molecule', function( newMolecule, oldMolecule ) {
       if ( oldMolecule ) {
         oldMolecule.off( 'bondChanged', updateNames );
@@ -155,6 +165,8 @@ define( function( require ) {
     updateNames: function() {
       this.molecularText.text = this.getMolecularGeometryName();
       this.electronText.text = this.getElectronGeometryName();
+
+      // layout
       this.molecularText.centerX = this.molecularCheckbox.centerX;
       this.electronText.centerX = this.electronCheckbox.centerX;
     },
