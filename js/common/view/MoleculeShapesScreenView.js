@@ -18,14 +18,13 @@ define( function( require ) {
   var Sphere3 = require( 'DOT/Sphere3' );
   var DOM = require( 'SCENERY/nodes/DOM' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Text = require( 'SCENERY/nodes/Text' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
   var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var LabelFallbackNode = require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' );
 
   /**
    * Constructor for the MoleculeShapesScreenView
@@ -186,29 +185,6 @@ define( function( require ) {
       }
     } );
 
-    var angleLabels = [];
-    var labelViews = [];
-    var numAngleLabelsVisible = 0;
-    var angleLabelIndex = 0;
-    for ( var i = 0; i < 15; i++ ) {
-      if ( MoleculeShapesGlobals.useWebGL ) {
-        labelViews[i] = new LabelWebGLView( this.threeRenderer );
-        this.overlayScene.add( labelViews[i] );
-        labelViews[i].unsetLabel();
-      } else {
-        angleLabels[i] = new Text( '', {
-          font: new PhetFont( 16 ),
-          visible: false
-        } );
-        this.addChild( angleLabels[i] );
-      }
-    }
-    MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
-      _.each( angleLabels, function( angleLabel ) {
-        angleLabel.fill = color;
-      } );
-    } );
-
     // update the molecule view's rotation when the model's rotation changes
     model.moleculeQuaternionProperty.link( function( quaternion ) {
       // moleculeView is created in the subtype (not yet). will handle initial rotation in addMoleculeView
@@ -218,6 +194,20 @@ define( function( require ) {
       }
     } );
 
+    var angleLabels = [];
+    var numAngleLabelsVisible = 0;
+    var angleLabelIndex = 0;
+    for ( var i = 0; i < 15; i++ ) {
+      if ( MoleculeShapesGlobals.useWebGL ) {
+        angleLabels[i] = new LabelWebGLView( this.threeRenderer );
+        this.overlayScene.add( angleLabels[i] );
+        angleLabels[i].unsetLabel();
+      } else {
+        angleLabels[i] = new LabelFallbackNode();
+        this.addChild( angleLabels[i] );
+      }
+    }
+
     // TODO: turn stub into handler
     this.labelManager = {
       showLabel: function( string, brightness, centerDevicePoint, midDevicePoint ) {
@@ -226,32 +216,15 @@ define( function( require ) {
         var globalMidpoint = new Vector2( ( midDevicePoint.x + 1 ) * screenView.screenWidth / 2,
                                           ( -midDevicePoint.y + 1 ) * screenView.screenHeight / 2 );
 
-        if ( MoleculeShapesGlobals.useWebGL ) {
-          var labelView = labelViews[angleLabelIndex++];
-          labelView.setLabel( string, brightness, globalCenter, globalMidpoint, screenView.getLayoutScale( screenView.screenWidth, screenView.screenHeight ) );
-        } else {
-          var localCenter = screenView.globalToLocalPoint( globalCenter );
-          var localMidpoint = screenView.globalToLocalPoint( globalMidpoint );
-
-          var label = angleLabels[angleLabelIndex++];
-          label.visible = true;
-          label.text = string;
-          label.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
-          // TODO: optimize?
-          label.fill = MoleculeShapesColors.bondAngleReadout.withAlpha( brightness );
-        }
+        var layoutScale = screenView.getLayoutScale( screenView.screenWidth, screenView.screenHeight );
+        angleLabels[angleLabelIndex++].setLabel( string, brightness, globalCenter, globalMidpoint, layoutScale );
       },
 
       finishedAddingLabels: function() {
         // TODO: logic cleanup
         var numVisible = angleLabelIndex;
         while ( angleLabelIndex < numAngleLabelsVisible ) {
-          if ( MoleculeShapesGlobals.useWebGL ) {
-            labelViews[angleLabelIndex].unsetLabel();
-          } else {
-            angleLabels[angleLabelIndex].visible = false;
-          }
-          angleLabelIndex++;
+          angleLabels[angleLabelIndex++].unsetLabel();
         }
         angleLabelIndex = 0;
         numAngleLabelsVisible = numVisible;
