@@ -20,17 +20,19 @@ define( function( require ) {
   var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
   var BondAngleFallbackView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleFallbackView' );
 
-  // @param {MoleculeShapesScreenView} view
-  function MoleculeView( model, view, molecule, labelManager ) {
+  /*
+   * @constructor
+   * @param {MoleculeShapesModel} model
+   * @param {MoleculeShapesScreenView} screenView
+   * @param {Molecule} molecule
+   */
+  function MoleculeView( model, screenView, molecule ) {
     THREE.Object3D.call( this );
 
-    assert && assert( labelManager );
-
     this.model = model;
-    this.view = view;
-    this.renderer = view.threeRenderer;
+    this.screenView = screenView;
+    this.renderer = screenView.threeRenderer;
     this.molecule = molecule;
-    this.labelManager = labelManager;
 
     this.atomViews = [];
     this.lonePairViews = [];
@@ -102,7 +104,7 @@ define( function( require ) {
         this.bondViews[i].dispose();
       }
       for ( i = 0; i < this.angleViews.length; i++ ) {
-        this.labelManager.returnLabel( this.angleViews[i].label );
+        this.screenView.returnLabel( this.angleViews[i].label );
         this.angleViews[i].dispose();
       }
       for ( i = 0; i < this.lonePairViews.length; i++ ) {
@@ -177,8 +179,8 @@ define( function( require ) {
           var otherView = this.atomViews[i];
           if ( otherView !== atomView ) {
             var bondAngleView = MoleculeShapesGlobals.useWebGL ?
-                                new BondAngleWebGLView( this.view, this.renderer, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() ) :
-                                new BondAngleFallbackView( this.view, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() );
+                                new BondAngleWebGLView( this.screenView, this.renderer, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.screenView.checkOutLabel() ) :
+                                new BondAngleFallbackView( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.screenView.checkOutLabel() );
             this.add( bondAngleView );
             this.angleViews.push( bondAngleView );
           }
@@ -215,7 +217,7 @@ define( function( require ) {
 
           if ( bondAngleView.aGroup === group || bondAngleView.bGroup === group ) {
             this.remove( bondAngleView );
-            this.labelManager.returnLabel( bondAngleView.label );
+            this.screenView.returnLabel( bondAngleView.label );
             bondAngleView.dispose();
             this.angleViews.splice( i, 1 );
           }

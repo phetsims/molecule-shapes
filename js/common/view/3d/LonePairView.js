@@ -56,8 +56,8 @@ define( function( require ) {
     this.electronView2 = new ElectronView( renderer );
     this.add( this.electronView1 );
     this.add( this.electronView2 );
-    this.electronView1.scale.x = this.electronView1.scale.y = this.electronView1.scale.z = 2.5;
-    this.electronView2.scale.x = this.electronView2.scale.y = this.electronView2.scale.z = 2.5;
+    this.electronView1.scale.x = this.electronView1.scale.y = this.electronView1.scale.z = electronScale;
+    this.electronView2.scale.x = this.electronView2.scale.y = this.electronView2.scale.z = electronScale;
 
     this.electronView1.position.x = 0.3 * electronScale;
     this.electronView2.position.x = -0.3 * electronScale;
@@ -84,12 +84,14 @@ define( function( require ) {
 
       var geometry = isTouch ? touchHitTestGeometry : mouseHitTestGeometry;
 
+      // get the ray in our local coordinate frame
       inverseMatrix.getInverse( this.shell.matrixWorld );
       ray.copy( worldRay ).applyMatrix4( inverseMatrix );
 
       var vertices = geometry.vertices;
       var faceCount = geometry.faces.length;
 
+      // hit-test all faces, with early exit in case of intersection (the distance doesn't have to be exact)
       for ( var f = 0; f < faceCount; f++ ) {
         var face = geometry.faces[f];
         var a = vertices[ face.a ];

@@ -194,34 +194,32 @@ define( function( require ) {
       }
     } );
 
-    var angleLabels = [];
+    this.angleLabels = [];
     for ( var i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGL ) {
-        angleLabels[i] = new LabelWebGLView( this.threeRenderer );
-        this.overlayScene.add( angleLabels[i] );
-        angleLabels[i].unsetLabel();
+        this.angleLabels[i] = new LabelWebGLView( this.threeRenderer );
+        this.overlayScene.add( this.angleLabels[i] );
+        this.angleLabels[i].unsetLabel();
       } else {
-        angleLabels[i] = new LabelFallbackNode();
-        this.addChild( angleLabels[i] );
+        this.angleLabels[i] = new LabelFallbackNode();
+        this.addChild( this.angleLabels[i] );
       }
     }
-
-    this.labelManager = {
-      checkOutLabel: function() {
-        var label = angleLabels.pop();
-        assert && assert( label );
-        return label;
-      },
-
-      returnLabel: function( label ) {
-        assert && assert( !_.contains( angleLabels, label ) );
-        angleLabels.push( label );
-        label.unsetLabel();
-      }
-    };
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
+    checkOutLabel: function() {
+      var label = this.angleLabels.pop();
+      assert && assert( label );
+      return label;
+    },
+
+    returnLabel: function( label ) {
+      assert && assert( !_.contains( this.angleLabels, label ) );
+      this.angleLabels.push( label );
+      label.unsetLabel();
+    },
+
     addMoleculeView: function( moleculeView ) {
       this.threeScene.add( moleculeView );
 

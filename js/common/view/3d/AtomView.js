@@ -57,6 +57,7 @@ define( function( require ) {
 
       var sphere = isTouch ? touchHitTestSphere : mouseHitTestSphere;
 
+      // transform the ray into local coordinates
       inverseMatrix.getInverse( this.matrixWorld );
       ray.copy( worldRay ).applyMatrix4( inverseMatrix );
 
