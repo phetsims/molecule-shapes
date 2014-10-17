@@ -13,7 +13,16 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var Util = require( 'DOT/Util' );
 
-  function BondAngleView( screenView, model, molecule, aGroup, bGroup, label ) {
+  /*
+   * @constructor
+   * @param {MoleculeShapesScreenView} screenView - We do various screen-space computations for positioning the labels
+   * @param {Property.<boolean>} showBondAnglesProperty
+   * @param {Molecule} molecule
+   * @param {PairGroup} aGroup - The atom on one end of the bond angle
+   * @param {PairGroup} bGroup - The atom on the other end of the bond angle
+   * @param {LabelWebGLView | LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
+   */
+  function BondAngleView( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     THREE.Object3D.call( this );
 
     // @public
@@ -25,7 +34,7 @@ define( function( require ) {
 
     // @protected
     this.screenView = screenView;
-    this.model = model;
+    this.showBondAnglesProperty = showBondAnglesProperty;
     this.molecule = molecule;
 
     // @protected, updated in updateView super call
@@ -44,7 +53,7 @@ define( function( require ) {
       var aDir = this.aGroup.orientation;
       var bDir = this.bGroup.orientation;
 
-      this.viewOpacity = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length ) : 0;
+      this.viewOpacity = this.showBondAnglesProperty.value ? BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length ) : 0;
 
       this.viewAngle = Math.acos( Util.clamp( aDir.dot( bDir ), -1, 1 ) );
 

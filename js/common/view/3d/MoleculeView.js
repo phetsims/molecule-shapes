@@ -180,8 +180,8 @@ define( function( require ) {
           var otherView = this.atomViews[i];
           if ( otherView !== atomView ) {
             var bondAngleView = MoleculeShapesGlobals.useWebGL ?
-                                new BondAngleWebGLView( this.view, this.renderer, this.model, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() ) :
-                                new BondAngleFallbackView( this.view, this.model, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() );
+                                new BondAngleWebGLView( this.view, this.renderer, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() ) :
+                                new BondAngleFallbackView( this.view, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.labelManager.checkOutLabel() );
             this.add( bondAngleView );
             this.angleViews.push( bondAngleView );
           }

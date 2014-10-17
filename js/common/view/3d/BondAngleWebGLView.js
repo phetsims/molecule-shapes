@@ -4,6 +4,8 @@
  * View of the angle (sector and arc) between two bonds. The sector is the filled-in area between two bonds, and the
  * arc is the line along the edge of the sector.
  *
+ * This is an efficient but WebGL-specific implementation of the bond angles that can't be used with the Canvas fallback.
+ *
  * NOTE: This does NOT include the text readout for the label
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
@@ -129,9 +131,9 @@ define( function( require ) {
     }
   };
 
-  function BondAngleWebGLView( screenView, renderer, model, molecule, aGroup, bGroup, label ) {
+  function BondAngleWebGLView( screenView, renderer, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
-    BondAngleView.call( this, screenView, model, molecule, aGroup, bGroup, label );
+    BondAngleView.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
 
     var view = this;
 

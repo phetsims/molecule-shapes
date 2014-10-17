@@ -1,7 +1,9 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * View of the angle (sector and line) between two bonds
+ * View of the angle (sector and line) between two bonds, written in three.js so it can be displayed with Canvas instead
+ * of WebGL (works for both). Less efficient that BondAngleWebGLView, since we need to update the vertices on the CPU
+ * and push them over to the GPU.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -44,15 +46,16 @@ define( function( require ) {
 
   var numVertices = 24;
 
-  function BondAngleFallbackView( screenView, model, molecule, aGroup, bGroup, label ) {
-    BondAngleView.call( this, screenView, model, molecule, aGroup, bGroup, label );
+  function BondAngleFallbackView( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+    BondAngleView.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
 
+    // shared vertex array between both geometries
     this.arcVertices = [];
     for ( var i = 0; i < numVertices; i++ ) {
       this.arcVertices.push( new THREE.Vector3() );
     }
 
-    // this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, BondAngleView.radius, 24, null ); // radius of 5, 24 segments
+    // geometries on each instance, since we need to modify them directly
     this.arcGeometry = createArcGeometry( this.arcVertices );
     this.sectorGeometry = createSectorGeometry( this.arcVertices );
 
@@ -101,10 +104,14 @@ define( function( require ) {
       this.sectorMaterial.opacity = this.viewOpacity / 2;
       this.arcMaterial.opacity = this.viewOpacity * 0.7;
 
+      // update the vertices based on our GLSL shader
       for ( var i = 0; i < numVertices; i++ ) {
         var ratio = i / ( numVertices - 1 ); // zero to 1
 
+        // map our midpoint to theta=0
         var theta = ( ratio - 0.5 ) * this.viewAngle;
+
+        // use our basis vectors to compute the point
         var position = this.midpointUnit.times( Math.cos( theta ) ).plus( this.planarUnit.times( Math.sin( theta ) ) ).times( BondAngleView.radius );
 
         var vertex = this.arcVertices[i];
@@ -113,6 +120,7 @@ define( function( require ) {
         vertex.z = position.z;
       }
 
+      // let three.js know that the vertices need to be updated
       this.arcGeometry.verticesNeedUpdate = true;
       this.sectorGeometry.verticesNeedUpdate = true;
     }
