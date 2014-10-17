@@ -143,6 +143,11 @@ define( function( require ) {
 
       // TODO: change the fill's opacity, not the actual node's opacity!
       overlay.fill = addEnabled ? 'rgba(0,0,0,0)' : MoleculeShapesColors.background.withAlpha( 0.4 );
+      if ( window.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
+        overlay.stroke = 'rgba(255,0,0,0.7)';
+        overlay.lineDash = [8,5];
+        overlay.lineWidth = 3;
+      }
       removeButton.visible = _.filter( model.molecule.getBondsAround( model.molecule.centralAtom ), function( bond ) {
         return bond.order === bondOrder;
       } ).length > 0;
