@@ -45,7 +45,9 @@ define( function( require ) {
 
     this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial );
 
-    this.shell.scale.x = this.shell.scale.y = this.shell.scale.z = 2.5;
+    var shellScale = 2.5;
+
+    this.shell.scale.x = this.shell.scale.y = this.shell.scale.z = shellScale;
     this.shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
     this.add( this.shell );
 
@@ -62,6 +64,18 @@ define( function( require ) {
     this.electronView1.position.x = 0.3 * electronScale;
     this.electronView2.position.x = -0.3 * electronScale;
     this.electronView1.position.y = this.electronView2.position.y = 2 * electronScale;
+
+    if ( window.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
+      var touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
+        color: 0xff0000,
+        transparent: true,
+        opacity: 0.4,
+        depthWrite: false
+      } ) );
+      touchShell.scale.x = touchShell.scale.y = touchShell.scale.z = shellScale;
+      touchShell.renderDepth = 11;
+      this.add( touchShell );
+    }
   }
 
   return inherit( THREE.Object3D, LonePairView, {

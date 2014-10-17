@@ -24,7 +24,7 @@ define( function( require ) {
   var overdraw = MoleculeShapesGlobals.useWebGL ? 0 : 0.5;
 
   // renderer-local access
-  var localBondGeometry = new LocalGeometry( new THREE.SphereGeometry( displayRadius, numSamples, numSamples ) );
+  var localAtomGeometry = new LocalGeometry( new THREE.SphereGeometry( displayRadius, numSamples, numSamples ) );
 
   var elementLocalMaterials = {
     // filled in dynamically in getElementLocalMaterial
@@ -38,7 +38,18 @@ define( function( require ) {
    * @param {LocalMaterial} localMaterial - preferably from one of AtomView's static methods/properties
    */
   function AtomView( renderer, localMaterial ) {
-    THREE.Mesh.call( this, localBondGeometry.get( renderer ), localMaterial.get( renderer ) );
+    THREE.Mesh.call( this, localAtomGeometry.get( renderer ), localMaterial.get( renderer ) );
+
+    if ( window.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
+      if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
+        this.add( new THREE.Mesh( new THREE.SphereGeometry( touchRadius, numSamples, numSamples ), new THREE.MeshBasicMaterial( {
+          color: 0xff0000,
+          transparent: true,
+          opacity: 0.4,
+          depthWrite: false
+        } ) ) );
+      }
+    }
   }
 
   return inherit( THREE.Mesh, AtomView, {
