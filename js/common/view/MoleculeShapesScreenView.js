@@ -83,14 +83,6 @@ define( function( require ) {
 
     this.overlayScene = new THREE.Scene();
     this.overlayCamera = new THREE.OrthographicCamera();
-
-    // var geometry = new THREE.BoxGeometry( 20, 20, 20 );
-    // var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-    // var cube = new THREE.Mesh( geometry, material );
-    // this.overlayScene.add(cube);
-    this.labelView = new LabelView();
-    this.overlayScene.add( this.labelView );
-
     this.overlayCamera.position.z = 50;
 
 
@@ -195,14 +187,21 @@ define( function( require ) {
     } );
 
     var angleLabels = [];
+    var labelViews = [];
     var numAngleLabelsVisible = 0;
     var angleLabelIndex = 0;
     for ( var i = 0; i < 15; i++ ) {
-      angleLabels[i] = new Text( '', {
-        font: new PhetFont( 16 ),
-        visible: false
-      } );
-      this.addChild( angleLabels[i] );
+      if ( MoleculeShapesGlobals.useWebGL ) {
+        labelViews[i] = new LabelView();
+        this.overlayScene.add( labelViews[i] );
+        labelViews[i].unsetLabel();
+      } else {
+        angleLabels[i] = new Text( '', {
+          font: new PhetFont( 16 ),
+          visible: false
+        } );
+        this.addChild( angleLabels[i] );
+      }
     }
     MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
       _.each( angleLabels, function( angleLabel ) {
@@ -221,28 +220,37 @@ define( function( require ) {
 
     // TODO: turn stub into handler
     this.labelManager = {
-      showLabel: function( string, brightness, centerScreenPoint, midScreenPoint ) {
-        var globalCenter = new Vector2( ( centerScreenPoint.x + 1 ) * screenView.screenWidth / 2,
-                                        ( -centerScreenPoint.y + 1 ) * screenView.screenHeight / 2 );
-        var globalMidpoint = new Vector2( ( midScreenPoint.x + 1 ) * screenView.screenWidth / 2,
-                                          ( -midScreenPoint.y + 1 ) * screenView.screenHeight / 2 );
+      showLabel: function( string, brightness, centerDevicePoint, midDevicePoint ) {
+        var globalCenter = new Vector2( ( centerDevicePoint.x + 1 ) * screenView.screenWidth / 2,
+                                        ( -centerDevicePoint.y + 1 ) * screenView.screenHeight / 2 );
+        var globalMidpoint = new Vector2( ( midDevicePoint.x + 1 ) * screenView.screenWidth / 2,
+                                          ( -midDevicePoint.y + 1 ) * screenView.screenHeight / 2 );
 
-        var localCenter = screenView.globalToLocalPoint( globalCenter );
-        var localMidpoint = screenView.globalToLocalPoint( globalMidpoint );
+        if ( MoleculeShapesGlobals.useWebGL ) {
+          var labelView = labelViews[angleLabelIndex++];
+          labelView.setLabel( string, brightness, globalCenter, globalMidpoint, screenView.getLayoutScale( screenView.screenWidth, screenView.screenHeight ) );
+        } else {
+          var localCenter = screenView.globalToLocalPoint( globalCenter );
+          var localMidpoint = screenView.globalToLocalPoint( globalMidpoint );
 
-        var label = angleLabels[angleLabelIndex++];
-        label.visible = true;
-        label.text = string;
-        label.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
-        // TODO: optimize?
-        label.fill = MoleculeShapesColors.bondAngleReadout.withAlpha( brightness );
+          var label = angleLabels[angleLabelIndex++];
+          label.visible = true;
+          label.text = string;
+          label.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
+          // TODO: optimize?
+          label.fill = MoleculeShapesColors.bondAngleReadout.withAlpha( brightness );
+        }
       },
 
       finishedAddingLabels: function() {
         // TODO: logic cleanup
         var numVisible = angleLabelIndex;
         while ( angleLabelIndex < numAngleLabelsVisible ) {
-          angleLabels[angleLabelIndex].visible = false;
+          if ( MoleculeShapesGlobals.useWebGL ) {
+            labelViews[angleLabelIndex].unsetLabel();
+          } else {
+            angleLabels[angleLabelIndex].visible = false;
+          }
           angleLabelIndex++;
         }
         angleLabelIndex = 0;

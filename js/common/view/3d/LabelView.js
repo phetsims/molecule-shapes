@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Util = require( 'SCENERY/util/Util' );
@@ -100,6 +101,11 @@ define( function( require ) {
   var texture = THREE.ImageUtils.loadTexture( canvas.toDataURL() );
   texture.minFilter = THREE.LinearMipMapLinearFilter;
 
+  var periodCompensationFactor = 0.7;
+  var shortXOffset = glyphs['0'].advance;
+  var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance * periodCompensationFactor + glyphs['°'].advance * periodCompensationFactor;
+  var longWidth = glyphs['0'].advance + shortWidth;
+
   function LabelView() {
     var geometry = new THREE.Geometry();
     var x = 0;
@@ -130,7 +136,7 @@ define( function( require ) {
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['.'].advance * 0.7;
+    x += glyphs['.'].advance * periodCompensationFactor;
 
     // glyph 4
     geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
@@ -144,7 +150,7 @@ define( function( require ) {
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['°'].advance;
+    x += glyphs['°'].advance * periodCompensationFactor;
 
     this.uvs = [
       new THREE.Vector3(),
@@ -201,29 +207,35 @@ define( function( require ) {
     var fragmentShader = [
       'varying vec2 vUv;',
       'uniform sampler2D map;',
+      'uniform float opacity;',
       'const float scaleCenter = 0.4;',
 
       'void main() {',
       '  vec4 texLookup = texture2D( map, vUv );',
       '  float rescaled = ( texLookup.r - scaleCenter ) * 2.0 + scaleCenter;',
-      '  gl_FragColor = vec4( 1.0, 1.0, 1.0, clamp( rescaled, 0.0, 1.0 ) );',
+      '  gl_FragColor = vec4( 1.0, 1.0, 1.0, opacity * clamp( rescaled, 0.0, 1.0 ) );',
       // '  gl_FragColor = vec4( vUv, 0.0, 1.0 );',
       '}'
     ].join( '\n' );
+
+    this.materialUniforms = {
+      map: {
+        type: 't',
+        value: texture
+      },
+      opacity: {
+        type: 'f',
+        value: 1
+      }
+    };
 
     var material = MoleculeShapesGlobals.useWebGL ? new THREE.ShaderMaterial( {
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       side: THREE.DoubleSide,
       transparent: true,
-      // map: texture,
-      uniforms: {
-        map: {
-          type: 't',
-          value: texture
-        }
-      }
-    } ) : new THREE.MeshBasicMaterial( {
+      uniforms: this.materialUniforms
+    } ) : new THREE.MeshBasicMaterial( { // NOTE: not great Canvas appearance. May have performance penalties
       side: THREE.DoubleSide,
       transparent: true,
       map: texture
@@ -231,21 +243,44 @@ define( function( require ) {
 
     THREE.Mesh.call( this, geometry, material );
 
-    this.scale.x = this.scale.y = this.scale.z = 0.15 * 1 * 0.7 * 1;
     this.position.x = 200;
     this.position.y = 200;
-
-    this.setString( '180.0°' );
   }
 
   return inherit( THREE.Mesh, LabelView, {
+    setLabel: function( string, brightness, centerScreenPoint, midScreenPoint, layoutScale ) {
+      this.setString( string );
+      this.materialUniforms.opacity.value = brightness;
+
+      var scale = layoutScale * 0.13;
+      this.scale.x = this.scale.y = this.scale.z = scale;
+      var xCentering = string.length === 6 ? -longWidth / 2 : -shortXOffset - shortWidth / 2;
+      var yCentering = -maxHeight / 2;
+
+      // we position based on our upper-left origin
+      var offset = midScreenPoint.minus( centerScreenPoint );
+      // mutably construct offset amount
+      var offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.35, 0.2 ) ).magnitude();
+      this.position.x = midScreenPoint.x + offset.x * offsetAmount + xCentering * scale;
+      this.position.y = midScreenPoint.y + offset.y * offsetAmount + yCentering * scale;
+    },
+
+    unsetLabel: function() {
+      this.materialUniforms.opacity.value = 0;
+    },
+
     setString: function( string ) {
-      this.setGlyph( 0, string[0] );
-      this.setGlyph( 1, string[1] );
-      this.setGlyph( 2, string[2] );
-      this.setGlyph( 3, string[3] );
-      this.setGlyph( 4, string[4] );
-      this.setGlyph( 5, string[5] );
+      var idx = 0;
+      if ( string.length === 6 ) {
+        this.setGlyph( 0, string[idx++] );
+      } else {
+        this.unsetGlyph( 0 );
+      }
+      this.setGlyph( 1, string[idx++] );
+      this.setGlyph( 2, string[idx++] );
+      this.setGlyph( 3, string[idx++] );
+      this.setGlyph( 4, string[idx++] );
+      this.setGlyph( 5, string[idx++] );
     },
 
     setGlyph: function( index, string ) {
@@ -265,6 +300,20 @@ define( function( require ) {
       this.uvs[offset + 2].y = minV;
       this.uvs[offset + 3].x = minU;
       this.uvs[offset + 3].y = minV;
+      this.geometry.uvsNeedUpdate = true; // will need when we change UVs
+    },
+
+    unsetGlyph: function( index ) {
+      var offset = index * 4;
+
+      this.uvs[offset].x = 0;
+      this.uvs[offset].y = 0;
+      this.uvs[offset + 1].x = 0;
+      this.uvs[offset + 1].y = 0;
+      this.uvs[offset + 2].x = 0;
+      this.uvs[offset + 2].y = 0;
+      this.uvs[offset + 3].x = 0;
+      this.uvs[offset + 3].y = 0;
       this.geometry.uvsNeedUpdate = true; // will need when we change UVs
     }
   } );
