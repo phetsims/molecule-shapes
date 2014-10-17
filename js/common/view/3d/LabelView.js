@@ -14,6 +14,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
   var Shape = require( 'KITE/Shape' );
   var LiberationSansRegularSubset = require( 'MOLECULE_SHAPES/common/data/LiberationSansRegularSubset' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   // var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   // TODO: colors
 
@@ -62,7 +63,7 @@ define( function( require ) {
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
 
-  // context.fillStyle = 'black';
+  // context.fillStyle = 'red';
   // context.fillRect( 0, 0, canvasWidth, canvasHeight );
 
   var exports = {};
@@ -188,25 +189,65 @@ define( function( require ) {
     geometry.dynamic = true;
     geometry.uvsNeedUpdate = true; // will need when we change UVs
 
-    THREE.Mesh.call( this, geometry, new THREE.MeshBasicMaterial( {
-      // color: 0x0000ff,
-      map: texture,
-      side: THREE.DoubleSide
-    } ) );
+    var vertexShader = [
+      'varying vec2 vUv;',
 
-    this.scale.x = this.scale.y = this.scale.z = 0.15 * 1 * 0.7;
+      'void main() {',
+      '  vUv = uv;',
+      '  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
+      '}'
+    ].join( '\n' );
+
+    var fragmentShader = [
+      'varying vec2 vUv;',
+      'uniform sampler2D map;',
+      'const float scaleCenter = 0.4;',
+
+      'void main() {',
+      '  vec4 texLookup = texture2D( map, vUv );',
+      '  float rescaled = ( texLookup.r - scaleCenter ) * 2.0 + scaleCenter;',
+      '  gl_FragColor = vec4( 1.0, 1.0, 1.0, clamp( rescaled, 0.0, 1.0 ) );',
+      // '  gl_FragColor = vec4( vUv, 0.0, 1.0 );',
+      '}'
+    ].join( '\n' );
+
+    var material = MoleculeShapesGlobals.useWebGL ? new THREE.ShaderMaterial( {
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      side: THREE.DoubleSide,
+      transparent: true,
+      // map: texture,
+      uniforms: {
+        map: {
+          type: 't',
+          value: texture
+        }
+      }
+    } ) : new THREE.MeshBasicMaterial( {
+      side: THREE.DoubleSide,
+      transparent: true,
+      map: texture
+    } );
+
+    THREE.Mesh.call( this, geometry, material );
+
+    this.scale.x = this.scale.y = this.scale.z = 0.15 * 1 * 0.7 * 1;
     this.position.x = 200;
     this.position.y = 200;
 
-    this.setGlyph( 0, '1' );
-    this.setGlyph( 1, '8' );
-    this.setGlyph( 2, '0' );
-    this.setGlyph( 3, '.' );
-    this.setGlyph( 4, '0' );
-    this.setGlyph( 5, '°' );
+    this.setString( '180.0°' );
   }
 
   return inherit( THREE.Mesh, LabelView, {
+    setString: function( string ) {
+      this.setGlyph( 0, string[0] );
+      this.setGlyph( 1, string[1] );
+      this.setGlyph( 2, string[2] );
+      this.setGlyph( 3, string[3] );
+      this.setGlyph( 4, string[4] );
+      this.setGlyph( 5, string[5] );
+    },
+
     setGlyph: function( index, string ) {
       var offset = index * 4;
 
