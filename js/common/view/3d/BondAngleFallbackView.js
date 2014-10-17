@@ -11,31 +11,30 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
-  var ArcVertices = require( 'MOLECULE_SHAPES/common/view/3d/ArcVertices' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
 
-  function createArcGeometry( arcVertices ) {
+  function createArcGeometry( vertices ) {
     var geometry = new THREE.Geometry();
 
-    for ( var i = 0; i < arcVertices.vertices.length; i++ ) {
-      geometry.vertices.push( arcVertices.vertices[i] );
+    for ( var i = 0; i < vertices.length; i++ ) {
+      geometry.vertices.push( vertices[i] );
     }
     geometry.dynamic = true; // so we can be updated
 
     return geometry;
   }
 
-  function createSectorGeometry( arcVertices ) {
+  function createSectorGeometry( vertices ) {
     var geometry = new THREE.Geometry();
 
     // center
     geometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    for ( var i = 0; i < arcVertices.vertices.length; i++ ) {
+    for ( var i = 0; i < vertices.length; i++ ) {
       // unclear whether concat would be supported
-      geometry.vertices.push( arcVertices.vertices[i] );
+      geometry.vertices.push( vertices[i] );
     }
     // faces
-    for ( var j = 0; j < arcVertices.vertices.length - 1; j++ ) {
+    for ( var j = 0; j < vertices.length - 1; j++ ) {
       geometry.faces.push( new THREE.Face3( 0, j + 1, j + 2 ) );
     }
     geometry.dynamic = true; // so we can be updated
@@ -43,10 +42,17 @@ define( function( require ) {
     return geometry;
   }
 
+  var numVertices = 24;
+
   function BondAngleFallbackView( screenView, model, molecule, aGroup, bGroup, label ) {
     BondAngleView.call( this, screenView, model, molecule, aGroup, bGroup, label );
 
-    this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, BondAngleView.radius, 24, null ); // radius of 5, 24 segments
+    this.arcVertices = [];
+    for ( var i = 0; i < numVertices; i++ ) {
+      this.arcVertices.push( new THREE.Vector3() );
+    }
+
+    // this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, BondAngleView.radius, 24, null ); // radius of 5, 24 segments
     this.arcGeometry = createArcGeometry( this.arcVertices );
     this.sectorGeometry = createSectorGeometry( this.arcVertices );
 
@@ -95,7 +101,18 @@ define( function( require ) {
       this.sectorMaterial.opacity = this.viewOpacity / 2;
       this.arcMaterial.opacity = this.viewOpacity * 0.7;
 
-      this.arcVertices.setPositions( this.midpointUnit, this.planarUnit, this.viewAngle );
+      for ( var i = 0; i < numVertices; i++ ) {
+        var ratio = i / ( numVertices - 1 ); // zero to 1
+
+        var theta = ( ratio - 0.5 ) * this.viewAngle;
+        var position = this.midpointUnit.times( Math.cos( theta ) ).plus( this.planarUnit.times( Math.sin( theta ) ) ).times( BondAngleView.radius );
+
+        var vertex = this.arcVertices[i];
+        vertex.x = position.x;
+        vertex.y = position.y;
+        vertex.z = position.z;
+      }
+
       this.arcGeometry.verticesNeedUpdate = true;
       this.sectorGeometry.verticesNeedUpdate = true;
     }
