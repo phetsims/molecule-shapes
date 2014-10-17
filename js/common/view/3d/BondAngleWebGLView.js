@@ -12,17 +12,12 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var Util = require( 'DOT/Util' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
-  var ArcVertices = require( 'MOLECULE_SHAPES/common/view/3d/ArcVertices' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
 
   var radialVertexCount = 24; // how many vertices to use along the view
-  var radius = 5; // in view units
 
   /*---------------------------------------------------------------------------*
   * Geometry for the sector and arc
@@ -45,7 +40,7 @@ define( function( require ) {
     // the rest of the vertices (1 to radialVertexCount) are radial
     for ( var i = 0; i < radialVertexCount; i++ ) {
       var ratio = i / ( radialVertexCount - 1 ); // from 0 to 1
-      geometry.vertices.push( new THREE.Vector3( ratio, radius, 0 ) );
+      geometry.vertices.push( new THREE.Vector3( ratio, BondAngleView.radius, 0 ) );
     }
 
     // faces (1 less than the number of radial vertices)
@@ -63,7 +58,7 @@ define( function( require ) {
     // radial vertices only
     for ( var i = 0; i < radialVertexCount; i++ ) {
       var ratio = i / ( radialVertexCount - 1 ); // from 0 to 1
-      geometry.vertices.push( new THREE.Vector3( ratio, radius, 0 ) );
+      geometry.vertices.push( new THREE.Vector3( ratio, BondAngleView.radius, 0 ) );
     }
 
     return geometry;
@@ -136,19 +131,11 @@ define( function( require ) {
 
   function BondAngleWebGLView( renderer, model, molecule, aGroup, bGroup ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
+    BondAngleView.call( this, model, molecule, aGroup, bGroup );
 
     var view = this;
 
-    THREE.Object3D.call( this );
-
-    // @public
-    this.aGroup = aGroup;
-    this.bGroup = bGroup;
-    this.midpoint = null; // updated in updateView(), provided for positioning the bond labels
-
     // @private
-    this.model = model;
-    this.molecule = molecule;
     this.arcGeometry = localArcGeometry.get( renderer );
     this.sectorGeometry = localSectorGeometry.get( renderer );
 
@@ -193,8 +180,10 @@ define( function( require ) {
     this.add( this.arcView );
   }
 
-  return inherit( THREE.Object3D, BondAngleWebGLView, {
+  return inherit( BondAngleView, BondAngleWebGLView, {
     dispose: function() {
+      BondAngleView.prototype.dispose.call( this );
+
       // since we need materials for each instance, we need to dispose properly
       this.sectorMaterial.dispose();
       this.arcMaterial.dispose();
@@ -203,60 +192,23 @@ define( function( require ) {
       MoleculeShapesColors.bondAngleArcProperty.unlink( this.arcColorListener );
     },
 
-    updateView: function( lastMidpoint ) {
-      // TODO: we're doing this too much, refactor into one place in MoleculeView!
-      var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
-      this.parent.worldToLocal( cameraPosition ); // this mutates cameraPosition
+    updateView: function( lastMidpoint, localCameraOrientation ) {
+      BondAngleView.prototype.updateView.call( this, lastMidpoint, localCameraOrientation );
 
-      var localCameraPosition = new Vector3().set( cameraPosition ).normalized();
+      this.sectorMaterial.uniforms.opacity.value = this.viewOpacity * 0.5;
+      this.arcMaterial.uniforms.opacity.value = this.viewOpacity * 0.7;
 
-      var aDir = this.aGroup.orientation;
-      var bDir = this.bGroup.orientation;
+      this.sectorMaterial.uniforms.angle.value = this.viewAngle;
+      this.arcMaterial.uniforms.angle.value = this.viewAngle;
 
-      var alpha = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.radialAtoms.length ) : 0;
-
-      this.sectorMaterial.uniforms.opacity.value = alpha * 0.5;
-      this.arcMaterial.uniforms.opacity.value = alpha * 0.7;
-
-      var angle = Math.acos( Util.clamp( aDir.dot( bDir ), -1, 1 ) );
-      this.sectorMaterial.uniforms.angle.value = angle;
-      this.arcMaterial.uniforms.angle.value = angle;
-
-      var isApproximateSemicircle = ArcVertices.isApproximateSemicircle( aDir, bDir );
-      var midpointUnit, planarUnit;
-      if ( isApproximateSemicircle ) {
-        if ( !lastMidpoint ) {
-          lastMidpoint = Vector3.Y_UNIT.times( radius );
-        }
-        var lastMidpointDir = lastMidpoint.normalized();
-
-        // find a vector that is as orthogonal to both directions as possible
-        var badCross = aDir.cross( lastMidpointDir ).plus( lastMidpointDir.cross( bDir ) );
-        var averageCross = badCross.magnitude() > 0 ? badCross.normalized() : new Vector3( 0, 0, 1 );
-
-        // find a vector that gives us a balance between aDir and bDir (so our semicircle will balance out at the endpoints)
-        var averagePointDir = aDir.minus( bDir ).normalized();
-
-        // (basis vector 1) make that average point planar to our arc surface
-        planarUnit = averagePointDir.minus( averageCross.times( averageCross.dot( averagePointDir ) ) ).normalized();
-
-        // (basis vector 2) find a new midpoint direction that is planar to our arc surface
-        midpointUnit = averageCross.cross( planarUnit ).normalized();
-      } else {
-        midpointUnit = aDir.plus( bDir ).normalized();
-        planarUnit = aDir.minus( midpointUnit.times( aDir.dot( midpointUnit ) ) ).normalized();
-      }
-
-      var midpointUnitArray = [midpointUnit.x, midpointUnit.y, midpointUnit.z];
-      var planarUnitArray = [planarUnit.x, planarUnit.y, planarUnit.z];
+      var midpointUnitArray = [this.midpointUnit.x, this.midpointUnit.y, this.midpointUnit.z];
+      var planarUnitArray = [this.planarUnit.x, this.planarUnit.y, this.planarUnit.z];
 
       this.sectorMaterial.uniforms.midpointUnit.value = midpointUnitArray;
       this.arcMaterial.uniforms.midpointUnit.value = midpointUnitArray;
 
       this.sectorMaterial.uniforms.planarUnit.value = planarUnitArray;
       this.arcMaterial.uniforms.planarUnit.value = planarUnitArray;
-
-      this.midpoint = midpointUnit.times( radius );
     }
   } );
 } );

@@ -275,7 +275,7 @@ define( function( require ) {
       // we position based on our upper-left origin
       var offset = midScreenPoint.minus( centerScreenPoint );
       // mutably construct offset amount
-      var offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.35, 0.2 ) ).magnitude();
+      var offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.38, 0.2 ) ).magnitude();
       this.position.x = midScreenPoint.x + offset.x * offsetAmount + xCentering * scale;
       this.position.y = midScreenPoint.y + offset.y * offsetAmount + yCentering * scale;
     },

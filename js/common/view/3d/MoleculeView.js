@@ -21,6 +21,7 @@ define( function( require ) {
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
   var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
+  var BondAngleFallbackView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleFallbackView' );
 
   var angleDegreesString = require( 'string!MOLECULE_SHAPES/angle.degrees' );
 
@@ -81,9 +82,17 @@ define( function( require ) {
         this.lastMidpoint = null;
       }
 
+      // TODO: having this is unclean
+      var localCameraOrientation = null;
+      if ( this.angleViews.length ) {
+        var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
+        this.worldToLocal( cameraPosition ); // this mutates cameraPosition
+        localCameraOrientation = new Vector3().set( cameraPosition ).normalized();
+      }
+
       for ( i = 0; i < this.angleViews.length; i++ ) {
         var angleView = this.angleViews[i];
-        angleView.updateView( this.lastMidpoint );
+        angleView.updateView( this.lastMidpoint, localCameraOrientation );
 
         // if we have two bonds, store the last midpoint so we can keep the bond midpoint stable
         if ( hasTwoBonds ) {
@@ -92,12 +101,6 @@ define( function( require ) {
       }
 
       if ( this.model.showBondAngles ) {
-        // TODO: we're doing this too much, refactor into one place in MoleculeView!
-        var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
-        this.worldToLocal( cameraPosition ); // this mutates cameraPosition
-
-        var localCameraPosition = new Vector3( cameraPosition.x, cameraPosition.y, cameraPosition.z ).normalized();
-
         for ( i = 0; i < this.angleViews.length; i++ ) {
           var bondAngleView = this.angleViews[i];
 
@@ -107,7 +110,7 @@ define( function( require ) {
           var aDir = a.orientation;
           var bDir = b.orientation;
 
-          var brightness = BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.radialAtoms.length );
+          var brightness = BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length );
           if ( brightness === 0 ) {
             continue;
           }
@@ -216,7 +219,7 @@ define( function( require ) {
           if ( otherView !== atomView ) {
             var bondAngleView = MoleculeShapesGlobals.useWebGL ?
                                 new BondAngleWebGLView( this.renderer, this.model, this.molecule, otherView.group, atomView.group ) :
-                                new BondAngleView( this.model, this.molecule, otherView.group, atomView.group );
+                                new BondAngleFallbackView( this.model, this.molecule, otherView.group, atomView.group );
             this.add( bondAngleView );
             this.angleViews.push( bondAngleView );
           }

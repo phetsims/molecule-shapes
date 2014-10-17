@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * View of the angle (sector and line) between two bonds
+ * Base type for views of the angle (sector and line) between two bonds (not including the displayed label)
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -11,98 +11,78 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var Util = require( 'DOT/Util' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
-  var ArcVertices = require( 'MOLECULE_SHAPES/common/view/3d/ArcVertices' );
-  var ArcGeometry = require( 'MOLECULE_SHAPES/common/view/3d/ArcGeometry' );
-  var SectorGeometry = require( 'MOLECULE_SHAPES/common/view/3d/SectorGeometry' );
-
 
   function BondAngleView( model, molecule, aGroup, bGroup ) {
     THREE.Object3D.call( this );
 
-    this.model = model;
-    this.molecule = molecule;
-
     // @public
     this.aGroup = aGroup;
     this.bGroup = bGroup;
+    this.midpoint = null; // {Vector3} updated in updateView
+    this.radius = 5;
 
-    this.arcVertices = new ArcVertices( aGroup.orientation, bGroup.orientation, 5, 24, null ); // radius of 5, 24 segments
-    this.arcGeometry = new ArcGeometry( this.arcVertices );
-    this.sectorGeometry = new SectorGeometry( this.arcVertices );
+    // @protected
+    this.model = model;
+    this.molecule = molecule;
 
-    this.sectorMaterial = new THREE.MeshBasicMaterial( {
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.5,
-      depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
-    } );
-    this.unlinkSectorColor = MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColors.bondAngleSweepProperty );
-    this.arcMaterial = new THREE.LineBasicMaterial( {
-      transparent: true,
-      opacity: 0.7,
-      depthWrite: false // don't write depth values, so we don't cause other transparent objects to render
-    } );
-    this.unlinkArcColor = MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColors.bondAngleArcProperty );
-
-    this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial );
-    this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial );
-
-    // render the bond angle views on top of everything (but still depth-testing), with arcs on top
-    this.sectorView.renderDepth = 10;
-    this.arcView.renderDepth = 11;
-
-    this.add( this.sectorView );
-    this.add( this.arcView );
+    // @protected, updated in updateView super call
+    this.viewOpacity = 0; // {number}
+    this.viewAngle = 0; // {number}
+    this.midpointUnit = null; // {Vector3}
+    this.planarUnit = null; // {Vector3}
   }
 
   return inherit( THREE.Object3D, BondAngleView, {
     dispose: function() {
-      this.arcGeometry.dispose();
-      this.sectorGeometry.dispose();
-      this.arcMaterial.dispose();
-      this.sectorMaterial.dispose();
 
-      this.unlinkSectorColor();
-      this.unlinkArcColor();
     },
 
-    updateView: function( lastMidpoint ) {
-      // TODO: we're doing this too much, refactor into one place in MoleculeView!
-      var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
-      this.parent.worldToLocal( cameraPosition ); // this mutates cameraPosition
-
-      var localCameraPosition = new Vector3().set( cameraPosition ).normalized();
-
+    updateView: function( lastMidpoint, localCameraOrientation ) {
       var aDir = this.aGroup.orientation;
       var bDir = this.bGroup.orientation;
 
-      var alpha = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraPosition, this.molecule.radialAtoms.length ) : 0;
+      this.viewOpacity = this.model.showBondAngles ? BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length ) : 0;
 
-      this.sectorMaterial.opacity = alpha / 2;
-      this.arcMaterial.opacity = alpha * 0.7;
+      this.viewAngle = Math.acos( Util.clamp( aDir.dot( bDir ), -1, 1 ) );
 
-      this.arcVertices.setPositions( aDir, bDir, lastMidpoint );
-      this.arcGeometry.updateView();
-      this.sectorGeometry.updateView();
+      var isApproximateSemicircle = BondAngleView.isApproximateSemicircle( aDir, bDir );
+      if ( isApproximateSemicircle ) {
+        if ( !lastMidpoint ) {
+          lastMidpoint = Vector3.Y_UNIT.times( BondAngleView.radius );
+        }
+        var lastMidpointDir = lastMidpoint.normalized();
+
+        // find a vector that is as orthogonal to both directions as possible
+        var badCross = aDir.cross( lastMidpointDir ).plus( lastMidpointDir.cross( bDir ) );
+        var averageCross = badCross.magnitude() > 0 ? badCross.normalized() : new Vector3( 0, 0, 1 );
+
+        // find a vector that gives us a balance between aDir and bDir (so our semicircle will balance out at the endpoints)
+        var averagePointDir = aDir.minus( bDir ).normalized();
+
+        // (basis vector 1) make that average point planar to our arc surface
+        this.planarUnit = averagePointDir.minus( averageCross.times( averageCross.dot( averagePointDir ) ) ).normalized();
+
+        // (basis vector 2) find a new midpoint direction that is planar to our arc surface
+        this.midpointUnit = averageCross.cross( this.planarUnit ).normalized();
+      } else {
+        this.midpointUnit = aDir.plus( bDir ).normalized();
+        this.planarUnit = aDir.minus( this.midpointUnit.times( aDir.dot( this.midpointUnit ) ) ).normalized();
+      }
+
+      this.midpoint = this.midpointUnit.times( BondAngleView.radius );
     },
-
-    get midpoint() { return this.arcVertices.midpoint; }
   }, {
     lowThresholds: [0, 0, 0, 0, 0.35, 0.45, 0.5],
     highThresholds: [0, 0, 0, 0.5, 0.55, 0.65, 0.75],
 
-    calculateBrightness: function( aDir, bDir, localCameraPosition, bondQuantity ) {
-      // if there are less than 3 bonds, always show the bond angle. (experimental)
+    calculateBrightness: function( aDir, bDir, localCameraOrientation, bondQuantity ) {
+      // if there are less than 3 bonds, always show the bond angle.
       if ( bondQuantity <= 2 ) {
         return 1;
       }
 
       // a combined measure of how close the angles are AND how orthogonal they are to the camera
-      var brightness = Math.abs( aDir.cross( bDir ).dot( localCameraPosition ) );
+      var brightness = Math.abs( aDir.cross( bDir ).dot( localCameraOrientation ) );
 
       var lowThreshold = BondAngleView.lowThresholds[bondQuantity];
       var highThreshold = BondAngleView.highThresholds[bondQuantity];
@@ -110,6 +90,13 @@ define( function( require ) {
       var interpolatedValue = brightness / ( highThreshold - lowThreshold ) - lowThreshold / ( highThreshold - lowThreshold );
 
       return Util.clamp( interpolatedValue, 0, 1 );
-    }
+    },
+
+    isApproximateSemicircle: function( startDir, endDir ) {
+      return Math.acos( Util.clamp( startDir.dot( endDir ), -1, 1 ) ) >= 3.12414;
+    },
+
+    // radius, in view units
+    radius: 5
   } );
 } );
