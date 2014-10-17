@@ -19,22 +19,33 @@ define( function( require ) {
   var showLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
   var showBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
 
-  function OptionsNode( model, options ) {
+  var optionsFont = new PhetFont( 14 );
 
+  function OptionsNode( model, options ) {
     var showLonePairsLabel = new Text( showLonePairsString, {
-      font: new PhetFont( 14 )
+      font: optionsFont
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showLonePairsLabel, 'fill' );
+
     var showBondAnglesLabel = new Text( showBondAnglesString, {
-      font: new PhetFont( 14 )
+      font: optionsFont
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
 
     var showLonePairsCheckbox = new MoleculeShapesCheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
     var showBondAnglesCheckbox = new MoleculeShapesCheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
 
-    showLonePairsCheckbox.touchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
-    showBondAnglesCheckbox.touchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
+    // touch areas
+    var lonePairTouchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
+    var bondAngleTouchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
+    // extend both out as far as needed
+    lonePairTouchArea.maxX = bondAngleTouchArea.maxX = Math.max( lonePairTouchArea.maxX, bondAngleTouchArea.maxX );
+    // extend the bottom touch area below
+    bondAngleTouchArea.maxY += 10;
+    // extend the top touch area above (changes depending on whether it's basics version or not)
+    ( model.isBasicsVersion ? bondAngleTouchArea : lonePairTouchArea ).minY -= 10;
+    showLonePairsCheckbox.touchArea = lonePairTouchArea;
+    showBondAnglesCheckbox.touchArea = bondAngleTouchArea;
 
     function updateLonePairCheckboxVisibility() {
       showLonePairsCheckbox.enabled = model.molecule.radialLonePairs.length > 0;
