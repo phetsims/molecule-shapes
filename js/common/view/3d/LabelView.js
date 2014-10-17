@@ -16,8 +16,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var LiberationSansRegularSubset = require( 'MOLECULE_SHAPES/common/data/LiberationSansRegularSubset' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
-  // var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
-  // TODO: colors
+  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
 
   var padding = 4;
   var glyphs = {};
@@ -107,6 +106,8 @@ define( function( require ) {
   var longWidth = glyphs['0'].advance + shortWidth;
 
   function LabelView() {
+    var view = this;
+
     var geometry = new THREE.Geometry();
     var x = 0;
 
@@ -208,12 +209,13 @@ define( function( require ) {
       'varying vec2 vUv;',
       'uniform sampler2D map;',
       'uniform float opacity;',
+      'uniform vec3 color;',
       'const float scaleCenter = 0.4;',
 
       'void main() {',
       '  vec4 texLookup = texture2D( map, vUv );',
       '  float rescaled = ( texLookup.r - scaleCenter ) * 2.0 + scaleCenter;',
-      '  gl_FragColor = vec4( 1.0, 1.0, 1.0, opacity * clamp( rescaled, 0.0, 1.0 ) );',
+      '  gl_FragColor = vec4( color, opacity * clamp( rescaled, 0.0, 1.0 ) );',
       // '  gl_FragColor = vec4( vUv, 0.0, 1.0 );',
       '}'
     ].join( '\n' );
@@ -226,8 +228,15 @@ define( function( require ) {
       opacity: {
         type: 'f',
         value: 1
+      },
+      color: {
+        type: '3f'
       }
     };
+
+    MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
+      view.materialUniforms.color.value = [color.r / 255, color.g / 255, color.b / 255];
+    } );
 
     var material = MoleculeShapesGlobals.useWebGL ? new THREE.ShaderMaterial( {
       vertexShader: vertexShader,
