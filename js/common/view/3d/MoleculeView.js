@@ -52,6 +52,7 @@ define( function( require ) {
 
     _.each( molecule.radialGroups, this.addGroup.bind( this ) );
     _.each( molecule.getDistantLonePairs(), this.addGroup.bind( this ) );
+    _.each( molecule.getBondsAround( molecule.centralAtom ), this.addBond.bind( this ) );
 
     if ( molecule.isReal ) {
       this.centerAtomView = new AtomView( this.renderer, AtomView.getElementLocalMaterial( molecule.centralAtom.element ) );
@@ -210,9 +211,6 @@ define( function( require ) {
           atomView.position.set( position.x, position.y, position.z );
         } );
 
-        // TODO: rebuild bonds/angles?
-        this.rebuildBonds();
-
         for ( var i = 0; i < this.atomViews.length; i++ ) {
           var otherView = this.atomViews[i];
           if ( otherView !== atomView ) {
@@ -270,34 +268,31 @@ define( function( require ) {
     },
 
     addBond: function( bond ) {
-      this.rebuildBonds();
+      assert && assert( bond.contains( this.molecule.centralAtom ) );
+      var group = bond.getOtherAtom( this.molecule.centralAtom );
+
+      if ( !group.isLonePair ) {
+        var bondView = new BondView(
+          this.renderer,
+          bond,
+          new Property( new Vector3() ), // center position
+          group.positionProperty,
+          0.5,
+          this.molecule.getMaximumBondLength() );
+        this.add( bondView );
+        this.bondViews.push( bondView );
+      }
     },
 
     removeBond: function( bond ) {
-      this.rebuildBonds();
-    },
-
-    rebuildBonds: function() {
-      var view = this;
-      var molecule = this.molecule;
-
-      // basically remove all of the bonds and rebuild them
-      _.each( this.bondViews, function( bondView ) {
-        view.remove( bondView );
-      } );
-      this.bondViews.length = 0;
-
-      _.each( molecule.radialAtoms, function( atom ) {
-        var bondView = new BondView(
-          view.renderer,
-          new Property( new Vector3() ), // center position
-          atom.positionProperty,
-          molecule.getParentBond( atom ).order,
-          0.5,
-          molecule.getMaximumBondLength() );
-        view.add( bondView );
-        view.bondViews.push( bondView );
-      } );
+      for ( var i = this.bondViews.length - 1; i >= 0; i-- ) {
+        var bondView = this.bondViews[i];
+        if ( bondView.bond === bond ) {
+          this.remove( bondView );
+          this.bondViews.splice( i, 1 );
+          bondView.dispose();
+        }
+      }
     }
   } );
 } );

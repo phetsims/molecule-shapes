@@ -29,23 +29,24 @@ define( function( require ) {
   } );
 
   // maxLength is a number or null
-  function BondView( renderer, aPositionProperty, bPositionProperty, bondOrder, bondRadius, maxLength ) {
+  function BondView( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
     var view = this;
 
     this.aMaterial = localBondMaterial.get( renderer );
     this.bMaterial = localBondMaterial.get( renderer );
     this.bondGeometry = localBondGeometry.get( renderer );
 
+    this.bond = bond;
     this.aPositionProperty = aPositionProperty;
     this.bPositionProperty = bPositionProperty;
-    this.bondOrder = bondOrder;
+    this.bondOrder = bond.order;
     this.bondRadius = bondRadius;
     this.maxLength = maxLength;
 
     this.aBonds = [];
     this.bBonds = [];
 
-    for ( var i = 0; i < bondOrder; i++ ) {
+    for ( var i = 0; i < this.bondOrder; i++ ) {
       // they will have unit height and unit radius. We will scale, rotate and translate them later
       this.aBonds.push( new THREE.Mesh( this.bondGeometry, this.aMaterial ) );
       this.bBonds.push( new THREE.Mesh( this.bondGeometry, this.bMaterial ) );
