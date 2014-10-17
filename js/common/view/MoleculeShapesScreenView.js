@@ -24,6 +24,7 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
+  var LabelView = require( 'MOLECULE_SHAPES/common/view/3d/LabelView' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   /**
@@ -78,6 +79,20 @@ define( function( require ) {
     this.domNode.updateCSSTransform = function() {};
 
     this.addChild( this.domNode );
+
+
+    this.overlayScene = new THREE.Scene();
+    this.overlayCamera = new THREE.OrthographicCamera();
+
+    // var geometry = new THREE.BoxGeometry( 20, 20, 20 );
+    // var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    // var cube = new THREE.Mesh( geometry, material );
+    // this.overlayScene.add(cube);
+    this.labelView = new LabelView();
+    this.overlayScene.add( this.labelView );
+
+    this.overlayCamera.position.z = 50;
+
 
     this.addChild( new ResetAllButton( {
       right: this.layoutBounds.maxX - 10,
@@ -410,6 +425,16 @@ define( function( require ) {
       // three.js requires this to be called after changing the parameters
       this.threeCamera.updateProjectionMatrix();
 
+      this.overlayCamera.left = 0;
+      this.overlayCamera.right = width;
+      this.overlayCamera.top = 0; // will this inversion work?
+      this.overlayCamera.bottom = height;
+      this.overlayCamera.near = 1;
+      this.overlayCamera.far = 100;
+
+      // three.js requires this to be called after changing the parameters
+      this.overlayCamera.updateProjectionMatrix();
+
       // update the size of the renderer
       this.threeRenderer.setSize( Math.ceil( width ), Math.ceil( height ) );
 
@@ -419,8 +444,17 @@ define( function( require ) {
     step: function( dt ) {
       this.moleculeView.updateView();
 
+      // var rnd = Math.random().toString();
+      // this.labelView.setGlyph( 0, rnd[3] );
+      // this.labelView.setGlyph( 1, rnd[4] );
+      // this.labelView.setGlyph( 2, rnd[5] );
+      // this.labelView.setGlyph( 4, rnd[6] );
+
       // render the 3D scene
       this.threeRenderer.render( this.threeScene, this.threeCamera );
+      this.threeRenderer.autoClear = false;
+      this.threeRenderer.render( this.overlayScene, this.overlayCamera );
+      this.threeRenderer.autoClear = true;
     }
   }, {
     // where our camera is positioned in world coordinates (manually tuned)
