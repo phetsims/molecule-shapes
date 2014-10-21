@@ -64,7 +64,7 @@ define( function( require ) {
     // abstract getMaximumBondLength() -- option
     // abstract isReal()
 
-    update: function( tpf ) {
+    update: function( dt ) {
       var numGroups = this.groups.length;
       for ( var i = 0; i < numGroups; i++ ) {
         var group = this.groups[i];
@@ -80,8 +80,8 @@ define( function( require ) {
         // store the old distance before stepping in time
         var oldDistance = group.position.distance( parentGroup.position );
 
-        group.stepForward( tpf );
-        group.attractToIdealDistance( tpf, oldDistance, parentBond );
+        group.stepForward( dt );
+        group.attractToIdealDistance( dt, oldDistance, parentBond );
       }
     },
 

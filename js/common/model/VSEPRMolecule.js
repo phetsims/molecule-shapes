@@ -20,8 +20,8 @@ define( function( require ) {
   }
 
   return inherit( Molecule, VSEPRMolecule, {
-    update: function( tpf ) {
-      Molecule.prototype.update.call( this, tpf );
+    update: function( dt ) {
+      Molecule.prototype.update.call( this, dt );
 
       var radialGroups = this.radialGroups;
 
@@ -30,7 +30,7 @@ define( function( require ) {
         if ( this.getNeighbors( atom ).length > 1 ) {
           if ( atom.isCentralAtom() ) {
             // attractive force to the correct position
-            var error = this.getLocalShape( atom ).applyAttraction( tpf );
+            var error = this.getLocalShape( atom ).applyAttraction( dt );
 
             // factor that basically states "if we are close to an ideal state, force the coulomb force to ignore differences between bonds and lone pairs based on their distance"
             var trueLengthsRatioOverride = Math.max( 0, Math.min( 1, Math.log( error + 1 ) - 0.5 ) );
@@ -41,14 +41,14 @@ define( function( require ) {
                 var otherGroup = radialGroups[k];
 
                 if ( otherGroup !== group && group !== this.centralAtom ) {
-                  group.repulseFrom( otherGroup, tpf, trueLengthsRatioOverride );
+                  group.repulseFrom( otherGroup, dt, trueLengthsRatioOverride );
                 }
               }
             }
           }
           else {
             // handle terminal lone pairs gracefully
-            this.getLocalShape( atom ).applyAngleAttractionRepulsion( tpf );
+            this.getLocalShape( atom ).applyAngleAttractionRepulsion( dt );
           }
         }
       }

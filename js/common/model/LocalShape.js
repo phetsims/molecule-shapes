@@ -42,15 +42,15 @@ define( function( require ) {
      *
      * Attraction done by adding in velocity.
      *
-     * @param tpf Time elapsed.
-     * @return Amount of error (least squares-style)
+     * @param {number} dt - Time elapsed.
+     * @return {number} Amount of error (least squares-style)
      */
-    applyAttraction: function( tpf ) {
-      return AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, false );
+    applyAttraction: function( dt ) {
+      return AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, false );
     },
 
-    applyAngleAttractionRepulsion: function( tpf ) {
-      AttractorModel.applyAttractorForces( this.groups, tpf, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, true );
+    applyAngleAttractionRepulsion: function( dt ) {
+      AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, true );
     }
   } );
 

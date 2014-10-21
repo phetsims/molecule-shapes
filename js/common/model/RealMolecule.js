@@ -74,8 +74,8 @@ define( function( require ) {
   }
 
   return inherit( Molecule, RealMolecule, {
-    update: function( tpf ) {
-      Molecule.prototype.update.call( this, tpf );
+    update: function( dt ) {
+      Molecule.prototype.update.call( this, dt );
 
       // angle-based repulsion
       var numAtoms = this.atoms.length;
@@ -85,7 +85,7 @@ define( function( require ) {
         if ( neighbors.length > 1 ) {
           var localShape = this.getLocalShape( atom );
 
-          localShape.applyAngleAttractionRepulsion( tpf );
+          localShape.applyAngleAttractionRepulsion( dt );
         }
       }
     },
