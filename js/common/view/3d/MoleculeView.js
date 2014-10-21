@@ -55,9 +55,9 @@ define( function( require ) {
 
     // the center atom is special
     if ( molecule.isReal ) {
-      this.centerAtomView = new AtomView( this.renderer, AtomView.getElementLocalMaterial( molecule.centralAtom.element ) );
+      this.centerAtomView = new AtomView( molecule.centralAtom, this.renderer, AtomView.getElementLocalMaterial( molecule.centralAtom.element ) );
     } else {
-      this.centerAtomView = new AtomView( this.renderer, AtomView.centralAtomLocalMaterial );
+      this.centerAtomView = new AtomView( molecule.centralAtom, this.renderer, AtomView.centralAtomLocalMaterial );
     }
     this.add( this.centerAtomView );
   }
@@ -123,8 +123,7 @@ define( function( require ) {
       var centralAtom = this.molecule.centralAtom;
       if ( group.isLonePair ) {
 
-        var lonePairView = new LonePairView( this.renderer );
-        lonePairView.group = group; // TODO: get rid of duck typing
+        var lonePairView = new LonePairView( group, this.renderer );
         this.lonePairViews.push( lonePairView );
         this.add( lonePairView );
 
@@ -155,10 +154,9 @@ define( function( require ) {
                                                       new THREE.Vector3( orientation.x, orientation.y, orientation.z ) );
         } );
       } else {
-        var atomView = new AtomView( this.renderer, group.element ?
-                                                    AtomView.getElementLocalMaterial( group.element ) :
-                                                    AtomView.atomLocalMaterial );
-        atomView.group = group; // TODO: get rid of duck typing
+        var atomView = new AtomView( group, this.renderer, group.element ?
+                                                           AtomView.getElementLocalMaterial( group.element ) :
+                                                           AtomView.atomLocalMaterial );
         this.atomViews.push( atomView );
         this.add( atomView );
 

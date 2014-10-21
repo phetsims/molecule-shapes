@@ -37,9 +37,15 @@ define( function( require ) {
   var mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetail ).geometry;
   var touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetailExtruded ).geometry;
 
-  function LonePairView( renderer ) {
+  /*
+   * @constructor
+   * @param {PairGroup} group
+   * @param {THREE.Renderer} renderer
+   */
+  function LonePairView( group, renderer ) {
     THREE.Object3D.call( this );
 
+    this.group = group;
     this.shellGeometry = localShellGeometry.get( renderer );
     this.shellMaterial = localShellMaterial.get( renderer );
 

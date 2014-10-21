@@ -34,11 +34,14 @@ define( function( require ) {
   var touchHitTestSphere = new Sphere3( Vector3.ZERO, touchRadius );
 
   /*
+   * @param {PairGroup} group
    * @param {THREE.Renderer} renderer - To know which geometries/materials to use for which renderer (can't share)
    * @param {LocalMaterial} localMaterial - preferably from one of AtomView's static methods/properties
    */
-  function AtomView( renderer, localMaterial ) {
+  function AtomView( group, renderer, localMaterial ) {
     THREE.Mesh.call( this, localAtomGeometry.get( renderer ), localMaterial.get( renderer ) );
+
+    this.group = group;
 
     if ( window.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
       if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
