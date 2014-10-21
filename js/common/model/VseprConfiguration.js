@@ -46,17 +46,17 @@ define( function( require ) {
 
     // @public
     this.geometry = GeometryConfiguration.getConfiguration( x + e ); // undefined?
-    this.bondedUnitVectors = []; // {Vector3[]} ideal configurations
-    this.lonePairUnitVectors = []; // {Vector3[]} ideal configurations
-    this.allOrientations = this.geometry.unitVectors;
+    this.bondOrientations = []; // {Vector3[]}
+    this.lonePairOrientations = []; // {Vector3[]}
+    this.allOrientations = this.geometry.unitVectors; // {Vector3[]}
 
     for ( var i = 0; i < x + e; i++ ) {
       if ( i < e ) {
         // fill up the lone pair unit vectors first
-        this.lonePairUnitVectors.push( this.geometry.unitVectors[i] );
+        this.lonePairOrientations.push( this.geometry.unitVectors[i] );
       }
       else {
-        this.bondedUnitVectors.push( this.geometry.unitVectors[i] );
+        this.bondOrientations.push( this.geometry.unitVectors[i] );
       }
     }
   }
@@ -79,11 +79,12 @@ define( function( require ) {
 
       // currently only called when a real molecule is built, so we don't try to pass a lastPermutation in (not helpful)
       return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
-                                                              this.bondedUnitVectors,
-                                                              Permutation.permutations( this.bondedUnitVectors.length ) );
+                                                              this.bondOrientations,
+                                                              Permutation.permutations( this.bondOrientations.length ) );
     }
   }, {
     /*
+     * @public
      * @param {number} x - Number of radial atoms connected to the central atom
      * @param {number} e - Number of radial lone pairs connected to the central atom
      * @returns {string}
@@ -156,6 +157,25 @@ define( function( require ) {
       }
       else {
         throw new Error( 'unknown VSEPR configuration x: ' + x + ', e: ' + e );
+      }
+    },
+
+    // @private
+    configurationMap: {}, // x+','+e => {VseprConfiguration}
+
+    /*
+     * @param {number} x - Number of radial atoms connected to the central atom
+     * @param {number} e - Number of radial lone pairs connected to the central atom
+     * @returns {VseprConfiguration} - Cached configuration
+     */
+    getConfiguration: function( x, e ) {
+      var key = x + ',' + e;
+      if ( key in this.configurationMap ) {
+        return this.configurationMap[key];
+      } else {
+        var configuration = new VseprConfiguration( x, e );
+        this.configurationMap[key] = configuration;
+        return configuration;
       }
     }
   } );

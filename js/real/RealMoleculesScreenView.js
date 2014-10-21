@@ -132,7 +132,7 @@ define( function( require ) {
 
       var numRadialAtoms = model.realMoleculeShape.centralAtomCount;
       var numRadialLonePairs = model.realMoleculeShape.centralAtom.lonePairCount;
-      var vseprConfiguration = new VseprConfiguration( numRadialAtoms, numRadialLonePairs );
+      var vseprConfiguration = VseprConfiguration.getConfiguration( numRadialAtoms, numRadialLonePairs );
 
       // get a copy of what might be the "old" molecule into whose space we need to rotate into
       var mappingMolecule;

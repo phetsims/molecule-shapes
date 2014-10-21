@@ -118,7 +118,8 @@ define( function( require ) {
     },
 
     getVseprConfiguration: function( group ) {
-      return new VseprConfiguration( this.getNeighboringAtoms( group ).length, this.getLonePairNeighbors( group ).length );
+      // TODO: optimize away length checks?
+      return VseprConfiguration.getConfiguration( this.getNeighboringAtoms( group ).length, this.getLonePairNeighbors( group ).length );
     },
 
     // get the bond to the more central "parent", or undefined
@@ -247,7 +248,7 @@ define( function( require ) {
     },
 
     getCorrespondingIdealGeometryVectors: function() {
-      return new VseprConfiguration( this.radialAtoms.length, this.radialLonePairs.length ).geometry.unitVectors;
+      return VseprConfiguration.getConfiguration( this.radialAtoms.length, this.radialLonePairs.length ).geometry.unitVectors;
     },
 
     /**
@@ -268,7 +269,7 @@ define( function( require ) {
       // TODO: optimized function for counting?
       var numLonePairs = _.filter( groups, function( group ) { return group.isLonePair; } ).length;
       var numAtoms = groups.length - numLonePairs;
-      return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( new VseprConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
+      return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VseprConfiguration.getConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
     },
 
     getIdealDistanceFromCenter: function( group ) {
@@ -280,7 +281,7 @@ define( function( require ) {
     },
 
     addTerminalLonePairs: function( atom, quantity ) {
-      var pairConfig = new VseprConfiguration( 1, quantity );
+      var pairConfig = VseprConfiguration.getConfiguration( 1, quantity );
       var lonePairOrientations = pairConfig.geometry.unitVectors;
 
       // we want to rotate the ideal configuration of lone pairs to the atom's orientation
