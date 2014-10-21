@@ -23,9 +23,6 @@ define( function( require ) {
    var SQRT_HALF = Math.sqrt( 0.5 );
    var FastMathArray = window.Float64Array || Array; // typed arrays give significant speed-ups
 
-   // a matrix used in FastMath SVD computations
-   var scratchGivens = new FastMathArray( 9 );
-
    return {
     Array: FastMathArray,
 
@@ -440,8 +437,8 @@ define( function( require ) {
         sin = rsqr * targetValue;
       }
 
-      this.preMult3Givens( r, cos, sin, col, row )
-      this.postMult3Givens( q, cos, sin, col, row )
+      this.preMult3Givens( r, cos, sin, col, row );
+      this.postMult3Givens( q, cos, sin, col, row );
     },
 
     /*

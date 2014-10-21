@@ -102,24 +102,22 @@ define( function( require ) {
     },
 
     getNeighboringAtoms: function( group ) {
+      // TODO: deprecated?
       return _.filter( this.radialGroups, function( group ) { return !group.isLonePair; } );
     },
 
     getLonePairNeighbors: function( group ) {
+      // TODO: check usages
       return _.filter( this.radialGroups, function( group ) { return group.isLonePair; } );
     },
 
     getGeometryConfiguration: function( group ) {
+      // TODO: check usages
       return GeometryConfiguration.getConfiguration( this.getStericNumber( group ) );
     },
 
     getCentralVseprConfiguration: function() {
-      return this.getVseprConfiguration( this.centralAtom );
-    },
-
-    getVseprConfiguration: function( group ) {
-      // TODO: optimize away length checks?
-      return VseprConfiguration.getConfiguration( this.getNeighboringAtoms( group ).length, this.getLonePairNeighbors( group ).length );
+      return VseprConfiguration.getConfiguration( this.radialAtoms.length, this.radialLonePairs.length );
     },
 
     // get the bond to the more central "parent", or undefined
@@ -248,7 +246,7 @@ define( function( require ) {
     },
 
     getCorrespondingIdealGeometryVectors: function() {
-      return VseprConfiguration.getConfiguration( this.radialAtoms.length, this.radialLonePairs.length ).geometry.unitVectors;
+      return this.getCentralVseprConfiguration().geometry.unitVectors;
     },
 
     /**
