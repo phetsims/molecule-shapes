@@ -15,29 +15,32 @@ define( function( require ) {
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var VseprConfiguration = require( 'MOLECULE_SHAPES/common/model/VseprConfiguration' );
 
-  // TODO: rename parameter to RealMoleculeShape
-  function RealMolecule( realMolecule ) {
+  /*
+   * @constructor
+   * @param {RealMoleculeShape} realMoleculeShape
+   */
+  function RealMolecule( realMoleculeShape ) {
     var i, group;
 
     Molecule.call( this );
 
-    this.realMolecule = realMolecule;
+    this.realMoleculeShape = realMoleculeShape;
 
     this.localShapeMap = {};
 
-    var numLonePairs = realMolecule.centralAtom.lonePairCount;
-    var numBonds = realMolecule.bonds.length;
+    var numLonePairs = realMoleculeShape.centralAtom.lonePairCount;
+    var numBonds = realMoleculeShape.bonds.length;
 
     var idealCentralOrientations = [];
     var centralPairGroups = [];
 
-    this.addCentralAtom( new PairGroup( new Vector3(), false, realMolecule.centralAtom.element ) );
+    this.addCentralAtom( new PairGroup( new Vector3(), false, realMoleculeShape.centralAtom.element ) );
 
     // add in bonds
-    var bonds = realMolecule.bonds;
+    var bonds = realMoleculeShape.bonds;
     for ( i = 0; i < bonds.length; i++ ) {
       var bond = bonds[i];
-      var atom = bond.getOtherAtom( realMolecule.centralAtom );
+      var atom = bond.getOtherAtom( realMoleculeShape.centralAtom );
       idealCentralOrientations.push( atom.orientation );
       var bondLength = atom.position.magnitude();
 
@@ -97,10 +100,6 @@ define( function( require ) {
 
     getMaximumBondLength: function() {
       return undefined;
-    },
-
-    getRealMolecule: function() {
-      return this.realMolecule;
     }
   } );
 } );
