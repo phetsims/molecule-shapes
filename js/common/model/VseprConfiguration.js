@@ -1,7 +1,11 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs bonds)
+ * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs
+ * bonds).
+ *
+ * Note that we use X and E for the radial atom and radial lone pair count (respectively) due to its usage in chemistry,
+ * with the "AXE method" (see http://en.wikipedia.org/wiki/VSEPR_theory)
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -29,13 +33,23 @@ define( function( require ) {
   var shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
   var shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
 
+  /*
+   * @constructor
+   * @param {number} x - Number of radial atoms connected to the central atom
+   * @param {number} e - Number of radial lone pairs connected to the central atom
+   */
   function VseprConfiguration( x, e ) {
+    // @public
     this.x = x;
     this.e = e;
+    this.name = VseprConfiguration.getName( x, e );
 
+    // @public
     this.geometry = GeometryConfiguration.getConfiguration( x + e ); // undefined?
-    this.bondedUnitVectors = [];
-    this.lonePairUnitVectors = [];
+    this.bondedUnitVectors = []; // {Vector3[]} ideal configurations
+    this.lonePairUnitVectors = []; // {Vector3[]} ideal configurations
+    this.allOrientations = this.geometry.unitVectors;
+
     for ( var i = 0; i < x + e; i++ ) {
       if ( i < e ) {
         // fill up the lone pair unit vectors first
@@ -45,110 +59,104 @@ define( function( require ) {
         this.bondedUnitVectors.push( this.geometry.unitVectors[i] );
       }
     }
-
-    // figure out what the name is
-    if ( x === 0 ) {
-      this.name = shapeEmptyString;
-    }
-    else if ( x === 1 ) {
-      this.name = shapeDiatomicString;
-    }
-    else if ( x === 2 ) {
-      if ( e === 0 || e === 3 || e === 4 ) {
-        this.name = shapeLinearString;
-      }
-      else if ( e === 1 || e === 2 ) {
-        this.name = shapeBentString;
-      }
-      else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
-      }
-    }
-    else if ( x === 3 ) {
-      if ( e === 0 ) {
-        this.name = shapeTrigonalPlanarString;
-      }
-      else if ( e === 1 ) {
-        this.name = shapeTrigonalPyramidalString;
-      }
-      else if ( e === 2 || e === 3 ) {
-        this.name = shapeTShapedString;
-      }
-      else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
-      }
-    }
-    else if ( x === 4 ) {
-      if ( e === 0 ) {
-        this.name = shapeTetrahedralString;
-      }
-      else if ( e === 1 ) {
-        this.name = shapeSeesawString;
-      }
-      else if ( e === 2 ) {
-        this.name = shapeSquarePlanarString;
-      }
-      else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
-      }
-    }
-    else if ( x === 5 ) {
-      if ( e === 0 ) {
-        this.name = shapeTrigonalBipyramidalString;
-      }
-      else if ( e === 1 ) {
-        this.name = shapeSquarePyramidalString;
-      }
-      else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
-      }
-    }
-    else if ( x === 6 ) {
-      if ( e === 0 ) {
-        this.name = shapeOctahedralString;
-      }
-      else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
-      }
-    }
-    else {
-      this.name = null;
-    }
   }
 
   return inherit( Object, VseprConfiguration, {
-    getAllUnitVectors: function() {
-      return this.geometry.unitVectors;
-    },
-
-    getIdealBondUnitVectors: function() {
-      var result = [];
-      for ( var i = this.e; i < this.x + this.e; i++ ) {
-        result.push( this.geometry.unitVectors[i] );
-      }
-      return result;
-    },
-
     // for finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'
     getIdealGroupRotationToPositions: function( groups ) {
       assert && assert( ( this.x + this.e ) === groups.length );
 
       // done currently only when the molecule is rebuilt, so we don't try to pass a lastPermutation in (not helpful)
-      return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ), this.geometry.unitVectors, LocalShape.vseprPermutations( groups ) );
+      return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
+                                                              this.geometry.unitVectors,
+                                                              LocalShape.vseprPermutations( groups ) );
     },
 
     // for finding ideal rotations exclusively using the 'bonded' portions
     getIdealBondRotationToPositions: function( groups ) {
       // ideal vectors excluding lone pairs (just for the bonds)
       assert && assert( ( this.x ) === groups.length );
-      var idealModelBondVectors = this.getIdealBondUnitVectors();
 
       // currently only called when a real molecule is built, so we don't try to pass a lastPermutation in (not helpful)
-      return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ), idealModelBondVectors, Permutation.permutations( idealModelBondVectors.length ) );
-    },
-
-    equals: function( other ) {
-      return this.x === other.x && this.e === other.e;
+      return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
+                                                              this.bondedUnitVectors,
+                                                              Permutation.permutations( this.bondedUnitVectors.length ) );
+    }
+  }, {
+    /*
+     * @param {number} x - Number of radial atoms connected to the central atom
+     * @param {number} e - Number of radial lone pairs connected to the central atom
+     * @returns {string}
+     */
+    getName: function( x, e ) {
+      // figure out what the name is
+      if ( x === 0 ) {
+        return shapeEmptyString;
+      }
+      else if ( x === 1 ) {
+        return shapeDiatomicString;
+      }
+      else if ( x === 2 ) {
+        if ( e === 0 || e === 3 || e === 4 ) {
+          return shapeLinearString;
+        }
+        else if ( e === 1 || e === 2 ) {
+          return shapeBentString;
+        }
+        else {
+          throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        }
+      }
+      else if ( x === 3 ) {
+        if ( e === 0 ) {
+          return shapeTrigonalPlanarString;
+        }
+        else if ( e === 1 ) {
+          return shapeTrigonalPyramidalString;
+        }
+        else if ( e === 2 || e === 3 ) {
+          return shapeTShapedString;
+        }
+        else {
+          throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        }
+      }
+      else if ( x === 4 ) {
+        if ( e === 0 ) {
+          return shapeTetrahedralString;
+        }
+        else if ( e === 1 ) {
+          return shapeSeesawString;
+        }
+        else if ( e === 2 ) {
+          return shapeSquarePlanarString;
+        }
+        else {
+          throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        }
+      }
+      else if ( x === 5 ) {
+        if ( e === 0 ) {
+          return shapeTrigonalBipyramidalString;
+        }
+        else if ( e === 1 ) {
+          return shapeSquarePyramidalString;
+        }
+        else {
+          throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        }
+      }
+      else if ( x === 6 ) {
+        if ( e === 0 ) {
+          return shapeOctahedralString;
+        }
+        else {
+          throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        }
+      }
+      else {
+        throw new Error( 'unknown VSEPR configuration x: ' + x + ', e: ' + e );
+      }
     }
   } );
 } );

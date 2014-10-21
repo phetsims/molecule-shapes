@@ -51,7 +51,7 @@ define( function( require ) {
 
     // all of the ideal vectors (including for lone pairs)
     var vseprConfiguration = new VseprConfiguration( numBonds, numLonePairs );
-    var idealModelVectors = vseprConfiguration.getAllUnitVectors();
+    var idealModelVectors = vseprConfiguration.allOrientations;
 
     var mapping = vseprConfiguration.getIdealBondRotationToPositions( LocalShape.sortedLonePairsFirst( this.getNeighboringAtoms( this.centralAtom ) ) );
 

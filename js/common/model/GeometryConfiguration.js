@@ -22,7 +22,13 @@ define( function( require ) {
 
   var TETRA_CONST = Math.PI * -19.471220333 / 180;
 
+  /*
+   * @constructor
+   * @param {string} name
+   * @param {Vector3[]} unitVectors - Ordered list of orientations taken by an ideal configuration
+   */
   function GeometryConfiguration( name, unitVectors ) {
+    // @public
     this.name = name;
     this.unitVectors = unitVectors;
   }
@@ -87,6 +93,10 @@ define( function( require ) {
     )
   };
 
+  /*
+   * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
+   * @returns {GeometryConfiguration}
+   */
   GeometryConfiguration.getConfiguration = function( numberOfGroups ) {
     return geometries[numberOfGroups];
   };

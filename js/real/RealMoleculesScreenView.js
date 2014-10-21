@@ -172,7 +172,7 @@ define( function( require ) {
       else {
         mapping = vseprConfiguration.getIdealGroupRotationToPositions( LocalShape.sortedLonePairsFirst( mappingMolecule.radialGroups ) );
         var permutation = mapping.permutation.inverted();
-        var idealUnitVectors = vseprConfiguration.getAllUnitVectors();
+        var idealUnitVectors = vseprConfiguration.allOrientations;
 
         newMolecule = new VSEPRMolecule();
 

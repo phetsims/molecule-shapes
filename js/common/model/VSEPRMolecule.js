@@ -1,7 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs bonds)
+ * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs
+ * bonds). Used in the "Model" screens.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
