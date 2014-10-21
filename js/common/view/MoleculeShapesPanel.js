@@ -17,14 +17,15 @@ define( function( require ) {
 
   function MoleculeShapesPanel( titleString, contentNode, options ) {
     options = _.extend( {
-      // TODO: remove duplication with panel, but we want these set before-hand! Extract defaults from Panel?
-      lineWidth: 1.5, // width of the background border
+      lineWidth: 1.5,
       xMargin: 15,
       yMargin: 15,
-      cornerRadius: 15, // radius of the rounded corners on the background
-      resize: true, // dynamically resize when content bounds change
+      cornerRadius: 15,
+      resize: true,
+
+      // we want everything to absorb events, since things behind the panel are pickable
       backgroundPickable: true,
-      pickable: true // absorb the events?
+      pickable: true
     }, options );
 
     var titleNode = new Text( titleString, {
