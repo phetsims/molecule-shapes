@@ -1,7 +1,14 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Label (text) of the angle between two bonds
+ * Label (text) of the angle between two bonds. We restrict the possible input strings to the form '123.4°' or '12.3°'
+ * to make the layout faster (no need to change the geometry vertices, just UVs) and simpler.
+ *
+ * At a high level, we create a texture (image) with the glyphs we will need positioned evenly-spaced on it. We
+ * specify constant geometry positions for each character (there are 6 for '123.4°'), since we have no need to change
+ * the positions of those due to our format string restrictions (for '12.3°', we simply don't display the first
+ * character, e.g. 'X12.3°'). We update the UV coordinates for each character's position to correspond to the location
+ * inside the texture where the desired glyph is.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -18,6 +25,10 @@ define( function( require ) {
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
+
+  /*---------------------------------------------------------------------------*
+  * Glyph texture setup
+  *----------------------------------------------------------------------------*/
 
   var glyphs = {};
   var maxWidth;
@@ -92,93 +103,80 @@ define( function( require ) {
     return texture;
   } );
 
+  // metrics data for proper centering and layout
+  var formatString = '000.0°';
   var shortXOffset = glyphs['0'].advance;
   var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance + glyphs['°'].advance;
   var longWidth = glyphs['0'].advance + shortWidth;
 
+  /*---------------------------------------------------------------------------*
+  * Text shader
+  *----------------------------------------------------------------------------*/
+
+  var vertexShader = [
+    'varying vec2 vUv;',
+
+    'void main() {',
+    '  vUv = uv;',
+    '  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
+    '}'
+  ].join( '\n' );
+
+  // custom fragment shader that rescales the text to increase contrast, and allows color and opacity controls
+  var fragmentShader = [
+    'varying vec2 vUv;',
+    'uniform sampler2D map;',
+    'uniform float opacity;',
+    'uniform vec3 color;',
+    'const float scaleCenter = 0.4;',
+
+    'void main() {',
+    '  vec4 texLookup = texture2D( map, vUv );',
+    '  float rescaled = ( texLookup.r - scaleCenter ) * 2.0 + scaleCenter;',
+    '  gl_FragColor = vec4( color, opacity * clamp( rescaled, 0.0, 1.0 ) );',
+    // '  gl_FragColor = vec4( vUv, 0.0, 1.0 );',
+    '}'
+  ].join( '\n' );
+
+  var materialUniforms = {
+    map: {
+      type: 't',
+      value: null // stub value, will be filled in
+    },
+    opacity: {
+      type: 'f',
+      value: 0
+    },
+    color: {
+      type: '3f'
+    }
+  };
+
   function LabelWebGLView( renderer ) {
     var view = this;
+
+    this.uvs = []; // {THREE.Vector3[]} - stores the texture coordinates used for drawing
 
     var texture = localTexture.get( renderer );
 
     var geometry = new THREE.Geometry();
-    var x = 0;
+    var x = 0; // accumulated X offset of previous character places
 
-    // glyph 0
-    geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['0'].advance;
+    for ( var i = 0; i < formatString.length; i++ ) {
+      // vertices for the bounds of the character
+      geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
+      geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
+      geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
+      geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
+      x += glyphs[formatString[i]].advance;
 
-    // glyph 1
-    geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['0'].advance;
+      // push UV placeholders for each corner
+      this.uvs.push( new THREE.Vector3() );
+      this.uvs.push( new THREE.Vector3() );
+      this.uvs.push( new THREE.Vector3() );
+      this.uvs.push( new THREE.Vector3() );
 
-    // glyph 2
-    geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['0'].advance;
-
-    // glyph 3
-    geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['.'].advance;
-
-    // glyph 4
-    geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['0'].advance;
-
-    // glyph 5
-    geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
-    geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['°'].advance;
-
-    this.uvs = [
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3()
-    ];
-
-    for ( var i = 0; i < 6; i++ ) {
+      // two faces to make up the quad for the character
       var offset = 4 * i;
       geometry.faces.push( new THREE.Face3( offset, offset + 1, offset + 2 ) );
       geometry.faceVertexUvs[0].push( [this.uvs[offset], this.uvs[offset + 1], this.uvs[offset + 2]] );
@@ -186,49 +184,14 @@ define( function( require ) {
       geometry.faceVertexUvs[0].push( [this.uvs[offset], this.uvs[offset + 2], this.uvs[offset + 3]] );
     }
 
-    geometry.dynamic = true;
+    geometry.dynamic = true; // tells three.js that we will change things
     geometry.uvsNeedUpdate = true; // will need when we change UVs
 
-    var vertexShader = [
-      'varying vec2 vUv;',
-
-      'void main() {',
-      '  vUv = uv;',
-      '  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
-      '}'
-    ].join( '\n' );
-
-    var fragmentShader = [
-      'varying vec2 vUv;',
-      'uniform sampler2D map;',
-      'uniform float opacity;',
-      'uniform vec3 color;',
-      'const float scaleCenter = 0.4;',
-
-      'void main() {',
-      '  vec4 texLookup = texture2D( map, vUv );',
-      '  float rescaled = ( texLookup.r - scaleCenter ) * 2.0 + scaleCenter;',
-      '  gl_FragColor = vec4( color, opacity * clamp( rescaled, 0.0, 1.0 ) );',
-      // '  gl_FragColor = vec4( vUv, 0.0, 1.0 );',
-      '}'
-    ].join( '\n' );
-
-    this.materialUniforms = {
-      map: {
-        type: 't',
-        value: texture
-      },
-      opacity: {
-        type: 'f',
-        value: 0
-      },
-      color: {
-        type: '3f'
-      }
-    };
+    this.materialUniforms = JSON.parse( JSON.stringify( materialUniforms ) ); // cheap deep copy
+    this.materialUniforms.map.value = texture;
 
     MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
-      view.materialUniforms.color.value = [color.r / 255, color.g / 255, color.b / 255];
+      view.materialUniforms.color.value = [color.r / 255, color.g / 255, color.b / 255]; // uniforms use number arrays
     } );
 
     var material = MoleculeShapesGlobals.useWebGL ? new THREE.ShaderMaterial( {
@@ -244,33 +207,48 @@ define( function( require ) {
     } );
 
     THREE.Mesh.call( this, geometry, material );
-
-    this.position.x = 200;
-    this.position.y = 200;
   }
 
   return inherit( THREE.Mesh, LabelWebGLView, {
+    /*
+     * Displays and positions the label, and sets its text.
+     *
+     * @param {string} string
+     * @param {number} brightness - In range [0,1]
+     * @param {Vector2} centerScreenPoint - The center of the central atom in screen coordinates
+     * @param {Vector2} midScreenPoint - The midpoint of the bond-angle arc in screen coordinates
+     * @param {number} layoutScale - The ScreenView's layout scale
+     */
     setLabel: function( string, brightness, centerScreenPoint, midScreenPoint, layoutScale ) {
+      assert && assert( string.length === 5 || string.length === 6 );
+
       this.setString( string );
       this.materialUniforms.opacity.value = brightness;
 
-      var scale = layoutScale * 0.13;
+      var scale = layoutScale * 0.13; // tuned constant to match the desired "font size" of the label
       this.scale.x = this.scale.y = this.scale.z = scale;
+
       var xCentering = string.length === 6 ? -longWidth / 2 : -shortXOffset - shortWidth / 2;
       var yCentering = -maxHeight / 2;
 
       // we position based on our upper-left origin
       var offset = midScreenPoint.minus( centerScreenPoint );
-      // mutably construct offset amount
+      // Mutably construct offset amount. Magic number vector is tuned to correspond well with the extra horizontal
+      // and vertical spacing needed (if it wasn't applied, our text would be centered on the actual arc instead of
+      // being pushed farther away).
       var offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.38, 0.2 ) ).magnitude();
       this.position.x = midScreenPoint.x + offset.x * offsetAmount + xCentering * scale;
       this.position.y = midScreenPoint.y + offset.y * offsetAmount + yCentering * scale;
     },
 
+    /*
+     * Makes the label invisible
+     */
     unsetLabel: function() {
       this.materialUniforms.opacity.value = 0;
     },
 
+    // @private - sets the UV coordinates to display the requested string
     setString: function( string ) {
       var idx = 0;
       if ( string.length === 6 ) {
@@ -285,14 +263,28 @@ define( function( require ) {
       this.setGlyph( 5, string[idx++] );
     },
 
+    // @private - sets the UV coordinates for a single glyph, 0-indexed
     setGlyph: function( index, string ) {
-      var offset = index * 4;
+      assert && assert( glyphs[string] );
 
       var glyph = glyphs[string];
       var minU = glyph.bounds.minX;
       var maxU = glyph.bounds.maxX;
       var minV = 1 - glyph.bounds.maxY;
       var maxV = 1 - glyph.bounds.minY;
+
+      this.setUVs( index, minU, minV, maxU, maxV );
+    },
+
+    // @private - makes the character at the index invisible
+    unsetGlyph: function( index ) {
+      // set all texture coordinates to 0, so it will display nothing
+      this.setUVs( index, 0, 0, 0, 0 );
+    },
+
+    // @private - sets UVs for a specific character
+    setUVs: function( index, minU, minV, maxU, maxV ) {
+      var offset = index * 4;
 
       this.uvs[offset].x = minU;
       this.uvs[offset].y = maxV;
@@ -302,20 +294,6 @@ define( function( require ) {
       this.uvs[offset + 2].y = minV;
       this.uvs[offset + 3].x = minU;
       this.uvs[offset + 3].y = minV;
-      this.geometry.uvsNeedUpdate = true; // will need when we change UVs
-    },
-
-    unsetGlyph: function( index ) {
-      var offset = index * 4;
-
-      this.uvs[offset].x = 0;
-      this.uvs[offset].y = 0;
-      this.uvs[offset + 1].x = 0;
-      this.uvs[offset + 1].y = 0;
-      this.uvs[offset + 2].x = 0;
-      this.uvs[offset + 2].y = 0;
-      this.uvs[offset + 3].x = 0;
-      this.uvs[offset + 3].y = 0;
       this.geometry.uvsNeedUpdate = true; // will need when we change UVs
     }
   } );
