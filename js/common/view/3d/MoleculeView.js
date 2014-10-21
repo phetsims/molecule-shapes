@@ -10,7 +10,6 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
-  var Property = require( 'AXON/Property' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
@@ -178,6 +177,7 @@ define( function( require ) {
     removeGroup: function( group ) {
       var i;
       if ( group.isLonePair ) {
+        // remove the lone pair view itself
         for ( i = 0; i < this.lonePairViews.length; i++ ) {
           var lonePairView = this.lonePairViews[i];
           if ( lonePairView.group === group ) {
@@ -188,6 +188,7 @@ define( function( require ) {
           }
         }
       } else {
+        // remove the atom view itself
         for ( i = 0; i < this.atomViews.length; i++ ) {
           var atomView = this.atomViews[i];
           if ( atomView.group === group ) {
@@ -198,7 +199,7 @@ define( function( require ) {
           }
         }
 
-        // reverse for ease of removal (we may need to remove multiple ones)
+        // remove any bond angles involved, reversed for ease of removal (we may need to remove multiple ones)
         for ( i = this.angleViews.length - 1; i >= 0; i-- ) {
           var bondAngleView = this.angleViews[i];
 
@@ -210,7 +211,7 @@ define( function( require ) {
           }
         }
       }
-      // remove from radialViews if it is included
+      // remove from radialViews (aggregate) if it is included
       for ( i = 0; i < this.radialViews.length; i++ ) {
         if ( this.radialViews[i].group === group ) {
           this.radialViews.splice( i, 1 );
@@ -227,7 +228,7 @@ define( function( require ) {
         var bondView = new BondView(
           this.renderer,
           bond,
-          new Property( new Vector3() ), // center position
+          this.molecule.centralAtom.positionProperty, // center position
           group.positionProperty,
           0.5,
           this.molecule.getMaximumBondLength() );
