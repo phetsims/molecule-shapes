@@ -85,11 +85,6 @@ define( function( require ) {
       }
     },
 
-    // the number of surrounding pair groups
-    getStericNumber: function( group ) {
-      return this.getBondsAround( group ).length;
-    },
-
     getBondsAround: function( group ) {
       // all bonds to the pair group, if specified
       return _.filter( this.bonds, function( bond ) { return bond.contains( group ); } );
@@ -238,7 +233,7 @@ define( function( require ) {
      * @return Whether the pair group can be added, or whether this molecule would go over its pair limit
      */
     wouldAllowBondOrder: function( bondOrder ) {
-      return this.getStericNumber( this.centralAtom ) < MAX_PAIRS;
+      return this.radialGroups.length < MAX_PAIRS;
     },
 
     getDistantLonePairs: function() {
