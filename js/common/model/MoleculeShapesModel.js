@@ -15,13 +15,8 @@ define( function( require ) {
 
   /**
    * @constructor
-   *
-   * TODO: verify that these are triggered and handled
-   * Triggered events:
-   * - mouseEvent
-   * - keyboardEvent
-   * - beforeFrameRender
-   * - timeChangeNotifier
+   * @param {boolean} isBasicsVersion
+   * @param {object} [options]
    */
   function MoleculeShapesModel( isBasicsVersion, options ) {
     this.isBasicsVersion = isBasicsVersion;
