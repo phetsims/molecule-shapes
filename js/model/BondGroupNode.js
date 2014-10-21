@@ -20,7 +20,7 @@ define( function( require ) {
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var RemovePairGroupButton = require( 'MOLECULE_SHAPES/model/RemovePairGroupButton' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );

@@ -10,7 +10,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 

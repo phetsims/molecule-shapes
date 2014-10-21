@@ -13,7 +13,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var CheckBox = require( 'SUN/CheckBox' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
 
   var showOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );

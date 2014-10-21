@@ -22,7 +22,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
   var Shape = require( 'KITE/Shape' );
   var LiberationSansRegularSubset = require( 'MOLECULE_SHAPES/common/data/LiberationSansRegularSubset' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
 

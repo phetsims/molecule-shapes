@@ -17,7 +17,7 @@ define( function( require ) {
   var Sphere3 = require( 'DOT/Sphere3' );
   var DOM = require( 'SCENERY/nodes/DOM' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesGlobals' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );

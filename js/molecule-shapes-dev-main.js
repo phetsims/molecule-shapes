@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   return {
+    // TODO: update
     RealAtomLocation: require( 'MOLECULE_SHAPES/common/model/RealAtomLocation' ),
     AttractorModel: require( 'MOLECULE_SHAPES/common/model/AttractorModel' ),
     Bond: require( 'MOLECULE_SHAPES/common/model/Bond' ),
