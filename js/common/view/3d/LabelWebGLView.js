@@ -19,84 +19,81 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
 
-  var padding = 4;
   var glyphs = {};
-  var numGlyphs = 0;
+  var maxWidth;
+  var maxHeight;
+  var dataURL;
+  // initializes the above variables with a texture image and data to reference where glyphs are in that texture
+  (function setupTexture() {
+    var padding = 4; // padding between glyphs in the texture, and between glyphs and the outside
+    var numGlyphs = 0; // auto-detect number of glyphs, so we can space the glyphs out in the texture
+    var glyphScale = 130; // 65 * powers of 2 seems to fill out the power-of-2 texture wasting less space
+    var scaleMatrix = Matrix3.scaling( glyphScale );
+    var key;
 
-  var maxBounds = Bounds2.NOTHING.copy();
+    // compute maxBounds, set glyphs[key].{shape,advance}
+    var maxBounds = Bounds2.NOTHING.copy();
+    for ( key in LiberationSansRegularSubset ) {
+      numGlyphs++;
 
-  var glyphScale = 130 / 1;
+      var fontGlyph = LiberationSansRegularSubset[key];
+      var shape = new Shape( fontGlyph.path ).transformed( scaleMatrix )  ;
+      maxBounds.includeBounds( shape.bounds );
 
-  var scaleMatrix = Matrix3.scaling( glyphScale );
+      glyphs[key] = {
+        advance: fontGlyph.x_advance * glyphScale,
+        shape: shape
+      };
+    }
 
-  var key;
+    // export maximum dimensions needed for layer layout
+    maxWidth = maxBounds.width;
+    maxHeight = maxBounds.height;
 
-  for ( key in LiberationSansRegularSubset ) {
-    numGlyphs++;
+    // set up Canvas and dimensions (padding between all glyphs and around the outside, rounded out to powers of 2)
+    var canvas = document.createElement( 'canvas' );
+    var context = canvas.getContext( '2d' );
+    var canvasWidth = Util.toPowerOf2( ( numGlyphs + 1 ) * padding + numGlyphs * maxWidth );
+    var canvasHeight = Util.toPowerOf2( 2 * padding + maxHeight );
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
 
-    var entry = LiberationSansRegularSubset[key];
+    // draw the glyphs into the texture, while recording their coordinate bounds in UV space (0 to 1)
+    var n = 0;
+    for ( key in LiberationSansRegularSubset ) {
+      // X,Y offset of the glyph's 0,0 registration point
+      var xOffset = ( n + 1 ) * padding + n * maxWidth - maxBounds.minX;
+      var yOffset = padding + maxHeight - maxBounds.maxY;
+      context.setTransform( 1, 0, 0, 1, xOffset, yOffset );
+      // Bounds in the texture are offset from the X,Y. We scale to [0,1] since that's how texture coordinates are handled
+      glyphs[key].bounds = new Bounds2( ( xOffset + maxBounds.minX ) / canvasWidth,
+                                        ( yOffset + maxBounds.minY ) / canvasHeight,
+                                        ( xOffset + maxBounds.maxX ) / canvasWidth,
+                                        ( yOffset + maxBounds.maxY ) / canvasHeight );
+      // draw it in white over transparency
+      context.fillStyle = 'white';
+      context.beginPath();
+      glyphs[key].shape.writeToContext( context );
+      context.fill();
 
-    var shape = new Shape( entry.path ).transformed( scaleMatrix )  ;
+      glyphs[key].xOffset = xOffset;
+      glyphs[key].yOffset = yOffset;
+      n++;
+    }
 
-    maxBounds.includeBounds( shape.bounds );
-
-    glyphs[key] = {
-      advance: entry.x_advance * glyphScale,
-      shape: shape
-    };
-  }
-
-  var maxWidth = maxBounds.width;
-  var maxHeight = maxBounds.height;
-
-  var canvas = document.createElement( 'canvas' );
-  var context = canvas.getContext( '2d' );
-
-  var canvasWidth = Util.toPowerOf2( ( numGlyphs + 1 ) * padding + numGlyphs * maxWidth );
-  var canvasHeight = Util.toPowerOf2( 2 * padding + maxHeight );
-
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
-
-  var exports = {};
-
-  var n = 0;
-  for ( key in LiberationSansRegularSubset ) {
-    var xOffset = ( n + 1 ) * padding + n * maxWidth - maxBounds.minX;
-    var yOffset = padding + maxHeight - maxBounds.maxY;
-    context.setTransform( 1, 0, 0, 1, xOffset, yOffset );
-    glyphs[key].bounds = new Bounds2( ( xOffset + maxBounds.minX ) / canvasWidth,
-                                      ( yOffset + maxBounds.minY ) / canvasHeight,
-                                      ( xOffset + maxBounds.maxX ) / canvasWidth,
-                                      ( yOffset + maxBounds.maxY ) / canvasHeight );
-    context.fillStyle = 'white';
-    context.beginPath();
-    glyphs[key].shape.writeToContext( context );
-    context.fill();
-
-    glyphs[key].xOffset = xOffset;
-    glyphs[key].yOffset = yOffset;
-    n++;
-
-    exports[key] = {
-      minX: glyphs[key].bounds.minX,
-      maxX: glyphs[key].bounds.maxX,
-      minY: glyphs[key].bounds.minY,
-      maxY: glyphs[key].bounds.maxY,
-      advance: glyphs[key].advance
-    };
-  }
+    // the URL containing the texture
+    dataURL = canvas.toDataURL();
+  })();
 
   // renderer-local access
   var localTexture = new LocalTexture( function() {
-    var texture = THREE.ImageUtils.loadTexture( canvas.toDataURL() );
-    texture.minFilter = THREE.LinearMipMapLinearFilter;
+    var texture = THREE.ImageUtils.loadTexture( dataURL );
+    texture.minFilter = THREE.LinearMipMapLinearFilter; // ensure we have the best-quality mip-mapping
     return texture;
   } );
 
-  var periodCompensationFactor = 0.7;
   var shortXOffset = glyphs['0'].advance;
-  var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance * periodCompensationFactor + glyphs['°'].advance * periodCompensationFactor;
+  var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance + glyphs['°'].advance;
   var longWidth = glyphs['0'].advance + shortWidth;
 
   function LabelWebGLView( renderer ) {
@@ -133,7 +130,7 @@ define( function( require ) {
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['.'].advance * periodCompensationFactor;
+    x += glyphs['.'].advance;
 
     // glyph 4
     geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
@@ -147,7 +144,7 @@ define( function( require ) {
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
     geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-    x += glyphs['°'].advance * periodCompensationFactor;
+    x += glyphs['°'].advance;
 
     this.uvs = [
       new THREE.Vector3(),
@@ -291,11 +288,11 @@ define( function( require ) {
     setGlyph: function( index, string ) {
       var offset = index * 4;
 
-      var glyph = exports[string];
-      var minU = glyph.minX;
-      var maxU = glyph.maxX;
-      var minV = 1 - glyph.maxY;
-      var maxV = 1 - glyph.minY;
+      var glyph = glyphs[string];
+      var minU = glyph.bounds.minX;
+      var maxU = glyph.bounds.maxX;
+      var minV = 1 - glyph.bounds.maxY;
+      var maxV = 1 - glyph.bounds.minY;
 
       this.uvs[offset].x = minU;
       this.uvs[offset].y = maxV;
