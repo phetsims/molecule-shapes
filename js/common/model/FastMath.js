@@ -440,10 +440,8 @@ define( function( require ) {
         sin = rsqr * targetValue;
       }
 
-      this.setGivens3( scratchGivens, cos, sin, col, row );
-      // TODO: use the Givens mutation methods, as they will be more efficient?
-      this.mult3( scratchGivens, r, r );
-      this.mult3RightTranspose( q, scratchGivens, q );
+      this.preMult3Givens( r, cos, sin, col, row )
+      this.postMult3Givens( q, cos, sin, col, row )
     },
 
     /*
