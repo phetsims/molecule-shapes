@@ -254,8 +254,15 @@ define( function( require ) {
 
     getLocalVSEPRShape: function( atom ) {
       var groups = LocalShape.sortedLonePairsFirst( this.getNeighbors( atom ) );
-      // TODO: optimized function for counting?
-      var numLonePairs = _.filter( groups, function( group ) { return group.isLonePair; } ).length;
+
+      // count lone pairs
+      var numLonePairs = 0;
+      for ( var i = 0; i < groups.length; i++ ) {
+        if ( groups[i].isLonePair ) {
+          numLonePairs++;
+        }
+      }
+
       var numAtoms = groups.length - numLonePairs;
       return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VseprConfiguration.getConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
     },
