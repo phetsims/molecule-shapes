@@ -37,11 +37,6 @@ define( function( require ) {
       assert && assert( this.contains( atom ) );
 
       return this.a === atom ? this.b : this.a;
-    },
-
-    equals: function( bond ) {
-      // TODO: consider checking bond order? or is this not important?
-      return this.a === bond.a && this.b === bond.b;
     }
   } );
 } );
