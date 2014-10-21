@@ -23,10 +23,7 @@ define( function( require ) {
   var glyphs = {};
   var numGlyphs = 0;
 
-  var minX = Number.POSITIVE_INFINITY;
-  var maxX = Number.NEGATIVE_INFINITY;
-  var minY = Number.POSITIVE_INFINITY;
-  var maxY = Number.NEGATIVE_INFINITY;
+  var maxBounds = Bounds2.NOTHING.copy();
 
   var glyphScale = 130 / 1;
 
@@ -41,10 +38,7 @@ define( function( require ) {
 
     var shape = new Shape( entry.path ).transformed( scaleMatrix )  ;
 
-    minX = Math.min( minX, shape.bounds.minX );
-    maxX = Math.max( maxX, shape.bounds.maxX );
-    minY = Math.min( minY, shape.bounds.minY );
-    maxY = Math.max( maxY, shape.bounds.maxY );
+    maxBounds.includeBounds( shape.bounds );
 
     glyphs[key] = {
       advance: entry.x_advance * glyphScale,
@@ -52,8 +46,8 @@ define( function( require ) {
     };
   }
 
-  var maxWidth = maxX - minX;
-  var maxHeight = maxY - minY;
+  var maxWidth = maxBounds.width;
+  var maxHeight = maxBounds.height;
 
   var canvas = document.createElement( 'canvas' );
   var context = canvas.getContext( '2d' );
@@ -64,22 +58,17 @@ define( function( require ) {
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
 
-  // context.fillStyle = 'red';
-  // context.fillRect( 0, 0, canvasWidth, canvasHeight );
-
   var exports = {};
 
   var n = 0;
   for ( key in LiberationSansRegularSubset ) {
-    var xOffset = ( n + 1 ) * padding + n * maxWidth - minX;
-    var yOffset = padding + maxHeight - maxY;
+    var xOffset = ( n + 1 ) * padding + n * maxWidth - maxBounds.minX;
+    var yOffset = padding + maxHeight - maxBounds.maxY;
     context.setTransform( 1, 0, 0, 1, xOffset, yOffset );
-    glyphs[key].bounds = new Bounds2( ( xOffset + minX ) / canvasWidth,
-                                      ( yOffset + minY ) / canvasHeight,
-                                      ( xOffset + maxX ) / canvasWidth,
-                                      ( yOffset + maxY ) / canvasHeight );
-    // context.strokeStyle = 'red';
-    // context.strokeRect( minX, minY, maxWidth, maxHeight );
+    glyphs[key].bounds = new Bounds2( ( xOffset + maxBounds.minX ) / canvasWidth,
+                                      ( yOffset + maxBounds.minY ) / canvasHeight,
+                                      ( xOffset + maxBounds.maxX ) / canvasWidth,
+                                      ( yOffset + maxBounds.maxY ) / canvasHeight );
     context.fillStyle = 'white';
     context.beginPath();
     glyphs[key].shape.writeToContext( context );
