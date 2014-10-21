@@ -121,21 +121,15 @@ define( function( require ) {
 
       var parentAtom = this.molecule.getParent( group );
       var centralAtom = this.molecule.centralAtom;
+      var view;
       if ( group.isLonePair ) {
-
-        var lonePairView = new LonePairView( group, this.renderer );
-        this.lonePairViews.push( lonePairView );
-        this.add( lonePairView );
-
-        // TODO: remove code duplication with below
-        if ( parentAtom === centralAtom ) {
-          this.radialViews.push( lonePairView );
-        }
+        view = new LonePairView( group, this.renderer );
+        this.lonePairViews.push( view );
 
         var visibilityProperty = parentAtom === centralAtom ?
                                  this.model.showLonePairsProperty :
                                  MoleculeShapesGlobals.showOuterLonePairsProperty;
-        visibilityProperty.linkAttribute( lonePairView, 'visible' );
+        visibilityProperty.linkAttribute( view, 'visible' );
 
         group.link( 'position', function( position ) {
           var offsetFromParentAtom = position.minus( parentAtom.position );
@@ -149,35 +143,35 @@ define( function( require ) {
             translation = parentAtom.position;
           }
 
-          lonePairView.position.set( translation.x, translation.y, translation.z );
-          lonePairView.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
+          view.position.set( translation.x, translation.y, translation.z );
+          view.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
                                                       new THREE.Vector3( orientation.x, orientation.y, orientation.z ) );
         } );
       } else {
-        var atomView = new AtomView( group, this.renderer, group.element ?
-                                                           AtomView.getElementLocalMaterial( group.element ) :
-                                                           AtomView.atomLocalMaterial );
-        this.atomViews.push( atomView );
-        this.add( atomView );
-
-        if ( parentAtom === centralAtom ) {
-          this.radialViews.push( atomView );
-        }
+        view = new AtomView( group, this.renderer, group.element ?
+                                                   AtomView.getElementLocalMaterial( group.element ) :
+                                                   AtomView.atomLocalMaterial );
+        this.atomViews.push( view );
 
         group.link( 'position', function( position ) {
-          atomView.position.set( position.x, position.y, position.z );
+          view.position.set( position.x, position.y, position.z );
         } );
 
         for ( var i = 0; i < this.atomViews.length; i++ ) {
           var otherView = this.atomViews[i];
-          if ( otherView !== atomView ) {
+          if ( otherView !== view ) {
             var bondAngleView = MoleculeShapesGlobals.useWebGL ?
-                                new BondAngleWebGLView( this.screenView, this.renderer, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.screenView.checkOutLabel() ) :
-                                new BondAngleFallbackView( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, atomView.group, this.screenView.checkOutLabel() );
+                                new BondAngleWebGLView( this.screenView, this.renderer, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() ) :
+                                new BondAngleFallbackView( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );
             this.add( bondAngleView );
             this.angleViews.push( bondAngleView );
           }
         }
+      }
+
+      this.add( view );
+      if ( parentAtom === centralAtom ) {
+        this.radialViews.push( view );
       }
     },
 
