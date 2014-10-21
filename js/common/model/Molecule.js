@@ -95,6 +95,17 @@ define( function( require ) {
       return _.map( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ); } );
     },
 
+    // like getNeighbors( group ).length, but more efficient
+    getNeighborCount: function( group ) {
+      var count = 0;
+      for ( var i = 0; i < this.bonds.length; i++ ) {
+        if ( this.bonds[i].contains( group ) ) {
+          count++;
+        }
+      }
+      return count;
+    },
+
     getCentralVseprConfiguration: function() {
       return VseprConfiguration.getConfiguration( this.radialAtoms.length, this.radialLonePairs.length );
     },
