@@ -22,6 +22,15 @@ define( function( require ) {
   }
 
   return inherit( Text, LabelFallbackNode, {
+    /*
+     * Displays and positions the label, and sets its text.
+     *
+     * @param {string} string
+     * @param {number} brightness - In range [0,1]
+     * @param {Vector2} centerScreenPoint - The center of the central atom in screen coordinates
+     * @param {Vector2} midScreenPoint - The midpoint of the bond-angle arc in screen coordinates
+     * @param {number} layoutScale - The ScreenView's layout scale
+     */
     setLabel: function( string, brightness, centerScreenPoint, midScreenPoint, layoutScale ) {
       this.text = string;
       this.visible = true;
@@ -33,6 +42,9 @@ define( function( require ) {
       this.fill = MoleculeShapesColors.bondAngleReadout.withAlpha( brightness );
     },
 
+    /*
+     * Makes the label invisible
+     */
     unsetLabel: function() {
       this.visible = false;
     }

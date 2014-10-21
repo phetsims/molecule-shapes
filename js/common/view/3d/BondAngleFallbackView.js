@@ -95,6 +95,7 @@ define( function( require ) {
   }
 
   return inherit( BondAngleView, BondAngleFallbackView, {
+    // @override
     dispose: function() {
       BondAngleView.prototype.dispose.call( this );
 
@@ -107,6 +108,7 @@ define( function( require ) {
       this.unlinkArcColor();
     },
 
+    // @override
     updateView: function( lastMidpoint, localCameraOrientation ) {
       BondAngleView.prototype.updateView.call( this, lastMidpoint, localCameraOrientation );
 

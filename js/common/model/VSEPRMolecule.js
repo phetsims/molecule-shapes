@@ -24,6 +24,7 @@ define( function( require ) {
   }
 
   return inherit( Molecule, VSEPRMolecule, {
+    // @override
     update: function( dt ) {
       Molecule.prototype.update.call( this, dt );
 

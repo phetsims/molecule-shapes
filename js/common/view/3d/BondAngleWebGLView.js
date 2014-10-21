@@ -139,7 +139,7 @@ define( function( require ) {
    * @param {Molecule} molecule
    * @param {PairGroup} aGroup
    * @param {PairGroup} bGroup
-   * @param {LabelWebGLView | LabelFallbackNode} bGroup
+   * @param {LabelWebGLView | LabelFallbackNode} label
    */
   function BondAngleWebGLView( screenView, renderer, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
@@ -193,6 +193,7 @@ define( function( require ) {
   }
 
   return inherit( BondAngleView, BondAngleWebGLView, {
+    // @override
     dispose: function() {
       BondAngleView.prototype.dispose.call( this );
 
@@ -204,6 +205,7 @@ define( function( require ) {
       MoleculeShapesColors.bondAngleArcProperty.unlink( this.arcColorListener );
     },
 
+    // @override
     updateView: function( lastMidpoint, localCameraOrientation ) {
       BondAngleView.prototype.updateView.call( this, lastMidpoint, localCameraOrientation );
 

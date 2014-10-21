@@ -52,6 +52,7 @@ define( function( require ) {
       this.molecule.addGroupAndBond( new PairGroup( new Vector3( 2, 8, -5 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
     },
 
+    // @override
     reset: function() {
       MoleculeShapesModel.prototype.reset.call( this );
 
@@ -59,6 +60,7 @@ define( function( require ) {
       this.setupInitialMoleculeState();
     },
 
+    // @override
     step: function( dt ) {
       MoleculeShapesModel.prototype.step.call( this, dt );
     }

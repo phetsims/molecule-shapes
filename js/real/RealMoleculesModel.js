@@ -32,10 +32,12 @@ define( function( require ) {
 
   return inherit( MoleculeShapesModel, RealMoleculesModel, {
 
+    // @override
     reset: function() {
       MoleculeShapesModel.prototype.reset.call( this );
     },
 
+    // @override
     step: function( dt ) {
       MoleculeShapesModel.prototype.step.call( this, dt );
     }

@@ -32,7 +32,7 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, MoleculeShapesModel, {
-
+    // @override
     reset: function() {
       PropertySet.prototype.reset.call( this );
     },

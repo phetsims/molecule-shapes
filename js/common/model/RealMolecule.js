@@ -79,6 +79,7 @@ define( function( require ) {
   }
 
   return inherit( Molecule, RealMolecule, {
+    // @override
     update: function( dt ) {
       Molecule.prototype.update.call( this, dt );
 

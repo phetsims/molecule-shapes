@@ -26,9 +26,8 @@ define( function( require ) {
   var LabelFallbackNode = require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' );
 
   /**
-   * Constructor for the MoleculeShapesScreenView
-   * @param {ModelMoleculesModel} model the model for the entire screen
    * @constructor
+   * @param {ModelMoleculesModel} model the model for the entire screen
    */
   function MoleculeShapesScreenView( model ) {
     ScreenView.call( this, {
@@ -40,16 +39,18 @@ define( function( require ) {
 
     this.model = model;
 
+    // our target for drags that don't hit other UI components
     this.backgroundEventTarget = Rectangle.bounds( this.layoutBounds, {} );
     this.addChild( this.backgroundEventTarget );
 
-    this.activeScale = 1; // updated in layout
-
+    // updated in layout
+    this.activeScale = 1;
     this.screenWidth = null;
     this.screenHeight = null;
 
+    // main three.js Scene setup
     this.threeScene = new THREE.Scene();
-    this.threeCamera = new THREE.PerspectiveCamera();
+    this.threeCamera = new THREE.PerspectiveCamera(); // will set the projection parameters on layout
 
     this.threeRenderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
       antialias: true
@@ -63,11 +64,12 @@ define( function( require ) {
 
     MoleculeShapesScreenView.addLightsToScene( this.threeScene );
 
-    this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition );
+    this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition ); // sets the camera's position
 
+    // add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
     this.domNode = new DOM( this.threeRenderer.domElement, {
       preventTransform: true, // Scenery 0.2 override for transformation
-      invalidateDOM: function() {
+      invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
         this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
       },
       pickable: false
@@ -78,11 +80,10 @@ define( function( require ) {
 
     this.addChild( this.domNode );
 
-
+    // overlay Scene for bond-angle labels (if WebGL)
     this.overlayScene = new THREE.Scene();
     this.overlayCamera = new THREE.OrthographicCamera();
     this.overlayCamera.position.z = 50;
-
 
     this.addChild( new ResetAllButton( {
       right: this.layoutBounds.maxX - 10,
@@ -98,7 +99,7 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10
     } ) );
 
-    // for computing rays
+    // for computing rays, don't want to have to recreate it
     this.projector = new THREE.Projector();
 
     // we only want to support dragging particles OR rotating the molecule (not both) at the same time
@@ -122,12 +123,14 @@ define( function( require ) {
 
         var pair = screenView.getElectronPairUnderPointer( event.pointer, !event.pointer.isMouse );
         if ( pair && !pair.userControlled ) {
+          // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
           dragMode = 'pairExistingSpherical';
           draggedParticle = pair;
           pair.userControlled = true;
           draggedParticleCount++;
         } else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
-          dragMode = 'modelRotate'; // modelRotate, pairFreshPlanar, pairExistingSpherical
+          // we rotate the entire molecule with this pointer
+          dragMode = 'modelRotate';
           isRotating = true;
         } else {
           // can't drag the pair OR rotate the molecule
@@ -138,14 +141,12 @@ define( function( require ) {
 
         event.pointer.cursor = 'pointer';
         event.pointer.addInputListener( {
+          // end drag on either up or cancel (not supporting full cancel behavior)
           up: function( event, trail ) {
             this.endDrag( event, trail );
-            event.pointer.cursor = null;
           },
-
           cancel: function( event, trail ) {
             this.endDrag( event, trail );
-            event.pointer.cursor = null;
           },
 
           move: function( event, trail ) {
@@ -153,7 +154,7 @@ define( function( require ) {
               var delta = event.pointer.point.minus( lastGlobalPoint );
               lastGlobalPoint.set( event.pointer.point );
 
-              var scale = 0.007 / screenView.activeScale;
+              var scale = 0.007 / screenView.activeScale; // tuned constant for acceptable drag motion
               var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
               newQuaternion.multiply( model.moleculeQuaternion );
               model.moleculeQuaternion = newQuaternion;
@@ -171,13 +172,15 @@ define( function( require ) {
               isRotating = false;
             }
             event.pointer.removeInputListener( this );
+            event.pointer.cursor = null;
           }
         } );
       }
     };
     this.backgroundEventTarget.addInputListener( multiDragListener );
 
-    // TODO: update the cursor even if we don't move? (only if we have mouse movement)
+    // Consider updating the cursor even if we don't move? (only if we have mouse movement)? Current development
+    // decision is to ignore this edge case in favor of performance.
     this.backgroundEventTarget.addInputListener( {
       mousemove: function( event, trail ) {
         screenView.backgroundEventTarget.cursor = screenView.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
@@ -194,6 +197,7 @@ define( function( require ) {
       }
     } );
 
+    // create a pool of angle labels of the desired type
     this.angleLabels = [];
     for ( var i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGL ) {
@@ -208,12 +212,14 @@ define( function( require ) {
   }
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
+    // Removes a bond-angle label from the pool to be controlled
     checkOutLabel: function() {
       var label = this.angleLabels.pop();
       assert && assert( label );
       return label;
     },
 
+    // Returns a bond-angle label to the pool
     returnLabel: function( label ) {
       assert && assert( !_.contains( this.angleLabels, label ) );
       this.angleLabels.push( label );
@@ -232,6 +238,10 @@ define( function( require ) {
       this.threeScene.remove( moleculeView );
     },
 
+    /*
+     * @param {Vector3} screenPoint
+     * @returns {THREE.Raycaster}
+     */
     getRaycasterFromScreenPoint: function( screenPoint ) {
       // normalized device coordinates
       var ndcX = 2 * screenPoint.x / this.screenWidth - 1;
@@ -241,19 +251,31 @@ define( function( require ) {
       return this.projector.pickingRay( mousePoint, this.threeCamera );
     },
 
-    // @param {THREE.Vector3} globalPoint
+    /*
+     * @param {THREE.Vector3} globalPoint
+     * @returns {THREE.Vector3}
+     */
     convertScreenPointFromGlobalPoint: function( globalPoint ) {
       var point = globalPoint.clone();
       this.projector.projectVector( globalPoint, this.threeCamera );
       return point;
     },
 
+    /*
+     * @param {Vector3} screenPoint
+     * @returns {Ray3}
+     */
     getRayFromScreenPoint: function( screenPoint ) {
       var threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
       return new Ray3( new Vector3().set( threeRay.origin ),
                        new Vector3().set( threeRay.direction ).normalize() );
     },
 
+    /*
+     * @param {Pointer} pointer
+     * @param {boolean} isTouch - Whether we should use touch regions
+     * @returns {PairGroup | null} - The closest pair group, or null
+     */
     getElectronPairUnderPointer: function( pointer, isTouch ) {
       var raycaster = this.getRaycasterFromScreenPoint( pointer.point );
       var worldRay = raycaster.ray;
@@ -293,17 +315,22 @@ define( function( require ) {
       return position;
     },
 
-    // @returns {Vector3}
+    /*
+     * Returns the closest molecule model-space point on the sphere whose radius is the bond's radius
+     *
+     * @param {Vector3} screenPoint
+     * @param {PairGroup} draggedParticle
+     * @returns {Vector3}
+     */
     getSphericalMoleculePosition: function( screenPoint, draggedParticle ) {
       // our main transform matrix and inverse
       var threeMatrix = this.moleculeView.matrix.clone();
       var threeInverseMatrix = new THREE.Matrix4();
-      // threeMatrix.makeRotationFromQuaternion( this.moleculeView.quaternion );
       threeInverseMatrix.getInverse( threeMatrix );
 
-      var raycaster = this.getRaycasterFromScreenPoint( screenPoint );
+      var raycaster = this.getRaycasterFromScreenPoint( screenPoint ); // {THREE.Raycaster}
 
-      var ray = raycaster.ray.clone();
+      var ray = raycaster.ray.clone(); // {THREE.Ray}
       ray.applyMatrix4( threeInverseMatrix ); // global to local
 
       var localCameraPosition = new Vector3().set( ray.origin );
@@ -313,7 +340,6 @@ define( function( require ) {
       var finalDistance = this.model.molecule.getIdealDistanceFromCenter( draggedParticle );
 
       // our sphere to cast our ray against
-
       var sphere = new Sphere3( new Vector3(), finalDistance );
 
       var epsilon = 0.000001;
@@ -362,6 +388,7 @@ define( function( require ) {
       }
     },
 
+    // @override
     layout: function( width, height ) {
       ScreenView.prototype.layout.call( this, width, height );
 
@@ -413,15 +440,10 @@ define( function( require ) {
     step: function( dt ) {
       this.moleculeView.updateView();
 
-      // var rnd = Math.random().toString();
-      // this.labelView.setGlyph( 0, rnd[3] );
-      // this.labelView.setGlyph( 1, rnd[4] );
-      // this.labelView.setGlyph( 2, rnd[5] );
-      // this.labelView.setGlyph( 4, rnd[6] );
-
-      // render the 3D scene
+      // render the 3D scene first
       this.threeRenderer.render( this.threeScene, this.threeCamera );
       this.threeRenderer.autoClear = false;
+      // then render the 2D overlay on top, without clearing the Canvas in-between
       this.threeRenderer.render( this.overlayScene, this.overlayCamera );
       this.threeRenderer.autoClear = true;
     }
