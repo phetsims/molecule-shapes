@@ -28,7 +28,15 @@ define( function( require ) {
     ambient: MoleculeShapesColors.bondProperty
   } );
 
-  // maxLength is a number or null
+  /*
+   * @constructor
+   * @param {THREE.Renderer} renderer
+   * @param {Bond} bond
+   * @param {Property.<Vector3>} aPositionProperty - position of one end of the bond
+   * @param {Property.<Vector3>} bPositionProperty - position of the other end of the bond
+   * @param {number} bondRadius - in display units
+   * @param {number | null} maxLength - in display units
+   */
   function BondView( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
     var view = this;
 

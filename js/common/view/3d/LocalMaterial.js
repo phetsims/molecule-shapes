@@ -12,6 +12,10 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
 
+  /*
+   * @constructor
+   * @param {THREE.Material} masterMaterial - The material to clone for each renderer
+   */
   function LocalMaterial( masterMaterial, options ) {
     var self = this;
 

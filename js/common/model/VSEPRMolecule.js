@@ -13,6 +13,10 @@ define( function( require ) {
   var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
 
+  /*
+   * @constructor
+   * @param {number} bondLengthOverride
+   */
   function VSEPRMolecule( bondLengthOverride ) {
     Molecule.call( this );
 
@@ -25,6 +29,7 @@ define( function( require ) {
 
       var radialGroups = this.radialGroups;
 
+      // coulomb-style repulsion around the central atom (or angle-based for terminal lone pairs)
       for ( var i = 0; i < this.atoms.length; i++ ) {
         var atom = this.atoms[i];
         if ( this.getNeighborCount( atom ) > 1 ) {

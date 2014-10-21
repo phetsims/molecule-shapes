@@ -11,7 +11,10 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
 
-  // @param {THREE.Geometry} masterGeometry - The geometry to clone for each renderer
+  /*
+   * @constructor
+   * @param {THREE.Geometry} masterGeometry - The geometry to clone for each renderer
+   */
   function LocalGeometry( masterGeometry ) {
     this.masterGeometry = masterGeometry;
 

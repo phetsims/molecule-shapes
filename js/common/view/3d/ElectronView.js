@@ -24,6 +24,10 @@ define( function( require ) {
     color: MoleculeShapesColors.lonePairElectronProperty
   } );
 
+  /*
+   * @constructor
+   * @param {THREE.Renderer} renderer
+   */
   function ElectronView( renderer ) {
     THREE.Mesh.call( this, localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
   }

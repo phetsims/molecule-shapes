@@ -152,6 +152,10 @@ define( function( require ) {
     }
   };
 
+  /*
+   * @constructor
+   * @param {THREE.Renderer} renderer
+   */
   function LabelWebGLView( renderer ) {
     var view = this;
 

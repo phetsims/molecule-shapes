@@ -131,6 +131,16 @@ define( function( require ) {
     }
   };
 
+  /*
+   * constructor
+   * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
+   * @param {THREE.Renderer} renderer
+   * @param {Property.<boolean>} showBondAnglesProperty
+   * @param {Molecule} molecule
+   * @param {PairGroup} aGroup
+   * @param {PairGroup} bGroup
+   * @param {LabelWebGLView | LabelFallbackNode} bGroup
+   */
   function BondAngleWebGLView( screenView, renderer, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
     BondAngleView.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );

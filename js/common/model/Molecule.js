@@ -60,9 +60,9 @@ define( function( require ) {
   }
 
   return inherit( Events, Molecule, {
-    // abstract getLocalShape( atom )
-    // abstract getMaximumBondLength() -- option
-    // abstract isReal()
+    // abstract {LocalShape} getLocalShape( atom )
+    // abstract {number | undefined} getMaximumBondLength()
+    // abstract {boolean} isReal
 
     update: function( dt ) {
       var numGroups = this.groups.length;

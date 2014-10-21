@@ -46,6 +46,15 @@ define( function( require ) {
 
   var numVertices = 24;
 
+  /*
+   * constructor
+   * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
+   * @param {Property.<boolean>} showBondAnglesProperty
+   * @param {Molecule} molecule
+   * @param {PairGroup} aGroup
+   * @param {PairGroup} bGroup
+   * @param {LabelWebGLView | LabelFallbackNode} bGroup
+   */
   function BondAngleFallbackView( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     BondAngleView.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
 
