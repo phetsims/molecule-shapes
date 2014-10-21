@@ -23,7 +23,6 @@ define( function( require ) {
   var Events = require( 'AXON/Events' );
   var Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var GeometryConfiguration = require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' );
   var VseprConfiguration = require( 'MOLECULE_SHAPES/common/model/VseprConfiguration' );
   var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
 
@@ -99,21 +98,6 @@ define( function( require ) {
     // all neighboring pair groups
     getNeighbors: function( group ) {
       return _.map( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ); } );
-    },
-
-    getNeighboringAtoms: function( group ) {
-      // TODO: deprecated?
-      return _.filter( this.radialGroups, function( group ) { return !group.isLonePair; } );
-    },
-
-    getLonePairNeighbors: function( group ) {
-      // TODO: check usages
-      return _.filter( this.radialGroups, function( group ) { return group.isLonePair; } );
-    },
-
-    getGeometryConfiguration: function( group ) {
-      // TODO: check usages
-      return GeometryConfiguration.getConfiguration( this.getStericNumber( group ) );
     },
 
     getCentralVseprConfiguration: function() {
@@ -258,7 +242,7 @@ define( function( require ) {
     },
 
     getDistantLonePairs: function() {
-      var closeLonePairs = this.getLonePairNeighbors( this.centralAtom );
+      var closeLonePairs = this.radialLonePairs;
       return _.filter( this.lonePairs, function( lonePair ) { return !_.contains( closeLonePairs, lonePair ); } );
     },
 
