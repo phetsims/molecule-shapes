@@ -80,7 +80,7 @@ define( function( require ) {
         return null;
       }
       var localPoint = hitResult.hitPoint;
-      return new THREE.Vector3( localPoint.x, localPoint.y, localPoint.z ).applyMatrix4( this.matrixWorld );
+      return new THREE.Vector3().copy( localPoint ).applyMatrix4( this.matrixWorld );
     }
   }, {
     // renderer-local access

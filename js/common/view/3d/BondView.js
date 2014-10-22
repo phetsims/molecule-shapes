@@ -124,7 +124,7 @@ define( function( require ) {
       // since we need to support two different colors (A-colored and B-colored), we need to compute the offsets from the bond center for each
       var colorOffset = towardsEnd.times( length / 4 );
       var threeZUnit = new THREE.Vector3( 0, 1, 0 );
-      var threeTowardsEnd = new THREE.Vector3( towardsEnd.x, towardsEnd.y, towardsEnd.z );
+      var threeTowardsEnd = new THREE.Vector3().copy( towardsEnd );
 
       for ( var i = 0; i < this.bondOrder; i++ ) {
         var aTranslation = bondCenter.plus( offsets[i] ).minus( colorOffset );

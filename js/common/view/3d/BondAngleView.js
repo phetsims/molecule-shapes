@@ -93,7 +93,7 @@ define( function( require ) {
       // label handling
       if ( this.viewOpacity !== 0 ) {
         var centerDevicePoint = new THREE.Vector3(); // e.g. zero
-        var midDevicePoint = new THREE.Vector3( this.midpoint.x, this.midpoint.y, this.midpoint.z );
+        var midDevicePoint = new THREE.Vector3().copy( this.midpoint );
 
         // transform to world coordinates
         this.parent.localToWorld( centerDevicePoint );

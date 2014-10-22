@@ -101,7 +101,7 @@ define( function( require ) {
 
       view.position.set( translation.x, translation.y, translation.z );
       view.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
-                                          new THREE.Vector3( orientation.x, orientation.y, orientation.z ) );
+                                          new THREE.Vector3().copy( orientation ) );
     };
   }
 
