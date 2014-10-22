@@ -1,0 +1,12 @@
+Implementation Notes for Molecule Shapes / Molecule Shapes: Basics
+
+Directory structure:
+
+Naming conventions:
+
+Terminology:
+
+Three.js compatibility:
+
+Coordinate frames:
+
