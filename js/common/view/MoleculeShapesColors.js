@@ -109,13 +109,18 @@ define( function( require ) {
     }
   };
 
+  // initial properties object, to load into the PropertySet (so reset works nicely)
   var initialProperties = {};
   for ( var key in colors ) {
     initialProperties[key] = colors[key].default;
   }
 
   var MoleculeShapesColors = extend( new PropertySet( initialProperties ), {
-    // @param {string} profileName - one of 'default', 'basics' or 'projector'
+    /*
+     * Applies all colors for the specific named color scheme, ignoring colors that aren't specified for it.
+     *
+     * @param {string} profileName - one of 'default', 'basics' or 'projector'
+     */
     applyProfile: function( profileName ) {
       assert && assert( profileName === 'default' || profileName === 'basics' || profileName === 'projector' );
 
@@ -128,6 +133,11 @@ define( function( require ) {
     }
   } );
 
+  /*---------------------------------------------------------------------------*
+  * Iframe communication
+  *----------------------------------------------------------------------------*/
+
+  // sends iframe communication to report the current color for the key name
   function reportColor( key ) {
     var hexColor = MoleculeShapesColors[key].toNumber().toString( 16 );
     while ( hexColor.length < 6 ) {
@@ -141,10 +151,12 @@ define( function( require ) {
     } ), '*' );
   }
 
+  // initial communication
   for ( var colorName in colors ) {
     reportColor( colorName );
   }
 
+  // receives iframe communication to set a color
   window.addEventListener( 'message', function( evt ) {
     var data = JSON.parse( evt.data );
     if ( data.type === 'setColor' ) {
