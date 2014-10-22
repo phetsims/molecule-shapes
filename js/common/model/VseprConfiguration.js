@@ -1,8 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs
- * bonds).
+ * A simple molecule configuration that doesn't discriminate between bond or atom types (only lone pairs vs bonds).
  *
  * Note that we use X and E for the radial atom and radial lone pair count (respectively) due to its usage in chemistry,
  * with the "AXE method" (see http://en.wikipedia.org/wiki/VSEPR_theory)

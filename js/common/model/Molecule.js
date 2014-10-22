@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Model of a single-atom-centered molecule which has a certain number of pair groups
+ * Base type of model of a single-atom-centered molecule which has a certain number of pair groups
  * surrounding it.
  *
  * Events:
