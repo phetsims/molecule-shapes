@@ -18,6 +18,7 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
+  var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
 
   var radialVertexCount = 24; // how many vertices to use along the view
 
@@ -132,22 +133,17 @@ define( function( require ) {
   };
 
   /*
-   * constructor
-   * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
+   * @constructor
    * @param {THREE.Renderer} renderer
-   * @param {Property.<boolean>} showBondAnglesProperty
-   * @param {Molecule} molecule
-   * @param {PairGroup} aGroup
-   * @param {PairGroup} bGroup
-   * @param {LabelWebGLView | LabelFallbackNode} label
    */
-  function BondAngleWebGLView( screenView, renderer, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+  function BondAngleWebGLView( renderer ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
-    BondAngleView.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
+    BondAngleView.call( this );
 
     var view = this;
 
     // @private
+    this.renderer = renderer;
     this.arcGeometry = localArcGeometry.get( renderer );
     this.sectorGeometry = localSectorGeometry.get( renderer );
 
@@ -193,16 +189,26 @@ define( function( require ) {
   }
 
   return inherit( BondAngleView, BondAngleWebGLView, {
+    /*
+     * @override
+     * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
+     * @param {Property.<boolean>} showBondAnglesProperty
+     * @param {Molecule} molecule
+     * @param {PairGroup} aGroup
+     * @param {PairGroup} bGroup
+     * @param {LabelWebGLView | LabelFallbackNode} label
+     */
+    initialize: function( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+      BondAngleView.prototype.initialize.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
+
+      return this;
+    },
+
     // @override
     dispose: function() {
       BondAngleView.prototype.dispose.call( this );
 
-      // since we need materials for each instance, we need to dispose properly
-      this.sectorMaterial.dispose();
-      this.arcMaterial.dispose();
-
-      MoleculeShapesColors.bondAngleSweepProperty.unlink( this.sweepColorListener );
-      MoleculeShapesColors.bondAngleArcProperty.unlink( this.arcColorListener );
+      BondAngleWebGLView.pool.put( this, this.renderer );
     },
 
     // @override
@@ -225,5 +231,9 @@ define( function( require ) {
       this.sectorMaterial.uniforms.planarUnit.value = planarUnitArray;
       this.arcMaterial.uniforms.planarUnit.value = planarUnitArray;
     }
+  }, {
+    pool: new LocalPool( 'BondAngleWebGLView', function( renderer ) {
+      return new BondAngleWebGLView( renderer );
+    } )
   } );
 } );

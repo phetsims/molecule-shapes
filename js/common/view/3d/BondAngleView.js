@@ -15,36 +15,40 @@ define( function( require ) {
 
   /*
    * @constructor
-   * @param {MoleculeShapesScreenView} screenView - We do various screen-space computations for positioning the labels
-   * @param {Property.<boolean>} showBondAnglesProperty
-   * @param {Molecule} molecule
-   * @param {PairGroup} aGroup - The atom on one end of the bond angle
-   * @param {PairGroup} bGroup - The atom on the other end of the bond angle
-   * @param {LabelWebGLView | LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
    */
-  function BondAngleView( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+  function BondAngleView() {
     THREE.Object3D.call( this );
-
-    // @public
-    this.aGroup = aGroup;
-    this.bGroup = bGroup;
-    this.label = label;
-    this.midpoint = null; // {Vector3} updated in updateView
-    this.radius = 5;
-
-    // @protected
-    this.screenView = screenView;
-    this.showBondAnglesProperty = showBondAnglesProperty;
-    this.molecule = molecule;
-
-    // @protected, updated in updateView super call
-    this.viewOpacity = 0; // {number}
-    this.viewAngle = 0; // {number}
-    this.midpointUnit = null; // {Vector3}
-    this.planarUnit = null; // {Vector3}
   }
 
   return inherit( THREE.Object3D, BondAngleView, {
+    /*
+     * @param {MoleculeShapesScreenView} screenView - We do various screen-space computations for positioning the labels
+     * @param {Property.<boolean>} showBondAnglesProperty
+     * @param {Molecule} molecule
+     * @param {PairGroup} aGroup - The atom on one end of the bond angle
+     * @param {PairGroup} bGroup - The atom on the other end of the bond angle
+     * @param {LabelWebGLView | LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
+     */
+    initialize: function( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+      // @public
+      this.aGroup = aGroup;
+      this.bGroup = bGroup;
+      this.label = label;
+      this.midpoint = null; // {Vector3} updated in updateView
+      this.radius = 5;
+
+      // @protected
+      this.screenView = screenView;
+      this.showBondAnglesProperty = showBondAnglesProperty;
+      this.molecule = molecule;
+
+      // @protected, updated in updateView super call
+      this.viewOpacity = 0; // {number}
+      this.viewAngle = 0; // {number}
+      this.midpointUnit = null; // {Vector3}
+      this.planarUnit = null; // {Vector3}
+    },
+
     dispose: function() {
 
     },

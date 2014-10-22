@@ -173,7 +173,7 @@ define( function( require ) {
       return null;
     }
   }, {
-    pool: new LocalPool( function( renderer ) {
+    pool: new LocalPool( 'LonePairView', function( renderer ) {
       return new LonePairView( renderer );
     } )
   } );

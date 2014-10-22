@@ -75,7 +75,8 @@ define( function( require ) {
     } );
 
     // TODO: ugly stub!
-    var view = new MoleculeView( model, {}, molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
+    var screenViewStub = { threeRenderer: {} };
+    var view = new MoleculeView( model, screenViewStub, molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
     view.updateView();
     view.centerAtomView.visible = false; // TODO: remove this extra outside knowledge
 

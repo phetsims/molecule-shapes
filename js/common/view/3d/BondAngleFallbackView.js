@@ -14,6 +14,7 @@ define( function( require ) {
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
+  var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
 
   function createArcGeometry( vertices ) {
     var geometry = new THREE.Geometry();
@@ -48,15 +49,11 @@ define( function( require ) {
 
   /*
    * constructor
-   * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
-   * @param {Property.<boolean>} showBondAnglesProperty
-   * @param {Molecule} molecule
-   * @param {PairGroup} aGroup
-   * @param {PairGroup} bGroup
-   * @param {LabelWebGLView | LabelFallbackNode} bGroup
    */
-  function BondAngleFallbackView( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
-    BondAngleView.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
+  function BondAngleFallbackView( renderer ) {
+    BondAngleView.call( this );
+
+    this.renderer = renderer;
 
     // shared vertex array between both geometries
     this.arcVertices = [];
@@ -95,17 +92,26 @@ define( function( require ) {
   }
 
   return inherit( BondAngleView, BondAngleFallbackView, {
+    /*
+     * @override
+     * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
+     * @param {Property.<boolean>} showBondAnglesProperty
+     * @param {Molecule} molecule
+     * @param {PairGroup} aGroup
+     * @param {PairGroup} bGroup
+     * @param {LabelWebGLView | LabelFallbackNode} label
+     */
+    initialize: function( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+      BondAngleView.prototype.initialize.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
+
+      return this;
+    },
+
     // @override
     dispose: function() {
       BondAngleView.prototype.dispose.call( this );
 
-      this.arcGeometry.dispose();
-      this.sectorGeometry.dispose();
-      this.arcMaterial.dispose();
-      this.sectorMaterial.dispose();
-
-      this.unlinkSectorColor();
-      this.unlinkArcColor();
+      BondAngleFallbackView.pool.put( this, this.renderer );
     },
 
     // @override
@@ -135,5 +141,9 @@ define( function( require ) {
       this.arcGeometry.verticesNeedUpdate = true;
       this.sectorGeometry.verticesNeedUpdate = true;
     }
+  }, {
+    pool: new LocalPool( 'BondAngleFallbackView', function( renderer ) {
+      return new BondAngleFallbackView( renderer );
+    } )
   } );
 } );

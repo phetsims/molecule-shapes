@@ -140,9 +140,10 @@ define( function( require ) {
         for ( var i = 0; i < this.atomViews.length; i++ ) {
           var otherView = this.atomViews[i];
           if ( otherView !== view ) {
+            // TODO: refactor to cleanup, since the initialize() call is the same
             var bondAngleView = MoleculeShapesGlobals.useWebGL ?
-                                new BondAngleWebGLView( this.screenView, this.renderer, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() ) :
-                                new BondAngleFallbackView( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );
+                                BondAngleWebGLView.pool.get( this.renderer ).initialize( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() ) :
+                                BondAngleFallbackView.pool.get( this.renderer ).initialize( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );
             this.add( bondAngleView );
             this.angleViews.push( bondAngleView );
           }
