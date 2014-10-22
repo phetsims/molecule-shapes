@@ -23,7 +23,7 @@ define( function( require ) {
     RealAtomLocation: require( 'MOLECULE_SHAPES/common/model/RealAtomLocation' ),
     RealMolecule: require( 'MOLECULE_SHAPES/common/model/RealMolecule' ),
     RealMoleculeShape: require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' ),
-    VseprConfiguration: require( 'MOLECULE_SHAPES/common/model/VseprConfiguration' ),
+    VSEPRConfiguration: require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' ),
     VSEPRMolecule: require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' ),
 
     AtomView: require( 'MOLECULE_SHAPES/common/view/3d/AtomView' ),

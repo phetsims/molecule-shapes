@@ -172,7 +172,7 @@ define( function( require ) {
     },
 
     getMolecularGeometryName: function() {
-      var name = this.model.molecule.getCentralVseprConfiguration().name;
+      var name = this.model.molecule.getCentralVSEPRConfiguration().name;
       if ( name === null ) {
         return shapeEmptyString;
       } else {
@@ -181,7 +181,7 @@ define( function( require ) {
     },
 
     getElectronGeometryName: function() {
-      var name = this.model.molecule.getCentralVseprConfiguration().geometry.name;
+      var name = this.model.molecule.getCentralVSEPRConfiguration().geometry.name;
       if ( name === null ) {
         return geometryEmptyString;
       } else {

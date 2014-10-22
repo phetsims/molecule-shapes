@@ -23,7 +23,7 @@ define( function( require ) {
   var Events = require( 'AXON/Events' );
   var Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var VseprConfiguration = require( 'MOLECULE_SHAPES/common/model/VseprConfiguration' );
+  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
   var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
 
   var MAX_PAIRS = 6;
@@ -106,8 +106,8 @@ define( function( require ) {
       return count;
     },
 
-    getCentralVseprConfiguration: function() {
-      return VseprConfiguration.getConfiguration( this.radialAtoms.length, this.radialLonePairs.length );
+    getCentralVSEPRConfiguration: function() {
+      return VSEPRConfiguration.getConfiguration( this.radialAtoms.length, this.radialLonePairs.length );
     },
 
     // get the bond to the more central "parent", or undefined
@@ -236,7 +236,7 @@ define( function( require ) {
     },
 
     getCorrespondingIdealGeometryVectors: function() {
-      return this.getCentralVseprConfiguration().geometry.unitVectors;
+      return this.getCentralVSEPRConfiguration().geometry.unitVectors;
     },
 
     /**
@@ -264,7 +264,7 @@ define( function( require ) {
       }
 
       var numAtoms = groups.length - numLonePairs;
-      return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VseprConfiguration.getConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
+      return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VSEPRConfiguration.getConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
     },
 
     getIdealDistanceFromCenter: function( group ) {
@@ -276,7 +276,7 @@ define( function( require ) {
     },
 
     addTerminalLonePairs: function( atom, quantity ) {
-      var pairConfig = VseprConfiguration.getConfiguration( 1, quantity );
+      var pairConfig = VSEPRConfiguration.getConfiguration( 1, quantity );
       var lonePairOrientations = pairConfig.geometry.unitVectors;
 
       // we want to rotate the ideal configuration of lone pairs to the atom's orientation

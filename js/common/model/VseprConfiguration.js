@@ -38,11 +38,11 @@ define( function( require ) {
    * @param {number} x - Number of radial atoms connected to the central atom
    * @param {number} e - Number of radial lone pairs connected to the central atom
    */
-  function VseprConfiguration( x, e ) {
+  function VSEPRConfiguration( x, e ) {
     // @public
     this.x = x;
     this.e = e;
-    this.name = VseprConfiguration.getName( x, e );
+    this.name = VSEPRConfiguration.getName( x, e );
 
     // @public
     this.geometry = GeometryConfiguration.getConfiguration( x + e ); // undefined?
@@ -61,7 +61,7 @@ define( function( require ) {
     }
   }
 
-  return inherit( Object, VseprConfiguration, {
+  return inherit( Object, VSEPRConfiguration, {
     // for finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'
     getIdealGroupRotationToPositions: function( groups ) {
       assert && assert( ( this.x + this.e ) === groups.length );
@@ -161,19 +161,19 @@ define( function( require ) {
     },
 
     // @private
-    configurationMap: {}, // x+','+e => {VseprConfiguration}
+    configurationMap: {}, // x+','+e => {VSEPRConfiguration}
 
     /*
      * @param {number} x - Number of radial atoms connected to the central atom
      * @param {number} e - Number of radial lone pairs connected to the central atom
-     * @returns {VseprConfiguration} - Cached configuration
+     * @returns {VSEPRConfiguration} - Cached configuration
      */
     getConfiguration: function( x, e ) {
       var key = x + ',' + e;
       if ( key in this.configurationMap ) {
         return this.configurationMap[key];
       } else {
-        var configuration = new VseprConfiguration( x, e );
+        var configuration = new VSEPRConfiguration( x, e );
         this.configurationMap[key] = configuration;
         return configuration;
       }

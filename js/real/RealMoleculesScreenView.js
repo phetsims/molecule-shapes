@@ -19,7 +19,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var SubSupText = require( 'SCENERY_PHET/SubSupText' );
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
-  var VseprConfiguration = require( 'MOLECULE_SHAPES/common/model/VseprConfiguration' );
+  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
   var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
   var RealMolecule = require( 'MOLECULE_SHAPES/common/model/RealMolecule' );
   var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
@@ -132,7 +132,7 @@ define( function( require ) {
 
       var numRadialAtoms = model.realMoleculeShape.centralAtomCount;
       var numRadialLonePairs = model.realMoleculeShape.centralAtom.lonePairCount;
-      var vseprConfiguration = VseprConfiguration.getConfiguration( numRadialAtoms, numRadialLonePairs );
+      var vseprConfiguration = VSEPRConfiguration.getConfiguration( numRadialAtoms, numRadialLonePairs );
 
       // get a copy of what might be the "old" molecule into whose space we need to rotate into
       var mappingMolecule;

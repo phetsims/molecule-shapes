@@ -13,7 +13,7 @@ define( function( require ) {
   var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
   var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var VseprConfiguration = require( 'MOLECULE_SHAPES/common/model/VseprConfiguration' );
+  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
 
   /*
    * @constructor
@@ -55,7 +55,7 @@ define( function( require ) {
     }
 
     // all of the ideal vectors (including for lone pairs)
-    var vseprConfiguration = VseprConfiguration.getConfiguration( numBonds, numLonePairs );
+    var vseprConfiguration = VSEPRConfiguration.getConfiguration( numBonds, numLonePairs );
     var idealModelVectors = vseprConfiguration.allOrientations;
 
     var mapping = vseprConfiguration.getIdealBondRotationToPositions( LocalShape.sortedLonePairsFirst( this.radialAtoms ) );
