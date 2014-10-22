@@ -10,11 +10,13 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var LonePairGeometryData = require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' );
+  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var ElectronView = require( 'MOLECULE_SHAPES/common/view/3d/ElectronView' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
+  var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
 
   var jsonLoader = new THREE.JSONLoader();
 
@@ -39,13 +41,14 @@ define( function( require ) {
 
   /*
    * @constructor
-   * @param {PairGroup} group
    * @param {THREE.Renderer} renderer
    */
-  function LonePairView( group, renderer ) {
+  function LonePairView( renderer ) {
+    var view = this;
+
     THREE.Object3D.call( this );
 
-    this.group = group;
+    this.renderer = renderer;
     this.shellGeometry = localShellGeometry.get( renderer );
     this.shellMaterial = localShellMaterial.get( renderer );
 
@@ -82,12 +85,56 @@ define( function( require ) {
       touchShell.renderDepth = 11;
       this.add( touchShell );
     }
+
+    // per-instance listener, so it's easier to link and unlink
+    this.positionListener = function( position ) {
+      var offsetFromParentAtom = position.minus( view.parentAtom.position );
+      var orientation = offsetFromParentAtom.normalized();
+
+      var translation;
+      if ( offsetFromParentAtom.magnitude() > PairGroup.LONE_PAIR_DISTANCE ) {
+        translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
+      }
+      else {
+        translation = view.parentAtom.position;
+      }
+
+      view.position.set( translation.x, translation.y, translation.z );
+      view.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
+                                          new THREE.Vector3( orientation.x, orientation.y, orientation.z ) );
+    };
   }
 
   return inherit( THREE.Object3D, LonePairView, {
+    /*
+     * @param {PairGroup} group
+     * @param {PairGroup} parentAtom
+     * @param {Property.<boolean>} visibilityProperty
+     */
+    initialize: function( group, parentAtom, visibilityProperty ) {
+      this.group = group;
+      this.parentAtom = parentAtom;
+      this.visibilityProperty = visibilityProperty;
+      this.visibilityListener = visibilityProperty.linkAttribute( this, 'visible' );
+
+      group.link( 'position', this.positionListener );
+
+      return this;
+    },
+
     dispose: function() {
-      this.electronView1.dispose();
-      this.electronView2.dispose();
+      this.visibilityProperty.unlink( this.visibilityListener );
+
+      // no PropertySet.unlink?
+      this.group.positionProperty.unlink( this.positionListener );
+
+      // clean references
+      this.group = null;
+      this.parentAtom = null;
+      this.visibilityProperty = null;
+      this.visibilityListener = null;
+
+      LonePairView.pool.put( this, this.renderer );
     },
 
     /*
@@ -125,5 +172,9 @@ define( function( require ) {
 
       return null;
     }
+  }, {
+    pool: new LocalPool( function( renderer ) {
+      return new LonePairView( renderer );
+    } )
   } );
 } );

@@ -10,7 +10,6 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/common/view/3d/LonePairView' );
@@ -122,30 +121,12 @@ define( function( require ) {
       var centralAtom = this.molecule.centralAtom;
       var view;
       if ( group.isLonePair ) {
-        view = new LonePairView( group, this.renderer );
-        this.lonePairViews.push( view );
-
         var visibilityProperty = parentAtom === centralAtom ?
                                  this.model.showLonePairsProperty :
                                  MoleculeShapesGlobals.showOuterLonePairsProperty;
-        visibilityProperty.linkAttribute( view, 'visible' );
 
-        group.link( 'position', function( position ) {
-          var offsetFromParentAtom = position.minus( parentAtom.position );
-          var orientation = offsetFromParentAtom.normalized();
-
-          var translation;
-          if ( offsetFromParentAtom.magnitude() > PairGroup.LONE_PAIR_DISTANCE ) {
-            translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
-          }
-          else {
-            translation = parentAtom.position;
-          }
-
-          view.position.set( translation.x, translation.y, translation.z );
-          view.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
-                                                      new THREE.Vector3( orientation.x, orientation.y, orientation.z ) );
-        } );
+        view = LonePairView.pool.get( this.renderer ).initialize( group, parentAtom, visibilityProperty );
+        this.lonePairViews.push( view );
       } else {
         view = new AtomView( group, this.renderer, group.element ?
                                                    AtomView.getElementLocalMaterial( group.element ) :
