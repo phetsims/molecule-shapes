@@ -28,7 +28,7 @@ define( function( require ) {
    * @param {Vector3[]} idealOrientations - An ideal position, that may be rotated.
    * @param {Permutation[]} allowablePermutations - The un-rotated stable position that we are attracted towards
    * @param {Vector3} center - The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
-   * @return A measure of total error (least squares-style)
+   * @return {number} A measure of total error (least squares-style)
    */
   AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
     var currentOrientations = _.map( groups, function( group ) {
