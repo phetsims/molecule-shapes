@@ -33,7 +33,9 @@ define( function( require ) {
     var idealCentralOrientations = [];
     var radialGroups = [];
 
-    this.addCentralAtom( new PairGroup( new Vector3(), false, realMoleculeShape.centralAtom.element ) );
+    this.addCentralAtom( new PairGroup( new Vector3(), false, {
+      element: realMoleculeShape.centralAtom.element
+    } ) );
 
     // add in bonds
     var bonds = realMoleculeShape.bonds;
@@ -44,7 +46,9 @@ define( function( require ) {
       var bondLength = atom.position.magnitude();
 
       var atomLocation = atom.orientation.times( bondLength );
-      group = new PairGroup( atomLocation, false, atom.element );
+      group = new PairGroup( atomLocation, false, {
+        element: atom.element
+      } );
       radialGroups.push( group );
 
       // add the atom itself

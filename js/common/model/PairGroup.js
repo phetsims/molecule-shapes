@@ -18,10 +18,13 @@ define( function( require ) {
    * @constructor
    * @param {Vector3} position - Initial position
    * @param {boolean} isLonePair - True for a lone pair, false for an atom
-   * @param {Element} [element] - The NITROGLYCERIN element if applicable (e.g. real model), or undefined
+   * @param {object} [options] - Supports:
+   *   @param {Element} [element] - The NITROGLYCERIN element if applicable (e.g. real model), or undefined
    */
-  function PairGroup( position, isLonePair, element ) {
-    assert && assert( element || element === undefined );
+  function PairGroup( position, isLonePair, options ) {
+    options = _.extend( {
+      element: null
+    }, options );
 
     var group = this;
 
@@ -47,7 +50,7 @@ define( function( require ) {
     this.isLonePair = isLonePair;
 
     // undefined for vsepr pair groups
-    this.element = element;
+    this.element = options.element;
 
     if ( assert ) {
       this.positionProperty.lazyLink( function( newValue, oldValue ) {
