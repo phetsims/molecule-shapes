@@ -62,7 +62,7 @@ define( function( require ) {
     var vseprConfiguration = VSEPRConfiguration.getConfiguration( numBonds, numLonePairs );
     var idealModelVectors = vseprConfiguration.allOrientations;
 
-    var mapping = vseprConfiguration.getIdealBondRotationToPositions( LocalShape.sortedLonePairsFirst( this.radialAtoms ) );
+    var mapping = vseprConfiguration.getIdealBondRotationToPositions( this.radialAtoms );
 
     // add in lone pairs in their correct "initial" positions
     for ( i = 0; i < numLonePairs; i++ ) {

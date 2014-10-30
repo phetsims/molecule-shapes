@@ -28,6 +28,14 @@ define( function( require ) {
 
   var MAX_PAIRS = 6;
 
+  function addToEndOfArray( array, item, addToFront ) {
+    if ( addToFront ) {
+      array.unshift( item );
+    } else {
+      array.push( item );
+    }
+  }
+
   /*
    * @constructor
    */
@@ -36,13 +44,15 @@ define( function( require ) {
 
     var molecule = this;
 
-    // @public - all of the pair groups
+    // @public - all of the pair groups, with lone pairs first
     this.groups = [];
 
-    // @public - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond, so we just have order 0
+    // @public - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
+    // so we just have order 0. Lone-pair 'bonds' are listed first.
     this.bonds = [];
 
     // @public - cached subsets of groups (changed on modifications) that we need to iterate through without GC
+    // with lone pairs first
     this.atoms = []; // !isLonePair
     this.lonePairs = []; // isLonePair
     this.radialGroups = []; // bonded with centralAtom
@@ -151,11 +161,11 @@ define( function( require ) {
       // always add the central group first
       assert && assert( this.centralAtom !== null );
 
-      this.groups.push( group );
+      addToEndOfArray( this.groups, group, group.isLonePair );
       if ( group.isLonePair ) {
-        this.lonePairs.push( group );
+        addToEndOfArray( this.lonePairs, group, group.isLonePair );
       } else {
-        this.atoms.push( group );
+        addToEndOfArray( this.atoms, group, group.isLonePair );
       }
 
       // notify
@@ -165,15 +175,17 @@ define( function( require ) {
     },
 
     addBond: function( bond ) {
-      this.bonds.push( bond );
+      var isLonePairBond = bond.order === 0;
+
+      addToEndOfArray( this.bonds, bond, isLonePairBond );
 
       if ( bond.contains( this.centralAtom ) ) {
         var group = bond.getOtherAtom( this.centralAtom );
-        this.radialGroups.push( group );
+        addToEndOfArray( this.radialGroups, group, isLonePairBond );
         if ( group.isLonePair ) {
-          this.radialLonePairs.push( group );
+          addToEndOfArray( this.radialLonePairs, group, isLonePairBond );
         } else {
-          this.radialAtoms.push( group );
+          addToEndOfArray( this.radialAtoms, group, isLonePairBond );
         }
       }
 
@@ -253,7 +265,7 @@ define( function( require ) {
     },
 
     getLocalVSEPRShape: function( atom ) {
-      var groups = LocalShape.sortedLonePairsFirst( this.getNeighbors( atom ) );
+      var groups = this.getNeighbors( atom );
 
       // count lone pairs
       var numLonePairs = 0;

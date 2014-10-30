@@ -77,24 +77,6 @@ define( function( require ) {
     return result;
   };
 
-  function lonePairFirstSort( a, b ) {
-    if ( a.isLonePair === b.isLonePair ) {
-      return 0;
-    }
-    else if ( a.isLonePair ) {
-      return -1;
-    }
-    else {
-      return 1;
-    }
-  }
-
-  LocalShape.sortedLonePairsFirst = function( groups ) {
-    var result = groups.slice();
-    result.sort( lonePairFirstSort );
-    return result;
-  };
-
   // allow switching of lone pairs with each other, and all other types of bonds with each other
   // NOTE: I recommended double or triple bonds being put in "higher repulsion" spots over single bonds, but this was specifically rejected. -JO
   LocalShape.vseprPermutations = function( neighbors ) {

@@ -157,7 +157,7 @@ define( function( require ) {
           var groups = new RealMolecule( model.realMoleculeShape ).radialGroups;
           mapping = AttractorModel.findClosestMatchingConfiguration(
             AttractorModel.getOrientationsFromOrigin( mappingMolecule.radialGroups ),
-            _.map( LocalShape.sortedLonePairsFirst( groups ), function( pair ) {
+            _.map( groups, function( pair ) {
               return pair.orientation;
             } ),
             LocalShape.vseprPermutations( mappingMolecule.radialGroups ) );
@@ -170,7 +170,7 @@ define( function( require ) {
 
       }
       else {
-        mapping = vseprConfiguration.getIdealGroupRotationToPositions( LocalShape.sortedLonePairsFirst( mappingMolecule.radialGroups ) );
+        mapping = vseprConfiguration.getIdealGroupRotationToPositions( mappingMolecule.radialGroups );
         var permutation = mapping.permutation.inverted();
         var idealUnitVectors = vseprConfiguration.allOrientations;
 
