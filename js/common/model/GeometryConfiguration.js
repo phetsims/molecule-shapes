@@ -35,6 +35,7 @@ define( function( require ) {
     this.unitVectors = unitVectors;
   }
 
+  // maps number of orientations to the {GeometryConfiguration} with that many orientations
   var geometries = {
     0: new GeometryConfiguration( geometryEmptyString, [] ),
 
