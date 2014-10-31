@@ -32,11 +32,6 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, MoleculeShapesModel, {
-    // @override
-    reset: function() {
-      PropertySet.prototype.reset.call( this );
-    },
-
     step: function( dt ) {
       this.molecule.update( Math.min( dt, 1 ) ); // cap at 1 second
     }
