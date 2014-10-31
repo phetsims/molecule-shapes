@@ -16,7 +16,7 @@ define( function( require ) {
   /**
    * @constructor
    * @param {boolean} isBasicsVersion
-   * @param {object} [options]
+   * @param {Object} [options]
    */
   function MoleculeShapesModel( isBasicsVersion, options ) {
     this.isBasicsVersion = isBasicsVersion;

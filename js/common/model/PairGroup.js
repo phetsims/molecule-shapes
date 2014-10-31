@@ -18,7 +18,7 @@ define( function( require ) {
    * @constructor
    * @param {Vector3} position - Initial position
    * @param {boolean} isLonePair - True for a lone pair, false for an atom
-   * @param {object} [options] - Supports:
+   * @param {Object} [options] - Supports:
    *   @param {Element} [element] - The NITROGLYCERIN element if applicable (e.g. real model), or undefined
    */
   function PairGroup( position, isLonePair, options ) {
