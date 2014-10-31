@@ -33,7 +33,8 @@ define( function( require ) {
 
   return inherit( PropertySet, MoleculeShapesModel, {
     step: function( dt ) {
-      this.molecule.update( Math.min( dt, 1 ) ); // cap at 1 second
+      // cap at 0.2s, since our model doesn't handle oscillation well above that
+      this.molecule.update( Math.min( dt, 0.2 ) );
     }
   } );
 } );
