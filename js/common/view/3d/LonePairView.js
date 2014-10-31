@@ -22,7 +22,7 @@ define( function( require ) {
   var jsonLoader = new THREE.JSONLoader();
 
   // geometry used for display
-  var masterShellGeometry = jsonLoader.parse( LonePairGeometryData.HIGH_DETAIL ).geometry;
+  var masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGL ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
 
   // renderer-local access
   var localShellGeometry = new LocalGeometry( masterShellGeometry );

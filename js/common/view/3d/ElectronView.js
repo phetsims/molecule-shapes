@@ -15,7 +15,7 @@ define( function( require ) {
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 
-  var NUM_SAMPLES = MoleculeShapesGlobals.useWebGL ? 10 : 5;
+  var NUM_SAMPLES = MoleculeShapesGlobals.useWebGL ? 10 : 3;
 
   // renderer-local access
   var localElectronGeometry = new LocalGeometry( new THREE.SphereGeometry( 0.1, NUM_SAMPLES, NUM_SAMPLES ) );
