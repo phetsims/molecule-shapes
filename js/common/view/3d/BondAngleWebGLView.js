@@ -21,7 +21,7 @@ define( function( require ) {
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
 
-  var radialVertexCount = 24; // how many vertices to use along the view
+  var RADIAL_VERTEX_COUNT = 24; // how many vertices to use along the view
 
   /*---------------------------------------------------------------------------*
   * Geometry for the sector and arc
@@ -41,14 +41,14 @@ define( function( require ) {
     // first vertex (0) at the center
     geometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
 
-    // the rest of the vertices (1 to radialVertexCount) are radial
-    for ( var i = 0; i < radialVertexCount; i++ ) {
-      var ratio = i / ( radialVertexCount - 1 ); // from 0 to 1
+    // the rest of the vertices (1 to RADIAL_VERTEX_COUNT) are radial
+    for ( var i = 0; i < RADIAL_VERTEX_COUNT; i++ ) {
+      var ratio = i / ( RADIAL_VERTEX_COUNT - 1 ); // from 0 to 1
       geometry.vertices.push( new THREE.Vector3( ratio, BondAngleView.radius, 0 ) );
     }
 
     // faces (1 less than the number of radial vertices)
-    for ( var j = 0; j < radialVertexCount - 1; j++ ) {
+    for ( var j = 0; j < RADIAL_VERTEX_COUNT - 1; j++ ) {
       // we use a fan approach, first vertex is always the first (center) vertex, the other two are radial
       geometry.faces.push( new THREE.Face3( 0, j + 1, j + 2 ) );
     }
@@ -60,8 +60,8 @@ define( function( require ) {
     var geometry = new THREE.Geometry();
 
     // radial vertices only
-    for ( var i = 0; i < radialVertexCount; i++ ) {
-      var ratio = i / ( radialVertexCount - 1 ); // from 0 to 1
+    for ( var i = 0; i < RADIAL_VERTEX_COUNT; i++ ) {
+      var ratio = i / ( RADIAL_VERTEX_COUNT - 1 ); // from 0 to 1
       geometry.vertices.push( new THREE.Vector3( ratio, BondAngleView.radius, 0 ) );
     }
 

@@ -105,7 +105,7 @@ define( function( require ) {
   } );
 
   // metrics data for proper centering and layout
-  var formatString = '000.0°';
+  var FORMAT_STRING = '000.0°';
   var shortXOffset = glyphs['0'].advance;
   var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance + glyphs['°'].advance;
   var longWidth = glyphs['0'].advance + shortWidth;
@@ -167,13 +167,13 @@ define( function( require ) {
     var geometry = new THREE.Geometry();
     var x = 0; // accumulated X offset of previous character places
 
-    for ( var i = 0; i < formatString.length; i++ ) {
+    for ( var i = 0; i < FORMAT_STRING.length; i++ ) {
       // vertices for the bounds of the character
       geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
       geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
       geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
       geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-      x += glyphs[formatString[i]].advance;
+      x += glyphs[FORMAT_STRING[i]].advance;
 
       // push UV placeholders for each corner
       this.uvs.push( new THREE.Vector3() );

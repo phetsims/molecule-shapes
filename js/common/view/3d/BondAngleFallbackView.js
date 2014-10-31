@@ -17,6 +17,8 @@ define( function( require ) {
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
   var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
 
+  var NUM_VERTICES = 24; // number of radial vertices along the edge
+
   function createArcGeometry( vertices ) {
     var geometry = new THREE.Geometry();
 
@@ -46,8 +48,6 @@ define( function( require ) {
     return geometry;
   }
 
-  var numVertices = 24;
-
   /*
    * constructor
    */
@@ -58,7 +58,7 @@ define( function( require ) {
 
     // shared vertex array between both geometries
     this.arcVertices = [];
-    for ( var i = 0; i < numVertices; i++ ) {
+    for ( var i = 0; i < NUM_VERTICES; i++ ) {
       this.arcVertices.push( new THREE.Vector3() );
     }
 
@@ -123,8 +123,8 @@ define( function( require ) {
       this.arcMaterial.opacity = this.viewOpacity * 0.7;
 
       // update the vertices based on our GLSL shader
-      for ( var i = 0; i < numVertices; i++ ) {
-        var ratio = i / ( numVertices - 1 ); // zero to 1
+      for ( var i = 0; i < NUM_VERTICES; i++ ) {
+        var ratio = i / ( NUM_VERTICES - 1 ); // zero to 1
 
         // map our midpoint to theta=0
         var theta = ( ratio - 0.5 ) * this.viewAngle;

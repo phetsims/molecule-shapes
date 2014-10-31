@@ -19,20 +19,20 @@ define( function( require ) {
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 
-  var displayRadius = 2;
-  var touchRadius = 3;
-  var numSamples = MoleculeShapesGlobals.useWebGL ? 64 : 12;
-  var overdraw = MoleculeShapesGlobals.useWebGL ? 0 : 0.5;
+  var DISPLAY_RADIUS = 2;
+  var TOUCH_RADIUS = 3;
+  var NUM_SAMPLES = MoleculeShapesGlobals.useWebGL ? 64 : 12;
+  var OVERDRAW = MoleculeShapesGlobals.useWebGL ? 0 : 0.5;
 
   // renderer-local access
-  var localAtomGeometry = new LocalGeometry( new THREE.SphereGeometry( displayRadius, numSamples, numSamples ) );
+  var localAtomGeometry = new LocalGeometry( new THREE.SphereGeometry( DISPLAY_RADIUS, NUM_SAMPLES, NUM_SAMPLES ) );
 
   var elementLocalMaterials = {
     // filled in dynamically in getElementLocalMaterial
   };
 
-  var mouseHitTestSphere = new Sphere3( Vector3.ZERO, displayRadius );
-  var touchHitTestSphere = new Sphere3( Vector3.ZERO, touchRadius );
+  var mouseHitTestSphere = new Sphere3( Vector3.ZERO, DISPLAY_RADIUS );
+  var touchHitTestSphere = new Sphere3( Vector3.ZERO, TOUCH_RADIUS );
 
   /*
    * @param {PairGroup} group
@@ -46,7 +46,7 @@ define( function( require ) {
 
     if ( window.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
       if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
-        this.add( new THREE.Mesh( new THREE.SphereGeometry( touchRadius, numSamples, numSamples ), new THREE.MeshBasicMaterial( {
+        this.add( new THREE.Mesh( new THREE.SphereGeometry( TOUCH_RADIUS, NUM_SAMPLES, NUM_SAMPLES ), new THREE.MeshBasicMaterial( {
           color: 0xff0000,
           transparent: true,
           opacity: 0.4,
@@ -85,11 +85,11 @@ define( function( require ) {
     }
   }, {
     // renderer-local access
-    centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: overdraw } ), {
+    centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
       color: MoleculeShapesColors.centralAtomProperty,
       ambient: MoleculeShapesColors.centralAtomProperty
     } ),
-    atomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: overdraw } ), {
+    atomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
       color: MoleculeShapesColors.atomProperty,
       ambient: MoleculeShapesColors.atomProperty
     } ),
@@ -103,7 +103,7 @@ define( function( require ) {
         localMaterial = elementLocalMaterials[element.symbol] = new LocalMaterial( new THREE.MeshLambertMaterial( {
           color: new Color( element.color ).toNumber(),
           ambient: new Color( element.color ).toNumber(),
-          overdraw: overdraw
+          overdraw: OVERDRAW
         } ) );
       }
       return localMaterial;

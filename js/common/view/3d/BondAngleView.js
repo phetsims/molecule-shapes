@@ -126,8 +126,10 @@ define( function( require ) {
       }
     },
   }, {
-    lowThresholds: [0, 0, 0, 0, 0.35, 0.45, 0.5],
-    highThresholds: [0, 0, 0, 0.5, 0.55, 0.65, 0.75],
+    // dot product between the camera direction and bond angle normal is below LOW_THRESHOLDS[bondOrder] => alpha = 0
+    // dot product between the camera direction and bond angle normal is above LOW_THRESHOLDS[HIGH_THRESHOLDS] => alpha = 1
+    LOW_THRESHOLDS: [0, 0, 0, 0, 0.35, 0.45, 0.5],
+    HIGH_THRESHOLDS: [0, 0, 0, 0.5, 0.55, 0.65, 0.75],
 
     calculateBrightness: function( aDir, bDir, localCameraOrientation, bondQuantity ) {
       // if there are less than 3 bonds, always show the bond angle.
@@ -138,8 +140,8 @@ define( function( require ) {
       // a combined measure of how close the angles are AND how orthogonal they are to the camera
       var brightness = Math.abs( aDir.cross( bDir ).dot( localCameraOrientation ) );
 
-      var lowThreshold = BondAngleView.lowThresholds[bondQuantity];
-      var highThreshold = BondAngleView.highThresholds[bondQuantity];
+      var lowThreshold = BondAngleView.LOW_THRESHOLDS[bondQuantity];
+      var highThreshold = BondAngleView.HIGH_THRESHOLDS[bondQuantity];
 
       var interpolatedValue = brightness / ( highThreshold - lowThreshold ) - lowThreshold / ( highThreshold - lowThreshold );
 

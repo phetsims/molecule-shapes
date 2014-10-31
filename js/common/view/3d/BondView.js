@@ -16,9 +16,9 @@ define( function( require ) {
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 
-  var numRadialSamples = MoleculeShapesGlobals.useWebGL ? 32 : 8;
-  var numAxialSamples = MoleculeShapesGlobals.useWebGL ? 1 : 8;
-  var globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, numRadialSamples, numAxialSamples, false ); // 1 radius, 1 height, 32 segments, open-ended
+  var NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGL ? 32 : 8;
+  var NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGL ? 1 : 8;
+  var globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, NUM_RADIAL_SAMPLES, NUM_AXIAL_SAMPLES, false ); // 1 radius, 1 height, 32 segments, open-ended
 
   // renderer-local access
   var localBondGeometry = new LocalGeometry( globalBondGeometry );

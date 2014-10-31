@@ -20,12 +20,12 @@ define( function( require ) {
 
   // Instead of the absolute positioning, this (for now) sets the bond lengths to be the same, since for our purposes
   // they are all very close.
-  var useSimplifiedBondLength = true;
+  var USE_SIMPLIFIED_BOND_LENGTH = true;
 
   /*
    * @constructor
    * @param {string} displayName - The displayed chemical name. Digits will be turned into subscripts, so use "H20", etc.
-   * @param {number | null} bondLengthOverride - If useSimplifiedBondLength, this will be used as the bond length for
+   * @param {number | null} bondLengthOverride - If USE_SIMPLIFIED_BOND_LENGTH, this will be used as the bond length for
    *                                             all atoms.
    */
   function RealMoleculeShape( displayName, bondLengthOverride ) {
@@ -60,12 +60,12 @@ define( function( require ) {
     },
 
     addRadialAtom: function( atom, bondOrder ) {
-      if ( useSimplifiedBondLength ) {
+      if ( USE_SIMPLIFIED_BOND_LENGTH ) {
         // adjust the position's magnitude to the proper scale
         atom.position.normalize().multiplyScalar( this.bondLengthOverride );
       }
       this.addAtom( atom );
-      this.addBond( atom, this.centralAtom, bondOrder, useSimplifiedBondLength ? this.bondLengthOverride : atom.position.magnitude() );
+      this.addBond( atom, this.centralAtom, bondOrder, USE_SIMPLIFIED_BOND_LENGTH ? this.bondLengthOverride : atom.position.magnitude() );
     },
 
     toString: function() {
