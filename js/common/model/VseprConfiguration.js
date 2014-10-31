@@ -11,6 +11,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Permutation = require( 'DOT/Permutation' );
   var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );

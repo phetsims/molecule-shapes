@@ -10,6 +10,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var pairs = require( 'PHET_CORE/pairs' );
   var Vector3 = require( 'DOT/Vector3' );
   var DotUtil = require( 'DOT/Util' );

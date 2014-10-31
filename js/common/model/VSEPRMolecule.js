@@ -9,6 +9,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );

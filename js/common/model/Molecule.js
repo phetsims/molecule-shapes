@@ -17,6 +17,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var arrayRemove = require( 'PHET_CORE/arrayRemove' );
   var Matrix3 = require( 'DOT/Matrix3' );

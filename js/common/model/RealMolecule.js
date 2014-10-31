@@ -8,6 +8,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );

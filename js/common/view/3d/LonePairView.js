@@ -8,6 +8,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var LonePairGeometryData = require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );

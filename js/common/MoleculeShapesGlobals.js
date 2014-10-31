@@ -8,12 +8,12 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Color = require( 'SCENERY/util/Color' );
   var Util = require( 'SCENERY/util/Util' );
 
-  // TODO: MOVE me out of view
   var MoleculeShapesGlobals = new PropertySet( {
     showOuterLonePairs: !!window.phetcommon.getQueryParameter( 'showOuterLonePairs' ) || false,
     projectorColors: !!window.phetcommon.getQueryParameter( 'projector' ) || false

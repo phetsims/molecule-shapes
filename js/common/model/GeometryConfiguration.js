@@ -10,8 +10,10 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var Vector3 = require( 'DOT/Vector3' );
 
+  // strings
   var geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
   var geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
   var geometryLinearString = require( 'string!MOLECULE_SHAPES/geometry.linear' );
