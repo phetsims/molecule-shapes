@@ -22,7 +22,7 @@ define( function( require ) {
   var jsonLoader = new THREE.JSONLoader();
 
   // geometry used for display
-  var masterShellGeometry = jsonLoader.parse( LonePairGeometryData.highDetail ).geometry;
+  var masterShellGeometry = jsonLoader.parse( LonePairGeometryData.HIGH_DETAIL ).geometry;
 
   // renderer-local access
   var localShellGeometry = new LocalGeometry( masterShellGeometry );
@@ -37,8 +37,8 @@ define( function( require ) {
   } );
 
   // geometries used for hit testing (includes a larger touch hit mesh)
-  var mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetail ).geometry;
-  var touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.lowDetailExtruded ).geometry;
+  var mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL ).geometry;
+  var touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL_EXTRUDED ).geometry;
 
   /*
    * @constructor
