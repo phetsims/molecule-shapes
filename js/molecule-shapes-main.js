@@ -24,11 +24,10 @@ define( function( require ) {
 
   var simOptions = {
     credits: {
-      // TODO: fill in credits
-      leadDesign: '',
-      softwareDevelopment: '',
-      team: '',
-      thanks: ''
+      leadDesign: 'Emily Moore',
+      softwareDevelopment: 'Jonathan Olson',
+      team: 'Emily Moore, Ariel Paul, Kathy Perkins, Kelly Lancaster, Julia Chamberlain',
+      qualityAssurance: 'Bryan Yoelin, Oliver Orejola'
     },
     optionsNode: new GlobalOptionsNode( isBasicsVersion )
   };
