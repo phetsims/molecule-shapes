@@ -43,5 +43,8 @@
   "control.modelView": "Model",
 
   "options.showOuterLonePairs": "Show Outer Lone Pairs",
-  "options.projectorColors": "Projector Mode"
+  "options.projectorColors": "Projector Mode",
+
+  "webglWarning.title": "WebGL is not enabled or supported by your browser",
+  "webglWarning.body": "Graphics quality is reduced. Click to learn how to enable WebGL if possible."
 }

@@ -14,6 +14,7 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
+  var CanvasWarningNode = require( 'MOLECULE_SHAPES/common/view/CanvasWarningNode' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
@@ -29,7 +30,8 @@ define( function( require ) {
       team: 'Emily Moore, Ariel Paul, Kathy Perkins, Kelly Lancaster, Julia Chamberlain',
       qualityAssurance: 'Bryan Yoelin, Oliver Orejola'
     },
-    optionsNode: new GlobalOptionsNode( isBasicsVersion )
+    optionsNode: new GlobalOptionsNode( isBasicsVersion ),
+    homeScreenWarningNode: MoleculeShapesGlobals.useWebGL ? null : new CanvasWarningNode()
   };
 
   // Appending '?dev' to the URL will enable developer-only features.
