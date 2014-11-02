@@ -44,7 +44,7 @@ define( function( require ) {
     this.addChild( this.backgroundEventTarget );
 
     // updated in layout
-    this.activeScale = 1;
+    this.activeScale = 1; // scale applied to interaction that isn't directly tied to screen coordinates (rotation)
     this.screenWidth = null;
     this.screenHeight = null;
 
