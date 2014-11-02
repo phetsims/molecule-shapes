@@ -23,7 +23,7 @@ define( function( require ) {
   // renderer-local access
   var localBondGeometry = new LocalGeometry( globalBondGeometry );
   var localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
-    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
+    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
     color: MoleculeShapesColors.bondProperty,
     ambient: MoleculeShapesColors.bondProperty

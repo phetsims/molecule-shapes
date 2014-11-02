@@ -71,7 +71,7 @@ define( function( require ) {
       transparent: true,
       opacity: 0.5,
       depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1
+      overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
     } );
     this.unlinkSectorColor = MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColors.bondAngleSweepProperty );
     this.arcMaterial = new THREE.LineBasicMaterial( {

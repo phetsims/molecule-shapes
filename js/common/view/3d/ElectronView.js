@@ -21,7 +21,7 @@ define( function( require ) {
   // renderer-local access
   var localElectronGeometry = new LocalGeometry( new THREE.SphereGeometry( 0.1, NUM_SAMPLES, NUM_SAMPLES ) );
   var localElectronMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
-    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5
+    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
     color: MoleculeShapesColors.lonePairElectronProperty
   } );

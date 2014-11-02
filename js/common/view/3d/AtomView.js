@@ -22,7 +22,7 @@ define( function( require ) {
   var DISPLAY_RADIUS = 2;
   var TOUCH_RADIUS = 3;
   var NUM_SAMPLES = MoleculeShapesGlobals.useWebGL ? 64 : 12;
-  var OVERDRAW = MoleculeShapesGlobals.useWebGL ? 0 : 0.5;
+  var OVERDRAW = MoleculeShapesGlobals.useWebGL ? 0 : 0.5; // amount to extend polygons when using Canvas to avoid cracks
 
   // renderer-local access
   var localAtomGeometry = new LocalGeometry( new THREE.SphereGeometry( DISPLAY_RADIUS, NUM_SAMPLES, NUM_SAMPLES ) );
