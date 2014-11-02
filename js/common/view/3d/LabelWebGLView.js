@@ -139,6 +139,7 @@ define( function( require ) {
     '}'
   ].join( '\n' );
 
+  // This uses three.js's uniform format and types, see https://github.com/mrdoob/three.js/wiki/Uniforms-types
   var materialUniforms = {
     map: {
       type: 't',

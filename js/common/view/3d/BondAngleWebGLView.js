@@ -109,7 +109,8 @@ define( function( require ) {
     '}'
   ].join( '\n' );
 
-  // "prototype" uniforms object. Deep copies will be made for each view since they need to change independently
+  // "prototype" uniforms object. Deep copies will be made for each view since they need to change independently.
+  // This uses three.js's uniform format and types, see https://github.com/mrdoob/three.js/wiki/Uniforms-types
   var uniforms = {
     opacity: {
       type: 'f',
