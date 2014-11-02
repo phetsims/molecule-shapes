@@ -86,6 +86,13 @@ define( function( require ) {
 
   return inherit( PropertySet, PairGroup, {
 
+    /**
+     * Applies a damped spring-like system to move this pair group towards the "ideal" distance from its parent atom.
+     *
+     * @param {number} timeElapsed - Amount of time the attraction is to be applied over
+     * @param {number} oldDistance - Previous distance from the pair group to its parent atom
+     * @param {Bond} bond - Bond to the parent atom
+     */
     attractToIdealDistance: function( timeElapsed, oldDistance, bond ) {
       if ( this.userControlled ) {
         // don't process if being dragged
@@ -159,10 +166,8 @@ define( function( require ) {
        * coulomb repulsion
        *----------------------------------------------------------------------------*/
 
-      var repulsionFactor = 1;
-
       // mimic Coulomb's Law
-      var coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE * repulsionFactor / ( delta.magnitude() * delta.magnitude() ) );
+      var coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE / ( delta.magnitude() * delta.magnitude() ) );
 
       // apply a nonphysical reduction on coulomb's law when the frame-rate is low, so we can avoid oscillation
       var coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed );
