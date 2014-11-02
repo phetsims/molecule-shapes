@@ -105,6 +105,7 @@ define( function( require ) {
       var screenPoint = globalBounds.leftCenter;
       var threePoint = this.getPlanarMoleculePosition( screenPoint );
 
+      // when adding a pair group in the location of the control panel, it looks better when starting further away
       var extraFactor = 1.2;
 
       var pair = new PairGroup( new Vector3().set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
