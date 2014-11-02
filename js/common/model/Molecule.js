@@ -45,23 +45,23 @@ define( function( require ) {
 
     var molecule = this;
 
-    // @public - all of the pair groups, with lone pairs first
+    // @public {PairGroup[]} - all of the pair groups, with lone pairs first
     this.groups = [];
 
-    // @public - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
+    // @public {Bond[]} - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
     // so we just have order 0. Lone-pair 'bonds' are listed first.
     this.bonds = [];
 
     // @public - cached subsets of groups (changed on modifications) that we need to iterate through without GC
     // with lone pairs first
-    this.atoms = []; // !isLonePair
-    this.lonePairs = []; // isLonePair
-    this.radialGroups = []; // bonded with centralAtom
-    this.radialAtoms = []; // !isLonePair, bonded with centralAtom
-    this.radialLonePairs = []; // isLonePair, bonded with centralAtom
+    this.atoms = []; // {PairGroup[]} !isLonePair
+    this.lonePairs = []; // {PairGroup[]} isLonePair
+    this.radialGroups = []; // {PairGroup[]} bonded with centralAtom
+    this.radialAtoms = []; // {PairGroup[]} !isLonePair, bonded with centralAtom
+    this.radialLonePairs = []; // {PairGroup[]} isLonePair, bonded with centralAtom
 
     // @public
-    this.centralAtom = null; // will be filled in later
+    this.centralAtom = null; // {PairGroup}, will be filled in later
 
     // composite events
     this.on( 'bondAdded', function( bond ) { molecule.trigger1( 'bondChanged', bond ); } );
