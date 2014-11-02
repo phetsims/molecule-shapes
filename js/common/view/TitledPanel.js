@@ -17,17 +17,7 @@ define( function( require ) {
   function TitledPanel( titleNode, contentNode, options ) {
     Node.call( this );
 
-    options = _.extend( {
-      // TODO: remove duplication with panel, but we want these set before-hand! Extract defaults from Panel?
-      fill: 'white',
-      stroke: 'black',
-      lineWidth: 1, // width of the background border
-      xMargin: 5,
-      yMargin: 5,
-      cornerRadius: 10, // radius of the rounded corners on the background
-      resize: true, // dynamically resize when content bounds change
-      backgroundPickable: false
-    }, options );
+    options = _.extend( {}, Panel.defaultOptions, options );
 
     this.titleNode = titleNode;
     this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } );
