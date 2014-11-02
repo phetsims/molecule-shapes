@@ -217,6 +217,7 @@ define( function( require ) {
   return inherit( THREE.Mesh, LabelWebGLView, {
     /*
      * Displays and positions the label, and sets its text.
+     * Same as API for LabelFallbackNode
      *
      * @param {string} string
      * @param {number} brightness - In range [0,1]
@@ -248,6 +249,7 @@ define( function( require ) {
 
     /*
      * Makes the label invisible
+     * Same as API for LabelFallbackNode
      */
     unsetLabel: function() {
       this.materialUniforms.opacity.value = 0;

@@ -24,6 +24,7 @@ define( function( require ) {
   return inherit( Text, LabelFallbackNode, {
     /*
      * Displays and positions the label, and sets its text.
+     * Same as API for LabelWebGLView
      *
      * @param {string} string
      * @param {number} brightness - In range [0,1]
@@ -43,7 +44,8 @@ define( function( require ) {
     },
 
     /*
-     * Makes the label invisible
+     * Makes the label invisible.
+     * Same as API for LabelWebGLView
      */
     unsetLabel: function() {
       this.visible = false;
