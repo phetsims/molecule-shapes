@@ -159,7 +159,7 @@ define( function( require ) {
               newQuaternion.multiply( model.moleculeQuaternion );
               model.moleculeQuaternion = newQuaternion;
             } else if ( dragMode === 'pairExistingSpherical' ) {
-              if ( _.contains( model.groups, draggedParticle ) ) {
+              if ( _.contains( model.molecule.groups, draggedParticle ) ) {
                 draggedParticle.dragToPosition( screenView.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
               }
             }
