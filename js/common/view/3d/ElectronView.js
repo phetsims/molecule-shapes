@@ -34,9 +34,5 @@ define( function( require ) {
     THREE.Mesh.call( this, localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
   }
 
-  return inherit( THREE.Mesh, ElectronView, {
-    dispose: function() {
-
-    }
-  } );
+  return inherit( THREE.Mesh, ElectronView );
 } );

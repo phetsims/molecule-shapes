@@ -57,10 +57,6 @@ define( function( require ) {
   }
 
   return inherit( THREE.Mesh, AtomView, {
-    dispose: function() {
-
-    },
-
     /*
      * @param {THREE.Ray} worldRay - Camera ray in world space
      * @param {boolean} isTouch - Whether expanded touch regions should be included

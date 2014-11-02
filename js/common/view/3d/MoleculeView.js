@@ -96,12 +96,6 @@ define( function( require ) {
 
     dispose: function() {
       var i;
-      for ( i = 0; i < this.atomViews.length; i++ ) {
-        this.atomViews[i].dispose();
-      }
-      for ( i = 0; i < this.bondViews.length; i++ ) {
-        this.bondViews[i].dispose();
-      }
       for ( i = 0; i < this.angleViews.length; i++ ) {
         this.screenView.returnLabel( this.angleViews[i].label );
         this.angleViews[i].dispose();
@@ -109,7 +103,6 @@ define( function( require ) {
       for ( i = 0; i < this.lonePairViews.length; i++ ) {
         this.lonePairViews[i].dispose();
       }
-      this.centerAtomView.dispose();
     },
 
     addGroup: function( group ) {
@@ -176,7 +169,6 @@ define( function( require ) {
           var atomView = this.atomViews[i];
           if ( atomView.group === group ) {
             this.remove( atomView );
-            atomView.dispose();
             this.atomViews.splice( i, 1 );
             break;
           }
@@ -226,7 +218,6 @@ define( function( require ) {
         if ( bondView.bond === bond ) {
           this.remove( bondView );
           this.bondViews.splice( i, 1 );
-          bondView.dispose();
         }
       }
     }

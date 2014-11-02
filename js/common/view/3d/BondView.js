@@ -69,10 +69,6 @@ define( function( require ) {
   }
 
   return inherit( THREE.Object3D, BondView, {
-    dispose: function() {
-
-    },
-
     updateView: function( cameraPosition ) {
       // extract our start and end
       var start = this.aPositionProperty.value;
