@@ -78,6 +78,52 @@ define( function( require ) {
     // Scenery 0.1 override for transformation
     this.domNode.updateCSSTransform = function() {};
 
+    // support Scenery/Joist 0.2 screenshot (takes extra work to output)
+    this.domNode.renderToCanvasSelf = function( wrapper ) {
+      var canvas = null;
+
+      // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
+      // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
+      // share the view (three.js constraint).
+      if ( MoleculeShapesGlobals.useWebGL ) {
+        // set up a framebuffer (target is three.js terminology) to render into
+        var target = new THREE.WebGLRenderTarget( screenView.screenWidth, screenView.screenHeight, {
+          minFilter: THREE.LinearFilter,
+          magFilter: THREE.NearestFilter,
+          format: THREE.RGBAFormat
+        } );
+        // render our screen content into the framebuffer
+        screenView.render( target );
+
+        // set up a buffer for pixel data, in the exact typed formats we will need
+        var buffer = new window.ArrayBuffer( screenView.screenWidth * screenView.screenHeight * 4 );
+        var imageDataBuffer = new window.Uint8ClampedArray( buffer );
+        var pixels = new window.Uint8Array( buffer );
+
+        // read the pixel data into the buffer
+        var gl = screenView.threeRenderer.getContext();
+        gl.readPixels( 0, 0, screenView.screenWidth, screenView.screenHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
+
+        // create a Canvas with the correct size, and fill it with the pixel data
+        canvas = document.createElement( 'canvas' );
+        canvas.width = screenView.screenWidth;
+        canvas.height = screenView.screenHeight;
+        var tmpContext = canvas.getContext( '2d' );
+        var imageData = tmpContext.createImageData( screenView.screenWidth, screenView.screenHeight );
+        imageData.data.set( imageDataBuffer );
+        tmpContext.putImageData( imageData, 0, 0 );
+      } else {
+        // If just falling back to Canvas, we can directly render out!
+        canvas = screenView.threeRenderer.domElement;
+      }
+
+      var context = wrapper.context;
+      context.save();
+      context.setTransform( 1, 0, 0, -1, 0, screenView.screenHeight ); // TODO: take pixel scaling into account?
+      context.drawImage( canvas, 0, 0 );
+      context.restore();
+    };
+
     this.addChild( this.domNode );
 
     // overlay Scene for bond-angle labels (if WebGL)
@@ -442,11 +488,15 @@ define( function( require ) {
     step: function( dt ) {
       this.moleculeView.updateView();
 
+      this.render( undefined );
+    },
+
+    render: function( target ) {
       // render the 3D scene first
-      this.threeRenderer.render( this.threeScene, this.threeCamera );
+      this.threeRenderer.render( this.threeScene, this.threeCamera, target );
       this.threeRenderer.autoClear = false;
       // then render the 2D overlay on top, without clearing the Canvas in-between
-      this.threeRenderer.render( this.overlayScene, this.overlayCamera );
+      this.threeRenderer.render( this.overlayScene, this.overlayCamera, target );
       this.threeRenderer.autoClear = true;
     }
   }, {
