@@ -106,6 +106,9 @@ define( function( require ) {
       default: new Color( 30, 30, 30 ),
       basics: new Color( 255, 255, 255 ),
       projector: new Color( 255, 255, 255 )
+    },
+    removePairGroup: {
+      default: new Color( '#d00' )
     }
   };
 

@@ -58,10 +58,12 @@ define( function( require ) {
     var removeAllButton = new TextPushButton( removeAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColors.removeButtonText,
-      baseColor: MoleculeShapesColors.removeButtonBackground,
       listener: function() {
         model.molecule.removeAllGroups();
       }
+    } );
+    MoleculeShapesColors.link( 'removeButtonBackground', function( color ) {
+      removeAllButton.baseColor = color;
     } );
     removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
     function updateButtonEnabled() {
