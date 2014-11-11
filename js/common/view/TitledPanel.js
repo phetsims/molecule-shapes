@@ -22,7 +22,6 @@ define( function( require ) {
     this.titleNode = titleNode;
     this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } );
     this.panel = new Panel( contentNode, {
-      // TODO: better way of not forwarding things like 'scale' that would be double-applied
       lineWidth: options.lineWidth,
       xMargin: options.xMargin,
       yMargin: options.yMargin,
