@@ -49,9 +49,9 @@ define( function( require ) {
     this.mouseArea = this.touchArea = this.localBounds;
 
     this.addInputListener( {
+      // TODO: update for ohtwo
       upImmediate: function() {
-        // TODO: add locale information, so we can go to a page that explains in the current translation if possible.
-        var phetWindow = window.open( 'http://phet.colorado.edu/webgl-disabled-page', '_blank' );
+        var phetWindow = window.open( 'http://phet.colorado.edu/webgl-disabled-page?locale=' + window.phetLocale, '_blank' );
         phetWindow.focus();
       }
     } );
