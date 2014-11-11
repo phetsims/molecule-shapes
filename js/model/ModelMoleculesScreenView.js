@@ -54,7 +54,6 @@ define( function( require ) {
       align: 'left'
     } );
     var lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
-    // TODO: how to change the baseColor dynamically!
     var removeAllButton = new TextPushButton( removeAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColors.removeButtonText,
