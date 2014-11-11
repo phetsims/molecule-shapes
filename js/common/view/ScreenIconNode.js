@@ -75,18 +75,7 @@ define( function( require ) {
       molecule: molecule
     } );
 
-    // TODO: ugly stub!
-    var screenViewStub = {
-      threeRenderer: {},
-      checkOutLabel: function() {
-        return {
-          setLabel: function() {},
-          unsetLabel: function() {}
-        };
-      },
-      returnLabel: function() {}
-    };
-    var view = new MoleculeView( model, screenViewStub, molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
+    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
     view.updateView();
 
     var moleculeScale = 4.5;

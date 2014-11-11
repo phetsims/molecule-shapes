@@ -514,6 +514,20 @@ define( function( require ) {
       var moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
       moonLight.position.set( 2.0, -1.0, 1.0 );
       threeScene.add( moonLight );
+    },
+
+    // duck-typed to have the same API as needed by views
+    createAPIStub: function() {
+      return {
+        threeRenderer: {},
+        checkOutLabel: function() {
+          return {
+            setLabel: function() {},
+            unsetLabel: function() {}
+          };
+        },
+        returnLabel: function() {}
+      };
     }
   } );
 } );
