@@ -25,7 +25,7 @@ define( function( require ) {
 
   var simOptions = {
     credits: {
-      leadDesign: 'Emily Moore',
+      leadDesign: 'Emily B. Moore',
       softwareDevelopment: 'Jonathan Olson',
       team: 'Emily Moore, Ariel Paul, Kathy Perkins, Kelly Lancaster, Julia Chamberlain',
       qualityAssurance: 'Bryan Yoelin, Oliver Orejola'
