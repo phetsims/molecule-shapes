@@ -45,6 +45,6 @@
   "options.showOuterLonePairs": "Show Outer Lone Pairs",
   "options.projectorColors": "Projector Mode",
 
-  "webglWarning.title": "WebGL is not enabled or supported by your browser",
-  "webglWarning.body": "Graphics quality is reduced. Click to learn how to enable WebGL if possible."
+  "webglWarning.title": "Running with low graphics quality",
+  "webglWarning.body": "WebGL is not enabled or available. Click to learn more."
 }
