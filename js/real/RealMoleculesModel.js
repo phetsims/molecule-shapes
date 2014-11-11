@@ -80,7 +80,6 @@ define( function( require ) {
           // NOTE: this might miss a couple improper mappings?
 
           // compute the mapping from our "ideal" to our "old" molecule
-          // TODO: something in this mapping seems backwards... but it's working?
           var groups = new RealMolecule( this.realMoleculeShape ).radialGroups;
           mapping = AttractorModel.findClosestMatchingConfiguration(
             AttractorModel.getOrientationsFromOrigin( mappingMolecule.radialGroups ),
@@ -112,7 +111,6 @@ define( function( require ) {
           }
           else {
             // we need to dig the bond order out of the mapping molecule, and we need to pick the right one (thus the permutation being applied, at an offset)
-            // TODO: verify that this ordering is correct (in radialAtoms)
             var oldRadialGroup = mappingMolecule.radialAtoms[permutation.apply( i ) - numRadialLonePairs];
             var bond = mappingMolecule.getParentBond( oldRadialGroup );
             var group = new PairGroup( unitVector.times( bond.length ), false );
