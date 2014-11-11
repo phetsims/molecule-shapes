@@ -129,8 +129,12 @@ define( function( require ) {
 
       for ( var key in colors ) {
         if ( profileName in colors[key] ) {
-          this[key] = colors[key][profileName];
-          reportColor( key );
+          var oldColor = this[key];
+          var newColor = colors[key][profileName];
+          if ( !newColor.equals( oldColor ) ) {
+            this[key] = newColor;
+            reportColor( key );
+          }
         }
       }
     }
