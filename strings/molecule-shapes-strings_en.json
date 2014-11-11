@@ -46,5 +46,5 @@
   "options.projectorColors": "Projector Mode",
 
   "webglWarning.title": "Running with low graphics quality",
-  "webglWarning.body": "WebGL is not enabled or available. Click to learn more."
+  "webglWarning.body": "WebGL is not enabled or not available. Click to learn more."
 }
