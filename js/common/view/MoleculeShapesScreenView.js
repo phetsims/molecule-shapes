@@ -119,7 +119,7 @@ define( function( require ) {
 
       var context = wrapper.context;
       context.save();
-      context.setTransform( 1, 0, 0, -1, 0, screenView.screenHeight ); // TODO: take pixel scaling into account?
+      context.setTransform( 1, 0, 0, -1, 0, screenView.screenHeight ); // no need to take pixel scaling into account
       context.drawImage( canvas, 0, 0 );
       context.restore();
     };
