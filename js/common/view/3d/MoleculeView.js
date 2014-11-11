@@ -220,6 +220,24 @@ define( function( require ) {
           this.bondViews.splice( i, 1 );
         }
       }
+    },
+
+    // changes the view for the BondGroupNode
+    hideCentralAtom: function() {
+      this.centerAtomView.visible = false;
+    },
+
+    // changes the view for ScreenIconNode
+    tweakViewScales: function( moleculeScale, atomScale, bondScale ) {
+      this.scale.x = this.scale.y = this.scale.z = moleculeScale;
+      this.centerAtomView.scale.x = this.centerAtomView.scale.y = this.centerAtomView.scale.z = atomScale;
+      _.each( this.atomViews, function( atomView ) {
+        atomView.scale.x = atomView.scale.y = atomView.scale.z = atomScale;
+      } );
+      _.each( this.bondViews, function( bondView ) {
+        bondView.children[0].scale.x = bondView.children[0].scale.z = bondScale;
+        bondView.children[1].scale.x = bondView.children[1].scale.z = bondScale;
+      } );
     }
   } );
 } );

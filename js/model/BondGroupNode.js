@@ -76,7 +76,7 @@ define( function( require ) {
 
     var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
     view.updateView();
-    view.centerAtomView.visible = false; // TODO: remove this extra outside knowledge
+    view.hideCentralAtom();
 
     var orthoSize = bondOrder === 0 ?
                     ( PairGroup.LONE_PAIR_DISTANCE * 1.07 ):

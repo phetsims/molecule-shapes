@@ -78,18 +78,11 @@ define( function( require ) {
     var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
     view.updateView();
 
+    // change how atoms/bonds are scaled, so it can appear nicely
     var moleculeScale = 4.5;
     var atomScale = 2;
     var bondScale = 1;
-    view.scale.x = view.scale.y = view.scale.z = moleculeScale;
-    view.centerAtomView.scale.x = view.centerAtomView.scale.y = view.centerAtomView.scale.z = atomScale;
-    _.each( view.atomViews, function( atomView ) {
-      atomView.scale.x = atomView.scale.y = atomView.scale.z = atomScale;
-    } );
-    _.each( view.bondViews, function( bondView ) {
-      bondView.children[0].scale.x = bondView.children[0].scale.z = bondScale;
-      bondView.children[1].scale.x = bondView.children[1].scale.z = bondScale;
-    } );
+    view.tweakViewScales( moleculeScale, atomScale, bondScale );
 
     var url = render( view, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height );
     view.dispose();
