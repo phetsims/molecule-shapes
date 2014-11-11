@@ -10,11 +10,11 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Screen = require( 'JOIST/Screen' );
   var ModelMoleculesModel = require( 'MOLECULE_SHAPES/model/ModelMoleculesModel' );
   var ModelMoleculesScreenView = require( 'MOLECULE_SHAPES/model/ModelMoleculesScreenView' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
 
   // strings
   var screenTitle = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
@@ -27,9 +27,7 @@ define( function( require ) {
   return inherit( Screen, function ModelMoleculesScreen( isBasicsVersion ) {
     var screen = this;
 
-    var screenIcon = Rectangle.rect( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, {
-      fill: 'red'
-    } );
+    var screenIcon = new ScreenIconNode( true, isBasicsVersion );
 
     Screen.call( this, screenTitle, screenIcon,
       function() { return new ModelMoleculesModel( isBasicsVersion ); },
