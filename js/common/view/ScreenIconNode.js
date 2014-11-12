@@ -1,7 +1,7 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Displays a thumbnail of the bond type (single, double, triple) or lone pair, along with a red 'X' for removal.
+ * Dynamically generates the screen icons by rendering 3D scenes into an image and displaying atom labels on top.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -25,7 +25,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   /*---------------------------------------------------------------------------*
-  * Dynamic generation of the bonding/lone-pair panel images
+  * Dynamic generation of the molecules
   *----------------------------------------------------------------------------*/
   var scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
@@ -35,14 +35,17 @@ define( function( require ) {
     preserveDrawingBuffer: true, // so we can toDataURL() it
     alpha: false // no transparency desired
   } ) : new THREE.CanvasRenderer();
-  renderer.setClearColor( 0x333333, 1 );
 
   var camera = new THREE.PerspectiveCamera();
 
-  function render( view, width, height ) {
+  function render( view, width, height, isBasicsVersion ) {
     scene.add( view );
 
-    camera.position.set( 0, -10, 200 );
+    // customized colors
+    renderer.setClearColor( isBasicsVersion ? 0xc6e2f6 : 0x333333, 1 );
+
+    // we want the basics version centered (CO2), but the regular version off-center (so the central atom is higher)
+    camera.position.set( 0, isBasicsVersion ? 0 : -10, 200 );
     camera.fov = 25;
     camera.aspect = width / height;
     camera.near = 1;
@@ -55,13 +58,35 @@ define( function( require ) {
 
     return renderer.domElement.toDataURL();
   }
+  function getAngle( isModel, isBasicsVersion ) {
+    if ( !isBasicsVersion ) {
+      // H2O
+      return isModel ? Util.toRadians( 120 ) / 2 : Util.toRadians( 104.5 ) / 2;
+    } else {
+      // CO2
+      return Math.PI / 2;
+    }
+  }
 
-  var modelAngle = Util.toRadians( 120 ) / 2;
-  var realAngle = Util.toRadians( 104.5 ) / 2;
-  function getBondDataURL( isModel ) {
-    var angle = isModel ? modelAngle : realAngle;
-    var centralElement = isModel ? undefined : Element.O;
-    var radialElement = isModel ? undefined : Element.H;
+  // since the atoms in the basics version are horizontal, we need to scale it down just a bit
+  function getRelativeScale( isBasicsVersion ) {
+    return isBasicsVersion ? 0.95 : 1;
+  }
+
+  function getCentralElement( isBasicsVersion ) {
+    return isBasicsVersion ? Element.C : Element.O;
+  }
+
+  function getRadialElement( isBasicsVersion ) {
+    return isBasicsVersion ? Element.O : Element.H;
+  }
+
+  function getBondDataURL( isModel, isBasicsVersion ) {
+    var angle = getAngle( isModel, isBasicsVersion );
+    // basics is CO2, non-basics is H2O
+    var centralElement = isModel ? undefined : getCentralElement( isBasicsVersion );
+    var radialElement = isModel ? undefined : getRadialElement( isBasicsVersion );
+    var bondOrder = isBasicsVersion ? 2 : 1;
 
     var molecule = new VSEPRMolecule();
     if ( !isModel ) {
@@ -69,8 +94,8 @@ define( function( require ) {
     }
     var centralAtom = new PairGroup( new Vector3(), false, { element: centralElement } );
     molecule.addCentralAtom( centralAtom );
-    molecule.addGroupAndBond( new PairGroup( new Vector3( Math.sin( angle ), -Math.cos( angle ) ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, 1 );
-    molecule.addGroupAndBond( new PairGroup( new Vector3( -Math.sin( angle ), -Math.cos( angle ) ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, 1 );
+    molecule.addGroupAndBond( new PairGroup( new Vector3( Math.sin( angle ), -Math.cos( angle ) ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
+    molecule.addGroupAndBond( new PairGroup( new Vector3( -Math.sin( angle ), -Math.cos( angle ) ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
     var model = new MoleculeShapesModel( false, {
       molecule: molecule
     } );
@@ -79,12 +104,12 @@ define( function( require ) {
     view.updateView();
 
     // change how atoms/bonds are scaled, so it can appear nicely
-    var moleculeScale = 4.5;
+    var moleculeScale = 4.5 * getRelativeScale( isBasicsVersion );
     var atomScale = 2;
     var bondScale = 1;
     view.tweakViewScales( moleculeScale, atomScale, bondScale );
 
-    var url = render( view, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height );
+    var url = render( view, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, isBasicsVersion );
     view.dispose();
     return url;
   }
@@ -95,17 +120,17 @@ define( function( require ) {
     // Firefox doesn't immediately have the correct image bounds, so we set it to be overridden here
     this.localBounds = Screen.HOME_SCREEN_ICON_SIZE.toBounds();
 
-    var url = getBondDataURL( isModel );
+    var url = getBondDataURL( isModel, isBasicsVersion );
     var devicePixelRatio = window.devicePixelRatio || 1;
     this.addChild( new Image( url, { scale: 1 / devicePixelRatio } ) );
 
-    var centralLabel = isModel ? 'A' : 'O';
-    var radialLabel = isModel ? 'X' : 'H';
+    var centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
+    var radialLabel = isModel ? 'X' : getRadialElement( isBasicsVersion ).symbol;
 
-    var viewBondDistance = 192;
-    var angle = isModel ? modelAngle : realAngle;
+    var viewBondDistance = 192 * getRelativeScale( isBasicsVersion );
+    var angle = getAngle( isModel, isBasicsVersion );
     var centerX = Screen.HOME_SCREEN_ICON_SIZE.width * 0.5;
-    var centerY = Screen.HOME_SCREEN_ICON_SIZE.height * 0.4;
+    var centerY = Screen.HOME_SCREEN_ICON_SIZE.height * ( isBasicsVersion ? 0.5 : 0.4 );
     this.addChild( new Text( centralLabel, {
       fontSize: 80,
       fill: 'black',

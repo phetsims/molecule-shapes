@@ -235,8 +235,12 @@ define( function( require ) {
         atomView.scale.x = atomView.scale.y = atomView.scale.z = atomScale;
       } );
       _.each( this.bondViews, function( bondView ) {
-        bondView.children[0].scale.x = bondView.children[0].scale.z = bondScale;
-        bondView.children[1].scale.x = bondView.children[1].scale.z = bondScale;
+        _.each( bondView.children, function( child ) {
+          child.scale.x = child.scale.z = bondScale;
+          if ( bondView.bondOrder > 1 ) {
+            child.position.y *= 2 * bondScale;
+          }
+        } );
       } );
     }
   } );
