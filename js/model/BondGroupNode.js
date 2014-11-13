@@ -92,12 +92,23 @@ define( function( require ) {
 
     var addEnabled = true;
 
+    // how many pointers are over our node, used for changing the highlighting for the "button over"
+    var overCount = 0;
+
     var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? atomHeight : lonePairHeight, 0, 0, options );
     overlay.addInputListener( {
       down: function() {
         if ( addEnabled ) {
           addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) );
         }
+      },
+      enter: function() {
+        overCount++;
+        updateOverlay();
+      },
+      exit: function() {
+        overCount--;
+        updateOverlay();
       }
     } );
     overlay.touchArea = overlay.localBounds.dilatedY( 4 ).withMinX( -10 );
@@ -141,10 +152,21 @@ define( function( require ) {
       }
       overlay.cursor = addEnabled ? 'pointer' : null;
 
-      overlay.fill = addEnabled ? 'rgba(0,0,0,0)' : MoleculeShapesColors.background.withAlpha( 0.4 );
       removeButton.visible = _.filter( model.molecule.getBondsAround( model.molecule.centralAtom ), function( bond ) {
         return bond.order === bondOrder;
       } ).length > 0;
+
+      updateOverlay();
+    }
+    function updateOverlay() {
+      var alpha;
+      if ( addEnabled ) {
+        // when "button over" the overlay will show through more of the image
+        alpha = overCount > 0 ? 0 : 0.1;
+      } else {
+        alpha = 0.4;
+      }
+      overlay.fill = MoleculeShapesColors.background.withAlpha( alpha );
     }
     model.molecule.on( 'bondChanged', update );
     model.link( 'showLonePairs', update );
