@@ -26,7 +26,7 @@ define( function( require ) {
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
   /*---------------------------------------------------------------------------*
-  * Dynamic generation of the bonding/lone-pair panel images
+  * Dynamic generation of the bonding/lone-pair panel images, by rendering a three.js scene to an image
   *----------------------------------------------------------------------------*/
   var scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
@@ -38,6 +38,7 @@ define( function( require ) {
     } ) : new THREE.CanvasRenderer();
   renderer.setClearColor( 0x0, 0 ); // transparent
 
+  // how many physical pixel lengths map to a CSS pixel length (devicePixelRatio of 2 means 4 pixels map to 1)
   var devicePixelRatio = window.devicePixelRatio || 1;
 
   var camera = new THREE.OrthographicCamera();
@@ -60,6 +61,7 @@ define( function( require ) {
     return renderer.domElement.toDataURL();
   }
 
+  // tuned parameters to match the desired Canvas sizes for lone pairs and atom bonds
   var imageScale = 3;
   var lonePairWidth = 78;
   var atomHeight = 42;
@@ -90,32 +92,37 @@ define( function( require ) {
     this.model = model;
     this.bondOrder = bondOrder;
 
-    var addEnabled = true;
+    // whether our "button" is enabled
+    var enabled = true;
 
     // how many pointers are over our node, used for changing the highlighting for the "button over"
     var overCount = 0;
 
+    // A semi-transparent overlay with the same color as the background (and variable alpha). Used to adjust the visual
+    // "opacity" of the underlying image (by toggling our alpha), and as a hit-area for events.
     var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? atomHeight : lonePairHeight, 0, 0, options );
     overlay.addInputListener( {
       down: function() {
-        if ( addEnabled ) {
+        if ( enabled ) {
           addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) );
         }
       },
       enter: function() {
         overCount++;
-        updateOverlay();
+        updateOverlayOpacity();
       },
       exit: function() {
         overCount--;
-        updateOverlay();
+        updateOverlayOpacity();
       }
     } );
     overlay.touchArea = overlay.localBounds.dilatedY( 4 ).withMinX( -10 );
+
+    // our image of the lone pair / bond, under the overlay.
     var image = new Image( getBondDataURL( bondOrder ), {
       scale: 1 / imageScale / devicePixelRatio // retina devices create large images, so for now we normalize the image scale
     } );
-    // override local bounds because the correct bounds may not be loaded yet
+    // override local bounds because the correct bounds may not be loaded yet (loading from a data URL, not an HTMLImageElement)
     image.localBounds = bondOrder === 0 ?
                         new Bounds2( 0, 0, lonePairWidth * devicePixelRatio * imageScale, lonePairHeight * devicePixelRatio * imageScale ) :
                         new Bounds2( 0, 0, atomWidth * devicePixelRatio * imageScale, atomHeight * devicePixelRatio * imageScale );
@@ -139,28 +146,32 @@ define( function( require ) {
     }
 
     var thumbnail = new Node( { children: [image, overlay] } );
+
+    // button to remove a copy of the bond / lone pair
     var removeButton = new RemovePairGroupButton( {
       listener: function() {
         removePairCallback( bondOrder );
       }
     } );
     removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
+
+    // updates the visual state of the thumbnail (image/overlay) and removal button
     function update() {
-      addEnabled = model.molecule.wouldAllowBondOrder( bondOrder );
+      enabled = model.molecule.wouldAllowBondOrder( bondOrder );
       if ( bondOrder === 0 ) {
-        addEnabled = addEnabled && model.showLonePairs;
+        enabled = enabled && model.showLonePairs;
       }
-      overlay.cursor = addEnabled ? 'pointer' : null;
+      overlay.cursor = enabled ? 'pointer' : null;
 
       removeButton.visible = _.filter( model.molecule.getBondsAround( model.molecule.centralAtom ), function( bond ) {
         return bond.order === bondOrder;
       } ).length > 0;
 
-      updateOverlay();
+      updateOverlayOpacity();
     }
-    function updateOverlay() {
+    function updateOverlayOpacity() {
       var alpha;
-      if ( addEnabled ) {
+      if ( enabled ) {
         // when "button over" the overlay will show through more of the image
         alpha = overCount > 0 ? 0 : 0.1;
       } else {
@@ -168,6 +179,7 @@ define( function( require ) {
       }
       overlay.fill = MoleculeShapesColors.background.withAlpha( alpha );
     }
+
     model.molecule.on( 'bondChanged', update );
     model.link( 'showLonePairs', update );
     MoleculeShapesColors.backgroundProperty.lazyLink( update );
