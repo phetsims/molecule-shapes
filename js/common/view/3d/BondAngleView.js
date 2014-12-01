@@ -54,6 +54,7 @@ define( function( require ) {
 
     },
 
+    //REVIEW document params
     updateView: function( lastMidpoint, localCameraOrientation ) {
       var aDir = this.aGroup.orientation;
       var bDir = this.bGroup.orientation;

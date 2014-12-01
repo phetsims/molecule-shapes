@@ -63,6 +63,7 @@ define( function( require ) {
       return material;
     },
 
+    //REVIEW doc
     setUniform: function( name, value ) {
       this.masterMaterial.uniforms[name].value = value;
       _.each( this.materials, function( material ) { material.uniforms[name].value = value; } );

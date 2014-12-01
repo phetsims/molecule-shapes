@@ -213,6 +213,7 @@ define( function( require ) {
       BondAngleWebGLView.pool.put( this, this.renderer );
     },
 
+    //REVIEW document params
     // @override
     updateView: function( lastMidpoint, localCameraOrientation ) {
       BondAngleView.prototype.updateView.call( this, lastMidpoint, localCameraOrientation );

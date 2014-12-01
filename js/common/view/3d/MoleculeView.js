@@ -75,6 +75,7 @@ define( function( require ) {
       this.updateAngles( localCameraOrientation );
     },
 
+    //REVIEW @param {?} localCameraOrientation
     updateAngles: function( localCameraOrientation ) {
       // we need to handle the 2-atom case separately for proper support of 180-degree bonds
       var hasTwoBonds = this.molecule.radialAtoms.length === 2;
@@ -105,6 +106,7 @@ define( function( require ) {
       }
     },
 
+    //REVIEW @param {?} group
     addGroup: function( group ) {
       // ignore the central atom, we add it in the constructor by default
       if ( group === this.molecule.centralAtom ) {
@@ -150,6 +152,7 @@ define( function( require ) {
       }
     },
 
+    //REVIEW @param {?} group
     removeGroup: function( group ) {
       var i;
       if ( group.isLonePair ) {
@@ -195,6 +198,7 @@ define( function( require ) {
       }
     },
 
+    //REVIEW @param {?} bond
     addBond: function( bond ) {
       assert && assert( bond.contains( this.molecule.centralAtom ) );
       var group = bond.getOtherAtom( this.molecule.centralAtom );
@@ -212,6 +216,7 @@ define( function( require ) {
       }
     },
 
+    //REVIEW @param {?} bond
     removeBond: function( bond ) {
       for ( var i = this.bondViews.length - 1; i >= 0; i-- ) {
         var bondView = this.bondViews[i];

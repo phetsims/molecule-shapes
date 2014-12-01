@@ -89,6 +89,8 @@ define( function( require ) {
       color: MoleculeShapesColors.atomProperty,
       ambient: MoleculeShapesColors.atomProperty
     } ),
+
+    //REVIEW @param {?} element
     getElementLocalMaterial: function( element ) {
       // Lazily create LocalMaterials for each element.
       // We'll want one material for each renderer-element pair, since we can't share across renderers, and we want to
