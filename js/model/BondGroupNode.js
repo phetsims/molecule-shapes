@@ -46,6 +46,7 @@ define( function( require ) {
   camera.near = 1; // near clipping plane
   camera.far = 100; // far clipping plane
 
+  //REVIEW document orthoSize
   function render( view, width, height, orthoSize ) {
     scene.add( view );
     camera.left = 0;
@@ -62,6 +63,7 @@ define( function( require ) {
   }
 
   // tuned parameters to match the desired Canvas sizes for lone pairs and atom bonds
+  //REVIEW use uppercase for these numeric constants
   var imageScale = 3;
   var lonePairWidth = 78;
   var atomHeight = 42;
@@ -191,6 +193,6 @@ define( function( require ) {
     }, options ) );
   }
 
-  return inherit( HBox, BondGroupNode, {} );
+  return inherit( HBox, BondGroupNode, {} ); //REVIEW {} is unnecessary
 } );
 

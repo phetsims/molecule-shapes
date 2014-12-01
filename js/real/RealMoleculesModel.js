@@ -54,6 +54,7 @@ define( function( require ) {
      *                                         old (real/model) view. If true, the molecule type changed, so we don't
      *                                         do any matching of orientation.
      */
+    //REVIEW @private ?
     rebuildMolecule: function( switchedRealMolecule ) {
       var molecule = this.molecule;
 

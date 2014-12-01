@@ -35,6 +35,7 @@ define( function( require ) {
     } );
   }
 
+  //REVIEW {} unnecessary
   return inherit( RectangularPushButton, RemovePairGroupButton, {
 
   } );

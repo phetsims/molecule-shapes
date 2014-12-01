@@ -19,6 +19,7 @@ define( function( require ) {
   // strings
   var screenTitle = require( 'string!MOLECULE_SHAPES/real-molecules' );
 
+  //REVIEW defining the constructor in the inherit call is a little weird
   /**
    * Creates the model and view for the RealMoleculesScreen
    * @constructor

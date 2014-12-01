@@ -102,6 +102,7 @@ define( function( require ) {
   }
 
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
+    //REVIEW doc params
     addPairGroup: function( bondOrder, globalBounds ) {
       var screenPoint = globalBounds.leftCenter;
       var threePoint = this.getPlanarMoleculePosition( screenPoint );

@@ -45,6 +45,7 @@ define( function( require ) {
   }
 
   return inherit( MoleculeShapesModel, ModelMoleculesModel, {
+    //REVIEW @private ?
     setupInitialMoleculeState: function() {
       // start with two single bonds
       var centralAtom = this.molecule.centralAtom;
