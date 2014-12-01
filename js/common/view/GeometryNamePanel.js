@@ -19,6 +19,7 @@ define( function( require ) {
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
 
+  // strings
   var geometryNameString = require( 'string!MOLECULE_SHAPES/control.geometryName' );
   var moleculeGeometryString = require( 'string!MOLECULE_SHAPES/control.moleculeGeometry' );
   var electronGeometryString = require( 'string!MOLECULE_SHAPES/control.electronGeometry' );
