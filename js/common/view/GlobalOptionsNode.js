@@ -16,6 +16,7 @@ define( function( require ) {
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
 
+  // strings
   var showOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );
   var projectorColorsString = require( 'string!MOLECULE_SHAPES/options.projectorColors' );
 
