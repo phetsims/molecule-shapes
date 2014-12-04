@@ -97,8 +97,9 @@ define( function( require ) {
     model.linkAttribute( 'showElectronShapeName', this.electronText, 'visible' );
 
     // labels for the types of geometries
-    this.molecularTextLabel = new Text( moleculeGeometryString, { font: new PhetFont( 14 ) } );
-    this.electronTextLabel = new Text( electronGeometryString, { font: new PhetFont( 14 ) } );
+    var textLabelFont = new PhetFont( 14 );
+    this.molecularTextLabel = new Text( moleculeGeometryString, { font: textLabelFont } );
+    this.electronTextLabel = new Text( electronGeometryString, { font: textLabelFont } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
 
