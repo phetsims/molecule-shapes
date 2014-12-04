@@ -10,10 +10,8 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Color = require( 'SCENERY/util/Color' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
@@ -76,20 +74,10 @@ define( function( require ) {
 
   var geometryNameFont = new PhetFont( 16 );
 
-  var scratchColorProperty = new Property( Color.WHITE );
-
-  function getTextLabel( label, colorProperty ) {
-    var text = new Text( label, {
-      font: geometryNameFont
-    } );
-    colorProperty.linkAttribute( text, 'fill' );
-    return text;
-  }
-
   function getMaximumTextWidth( strings ) {
     var maxWidth = 0;
     _.each( strings, function( string ) {
-      maxWidth = Math.max( maxWidth, getTextLabel( string, scratchColorProperty ).width );
+      maxWidth = Math.max( maxWidth, new Text( string, { font: geometryNameFont } ).width );
     } );
     return maxWidth;
   }
