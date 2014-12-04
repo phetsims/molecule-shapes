@@ -68,7 +68,7 @@ define( function( require ) {
       } else if ( color instanceof Property ) {
         colorProperty = color;
       } else {
-        throw new Error( 'bad color passed to AtomView' );
+        throw new Error( 'bad color passed to MoleculeShapesGlobals.toColorProperty' );
       }
       return colorProperty;
     }
