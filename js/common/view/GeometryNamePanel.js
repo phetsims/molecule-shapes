@@ -88,7 +88,7 @@ define( function( require ) {
   function GeometryNamePanel( model, options ) {
     this.model = model;
 
-    // text fields that will show the name of the geometry
+    // text fields that will show the name of the geometry (uses string placeholders for height)
     this.molecularText = new Text( 'X', { font: geometryNameFont } );
     this.electronText = new Text( 'Y', { font: geometryNameFont } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
