@@ -16,7 +16,9 @@ define( function( require ) {
 
   /*
    * @constructor
-   * @param {number} bondLengthOverride
+   * @param {number} bondLengthOverride - Override the length of the displayed bond (the bond will not stretch between
+   *                                      both atoms, but will be able to detach from the central atom to stay the same
+   *                                      length)
    */
   function VSEPRMolecule( bondLengthOverride ) {
     Molecule.call( this );
