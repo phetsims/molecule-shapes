@@ -23,7 +23,7 @@ define( function( require ) {
   function RealMolecule( realMoleculeShape ) {
     var i, group;
 
-    Molecule.call( this );
+    Molecule.call( this, true );
 
     this.realMoleculeShape = realMoleculeShape;
     this.localShapeMap = {}; // {number} atom ID => {LocalShape}
@@ -103,8 +103,6 @@ define( function( require ) {
     getLocalShape: function( atom ) {
       return this.localShapeMap[atom.id];
     },
-
-    isReal: true,
 
     getMaximumBondLength: function() {
       return undefined;

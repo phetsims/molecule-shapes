@@ -21,7 +21,7 @@ define( function( require ) {
    *                                      length)
    */
   function VSEPRMolecule( bondLengthOverride ) {
-    Molecule.call( this );
+    Molecule.call( this, false );
 
     this.bondLengthOverride = bondLengthOverride;
   }
@@ -66,8 +66,6 @@ define( function( require ) {
     getLocalShape: function( atom ) {
       return this.getLocalVSEPRShape( atom );
     },
-
-    isReal: false,
 
     getMaximumBondLength: function() {
       if ( this.bondLengthOverride !== undefined ) {

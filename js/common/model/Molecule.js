@@ -39,9 +39,12 @@ define( function( require ) {
 
   /*
    * @constructor
+   * @param {bool} isReal - Whether the molecule has real angles, or is based on a model
    */
-  function Molecule() {
+  function Molecule( isReal ) {
     Events.call( this );
+
+    this.isReal = isReal;
 
     var molecule = this;
 
