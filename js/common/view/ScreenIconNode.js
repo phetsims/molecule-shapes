@@ -33,7 +33,7 @@ define( function( require ) {
   var renderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
     antialias: true,
     preserveDrawingBuffer: true, // so we can toDataURL() it
-    alpha: false // no transparency desired
+    alpha: true // transparency needs to be enabled, even though we don't need it here. see #98
   } ) : new THREE.CanvasRenderer();
 
   var camera = new THREE.PerspectiveCamera();
