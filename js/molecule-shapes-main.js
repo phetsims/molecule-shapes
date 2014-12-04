@@ -27,8 +27,8 @@ define( function( require ) {
     credits: {
       leadDesign: 'Emily B. Moore',
       softwareDevelopment: 'Jonathan Olson',
-      team: 'Emily Moore, Ariel Paul, Kathy Perkins, Kelly Lancaster, Julia Chamberlain',
-      qualityAssurance: 'Bryan Yoelin, Oliver Orejola'
+      team: 'Julia Chamberlain, Kelly Lancaster, Ariel Paul, Kathy Perkins',
+      qualityAssurance: 'Oliver Orejola, Bryan Yoelin'
     },
     optionsNode: new GlobalOptionsNode( isBasicsVersion ),
     homeScreenWarningNode: MoleculeShapesGlobals.useWebGL ? null : new CanvasWarningNode()
