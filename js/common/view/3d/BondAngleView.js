@@ -51,7 +51,7 @@ define( function( require ) {
     },
 
     dispose: function() {
-
+      // overridden in sub-types
     },
 
     //REVIEW document params
