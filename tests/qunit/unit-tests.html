@@ -37,7 +37,6 @@
   </script>
 
   <script data-main="../../js/molecule-shapes-dev-config.js" src="../../../sherpa/require-2.1.11.js"></script>
-  <!-- <script src="../../dist/standalone/scenery.js"></script> -->
 
   <script src="unit-tests.js"></script>
   <script src="../../../scenery/tests/qunit/unit-tests.js"></script>
@@ -47,7 +46,6 @@
 
 </head>
 <body>
-<!-- <div style="position: fixed; top: 0; right: 50%; background-color: #fff; padding: 5px;"><a href="#" style="color: #000;" onclick="collapseTests();">Collapse All</a></div> -->
 <div id="qunit"></div>
 <div id="qunit-fixture">
 </div>
@@ -59,10 +57,6 @@
   function collapseTests() {
     $( '#qunit-tests .fail ol' ).css( 'display', 'none' );
   }
-
-  // QUnit.moduleDone( function( details ) {
-  //   collapseTests();
-  // } );
 
   // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
   function check() {
