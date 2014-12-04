@@ -19,7 +19,7 @@ define( function( require ) {
   var NUM_SAMPLES = MoleculeShapesGlobals.useWebGL ? 10 : 3;
 
   // renderer-local access
-  var localElectronGeometry = new LocalGeometry( new THREE.SphereGeometry( 0.1, NUM_SAMPLES, NUM_SAMPLES ) );
+  var localElectronGeometry = new LocalGeometry( new THREE.SphereGeometry( 0.25, NUM_SAMPLES, NUM_SAMPLES ) );
   var localElectronMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
   } ), {

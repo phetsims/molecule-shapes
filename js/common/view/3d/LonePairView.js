@@ -55,25 +55,21 @@ define( function( require ) {
 
     this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial );
 
+    // scale for the shell geometries (for display and hit testing)
     var shellScale = 2.5;
 
     this.shell.scale.x = this.shell.scale.y = this.shell.scale.z = shellScale;
     this.shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
     this.add( this.shell );
 
-    // refactor!
-    var electronScale = 2.5;
-
     this.electronView1 = new ElectronView( renderer );
     this.electronView2 = new ElectronView( renderer );
     this.add( this.electronView1 );
     this.add( this.electronView2 );
-    this.electronView1.scale.x = this.electronView1.scale.y = this.electronView1.scale.z = electronScale;
-    this.electronView2.scale.x = this.electronView2.scale.y = this.electronView2.scale.z = electronScale;
 
-    this.electronView1.position.x = 0.3 * electronScale;
-    this.electronView2.position.x = -0.3 * electronScale;
-    this.electronView1.position.y = this.electronView2.position.y = 2 * electronScale;
+    this.electronView1.position.x = 0.75;
+    this.electronView2.position.x = -0.75;
+    this.electronView1.position.y = this.electronView2.position.y = 5;
 
     if ( window.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
       var touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
