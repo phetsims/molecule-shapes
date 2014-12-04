@@ -33,10 +33,10 @@ define( function( require ) {
     this.renderer = screenView.threeRenderer; // {THREE.Renderer}
     this.molecule = molecule;
 
-    this.atomViews = []; // {AtomView[]}
-    this.lonePairViews = []; // {LonePairView[]}
-    this.bondViews = []; // {BondView[]}
-    this.angleViews = []; // {BondAngleWebGLView[] | BondAngleFallbackView[]}
+    this.atomViews = []; // {Array.<AtomView>}
+    this.lonePairViews = []; // {Array.<LonePairView>}
+    this.bondViews = []; // {Array.<BondView>}
+    this.angleViews = []; // {BondAngleWebGLView[] | Array.<BondAngleFallbackView>}
 
     this.radialViews = []; // all views that we would want to drag
 

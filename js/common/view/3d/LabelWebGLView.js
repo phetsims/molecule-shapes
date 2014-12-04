@@ -160,7 +160,7 @@ define( function( require ) {
   function LabelWebGLView( renderer ) {
     var view = this;
 
-    this.uvs = []; // {THREE.Vector3[]} - stores the texture coordinates used for drawing
+    this.uvs = []; // {Array.<THREE.Vector3>} - stores the texture coordinates used for drawing
 
     var texture = localTexture.get( renderer );
 

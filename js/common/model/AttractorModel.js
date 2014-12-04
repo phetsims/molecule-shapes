@@ -24,10 +24,10 @@ define( function( require ) {
   /**
    * Apply an attraction to the closest ideal position, with the given time elapsed
    *
-   * @param {PairGroup[]} groups - An ordered list of pair groups that should be considered, along with the relevant permutations
+   * @param {Array.<PairGroup>} groups - An ordered list of pair groups that should be considered, along with the relevant permutations
    * @param {number} timeElapsed - Time elapsed (seconds)
-   * @param {Vector3[]} idealOrientations - An ideal position, that may be rotated.
-   * @param {Permutation[]} allowablePermutations - The un-rotated stable position that we are attracted towards
+   * @param {Array.<Vector3>} idealOrientations - An ideal position, that may be rotated.
+   * @param {Array.<Permutation>} allowablePermutations - The un-rotated stable position that we are attracted towards
    * @param {Vector3} center - The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
    * @return {number} A measure of total error (least squares-style)
    */
@@ -142,9 +142,9 @@ define( function( require ) {
    * but with the repulsion-ordering constraint (no single bond will be assigned a lower-index slot than a lone pair)
    * so we end up splitting the potential slots into bins for each repulsion type and iterating over all of the permutations.
    *
-   * @param {Vector3[]} currentOrientations - An ordered list of orientations (normalized) that should be considered, along with the relevant permutations
-   * @param {Vector3[]} idealOrientations - The un-rotated stable position that we are attracted towards
-   * @param {Permutation[]} allowablePermutations - A list of permutations that map stable positions to pair groups in order.
+   * @param {Array.<Vector3>} currentOrientations - An ordered list of orientations (normalized) that should be considered, along with the relevant permutations
+   * @param {Array.<Vector3>} idealOrientations - The un-rotated stable position that we are attracted towards
+   * @param {Array.<Permutation>} allowablePermutations - A list of permutations that map stable positions to pair groups in order.
    * @return {ResultMapping} (see docs there)
    */
   AttractorModel.findClosestMatchingConfiguration = function( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) {

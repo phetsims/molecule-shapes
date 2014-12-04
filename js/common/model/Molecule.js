@@ -48,20 +48,20 @@ define( function( require ) {
 
     var molecule = this;
 
-    // @public {PairGroup[]} - all of the pair groups, with lone pairs first
+    // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
     this.groups = [];
 
-    // @public {Bond[]} - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
+    // @public {Array.<Bond>} - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
     // so we just have order 0. Lone-pair 'bonds' are listed first.
     this.bonds = [];
 
     // @public - cached subsets of groups (changed on modifications) that we need to iterate through without GC
     // with lone pairs first
-    this.atoms = []; // {PairGroup[]} !isLonePair
-    this.lonePairs = []; // {PairGroup[]} isLonePair
-    this.radialGroups = []; // {PairGroup[]} bonded with centralAtom
-    this.radialAtoms = []; // {PairGroup[]} !isLonePair, bonded with centralAtom
-    this.radialLonePairs = []; // {PairGroup[]} isLonePair, bonded with centralAtom
+    this.atoms = []; // {Array.<PairGroup>} !isLonePair
+    this.lonePairs = []; // {Array.<PairGroup>} isLonePair
+    this.radialGroups = []; // {Array.<PairGroup>} bonded with centralAtom
+    this.radialAtoms = []; // {Array.<PairGroup>} !isLonePair, bonded with centralAtom
+    this.radialLonePairs = []; // {Array.<PairGroup>} isLonePair, bonded with centralAtom
 
     // @public
     this.centralAtom = null; // {PairGroup}, will be filled in later

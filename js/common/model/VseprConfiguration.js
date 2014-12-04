@@ -46,9 +46,9 @@ define( function( require ) {
 
     // @public
     this.geometry = GeometryConfiguration.getConfiguration( x + e ); // undefined?
-    this.bondOrientations = []; // {Vector3[]}
-    this.lonePairOrientations = []; // {Vector3[]}
-    this.allOrientations = this.geometry.unitVectors; // {Vector3[]}
+    this.bondOrientations = []; // {Array.<Vector3>}
+    this.lonePairOrientations = []; // {Array.<Vector3>}
+    this.allOrientations = this.geometry.unitVectors; // {Array.<Vector3>}
 
     for ( var i = 0; i < x + e; i++ ) {
       if ( i < e ) {

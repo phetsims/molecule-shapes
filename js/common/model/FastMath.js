@@ -525,7 +525,7 @@ define( function( require ) {
     /*
      * Sets the 3xN result matrix to be made out of column vectors
      *
-     * @param {Vector3[]} columnVectors - [input] List of 3D column vectors
+     * @param {Array.<Vector3>} columnVectors - [input] List of 3D column vectors
      * @param {FastMath.Array} result - [output] 3xN Matrix, where N is the number of column vectors
      */
     setVectors3: function( columnVectors, result ) {

@@ -18,10 +18,10 @@ define( function( require ) {
 
   /*
    * @constructor
-   * @param {Permutation[]} allowedPermutations
+   * @param {Array.<Permutation>} allowedPermutations
    * @param {PairGroup} centralAtom
-   * @param {PairGroup[]} groups
-   * @param {Vector3[]} idealOrientations
+   * @param {Array.<PairGroup>} groups
+   * @param {Array.<Vector3>} idealOrientations
    */
   function LocalShape( allowedPermutations, centralAtom, groups, idealOrientations ) {
     // denotes how we can map the groups into the orientation vectors. some combinations may not be possible

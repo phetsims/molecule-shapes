@@ -27,7 +27,7 @@ define( function( require ) {
   /*
    * @constructor
    * @param {string} name
-   * @param {Vector3[]} unitVectors - Ordered list of orientations taken by an ideal configuration
+   * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
    */
   function GeometryConfiguration( name, unitVectors ) {
     // @public

@@ -32,8 +32,8 @@ define( function( require ) {
     this.displayName = displayName;
     this.bondLengthOverride = bondLengthOverride * 5.5; // upscale the true size to our model units
 
-    this.atoms = []; // {RealAtomLocation[]}
-    this.bonds = []; // {Bond[]}
+    this.atoms = []; // {Array.<RealAtomLocation>}
+    this.bonds = []; // {Array.<Bond>}
     this.centralAtom = null; // {RealAtomLocation}
 
     this.centralAtomCount = 0;
