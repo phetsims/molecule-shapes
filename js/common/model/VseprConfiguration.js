@@ -33,6 +33,9 @@ define( function( require ) {
   var shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
   var shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
 
+  // for looking up VseprConfiguration instances
+  var configurationMap = {}; // x+','+e => {VSEPRConfiguration}
+
   /*
    * @constructor
    * @param {number} x - Number of radial atoms connected to the central atom
@@ -160,9 +163,6 @@ define( function( require ) {
       }
     },
 
-    // @private
-    configurationMap: {}, // x+','+e => {VSEPRConfiguration}
-
     /*
      * @param {number} x - Number of radial atoms connected to the central atom
      * @param {number} e - Number of radial lone pairs connected to the central atom
@@ -170,11 +170,11 @@ define( function( require ) {
      */
     getConfiguration: function( x, e ) {
       var key = x + ',' + e;
-      if ( key in this.configurationMap ) {
-        return this.configurationMap[key];
+      if ( key in configurationMap ) {
+        return configurationMap[key];
       } else {
         var configuration = new VSEPRConfiguration( x, e );
-        this.configurationMap[key] = configuration;
+        configurationMap[key] = configuration;
         return configuration;
       }
     }
