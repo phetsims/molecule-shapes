@@ -6,10 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-// flag is set so we can ensure that the config has executed. This prevents various Require.js dynamic loading timeouts
-// and script errors
-window.loadedMoleculeShapesConfig = true;
-
 require.config( {
   // An array of dependencies to load. Useful when require is defined as a config object before require.js
   // is loaded, and you want to specify dependencies to load as soon as require() is defined.
