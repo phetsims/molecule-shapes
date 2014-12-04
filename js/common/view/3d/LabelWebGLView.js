@@ -135,7 +135,6 @@ define( function( require ) {
     '  vec4 texLookup = texture2D( map, vUv );',
     '  float rescaled = ( texLookup.r - scaleCenter ) * 2.0 + scaleCenter;',
     '  gl_FragColor = vec4( color, opacity * clamp( rescaled, 0.0, 1.0 ) );',
-    // '  gl_FragColor = vec4( vUv, 0.0, 1.0 );',
     '}'
   ].join( '\n' );
 
