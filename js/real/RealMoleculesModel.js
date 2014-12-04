@@ -88,7 +88,7 @@ define( function( require ) {
               return pair.orientation;
             } ),
             LocalShape.vseprPermutations( mappingMolecule.radialGroups ) );
-          _.each( newMolecule.getGroups(), function( group ) {
+          _.each( newMolecule.groups, function( group ) {
             if ( group !== newMolecule.centralAtom ) {
               group.position = mapping.rotateVector( group.position );
             }

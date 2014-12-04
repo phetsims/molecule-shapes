@@ -247,10 +247,6 @@ define( function( require ) {
       }
     },
 
-    getGroups: function() {
-      return this.groups;
-    },
-
     getCorrespondingIdealGeometryVectors: function() {
       return this.getCentralVSEPRConfiguration().geometry.unitVectors;
     },
