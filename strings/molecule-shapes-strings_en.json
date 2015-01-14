@@ -4,7 +4,6 @@
   "molecule-shapes-basics.name": "Molecule Shapes: Basics",
   "molecule-shapes-basics.title": "Model",
   "real-molecules": "Real Molecules",
-
   "geometry.empty": "",
   "geometry.diatomic": "Linear",
   "geometry.linear": "Linear",
@@ -12,7 +11,6 @@
   "geometry.tetrahedral": "Tetrahedral",
   "geometry.trigonalBipyramidal": "Trigonal Bipyramidal",
   "geometry.octahedral": "Octahedral",
-
   "shape.empty": "",
   "shape.diatomic": "Linear",
   "shape.linear": "Linear",
@@ -26,25 +24,20 @@
   "shape.trigonalBipyramidal": "Trigonal Bipyramidal",
   "shape.squarePyramidal": "Square Pyramidal",
   "shape.octahedral": "Octahedral",
-
   "control.bonding": "Bonding",
   "control.lonePair": "Lone Pair",
   "control.options": "Options",
   "control.geometryName": "Name",
   "control.moleculeGeometry": "Molecule Geometry",
   "control.electronGeometry": "Electron Geometry",
-
   "control.showLonePairs": "Show Lone Pairs",
   "control.showBondAngles": "Show Bond Angles",
   "control.removeAll": "Remove All",
-
   "control.molecule": "Molecule",
   "control.realView": "Real",
   "control.modelView": "Model",
-
   "options.showOuterLonePairs": "Show Outer Lone Pairs",
   "options.projectorColors": "Projector Mode",
-
   "webglWarning.title": "Running with low graphics quality",
   "webglWarning.body": "WebGL is not enabled or not available. Click to learn more."
 }

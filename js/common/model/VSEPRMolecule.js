@@ -35,7 +35,7 @@ define( function( require ) {
 
       // coulomb-style repulsion around the central atom (or angle-based for terminal lone pairs)
       for ( var i = 0; i < this.atoms.length; i++ ) {
-        var atom = this.atoms[i];
+        var atom = this.atoms[ i ];
         if ( this.getNeighborCount( atom ) > 1 ) {
           if ( atom.isCentralAtom() ) {
             // attractive force to the correct position
@@ -45,9 +45,9 @@ define( function( require ) {
             var trueLengthsRatioOverride = Math.max( 0, Math.min( 1, Math.log( error + 1 ) - 0.5 ) );
 
             for ( var j = 0; j < radialGroups.length; j++ ) {
-              var group = radialGroups[j];
+              var group = radialGroups[ j ];
               for ( var k = 0; k < radialGroups.length; k++ ) {
-                var otherGroup = radialGroups[k];
+                var otherGroup = radialGroups[ k ];
 
                 if ( otherGroup !== group && group !== this.centralAtom ) {
                   group.repulseFrom( otherGroup, dt, trueLengthsRatioOverride );

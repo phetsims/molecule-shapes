@@ -125,7 +125,7 @@ define( function( require ) {
     var bondLength = 1.087;
     var vectors = GeometryConfiguration.getConfiguration( 4 ).unitVectors;
     for ( var i = 0; i < vectors.length; i++ ) {
-      shape.addRadialAtom( new RealAtomLocation( H, vectors[i].times( bondLength ), 0 ), 1 );
+      shape.addRadialAtom( new RealAtomLocation( H, vectors[ i ].times( bondLength ), 0 ), 1 );
     }
   } );
 
@@ -194,7 +194,7 @@ define( function( require ) {
     shape.addCentralAtom( new RealAtomLocation( S, new Vector3() ) );
     var vectors = GeometryConfiguration.getConfiguration( 6 ).unitVectors;
     for ( var i = 0; i < vectors.length; i++ ) {
-      shape.addRadialAtom( new RealAtomLocation( F, vectors[i].times( 1.564 ), 3 ), 1 );
+      shape.addRadialAtom( new RealAtomLocation( F, vectors[ i ].times( 1.564 ), 3 ), 1 );
     }
   } );
 

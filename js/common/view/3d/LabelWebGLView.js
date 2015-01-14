@@ -28,8 +28,8 @@ define( function( require ) {
   var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
 
   /*---------------------------------------------------------------------------*
-  * Glyph texture setup
-  *----------------------------------------------------------------------------*/
+   * Glyph texture setup
+   *----------------------------------------------------------------------------*/
 
   var glyphs = {};
   var maxWidth;
@@ -48,11 +48,11 @@ define( function( require ) {
     for ( key in LiberationSansRegularSubset ) {
       numGlyphs++;
 
-      var fontGlyph = LiberationSansRegularSubset[key];
-      var shape = new Shape( fontGlyph.path ).transformed( scaleMatrix )  ;
+      var fontGlyph = LiberationSansRegularSubset[ key ];
+      var shape = new Shape( fontGlyph.path ).transformed( scaleMatrix );
       maxBounds.includeBounds( shape.bounds );
 
-      glyphs[key] = {
+      glyphs[ key ] = {
         advance: fontGlyph.x_advance * glyphScale,
         shape: shape
       };
@@ -78,18 +78,18 @@ define( function( require ) {
       var yOffset = padding + maxHeight - maxBounds.maxY;
       context.setTransform( 1, 0, 0, 1, xOffset, yOffset );
       // Bounds in the texture are offset from the X,Y. We scale to [0,1] since that's how texture coordinates are handled
-      glyphs[key].bounds = new Bounds2( ( xOffset + maxBounds.minX ) / canvasWidth,
-                                        ( yOffset + maxBounds.minY ) / canvasHeight,
-                                        ( xOffset + maxBounds.maxX ) / canvasWidth,
-                                        ( yOffset + maxBounds.maxY ) / canvasHeight );
+      glyphs[ key ].bounds = new Bounds2( ( xOffset + maxBounds.minX ) / canvasWidth,
+        ( yOffset + maxBounds.minY ) / canvasHeight,
+        ( xOffset + maxBounds.maxX ) / canvasWidth,
+        ( yOffset + maxBounds.maxY ) / canvasHeight );
       // draw it in white over transparency
       context.fillStyle = 'white';
       context.beginPath();
-      glyphs[key].shape.writeToContext( context );
+      glyphs[ key ].shape.writeToContext( context );
       context.fill();
 
-      glyphs[key].xOffset = xOffset;
-      glyphs[key].yOffset = yOffset;
+      glyphs[ key ].xOffset = xOffset;
+      glyphs[ key ].yOffset = yOffset;
       n++;
     }
 
@@ -106,13 +106,13 @@ define( function( require ) {
 
   // metrics data for proper centering and layout
   var FORMAT_STRING = '000.0°';
-  var shortXOffset = glyphs['0'].advance;
-  var shortWidth = 3 * glyphs['0'].advance + glyphs['.'].advance + glyphs['°'].advance;
-  var longWidth = glyphs['0'].advance + shortWidth;
+  var shortXOffset = glyphs[ '0' ].advance;
+  var shortWidth = 3 * glyphs[ '0' ].advance + glyphs[ '.' ].advance + glyphs[ '°' ].advance;
+  var longWidth = glyphs[ '0' ].advance + shortWidth;
 
   /*---------------------------------------------------------------------------*
-  * Text shader
-  *----------------------------------------------------------------------------*/
+   * Text shader
+   *----------------------------------------------------------------------------*/
 
   var vertexShader = [
     'varying vec2 vUv;',
@@ -173,7 +173,7 @@ define( function( require ) {
       geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
       geometry.vertices.push( new THREE.Vector3( x + maxWidth, maxHeight, 0 ) );
       geometry.vertices.push( new THREE.Vector3( x + 0, maxHeight, 0 ) );
-      x += glyphs[FORMAT_STRING[i]].advance;
+      x += glyphs[ FORMAT_STRING[ i ] ].advance;
 
       // push UV placeholders for each corner
       this.uvs.push( new THREE.Vector3() );
@@ -184,9 +184,9 @@ define( function( require ) {
       // two faces to make up the quad for the character
       var offset = 4 * i;
       geometry.faces.push( new THREE.Face3( offset, offset + 1, offset + 2 ) );
-      geometry.faceVertexUvs[0].push( [this.uvs[offset], this.uvs[offset + 1], this.uvs[offset + 2]] );
+      geometry.faceVertexUvs[ 0 ].push( [ this.uvs[ offset ], this.uvs[ offset + 1 ], this.uvs[ offset + 2 ] ] );
       geometry.faces.push( new THREE.Face3( offset, offset + 2, offset + 3 ) );
-      geometry.faceVertexUvs[0].push( [this.uvs[offset], this.uvs[offset + 2], this.uvs[offset + 3]] );
+      geometry.faceVertexUvs[ 0 ].push( [ this.uvs[ offset ], this.uvs[ offset + 2 ], this.uvs[ offset + 3 ] ] );
     }
 
     geometry.dynamic = true; // tells three.js that we will change things
@@ -196,7 +196,7 @@ define( function( require ) {
     this.materialUniforms.map.value = texture;
 
     MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
-      view.materialUniforms.color.value = [color.r / 255, color.g / 255, color.b / 255]; // uniforms use number arrays
+      view.materialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 
     var material = MoleculeShapesGlobals.useWebGL ? new THREE.ShaderMaterial( {
@@ -259,22 +259,23 @@ define( function( require ) {
     setString: function( string ) {
       var idx = 0;
       if ( string.length === 6 ) {
-        this.setGlyph( 0, string[idx++] );
-      } else {
+        this.setGlyph( 0, string[ idx++ ] );
+      }
+      else {
         this.unsetGlyph( 0 );
       }
-      this.setGlyph( 1, string[idx++] );
-      this.setGlyph( 2, string[idx++] );
-      this.setGlyph( 3, string[idx++] );
-      this.setGlyph( 4, string[idx++] );
-      this.setGlyph( 5, string[idx++] );
+      this.setGlyph( 1, string[ idx++ ] );
+      this.setGlyph( 2, string[ idx++ ] );
+      this.setGlyph( 3, string[ idx++ ] );
+      this.setGlyph( 4, string[ idx++ ] );
+      this.setGlyph( 5, string[ idx++ ] );
     },
 
     // @private - sets the UV coordinates for a single glyph, 0-indexed
     setGlyph: function( index, string ) {
-      assert && assert( glyphs[string] );
+      assert && assert( glyphs[ string ] );
 
-      var glyph = glyphs[string];
+      var glyph = glyphs[ string ];
       var minU = glyph.bounds.minX;
       var maxU = glyph.bounds.maxX;
       var minV = 1 - glyph.bounds.maxY;
@@ -293,14 +294,14 @@ define( function( require ) {
     setUVs: function( index, minU, minV, maxU, maxV ) {
       var offset = index * 4;
 
-      this.uvs[offset].x = minU;
-      this.uvs[offset].y = maxV;
-      this.uvs[offset + 1].x = maxU;
-      this.uvs[offset + 1].y = maxV;
-      this.uvs[offset + 2].x = maxU;
-      this.uvs[offset + 2].y = minV;
-      this.uvs[offset + 3].x = minU;
-      this.uvs[offset + 3].y = minV;
+      this.uvs[ offset ].x = minU;
+      this.uvs[ offset ].y = maxV;
+      this.uvs[ offset + 1 ].x = maxU;
+      this.uvs[ offset + 1 ].y = maxV;
+      this.uvs[ offset + 2 ].x = maxU;
+      this.uvs[ offset + 2 ].y = minV;
+      this.uvs[ offset + 3 ].x = minU;
+      this.uvs[ offset + 3 ].y = minV;
       this.geometry.uvsNeedUpdate = true; // will need when we change UVs
     }
   } );

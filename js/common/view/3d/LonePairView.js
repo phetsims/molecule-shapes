@@ -98,7 +98,7 @@ define( function( require ) {
 
       view.position.set( translation.x, translation.y, translation.z );
       view.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
-                                          new THREE.Vector3().copy( orientation ) );
+        new THREE.Vector3().copy( orientation ) );
     };
   }
 
@@ -157,7 +157,7 @@ define( function( require ) {
 
       // hit-test all faces, with early exit in case of intersection (the distance doesn't have to be exact)
       for ( var f = 0; f < faceCount; f++ ) {
-        var face = geometry.faces[f];
+        var face = geometry.faces[ f ];
         var a = vertices[ face.a ];
         var b = vertices[ face.b ];
         var c = vertices[ face.c ];

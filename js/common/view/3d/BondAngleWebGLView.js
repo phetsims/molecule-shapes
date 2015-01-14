@@ -24,8 +24,8 @@ define( function( require ) {
   var RADIAL_VERTEX_COUNT = 24; // how many vertices to use along the view
 
   /*---------------------------------------------------------------------------*
-  * Geometry for the sector and arc
-  *----------------------------------------------------------------------------*/
+   * Geometry for the sector and arc
+   *----------------------------------------------------------------------------*/
 
   /*
    * Since we use a custom vertex shader for properly positioning and transforming our vertices, we ship our vertices
@@ -73,8 +73,8 @@ define( function( require ) {
   var localArcGeometry = new LocalGeometry( createArcGeometry() );
 
   /*---------------------------------------------------------------------------*
-  * GLSL Shader for the sector and arc
-  *----------------------------------------------------------------------------*/
+   * GLSL Shader for the sector and arc
+   *----------------------------------------------------------------------------*/
 
   /*
    * We use a vertex shader that allows us to modify the bond angle's start and end points in a much faster way
@@ -118,7 +118,7 @@ define( function( require ) {
     },
     color: {
       type: '3f',
-      value: [1,1,1]
+      value: [ 1, 1, 1 ]
     },
     angle: {
       type: 'f',
@@ -126,11 +126,11 @@ define( function( require ) {
     },
     midpointUnit: {
       type: '3f',
-      value: [0,1,0]
+      value: [ 0, 1, 0 ]
     },
     planarUnit: {
       type: '3f',
-      value: [1,0,0]
+      value: [ 1, 0, 0 ]
     }
   };
 
@@ -160,7 +160,7 @@ define( function( require ) {
     } );
     // set and update our color
     this.sweepColorListener = function( color ) {
-      view.sectorMaterial.uniforms.color.value = [color.r / 255, color.g / 255, color.b / 255];
+      view.sectorMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
     MoleculeShapesColors.bondAngleSweepProperty.link( this.sweepColorListener );
 
@@ -175,7 +175,7 @@ define( function( require ) {
     } );
     // set and update our color
     this.arcColorListener = function( color ) {
-      view.arcMaterial.uniforms.color.value = [color.r / 255, color.g / 255, color.b / 255];
+      view.arcMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
     MoleculeShapesColors.bondAngleArcProperty.link( this.arcColorListener );
 
@@ -225,8 +225,8 @@ define( function( require ) {
       this.arcMaterial.uniforms.angle.value = this.viewAngle;
 
       // vector uniforms in three.js use arrays
-      var midpointUnitArray = [this.midpointUnit.x, this.midpointUnit.y, this.midpointUnit.z];
-      var planarUnitArray = [this.planarUnit.x, this.planarUnit.y, this.planarUnit.z];
+      var midpointUnitArray = [ this.midpointUnit.x, this.midpointUnit.y, this.midpointUnit.z ];
+      var planarUnitArray = [ this.planarUnit.x, this.planarUnit.y, this.planarUnit.z ];
 
       this.sectorMaterial.uniforms.midpointUnit.value = midpointUnitArray;
       this.arcMaterial.uniforms.midpointUnit.value = midpointUnitArray;

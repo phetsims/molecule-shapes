@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
 
@@ -19,67 +19,66 @@
 
 </head>
 <body>
-  <script>
+<script>
 
-    // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
-    function check() {
-      if ( window.loadedMoleculeShapesConfig ) {
-        requirejs( [ 'molecule-shapes-dev-main',
-                     'SCENERY/main',
-                     'KITE/main',
-                     'DOT/main',
-                     'AXON/main',
-                     'PHET_CORE/main' ], function(
-                      devMain,
-                      scenery,
-                      kite,
-                      dot,
-                      axon,
-                      core
-                      ) {
-          // put all of our dev-main into the global namespace
-          _.extend( window, devMain );
-          window.scenery = scenery;
-          window.kite = kite;
-          window.dot = dot;
-          window.axon = axon;
-          window.core = core;
+  // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
+  function check() {
+    if ( window.loadedMoleculeShapesConfig ) {
+      requirejs( [ 'molecule-shapes-dev-main',
+        'SCENERY/main',
+        'KITE/main',
+        'DOT/main',
+        'AXON/main',
+        'PHET_CORE/main' ], function( devMain,
+                                      scenery,
+                                      kite,
+                                      dot,
+                                      axon,
+                                      core ) {
+        // put all of our dev-main into the global namespace
+        _.extend( window, devMain );
+        window.scenery = scenery;
+        window.kite = kite;
+        window.dot = dot;
+        window.axon = axon;
+        window.core = core;
 
-          console.log( 'loaded' );
+        console.log( 'loaded' );
 
-          var a = new FastMath.Array( [1, 2, 7, 5, 2, 6, -1, -5, 4] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
-          var b = new FastMath.Array( [4, 3, 1, -7, 2, -1, -1, 0, -2] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}
-          var c = new FastMath.Array( 9 );
+        var a = new FastMath.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
+        var b = new FastMath.Array( [ 4, 3, 1, -7, 2, -1, -1, 0, -2 ] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}
+        var c = new FastMath.Array( 9 );
 
-          FastMath.mult3( a, b, c );
-          console.log( c ); // {{-17, 7, -15}, {0, 19, -9}, {27, -13, -4}}
-          FastMath.mult3LeftTranspose( a, b, c );
-          console.log( c ); // {{-30, 13, -2}, {-1, 10, 10}, {-18, 33, -7}}
-          FastMath.mult3RightTranspose( a, b, c );
-          console.log( c ); // {{17, -10, -15}, {32, -37, -17}, {-15, -7, -7}}
-          FastMath.mult3BothTranspose( a, b, c );
-          console.log( c ); // {{18, 4, 1}, {9, -5, 8}, {50, -41, -15}}
+        FastMath.mult3( a, b, c );
+        console.log( c ); // {{-17, 7, -15}, {0, 19, -9}, {27, -13, -4}}
+        FastMath.mult3LeftTranspose( a, b, c );
+        console.log( c ); // {{-30, 13, -2}, {-1, 10, 10}, {-18, 33, -7}}
+        FastMath.mult3RightTranspose( a, b, c );
+        console.log( c ); // {{17, -10, -15}, {32, -37, -17}, {-15, -7, -7}}
+        FastMath.mult3BothTranspose( a, b, c );
+        console.log( c ); // {{18, 4, 1}, {9, -5, 8}, {50, -41, -15}}
 
-          var s = new FastMath.Array( 9 );
-          var q = new FastMath.Array( 9 );
-          FastMath.mult3LeftTranspose( a, a, s );
-          FastMath.setIdentity3( q );
+        var s = new FastMath.Array( 9 );
+        var q = new FastMath.Array( 9 );
+        FastMath.mult3LeftTranspose( a, a, s );
+        FastMath.setIdentity3( q );
 
-          var u = new FastMath.Array( 9 );
-          var sigma = new FastMath.Array( 9 );
-          var v = new FastMath.Array( 9 );
-          FastMath.svd3( a, 20, u, sigma, v );
+        var u = new FastMath.Array( 9 );
+        var sigma = new FastMath.Array( 9 );
+        var v = new FastMath.Array( 9 );
+        FastMath.svd3( a, 20, u, sigma, v );
 
-          console.log( u );
-          console.log( sigma );
-          console.log( v );
-          console.log( v );
-        } );
-      } else {
-        setTimeout( check, 4 );
-      }
+        console.log( u );
+        console.log( sigma );
+        console.log( v );
+        console.log( v );
+      } );
     }
-    setTimeout( check, 4 );
-  </script>
+    else {
+      setTimeout( check, 4 );
+    }
+  }
+  setTimeout( check, 4 );
+</script>
 </body>
 </html>

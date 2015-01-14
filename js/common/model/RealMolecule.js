@@ -41,7 +41,7 @@ define( function( require ) {
     // add in bonds
     var bonds = realMoleculeShape.bonds;
     for ( i = 0; i < bonds.length; i++ ) {
-      var bond = bonds[i];
+      var bond = bonds[ i ];
       var atom = bond.getOtherAtom( realMoleculeShape.centralAtom );
       idealCentralOrientations.push( atom.orientation );
       var bondLength = atom.position.magnitude();
@@ -67,19 +67,19 @@ define( function( require ) {
 
     // add in lone pairs in their correct "initial" positions
     for ( i = 0; i < numLonePairs; i++ ) {
-      var orientation = mapping.rotateVector( idealModelVectors[i] );
+      var orientation = mapping.rotateVector( idealModelVectors[ i ] );
       idealCentralOrientations.push( orientation );
       group = new PairGroup( orientation.times( PairGroup.LONE_PAIR_DISTANCE ), true );
       this.addGroupAndBond( group, this.centralAtom, 0, PairGroup.LONE_PAIR_DISTANCE );
       radialGroups.push( group );
     }
 
-    this.localShapeMap[this.centralAtom.id] = new LocalShape( LocalShape.realPermutations( radialGroups ), this.centralAtom, radialGroups, idealCentralOrientations );
+    this.localShapeMap[ this.centralAtom.id ] = new LocalShape( LocalShape.realPermutations( radialGroups ), this.centralAtom, radialGroups, idealCentralOrientations );
 
     // basically only use VSEPR model for the attraction on non-central atoms
     var radialAtoms = this.radialAtoms;
     for ( i = 0; i < radialAtoms.length; i++ ) {
-      this.localShapeMap[radialAtoms[i].id] = this.getLocalVSEPRShape( radialAtoms[i] );
+      this.localShapeMap[ radialAtoms[ i ].id ] = this.getLocalVSEPRShape( radialAtoms[ i ] );
     }
   }
 
@@ -91,7 +91,7 @@ define( function( require ) {
       // angle-based repulsion
       var numAtoms = this.atoms.length;
       for ( var i = 0; i < numAtoms; i++ ) {
-        var atom = this.atoms[i];
+        var atom = this.atoms[ i ];
         if ( this.getNeighborCount( atom ) > 1 ) {
           var localShape = this.getLocalShape( atom );
 
@@ -101,7 +101,7 @@ define( function( require ) {
     },
 
     getLocalShape: function( atom ) {
-      return this.localShapeMap[atom.id];
+      return this.localShapeMap[ atom.id ];
     },
 
     getMaximumBondLength: function() {

@@ -39,8 +39,6 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'controlPanelBorder', this, 'stroke' );
   }
 
-  return inherit( TitledPanel, MoleculeShapesPanel, {
-
-  } );
+  return inherit( TitledPanel, MoleculeShapesPanel, {} );
 } );
 

@@ -36,8 +36,6 @@ define( function( require ) {
   }
 
   //REVIEW {} unnecessary
-  return inherit( RectangularPushButton, RemovePairGroupButton, {
-
-  } );
+  return inherit( RectangularPushButton, RemovePairGroupButton, {} );
 } );
 

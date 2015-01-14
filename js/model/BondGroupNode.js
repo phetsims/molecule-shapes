@@ -26,16 +26,16 @@ define( function( require ) {
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
   /*---------------------------------------------------------------------------*
-  * Dynamic generation of the bonding/lone-pair panel images, by rendering a three.js scene to an image
-  *----------------------------------------------------------------------------*/
+   * Dynamic generation of the bonding/lone-pair panel images, by rendering a three.js scene to an image
+   *----------------------------------------------------------------------------*/
   var scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
 
   var renderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
-      antialias: true,
-      preserveDrawingBuffer: true, // so we can toDataURL() it
-      alpha: true // so we can render the transparency
-    } ) : new THREE.CanvasRenderer();
+    antialias: true,
+    preserveDrawingBuffer: true, // so we can toDataURL() it
+    alpha: true // so we can render the transparency
+  } ) : new THREE.CanvasRenderer();
   renderer.setClearColor( 0x0, 0 ); // transparent
 
   // how many physical pixel lengths map to a CSS pixel length (devicePixelRatio of 2 means 4 pixels map to 1)
@@ -69,6 +69,7 @@ define( function( require ) {
   var atomHeight = 42;
   var atomWidth = 120;
   var lonePairHeight = 55;
+
   function getBondDataURL( bondOrder ) {
     var molecule = new VSEPRMolecule();
     var centralAtom = new PairGroup( new Vector3(), false );
@@ -78,12 +79,15 @@ define( function( require ) {
       molecule: molecule
     } );
 
-    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
+    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, {
+      showLabel: function() {},
+      finishedAddingLabels: function() {}
+    } );
     view.updateView();
     view.hideCentralAtom();
 
     var orthoSize = bondOrder === 0 ?
-                    ( PairGroup.LONE_PAIR_DISTANCE * 1.07 ):
+                    ( PairGroup.LONE_PAIR_DISTANCE * 1.07 ) :
                     ( PairGroup.BONDED_PAIR_DISTANCE * 1.22 );
     var url = render( view, ( bondOrder === 0 ? lonePairWidth : atomWidth ) * imageScale, ( bondOrder === 0 ? lonePairHeight : atomHeight ) * imageScale, orthoSize );
     view.dispose();
@@ -134,10 +138,12 @@ define( function( require ) {
     function updateImage() {
       image.image = getBondDataURL( bondOrder );
     }
+
     if ( bondOrder === 0 ) {
       MoleculeShapesColors.lonePairShellProperty.lazyLink( updateImage );
       MoleculeShapesColors.lonePairElectronProperty.lazyLink( updateImage );
-    } else {
+    }
+    else {
       MoleculeShapesColors.atomProperty.lazyLink( updateImage );
       MoleculeShapesColors.bondProperty.lazyLink( updateImage );
     }
@@ -147,7 +153,7 @@ define( function( require ) {
       image.right = overlay.right - 10;
     }
 
-    var thumbnail = new Node( { children: [image, overlay] } );
+    var thumbnail = new Node( { children: [ image, overlay ] } );
 
     // button to remove a copy of the bond / lone pair
     var removeButton = new RemovePairGroupButton( {
@@ -171,12 +177,14 @@ define( function( require ) {
 
       updateOverlayOpacity();
     }
+
     function updateOverlayOpacity() {
       var alpha;
       if ( enabled ) {
         // when "button over" the overlay will show through more of the image
         alpha = overCount > 0 ? 0 : 0.1;
-      } else {
+      }
+      else {
         alpha = 0.4;
       }
       overlay.fill = MoleculeShapesColors.background.withAlpha( alpha );
@@ -187,7 +195,7 @@ define( function( require ) {
     MoleculeShapesColors.backgroundProperty.lazyLink( update );
 
     HBox.call( this, _.extend( {
-      children: [thumbnail, removeButton],
+      children: [ thumbnail, removeButton ],
       spacing: 10,
       align: 'center'
     }, options ) );

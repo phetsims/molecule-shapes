@@ -25,10 +25,10 @@ define( function( require ) {
 
     if ( !isBasicsVersion ) {
       children.push( new CheckBox( new Text( showOuterLonePairsString, { font: OptionsDialog.DEFAULT_FONT } ),
-                                   MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
+        MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
     }
     children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
-                                 MoleculeShapesGlobals.projectorColorsProperty, {} ) );
+      MoleculeShapesGlobals.projectorColorsProperty, {} ) );
 
     VBox.call( this, _.extend( {
       children: children,

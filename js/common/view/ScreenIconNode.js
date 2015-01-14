@@ -25,8 +25,8 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   /*---------------------------------------------------------------------------*
-  * Dynamic generation of the molecules
-  *----------------------------------------------------------------------------*/
+   * Dynamic generation of the molecules
+   *----------------------------------------------------------------------------*/
   var scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
 
@@ -58,11 +58,13 @@ define( function( require ) {
 
     return renderer.domElement.toDataURL();
   }
+
   function getAngle( isModel, isBasicsVersion ) {
     if ( !isBasicsVersion ) {
       // H2O
       return isModel ? Util.toRadians( 120 ) / 2 : Util.toRadians( 104.5 ) / 2;
-    } else {
+    }
+    else {
       // CO2
       return Math.PI / 2;
     }
@@ -100,7 +102,10 @@ define( function( require ) {
       molecule: molecule
     } );
 
-    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, { showLabel: function() {}, finishedAddingLabels: function() {} } );
+    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, {
+      showLabel: function() {},
+      finishedAddingLabels: function() {}
+    } );
     view.updateView();
 
     // change how atoms/bonds are scaled, so it can appear nicely

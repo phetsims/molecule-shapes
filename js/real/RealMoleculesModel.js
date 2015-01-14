@@ -27,7 +27,7 @@ define( function( require ) {
   function RealMoleculesModel( isBasicsVersion ) {
     var model = this;
 
-    var startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[0] : RealMoleculeShape.TAB_2_MOLECULES[0];
+    var startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[ 0 ] : RealMoleculeShape.TAB_2_MOLECULES[ 0 ];
     var startingMolecule = new RealMolecule( startingMoleculeShape );
 
     // inherits PropertySet, these are made into properties
@@ -106,13 +106,13 @@ define( function( require ) {
         var newCentralAtom = new PairGroup( new Vector3(), false );
         newMolecule.addCentralAtom( newCentralAtom );
         for ( var i = 0; i < numRadialAtoms + numRadialLonePairs; i++ ) {
-          var unitVector = mapping.rotateVector( idealUnitVectors[i] );
+          var unitVector = mapping.rotateVector( idealUnitVectors[ i ] );
           if ( i < numRadialLonePairs ) {
             newMolecule.addGroupAndBond( new PairGroup( unitVector.times( PairGroup.LONE_PAIR_DISTANCE ), true ), newCentralAtom, 0 );
           }
           else {
             // we need to dig the bond order out of the mapping molecule, and we need to pick the right one (thus the permutation being applied, at an offset)
-            var oldRadialGroup = mappingMolecule.radialAtoms[permutation.apply( i ) - numRadialLonePairs];
+            var oldRadialGroup = mappingMolecule.radialAtoms[ permutation.apply( i ) - numRadialLonePairs ];
             var bond = mappingMolecule.getParentBond( oldRadialGroup );
             var group = new PairGroup( unitVector.times( bond.length ), false );
             newMolecule.addGroupAndBond( group, newCentralAtom, bond.order, bond.length );

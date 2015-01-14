@@ -96,9 +96,9 @@ define( function( require ) {
       // We'll want one material for each renderer-element pair, since we can't share across renderers, and we want to
       // share the material with the same element when possible.
 
-      var localMaterial = elementLocalMaterials[element.symbol];
+      var localMaterial = elementLocalMaterials[ element.symbol ];
       if ( !localMaterial ) {
-        localMaterial = elementLocalMaterials[element.symbol] = new LocalMaterial( new THREE.MeshLambertMaterial( {
+        localMaterial = elementLocalMaterials[ element.symbol ] = new LocalMaterial( new THREE.MeshLambertMaterial( {
           color: new Color( element.color ).toNumber(),
           ambient: new Color( element.color ).toNumber(),
           overdraw: OVERDRAW

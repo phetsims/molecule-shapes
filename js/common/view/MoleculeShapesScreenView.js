@@ -112,7 +112,8 @@ define( function( require ) {
         var imageData = tmpContext.createImageData( screenView.screenWidth, screenView.screenHeight );
         imageData.data.set( imageDataBuffer );
         tmpContext.putImageData( imageData, 0, 0 );
-      } else {
+      }
+      else {
         // If just falling back to Canvas, we can directly render out!
         canvas = screenView.threeRenderer.domElement;
       }
@@ -132,7 +133,7 @@ define( function( require ) {
     this.overlayCamera.position.z = 50;
 
     this.addChild( new ResetAllButton( {
-      right: this.layoutBounds.maxX - 10,
+      right:  this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
         model.reset();
@@ -141,7 +142,7 @@ define( function( require ) {
     } ) );
 
     this.addChild( new GeometryNamePanel( model, {
-      left: this.layoutBounds.minX + 10,
+      left:   this.layoutBounds.minX + 10,
       bottom: this.layoutBounds.maxY - 10
     } ) );
 
@@ -174,11 +175,13 @@ define( function( require ) {
           draggedParticle = pair;
           pair.userControlled = true;
           draggedParticleCount++;
-        } else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
+        }
+        else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
           // we rotate the entire molecule with this pointer
           dragMode = 'modelRotate';
           isRotating = true;
-        } else {
+        }
+        else {
           // can't drag the pair OR rotate the molecule
           return;
         }
@@ -204,7 +207,8 @@ define( function( require ) {
               var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
               newQuaternion.multiply( model.moleculeQuaternion );
               model.moleculeQuaternion = newQuaternion;
-            } else if ( dragMode === 'pairExistingSpherical' ) {
+            }
+            else if ( dragMode === 'pairExistingSpherical' ) {
               if ( _.contains( model.molecule.groups, draggedParticle ) ) {
                 draggedParticle.dragToPosition( screenView.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
               }
@@ -216,7 +220,8 @@ define( function( require ) {
             if ( dragMode === 'pairExistingSpherical' ) {
               draggedParticle.userControlled = false;
               draggedParticleCount--;
-            } else if ( dragMode === 'modelRotate' ) {
+            }
+            else if ( dragMode === 'modelRotate' ) {
               isRotating = false;
             }
             event.pointer.removeInputListener( this );
@@ -249,12 +254,13 @@ define( function( require ) {
     this.angleLabels = [];
     for ( var i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGL ) {
-        this.angleLabels[i] = new LabelWebGLView( this.threeRenderer );
-        this.overlayScene.add( this.angleLabels[i] );
-        this.angleLabels[i].unsetLabel();
-      } else {
-        this.angleLabels[i] = new LabelFallbackNode();
-        this.addChild( this.angleLabels[i] );
+        this.angleLabels[ i ] = new LabelWebGLView( this.threeRenderer );
+        this.overlayScene.add( this.angleLabels[ i ] );
+        this.angleLabels[ i ].unsetLabel();
+      }
+      else {
+        this.angleLabels[ i ] = new LabelFallbackNode();
+        this.addChild( this.angleLabels[ i ] );
       }
     }
   }
@@ -316,7 +322,7 @@ define( function( require ) {
     getRayFromScreenPoint: function( screenPoint ) {
       var threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
       return new Ray3( new Vector3().set( threeRay.origin ),
-                       new Vector3().set( threeRay.direction ).normalize() );
+        new Vector3().set( threeRay.direction ).normalize() );
     },
 
     /*
@@ -334,7 +340,7 @@ define( function( require ) {
 
       var length = this.moleculeView.radialViews.length;
       for ( var i = 0; i < length; i++ ) {
-        var view = this.moleculeView.radialViews[i];
+        var view = this.moleculeView.radialViews[ i ];
 
         var intersectionPoint = view.intersect( worldRay, isTouch ); // THREE.Vector3
         if ( intersectionPoint ) {
@@ -430,9 +436,9 @@ define( function( require ) {
       }
       else {
         // pick the hitPoint closer to our current point (won't flip to the other side of our sphere)
-        return intersections[0].hitPoint.distance( draggedParticle.position ) < intersections[1].hitPoint.distance( draggedParticle.position ) ?
-               intersections[0].hitPoint :
-               intersections[1].hitPoint;
+        return intersections[ 0 ].hitPoint.distance( draggedParticle.position ) < intersections[ 1 ].hitPoint.distance( draggedParticle.position ) ?
+               intersections[ 0 ].hitPoint :
+               intersections[ 1 ].hitPoint;
       }
     },
 

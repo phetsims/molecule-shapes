@@ -38,9 +38,9 @@ define( function( require ) {
       assert && assert( renderer );
 
       for ( var i = 0; i < this.renderers.length; i++ ) {
-        if ( this.renderers[i] === renderer ) {
+        if ( this.renderers[ i ] === renderer ) {
           // remove it from the pool
-          var object = this.objects[i];
+          var object = this.objects[ i ];
           this.renderers.splice( i, 1 );
           this.objects.splice( i, 1 );
           this.quantityOutside++;

@@ -23,7 +23,7 @@ define( function( require ) {
     var geometry = new THREE.Geometry();
 
     for ( var i = 0; i < vertices.length; i++ ) {
-      geometry.vertices.push( vertices[i] );
+      geometry.vertices.push( vertices[ i ] );
     }
     geometry.dynamic = true; // so we can be updated
 
@@ -37,7 +37,7 @@ define( function( require ) {
     geometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
     for ( var i = 0; i < vertices.length; i++ ) {
       // unclear whether concat would be supported
-      geometry.vertices.push( vertices[i] );
+      geometry.vertices.push( vertices[ i ] );
     }
     // faces
     for ( var j = 0; j < vertices.length - 1; j++ ) {
@@ -133,7 +133,7 @@ define( function( require ) {
         // use our basis vectors to compute the point
         var position = this.midpointUnit.times( Math.cos( theta ) ).plus( this.planarUnit.times( Math.sin( theta ) ) ).times( BondAngleView.radius );
 
-        var vertex = this.arcVertices[i];
+        var vertex = this.arcVertices[ i ];
         vertex.x = position.x;
         vertex.y = position.y;
         vertex.z = position.z;

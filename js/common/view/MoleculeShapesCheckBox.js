@@ -27,8 +27,6 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'checkBoxBackground', this, 'checkBoxColorBackground' );
   }
 
-  return inherit( CheckBox, MoleculeShapesCheckBox, {
-
-  } );
+  return inherit( CheckBox, MoleculeShapesCheckBox, {} );
 } );
 

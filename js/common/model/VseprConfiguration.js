@@ -56,10 +56,10 @@ define( function( require ) {
     for ( var i = 0; i < x + e; i++ ) {
       if ( i < e ) {
         // fill up the lone pair unit vectors first
-        this.lonePairOrientations.push( this.geometry.unitVectors[i] );
+        this.lonePairOrientations.push( this.geometry.unitVectors[ i ] );
       }
       else {
-        this.bondOrientations.push( this.geometry.unitVectors[i] );
+        this.bondOrientations.push( this.geometry.unitVectors[ i ] );
       }
     }
   }
@@ -71,8 +71,8 @@ define( function( require ) {
 
       // done currently only when the molecule is rebuilt, so we don't try to pass a lastPermutation in (not helpful)
       return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
-                                                              this.geometry.unitVectors,
-                                                              LocalShape.vseprPermutations( groups ) );
+        this.geometry.unitVectors,
+        LocalShape.vseprPermutations( groups ) );
     },
 
     // for finding ideal rotations exclusively using the 'bonded' portions
@@ -82,8 +82,8 @@ define( function( require ) {
 
       // currently only called when a real molecule is built, so we don't try to pass a lastPermutation in (not helpful)
       return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
-                                                              this.bondOrientations,
-                                                              Permutation.permutations( this.bondOrientations.length ) );
+        this.bondOrientations,
+        Permutation.permutations( this.bondOrientations.length ) );
     }
   }, {
     /*
@@ -171,10 +171,11 @@ define( function( require ) {
     getConfiguration: function( x, e ) {
       var key = x + ',' + e;
       if ( key in configurationMap ) {
-        return configurationMap[key];
-      } else {
+        return configurationMap[ key ];
+      }
+      else {
         var configuration = new VSEPRConfiguration( x, e );
-        configurationMap[key] = configuration;
+        configurationMap[ key ] = configuration;
         return configuration;
       }
     }

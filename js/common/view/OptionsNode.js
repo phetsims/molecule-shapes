@@ -50,6 +50,7 @@ define( function( require ) {
     function updateLonePairCheckboxVisibility() {
       showLonePairsCheckbox.enabled = model.molecule.radialLonePairs.length > 0;
     }
+
     model.link( 'molecule', function( newMolecule, oldMolecule ) {
       if ( oldMolecule ) {
         oldMolecule.off( 'bondChanged', updateLonePairCheckboxVisibility );
@@ -61,14 +62,12 @@ define( function( require ) {
     } );
 
     VBox.call( this, _.extend( {
-      children: model.isBasicsVersion ? [showBondAnglesCheckbox] : [showLonePairsCheckbox, showBondAnglesCheckbox],
+      children: model.isBasicsVersion ? [ showBondAnglesCheckbox ] : [ showLonePairsCheckbox, showBondAnglesCheckbox ],
       spacing: 10,
       align: 'left'
     }, options ) );
   }
 
-  return inherit( VBox, OptionsNode, {
-
-  } );
+  return inherit( VBox, OptionsNode, {} );
 } );
 

@@ -51,8 +51,8 @@ define( function( require ) {
   return inherit( Object, LocalMaterial, {
     get: function( renderer ) {
       for ( var i = 0; i < this.renderers.length; i++ ) {
-        if ( this.renderers[i] === renderer ) {
-          return this.materials[i];
+        if ( this.renderers[ i ] === renderer ) {
+          return this.materials[ i ];
         }
       }
 
@@ -65,8 +65,8 @@ define( function( require ) {
 
     //REVIEW doc
     setUniform: function( name, value ) {
-      this.masterMaterial.uniforms[name].value = value;
-      _.each( this.materials, function( material ) { material.uniforms[name].value = value; } );
+      this.masterMaterial.uniforms[ name ].value = value;
+      _.each( this.materials, function( material ) { material.uniforms[ name ].value = value; } );
     },
 
     setColor: function( color ) {
@@ -82,7 +82,7 @@ define( function( require ) {
     },
 
     setUniformColor: function( color ) {
-      var colorArray = [color.r / 255, color.g / 255, color.b / 255];
+      var colorArray = [ color.r / 255, color.g / 255, color.b / 255 ];
       this.setUniform( 'color', colorArray );
     }
   } );

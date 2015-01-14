@@ -68,6 +68,7 @@ define( function( require ) {
     function updateButtonEnabled() {
       removeAllButton.enabled = model.molecule.radialGroups.length > 0;
     }
+
     model.molecule.on( 'bondChanged', updateButtonEnabled );
     updateButtonEnabled();
 
@@ -75,15 +76,15 @@ define( function( require ) {
     var maxWidth = Math.max( optionsNode.width, Math.max( bondingNode.width, lonePairNode.width ) );
 
     var bondingPanel = new MoleculeShapesPanel( bondingString, bondingNode, {
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 10,
+      right:   this.layoutBounds.right - 10,
+      top:     this.layoutBounds.top + 10,
       xMargin: ( maxWidth - bondingNode.width ) / 2 + 15
     } );
     var bottom = bondingPanel.bottom;
     if ( !model.isBasicsVersion ) {
       var lonePairPanel = new MoleculeShapesPanel( lonePairString, lonePairNode, {
-        right: this.layoutBounds.right - 10,
-        top: bondingPanel.bottom + 10,
+        right:   this.layoutBounds.right - 10,
+        top:     bondingPanel.bottom + 10,
         xMargin: ( maxWidth - lonePairNode.width ) / 2 + 15
       } );
       this.addChild( lonePairPanel );
@@ -92,8 +93,8 @@ define( function( require ) {
     removeAllButton.centerX = bondingPanel.centerX;
     removeAllButton.top = bottom + 15;
     var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
-      right: this.layoutBounds.right - 10,
-      top: removeAllButton.bottom + 20,
+      right:   this.layoutBounds.right - 10,
+      top:     removeAllButton.bottom + 20,
       xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
     } );
     this.addChild( bondingPanel );
@@ -120,8 +121,8 @@ define( function( require ) {
       var bonds = molecule.getBondsAround( molecule.centralAtom );
 
       for ( var i = bonds.length - 1; i >= 0; i-- ) {
-        if ( bonds[i].order === bondOrder ) {
-          var atom = bonds[i].getOtherAtom( molecule.centralAtom );
+        if ( bonds[ i ].order === bondOrder ) {
+          var atom = bonds[ i ].getOtherAtom( molecule.centralAtom );
 
           molecule.removeGroup( atom );
           break;

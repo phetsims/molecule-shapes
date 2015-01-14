@@ -101,7 +101,7 @@ define( function( require ) {
    * @returns {GeometryConfiguration}
    */
   GeometryConfiguration.getConfiguration = function( numberOfGroups ) {
-    return geometries[numberOfGroups];
+    return geometries[ numberOfGroups ];
   };
 
   return GeometryConfiguration;

@@ -110,10 +110,10 @@ define( function( require ) {
     var pointerAreaYPadding = 15;
     var pointerAreaBottomExtension = 40;
     var molecularPointerArea = this.molecularCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
-                                   .withMaxY( this.molecularCheckbox.localBounds.maxY + pointerAreaBottomExtension );
+      .withMaxY( this.molecularCheckbox.localBounds.maxY + pointerAreaBottomExtension );
     this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = molecularPointerArea;
     var electronPointerArea = this.electronCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
-                                  .withMaxY( this.electronCheckbox.localBounds.maxY + pointerAreaBottomExtension );
+      .withMaxY( this.electronCheckbox.localBounds.maxY + pointerAreaBottomExtension );
     this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = electronPointerArea;
 
     // increase our maximums if our check box labels are larger than the shape names
@@ -165,7 +165,8 @@ define( function( require ) {
       var name = this.model.molecule.getCentralVSEPRConfiguration().name;
       if ( name === null ) {
         return shapeEmptyString;
-      } else {
+      }
+      else {
         return name;
       }
     },
@@ -174,7 +175,8 @@ define( function( require ) {
       var name = this.model.molecule.getCentralVSEPRConfiguration().geometry.name;
       if ( name === null ) {
         return geometryEmptyString;
-      } else {
+      }
+      else {
         return name;
       }
     }

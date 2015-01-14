@@ -32,7 +32,8 @@ define( function( require ) {
   function addToEndOfArray( array, item, addToFront ) {
     if ( addToFront ) {
       array.unshift( item );
-    } else {
+    }
+    else {
       array.push( item );
     }
   }
@@ -81,7 +82,7 @@ define( function( require ) {
     update: function( dt ) {
       var numGroups = this.groups.length;
       for ( var i = 0; i < numGroups; i++ ) {
-        var group = this.groups[i];
+        var group = this.groups[ i ];
 
         // ignore processing on the central atom
         if ( group === this.centralAtom ) {
@@ -113,7 +114,7 @@ define( function( require ) {
     getNeighborCount: function( group ) {
       var count = 0;
       for ( var i = 0; i < this.bonds.length; i++ ) {
-        if ( this.bonds[i].contains( group ) ) {
+        if ( this.bonds[ i ].contains( group ) ) {
           count++;
         }
       }
@@ -128,11 +129,11 @@ define( function( require ) {
     getParentBond: function( group ) {
       // assumes we have simple atoms (star-shaped) with terminal lone pairs
       if ( group.isLonePair ) {
-        return this.getBondsAround( group )[0];
+        return this.getBondsAround( group )[ 0 ];
       }
       else {
         var centralAtom = this.centralAtom;
-        var result = _.filter( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[0];
+        var result = _.filter( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[ 0 ];
         return result || null;
       }
     },
@@ -168,7 +169,8 @@ define( function( require ) {
       addToEndOfArray( this.groups, group, group.isLonePair );
       if ( group.isLonePair ) {
         addToEndOfArray( this.lonePairs, group, group.isLonePair );
-      } else {
+      }
+      else {
         addToEndOfArray( this.atoms, group, group.isLonePair );
       }
 
@@ -188,7 +190,8 @@ define( function( require ) {
         addToEndOfArray( this.radialGroups, group, isLonePairBond );
         if ( group.isLonePair ) {
           addToEndOfArray( this.radialLonePairs, group, isLonePairBond );
-        } else {
+        }
+        else {
           addToEndOfArray( this.radialAtoms, group, isLonePairBond );
         }
       }
@@ -204,7 +207,8 @@ define( function( require ) {
         arrayRemove( this.radialGroups, group );
         if ( group.isLonePair ) {
           arrayRemove( this.radialLonePairs, group );
-        } else {
+        }
+        else {
           arrayRemove( this.radialAtoms, group );
         }
       }
@@ -220,13 +224,14 @@ define( function( require ) {
       // remove all of its bonds first
       var bondList = this.getBondsAround( group );
       for ( i = 0; i < bondList.length; i++ ) {
-        this.removeBond( bondList[i] );
+        this.removeBond( bondList[ i ] );
       }
 
       arrayRemove( this.groups, group );
       if ( group.isLonePair ) {
         arrayRemove( this.lonePairs, group );
-      } else {
+      }
+      else {
         arrayRemove( this.atoms, group );
       }
 
@@ -234,15 +239,15 @@ define( function( require ) {
       this.trigger1( 'groupRemoved', group );
       for ( i = 0; i < bondList.length; i++ ) {
         // delayed notification for bond removal
-        this.trigger1( 'bondRemoved', bondList[i] );
+        this.trigger1( 'bondRemoved', bondList[ i ] );
       }
     },
 
     removeAllGroups: function() {
       var groupsCopy = this.groups.slice();
       for ( var i = 0; i < groupsCopy.length; i++ ) {
-        if ( groupsCopy[i] !== this.centralAtom ) {
-          this.removeGroup( groupsCopy[i] );
+        if ( groupsCopy[ i ] !== this.centralAtom ) {
+          this.removeGroup( groupsCopy[ i ] );
         }
       }
     },
@@ -270,7 +275,7 @@ define( function( require ) {
       // count lone pairs
       var numLonePairs = 0;
       for ( var i = 0; i < groups.length; i++ ) {
-        if ( groups[i].isLonePair ) {
+        if ( groups[ i ].isLonePair ) {
           numLonePairs++;
         }
       }
@@ -292,11 +297,11 @@ define( function( require ) {
       var lonePairOrientations = pairConfig.geometry.unitVectors;
 
       // we want to rotate the ideal configuration of lone pairs to the atom's orientation
-      var matrix = Matrix3.rotateAToB( lonePairOrientations[lonePairOrientations.length - 1].negated(), atom.orientation );
+      var matrix = Matrix3.rotateAToB( lonePairOrientations[ lonePairOrientations.length - 1 ].negated(), atom.orientation );
 
       for ( var i = 0; i < quantity; i++ ) {
         // mapped into our coordinates
-        var lonePairOrientation = matrix.timesVector3( lonePairOrientations[i] );
+        var lonePairOrientation = matrix.timesVector3( lonePairOrientations[ i ] );
         this.addGroupAndBond( new PairGroup( atom.position.plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
       }
     }

@@ -44,29 +44,27 @@ define( function( require ) {
 
     var comboBoxListContainer = new Node();
     var comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
-    var comboBox = new ComboBox( _.map( comboBoxMolecules,  function( realMoleculeShape ) {
+    var comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
       return {
         value: realMoleculeShape,
         node: new SubSupText( ChemUtils.toSubscript( realMoleculeShape.displayName ), {
           // default font is OK
         } )
       };
-    } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
-
-    } );
+    } ), model.realMoleculeShapeProperty, comboBoxListContainer, {} );
     var optionsNode = new OptionsNode( model );
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
     var maxWidth = Math.max( optionsNode.width, comboBox.width );
 
     var moleculePanel = new MoleculeShapesPanel( moleculeString, comboBox, {
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 10,
+      right:   this.layoutBounds.right - 10,
+      top:     this.layoutBounds.top + 10,
       xMargin: ( maxWidth - comboBox.width ) / 2 + 15
     } );
     var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
-      right: this.layoutBounds.right - 10,
-      top: moleculePanel.bottom + 10,
+      right:   this.layoutBounds.right - 10,
+      top:     moleculePanel.bottom + 10,
       xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
     } );
     this.addChild( moleculePanel );
@@ -89,12 +87,12 @@ define( function( require ) {
       var radioButtonScale = 0.7;
       var realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
         scale: radioButtonScale,
-        top: this.layoutBounds.top + 20,
+        top:   this.layoutBounds.top + 20,
         right: approximateVisualCenterX - horizontalSpacing / 2
       } );
       var modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
         scale: radioButtonScale,
-        top: this.layoutBounds.top + 20,
+        top:  this.layoutBounds.top + 20,
         left: approximateVisualCenterX + horizontalSpacing / 2
       } );
       realRadioButton.touchArea = realRadioButton.mouseArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );

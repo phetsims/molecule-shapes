@@ -85,7 +85,8 @@ define( function( require ) {
 
         // (basis vector 2) find a new midpoint direction that is planar to our arc surface
         this.midpointUnit = averageCross.cross( this.planarUnit ).normalized();
-      } else {
+      }
+      else {
         this.midpointUnit = aDir.plus( bDir ).normalized();
         this.planarUnit = aDir.minus( this.midpointUnit.times( aDir.dot( this.midpointUnit ) ) ).normalized();
       }
@@ -111,9 +112,9 @@ define( function( require ) {
 
         // screen coordinates
         var screenCenterPoint = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
-                                             ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
+          ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
         var screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
-                                          ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
+          ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
 
         var labelString = Util.toFixed( angle, 1 ) + '°';
         while ( labelString.length < 5 ) {
@@ -122,15 +123,16 @@ define( function( require ) {
         }
 
         this.label.setLabel( labelString, this.viewOpacity, screenCenterPoint, screenMidPoint, layoutScale );
-      } else {
+      }
+      else {
         this.label.unsetLabel();
       }
     },
   }, {
     // dot product between the camera direction and bond angle normal is below LOW_THRESHOLDS[bondOrder] => alpha = 0
     // dot product between the camera direction and bond angle normal is above LOW_THRESHOLDS[HIGH_THRESHOLDS] => alpha = 1
-    LOW_THRESHOLDS: [0, 0, 0, 0, 0.35, 0.45, 0.5],
-    HIGH_THRESHOLDS: [0, 0, 0, 0.5, 0.55, 0.65, 0.75],
+    LOW_THRESHOLDS: [ 0, 0, 0, 0, 0.35, 0.45, 0.5 ],
+    HIGH_THRESHOLDS: [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ],
 
     calculateBrightness: function( aDir, bDir, localCameraOrientation, bondQuantity ) {
       // if there are less than 3 bonds, always show the bond angle.
@@ -141,8 +143,8 @@ define( function( require ) {
       // a combined measure of how close the angles are AND how orthogonal they are to the camera
       var brightness = Math.abs( aDir.cross( bDir ).dot( localCameraOrientation ) );
 
-      var lowThreshold = BondAngleView.LOW_THRESHOLDS[bondQuantity];
-      var highThreshold = BondAngleView.HIGH_THRESHOLDS[bondQuantity];
+      var lowThreshold = BondAngleView.LOW_THRESHOLDS[ bondQuantity ];
+      var highThreshold = BondAngleView.HIGH_THRESHOLDS[ bondQuantity ];
 
       var interpolatedValue = brightness / ( highThreshold - lowThreshold ) - lowThreshold / ( highThreshold - lowThreshold );
 

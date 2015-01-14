@@ -28,8 +28,8 @@ define( function( require ) {
     // @param {THREE.Renderer} renderer
     get: function( renderer ) {
       for ( var i = 0; i < this.renderers.length; i++ ) {
-        if ( this.renderers[i] === renderer ) {
-          return this.textures[i];
+        if ( this.renderers[ i ] === renderer ) {
+          return this.textures[ i ];
         }
       }
 

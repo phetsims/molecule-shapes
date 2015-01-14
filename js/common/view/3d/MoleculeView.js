@@ -55,7 +55,8 @@ define( function( require ) {
     // the center atom is special
     if ( molecule.isReal ) {
       this.centerAtomView = new AtomView( molecule.centralAtom, this.renderer, AtomView.getElementLocalMaterial( molecule.centralAtom.element ) );
-    } else {
+    }
+    else {
       this.centerAtomView = new AtomView( molecule.centralAtom, this.renderer, AtomView.centralAtomLocalMaterial );
     }
     this.add( this.centerAtomView );
@@ -70,7 +71,7 @@ define( function( require ) {
       var localCameraOrientation = new Vector3().set( cameraPosition ).normalized();
 
       for ( var i = 0; i < this.bondViews.length; i++ ) {
-        this.bondViews[i].updateView( cameraPosition );
+        this.bondViews[ i ].updateView( cameraPosition );
       }
       this.updateAngles( localCameraOrientation );
     },
@@ -85,7 +86,7 @@ define( function( require ) {
       }
 
       for ( var i = 0; i < this.angleViews.length; i++ ) {
-        var angleView = this.angleViews[i];
+        var angleView = this.angleViews[ i ];
         angleView.updateView( this.lastMidpoint, localCameraOrientation );
 
         // if we have two bonds, store the last midpoint so we can keep the bond midpoint stable
@@ -98,11 +99,11 @@ define( function( require ) {
     dispose: function() {
       var i;
       for ( i = 0; i < this.angleViews.length; i++ ) {
-        this.screenView.returnLabel( this.angleViews[i].label );
-        this.angleViews[i].dispose();
+        this.screenView.returnLabel( this.angleViews[ i ].label );
+        this.angleViews[ i ].dispose();
       }
       for ( i = 0; i < this.lonePairViews.length; i++ ) {
-        this.lonePairViews[i].dispose();
+        this.lonePairViews[ i ].dispose();
       }
     },
 
@@ -123,7 +124,8 @@ define( function( require ) {
 
         view = LonePairView.pool.get( this.renderer ).initialize( group, parentAtom, visibilityProperty );
         this.lonePairViews.push( view );
-      } else {
+      }
+      else {
         view = new AtomView( group, this.renderer, group.element ?
                                                    AtomView.getElementLocalMaterial( group.element ) :
                                                    AtomView.atomLocalMaterial );
@@ -134,7 +136,7 @@ define( function( require ) {
         } );
 
         for ( var i = 0; i < this.atomViews.length; i++ ) {
-          var otherView = this.atomViews[i];
+          var otherView = this.atomViews[ i ];
           if ( otherView !== view ) {
             var bondAngleView = MoleculeShapesGlobals.useWebGL ?
                                 BondAngleWebGLView.pool.get( this.renderer ) :
@@ -158,7 +160,7 @@ define( function( require ) {
       if ( group.isLonePair ) {
         // remove the lone pair view itself
         for ( i = 0; i < this.lonePairViews.length; i++ ) {
-          var lonePairView = this.lonePairViews[i];
+          var lonePairView = this.lonePairViews[ i ];
           if ( lonePairView.group === group ) {
             this.remove( lonePairView );
             lonePairView.dispose();
@@ -166,10 +168,11 @@ define( function( require ) {
             break;
           }
         }
-      } else {
+      }
+      else {
         // remove the atom view itself
         for ( i = 0; i < this.atomViews.length; i++ ) {
-          var atomView = this.atomViews[i];
+          var atomView = this.atomViews[ i ];
           if ( atomView.group === group ) {
             this.remove( atomView );
             this.atomViews.splice( i, 1 );
@@ -179,7 +182,7 @@ define( function( require ) {
 
         // remove any bond angles involved, reversed for ease of removal (we may need to remove multiple ones)
         for ( i = this.angleViews.length - 1; i >= 0; i-- ) {
-          var bondAngleView = this.angleViews[i];
+          var bondAngleView = this.angleViews[ i ];
 
           if ( bondAngleView.aGroup === group || bondAngleView.bGroup === group ) {
             this.remove( bondAngleView );
@@ -191,7 +194,7 @@ define( function( require ) {
       }
       // remove from radialViews (aggregate) if it is included
       for ( i = 0; i < this.radialViews.length; i++ ) {
-        if ( this.radialViews[i].group === group ) {
+        if ( this.radialViews[ i ].group === group ) {
           this.radialViews.splice( i, 1 );
           break;
         }
@@ -219,7 +222,7 @@ define( function( require ) {
     //REVIEW @param {?} bond
     removeBond: function( bond ) {
       for ( var i = this.bondViews.length - 1; i >= 0; i-- ) {
-        var bondView = this.bondViews[i];
+        var bondView = this.bondViews[ i ];
         if ( bondView.bond === bond ) {
           this.remove( bondView );
           this.bondViews.splice( i, 1 );

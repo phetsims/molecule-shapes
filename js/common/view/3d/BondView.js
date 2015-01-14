@@ -106,15 +106,15 @@ define( function( require ) {
 
       // how far bonds are apart. constant refined for visual appearance. triple-bonds aren't wider than atoms, most notably
       var bondSeparation = this.bondRadius * ( 12 / 5 );
-      switch ( this.bondOrder ) {
+      switch( this.bondOrder ) {
         case 1:
-          offsets = [new Vector3()];
+          offsets = [ new Vector3() ];
           break;
         case 2:
-          offsets = [perpendicular.times( bondSeparation / 2 ), perpendicular.times( -bondSeparation / 2 )];
+          offsets = [ perpendicular.times( bondSeparation / 2 ), perpendicular.times( -bondSeparation / 2 ) ];
           break;
         case 3:
-          offsets = [Vector3.ZERO, perpendicular.times( bondSeparation ), perpendicular.times( -bondSeparation )];
+          offsets = [ Vector3.ZERO, perpendicular.times( bondSeparation ), perpendicular.times( -bondSeparation ) ];
           break;
         default:
           throw new Error( 'bad bond order: ' + this.bondOrder );
@@ -126,22 +126,22 @@ define( function( require ) {
       var threeTowardsEnd = new THREE.Vector3().copy( towardsEnd );
 
       for ( var i = 0; i < this.bondOrder; i++ ) {
-        var aTranslation = bondCenter.plus( offsets[i] ).minus( colorOffset );
-        var bTranslation = bondCenter.plus( offsets[i] ).plus( colorOffset );
+        var aTranslation = bondCenter.plus( offsets[ i ] ).minus( colorOffset );
+        var bTranslation = bondCenter.plus( offsets[ i ] ).plus( colorOffset );
 
-        this.aBonds[i].position.set( aTranslation.x, aTranslation.y, aTranslation.z );
-        this.bBonds[i].position.set( bTranslation.x, bTranslation.y, bTranslation.z );
+        this.aBonds[ i ].position.set( aTranslation.x, aTranslation.y, aTranslation.z );
+        this.bBonds[ i ].position.set( bTranslation.x, bTranslation.y, bTranslation.z );
 
-        this.aBonds[i].quaternion.setFromUnitVectors( threeZUnit, threeTowardsEnd );
-        this.bBonds[i].quaternion.setFromUnitVectors( threeZUnit, threeTowardsEnd );
+        this.aBonds[ i ].quaternion.setFromUnitVectors( threeZUnit, threeTowardsEnd );
+        this.bBonds[ i ].quaternion.setFromUnitVectors( threeZUnit, threeTowardsEnd );
 
-        this.aBonds[i].scale.x = this.aBonds[i].scale.z = this.bondRadius;
-        this.bBonds[i].scale.x = this.bBonds[i].scale.z = this.bondRadius;
+        this.aBonds[ i ].scale.x = this.aBonds[ i ].scale.z = this.bondRadius;
+        this.bBonds[ i ].scale.x = this.bBonds[ i ].scale.z = this.bondRadius;
 
-        this.aBonds[i].scale.y = this.bBonds[i].scale.y = length / 2;
+        this.aBonds[ i ].scale.y = this.bBonds[ i ].scale.y = length / 2;
 
-        this.aBonds[i].updateMatrix();
-        this.bBonds[i].updateMatrix();
+        this.aBonds[ i ].updateMatrix();
+        this.bBonds[ i ].updateMatrix();
       }
     }
   } );

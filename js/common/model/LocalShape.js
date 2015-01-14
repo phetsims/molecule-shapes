@@ -68,11 +68,11 @@ define( function( require ) {
     }
     var result = [];
     for ( var i = 0; i < permutations.length; i++ ) {
-      var permutation = permutations[i];
+      var permutation = permutations[ i ];
 
       var resultsToAdd = permutation.withIndicesPermuted( indices );
       for ( var j = 0; j < resultsToAdd.length; j++ ) {
-        result.push( resultsToAdd[j] );
+        result.push( resultsToAdd[ j ] );
       }
     }
     return result;
@@ -93,8 +93,8 @@ define( function( require ) {
       return group.isLonePair;
     } );
     // this separation looks better in languages where you say "(lonePairs, atoms) = partition(...)"
-    var lonePairs = partitioned[0];
-    var atoms = partitioned[1];
+    var lonePairs = partitioned[ 0 ];
+    var atoms = partitioned[ 1 ];
 
     // permute away the lone pairs
     permutations = LocalShape.permuteListWithIndices( permutations, _.map( lonePairs, indexOf ) );
@@ -123,7 +123,7 @@ define( function( require ) {
     var usedElements = _.unique( _.map( atoms, function( group ) { return group.element; } ) );
 
     for ( var i = 0; i < usedElements.length; i++ ) {
-      var element = usedElements[i];
+      var element = usedElements[ i ];
 
       // since the closure is being executed at this point, the warning in this line can be ignored
       var atomsWithElement = _.filter( atoms, function( group ) { return group.element === element; } );

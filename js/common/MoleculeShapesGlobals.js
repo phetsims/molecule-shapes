@@ -16,7 +16,7 @@ define( function( require ) {
 
   var MoleculeShapesGlobals = new PropertySet( {
     showOuterLonePairs: !!window.phetcommon.getQueryParameter( 'showOuterLonePairs' ) || false,
-    projectorColors: !!window.phetcommon.getQueryParameter( 'projector' ) || false
+    projectorColors:    !!window.phetcommon.getQueryParameter( 'projector' ) || false
   } );
 
   return _.extend( MoleculeShapesGlobals, {
@@ -65,9 +65,11 @@ define( function( require ) {
       }
       if ( color instanceof Color ) {
         colorProperty = new Property( color );
-      } else if ( color instanceof Property ) {
+      }
+      else if ( color instanceof Property ) {
         colorProperty = color;
-      } else {
+      }
+      else {
         throw new Error( 'bad color passed to MoleculeShapesGlobals.toColorProperty' );
       }
       return colorProperty;

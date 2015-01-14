@@ -45,7 +45,7 @@ define( function( require ) {
     // for each electron pair, push it towards its computed target
     for ( i = 0; i < groups.length; i++ ) {
 
-      var pair = groups[i];
+      var pair = groups[ i ];
 
       var targetOrientation = mapping.target.extractVector3( i );
       var currentMagnitude = ( pair.position.minus( center ) ).magnitude();
@@ -86,9 +86,9 @@ define( function( require ) {
     if ( angleRepulsion && aroundCenterAtom ) {
       var pairIndexList = pairs( DotUtil.rangeInclusive( 0, groups.length - 1 ) );
       for ( i = 0; i < pairIndexList.length; i++ ) {
-        var pairIndices = pairIndexList[i];
-        var aIndex = pairIndices[0];
-        var bIndex = pairIndices[1];
+        var pairIndices = pairIndexList[ i ];
+        var aIndex = pairIndices[ 0 ];
+        var bIndex = pairIndices[ 1 ];
         var a = groups[ aIndex ];
         var b = groups[ bIndex ];
 
@@ -176,7 +176,7 @@ define( function( require ) {
       // calculate the error
       var error = 0;
       for ( var i = 0; i < n * 3; i++ ) {
-        var diff = y[i] - target.entries[i];
+        var diff = y[ i ] - target.entries[ i ];
         error += diff * diff;
       }
 
@@ -187,15 +187,15 @@ define( function( require ) {
 
     // TODO: log how effective the permutation checking is at removing the search space
     for ( var pIndex = 0; pIndex < allowablePermutations.length; pIndex++ ) {
-      var permutation = allowablePermutations[pIndex];
+      var permutation = allowablePermutations[ pIndex ];
 
       if ( n > 2 && bestResult !== null && bestResult.permutation !== permutation ) {
-        var permutedOrientation0 = idealOrientations[ permutation.indices[0] ];
-        var permutedOrientation1 = idealOrientations[ permutation.indices[1] ];
+        var permutedOrientation0 = idealOrientations[ permutation.indices[ 0 ] ];
+        var permutedOrientation1 = idealOrientations[ permutation.indices[ 1 ] ];
         var errorLowBound = 4 - 4 * Math.cos( Math.abs(
-          Math.acos( DotUtil.clamp( permutedOrientation0.dot( currentOrientations[0] ), -1, 1 ) ) -
-          Math.acos( DotUtil.clamp( permutedOrientation1.dot( currentOrientations[1] ), -1, 1 ) )
-        ) );
+            Math.acos( DotUtil.clamp( permutedOrientation0.dot( currentOrientations[ 0 ] ), -1, 1 ) ) -
+            Math.acos( DotUtil.clamp( permutedOrientation1.dot( currentOrientations[ 1 ] ), -1, 1 ) )
+          ) );
 
         // throw out results where this arbitrarily-chosen lower bound rules out the entire permutation
         if ( bestResult.error < errorLowBound ) {
@@ -230,7 +230,7 @@ define( function( require ) {
     FastMath.multRightTranspose( 3, n, 3, x, y, s );
 
     // this code may loop infinitely on NaN, so we want to double-check
-    assert && assert( !isNaN( s[0] ) );
+    assert && assert( !isNaN( s[ 0 ] ) );
 
     // Sets U, Sigma, V
     FastMath.svd3( s, 5, scratchU, scratchSigma, scratchV );
@@ -272,16 +272,16 @@ define( function( require ) {
     else {
       // make a copy of 'lists'
       var remainder = lists.slice( 0 );
-      var first = remainder[0];
+      var first = remainder[ 0 ];
 
       remainder.splice( 0, 1 );
 
       AttractorModel.forEachPermutation( first, [], function( permutedFirst ) {
         AttractorModel.forEachMultiplePermutations( remainder, function( subLists ) {
           var arr = new Array( lists.length );
-          arr[0] = permutedFirst;
+          arr[ 0 ] = permutedFirst;
           for ( var i = 0; i < subLists.length; i++ ) {
-            arr[i + 1] = subLists[i];
+            arr[ i + 1 ] = subLists[ i ];
           }
           callback.call( undefined, arr );
         } );
@@ -302,7 +302,7 @@ define( function( require ) {
     }
     else {
       for ( var i = 0; i < list.length; i++ ) {
-        var element = list[i];
+        var element = list[ i ];
 
         var newList = list.slice();
         newList.splice( newList.indexOf( element ), 1 );
@@ -318,10 +318,10 @@ define( function( require ) {
   AttractorModel.listPrint = function( lists ) {
     var ret = "";
     for ( var i = 0; i < lists.length; i++ ) {
-      var list = lists[i];
+      var list = lists[ i ];
       ret += " ";
       for ( var j = 0; j < list.length; j++ ) {
-        ret += list[j].toString();
+        ret += list[ j ].toString();
       }
     }
     return ret;
@@ -345,9 +345,9 @@ define( function( require ) {
      */
 
     var arr = [
-      ["A", "B"],
-      ["C"],
-      ["D", "E", "F"]
+      [ "A", "B" ],
+      [ "C" ],
+      [ "D", "E", "F" ]
     ];
 
     AttractorModel.forEachMultiplePermutations( arr, function( lists ) {
