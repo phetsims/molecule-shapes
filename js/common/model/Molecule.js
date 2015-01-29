@@ -2,7 +2,7 @@
 
 /**
  * Base type of model of a single-atom-centered molecule which has a certain number of pair groups
- * surrounding it.
+ * surrounding it. Concrete sub-types should implement the methods documented at the start of the prototype.
  *
  * Molecule extends Events, so the following events can be triggered/listened to directly:
  *  bondAdded( bond )
@@ -75,9 +75,13 @@ define( function( require ) {
   }
 
   return inherit( Events, Molecule, {
-    // abstract {LocalShape} getLocalShape( atom )
-    // abstract {number | undefined} getMaximumBondLength()
-    // abstract {boolean} isReal
+    /**
+     * Concrete sub-types of Molecule should provide implementations for the following abstract methods/properties:
+     *
+     * {LocalShape} getLocalShape( atom ) - The ideal orientations for the bonds around an atom
+     * {number | undefined} getMaximumBondLength() - If applicable, a maximum bond length
+     * {boolean} isReal - Whether the Molecule is considered 'real', or is just a 'model'.
+     */
 
     update: function( dt ) {
       var numGroups = this.groups.length;
