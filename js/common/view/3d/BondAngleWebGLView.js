@@ -213,8 +213,13 @@ define( function( require ) {
       BondAngleWebGLView.pool.put( this, this.renderer );
     },
 
-    //REVIEW document params
-    // @override
+    /**
+     * @override
+     * @param {Vector3} lastMidpoint - The midpoint of the last frame's bond angle arc, used to stabilize bond angles
+     *                                 that are around ~180 degrees.
+     * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
+     *                                           to the camera.
+     */
     updateView: function( lastMidpoint, localCameraOrientation ) {
       BondAngleView.prototype.updateView.call( this, lastMidpoint, localCameraOrientation );
 

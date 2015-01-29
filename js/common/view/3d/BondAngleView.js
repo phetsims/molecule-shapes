@@ -54,7 +54,12 @@ define( function( require ) {
       // overridden in sub-types
     },
 
-    //REVIEW document params
+    /**
+     * @param {Vector3} lastMidpoint - The midpoint of the last frame's bond angle arc, used to stabilize bond angles
+     *                                 that are around ~180 degrees.
+     * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
+     *                                           to the camera.
+     */
     updateView: function( lastMidpoint, localCameraOrientation ) {
       var aDir = this.aGroup.orientation;
       var bDir = this.bGroup.orientation;
@@ -134,6 +139,16 @@ define( function( require ) {
     LOW_THRESHOLDS: [ 0, 0, 0, 0, 0.35, 0.45, 0.5 ],
     HIGH_THRESHOLDS: [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ],
 
+    /**
+     * Determines the brightness (alpha) of a bond angle based on the orientations of the two radial atoms, the camera,
+     * and the total number of bonds around our central atom.
+     *
+     * @param {Vector3} aDir - The unit vector pointing towards the first radial atom
+     * @param {Vector3} bDir - The unit vector pointing towards the second radial atom
+     * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
+     *                                           to the camera.
+     * @param {number} bondQuantity - The total number of bonds around the central atom
+     */
     calculateBrightness: function( aDir, bDir, localCameraOrientation, bondQuantity ) {
       // if there are less than 3 bonds, always show the bond angle.
       if ( bondQuantity <= 2 ) {

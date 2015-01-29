@@ -46,7 +46,7 @@ define( function( require ) {
   camera.near = 1; // near clipping plane
   camera.far = 100; // far clipping plane
 
-  //REVIEW document orthoSize
+  // @param {number} orthoSize - The width of the orthographic camera's viewport in the world coordinate frame
   function render( view, width, height, orthoSize ) {
     scene.add( view );
     camera.left = 0;
@@ -63,12 +63,11 @@ define( function( require ) {
   }
 
   // tuned parameters to match the desired Canvas sizes for lone pairs and atom bonds
-  //REVIEW use uppercase for these numeric constants
-  var imageScale = 3;
-  var lonePairWidth = 78;
-  var atomHeight = 42;
-  var atomWidth = 120;
-  var lonePairHeight = 55;
+  var IMAGE_SCALE = 3;
+  var LONE_PAIR_WIDTH = 78;
+  var ATOM_HEIGHT = 42;
+  var ATOM_WIDTH = 120;
+  var LONE_PAIR_HEIGHT = 55;
 
   function getBondDataURL( bondOrder ) {
     var molecule = new VSEPRMolecule();
@@ -89,7 +88,7 @@ define( function( require ) {
     var orthoSize = bondOrder === 0 ?
                     ( PairGroup.LONE_PAIR_DISTANCE * 1.07 ) :
                     ( PairGroup.BONDED_PAIR_DISTANCE * 1.22 );
-    var url = render( view, ( bondOrder === 0 ? lonePairWidth : atomWidth ) * imageScale, ( bondOrder === 0 ? lonePairHeight : atomHeight ) * imageScale, orthoSize );
+    var url = render( view, ( bondOrder === 0 ? LONE_PAIR_WIDTH : ATOM_WIDTH ) * IMAGE_SCALE, ( bondOrder === 0 ? LONE_PAIR_HEIGHT : ATOM_HEIGHT ) * IMAGE_SCALE, orthoSize );
     view.dispose();
     return url;
   }
@@ -106,7 +105,7 @@ define( function( require ) {
 
     // A semi-transparent overlay with the same color as the background (and variable alpha). Used to adjust the visual
     // "opacity" of the underlying image (by toggling our alpha), and as a hit-area for events.
-    var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? atomHeight : lonePairHeight, 0, 0, options );
+    var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? ATOM_HEIGHT : LONE_PAIR_HEIGHT, 0, 0, options );
     overlay.addInputListener( {
       down: function() {
         if ( enabled ) {
@@ -126,12 +125,12 @@ define( function( require ) {
 
     // our image of the lone pair / bond, under the overlay.
     var image = new Image( getBondDataURL( bondOrder ), {
-      scale: 1 / imageScale / devicePixelRatio // retina devices create large images, so for now we normalize the image scale
+      scale: 1 / IMAGE_SCALE / devicePixelRatio // retina devices create large images, so for now we normalize the image scale
     } );
     // override local bounds because the correct bounds may not be loaded yet (loading from a data URL, not an HTMLImageElement)
     image.localBounds = bondOrder === 0 ?
-                        new Bounds2( 0, 0, lonePairWidth * devicePixelRatio * imageScale, lonePairHeight * devicePixelRatio * imageScale ) :
-                        new Bounds2( 0, 0, atomWidth * devicePixelRatio * imageScale, atomHeight * devicePixelRatio * imageScale );
+                        new Bounds2( 0, 0, LONE_PAIR_WIDTH * devicePixelRatio * IMAGE_SCALE, LONE_PAIR_HEIGHT * devicePixelRatio * IMAGE_SCALE ) :
+                        new Bounds2( 0, 0, ATOM_WIDTH * devicePixelRatio * IMAGE_SCALE, ATOM_HEIGHT * devicePixelRatio * IMAGE_SCALE );
     image.center = overlay.center;
 
     // handle updates to our color scheme by recreating the images needed
@@ -201,6 +200,6 @@ define( function( require ) {
     }, options ) );
   }
 
-  return inherit( HBox, BondGroupNode, {} ); //REVIEW {} is unnecessary
+  return inherit( HBox, BondGroupNode );
 } );
 

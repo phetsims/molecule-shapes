@@ -19,13 +19,12 @@ define( function( require ) {
   // strings
   var screenTitle = require( 'string!MOLECULE_SHAPES/real-molecules' );
 
-  //REVIEW defining the constructor in the inherit call is a little weird
   /**
    * Creates the model and view for the RealMoleculesScreen
    * @constructor
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
-  return inherit( Screen, function RealMoleculesScreen( isBasicsVersion ) {
+  function RealMoleculesScreen( isBasicsVersion ) {
     var screen = this;
 
     var screenIcon = new ScreenIconNode( false, isBasicsVersion );
@@ -39,5 +38,7 @@ define( function( require ) {
     MoleculeShapesColors.link( 'background', function( color ) {
       screen.backgroundColor = color;
     } );
-  } );
+  }
+
+  return inherit( Screen, RealMoleculesScreen );
 } );

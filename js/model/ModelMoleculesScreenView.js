@@ -103,7 +103,14 @@ define( function( require ) {
   }
 
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
-    //REVIEW doc params
+    /**
+     * Adds a PairGroup to the model from the Bonding panel location.
+     *
+     * @param {number} bondOrder - The order of the bond (0 through 3)
+     * @param {Bounds2} globalBounds - The bounds of the clicked-on overlay for the pair group (e.g. the lone pair in
+     *                                 the "Lone Pair" panel), so we can place the inital model location of the pair
+     *                                 group near the click location (it will animate from that location).
+     */
     addPairGroup: function( bondOrder, globalBounds ) {
       var screenPoint = globalBounds.leftCenter;
       var threePoint = this.getPlanarMoleculePosition( screenPoint );

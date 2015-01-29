@@ -90,7 +90,13 @@ define( function( require ) {
       ambient: MoleculeShapesColors.atomProperty
     } ),
 
-    //REVIEW @param {?} element
+    /**
+     * Returns the shared LocalMaterial for a specific Element (we don't want to have multiple LocalMaterials for the
+     * same element due to memory concerns).
+     *
+     * @param {NITROGLYCERIN.Element} element
+     * @returns {LocalMaterial}
+     */
     getElementLocalMaterial: function( element ) {
       // Lazily create LocalMaterials for each element.
       // We'll want one material for each renderer-element pair, since we can't share across renderers, and we want to

@@ -63,7 +63,7 @@ define( function( require ) {
       return material;
     },
 
-    //REVIEW doc
+    // Sets the uniform value for the WebGL shader based on THREE.js's support for uniform values.
     setUniform: function( name, value ) {
       this.masterMaterial.uniforms[ name ].value = value;
       _.each( this.materials, function( material ) { material.uniforms[ name ].value = value; } );

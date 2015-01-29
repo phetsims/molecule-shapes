@@ -49,12 +49,12 @@ define( function( require ) {
   return inherit( MoleculeShapesModel, RealMoleculesModel, {
     /*
      * Rebuilds our model molecule based on the possibly new "showRealView" or "realMoleculeShape".
+     * @private
      *
      * @param {boolean} switchedRealMolecule - If false, we orient the new (model/real) view to the best match of the
      *                                         old (real/model) view. If true, the molecule type changed, so we don't
      *                                         do any matching of orientation.
      */
-    //REVIEW @private ?
     rebuildMolecule: function( switchedRealMolecule ) {
       var molecule = this.molecule;
 

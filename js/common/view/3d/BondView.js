@@ -70,7 +70,11 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, BondView, {
 
-    //REVIEW @param {Vector2} cameraPosition ?
+    /**
+     * Updates the BondView's appearance.
+     *
+     * @param {THREE.Vector3} cameraPosition - The location of the camera in the molecule's local coordinate frame.
+     */
     updateView: function( cameraPosition ) {
       // extract our start and end
       var start = this.aPositionProperty.value;
