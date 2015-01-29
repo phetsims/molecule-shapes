@@ -1,7 +1,7 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A panel with a title on the top, that relies on a consistent background color.
+ * A TitledPanel with colors and sizing specific to the Molecule Shapes simulation.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
