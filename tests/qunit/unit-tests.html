@@ -16,7 +16,7 @@
   <script type="text/javascript" src="../../../sherpa/lodash-2.4.1.js"></script>
   <script type="text/javascript" src="../../../sherpa/three-r68.js"></script>
   <script type="text/javascript" src="../../../sherpa/has.js"></script>
-  <script src="../../../assert/js/assert.js"></script>
+  <script type="text/javascript" src="../../../assert/js/assert.js"></script>
   <script type="text/javascript">
     window.assertions.enableAssert();
     window.assertions.enableAssertSlow();
@@ -31,17 +31,13 @@
   <!-- Dependency for the linting tests -->
   <script type="text/javascript" src="../../../phet-core/tests/qunit/unitTestLintFilesMatching.js"></script>
 
-  <script type="text/javascript">
-    window.assertions.enableAssert();
-    window.assertions.enableAssertSlow();
-  </script>
-
   <script data-main="../../js/molecule-shapes-dev-config.js" src="../../../sherpa/require-2.1.11.js"></script>
 
   <script src="unit-tests.js"></script>
   <script src="../../../scenery/tests/qunit/unit-tests.js"></script>
   <script src="../../../kite/tests/qunit/unit-tests.js"></script>
   <script src="../../../dot/tests/qunit/unit-tests.js"></script>
+  <script src="../../../axon/tests/qunit/unit-tests.js"></script>
   <script src="../../../phet-core/tests/qunit/unit-tests.js"></script>
 
 </head>
@@ -54,40 +50,23 @@
 <!-- this needs to be run after the qunit-fixture is in the DOM, but before the document is loaded because QUnit scans the fixture then -->
 <script src="../../../scenery/tests/qunit/prepare-fixture.js"></script>
 <script>
-  function collapseTests() {
-    $( '#qunit-tests .fail ol' ).css( 'display', 'none' );
-  }
+  require( [ 'molecule-shapes-dev-config' ], function() {
+    require( [ 'molecule-shapes-dev-main', 'SCENERY/main', 'KITE/main', 'DOT/main', 'AXON/main', 'PHET_CORE/main' ], function( ms, scenery, kite, dot, axon, core ) {
+      window.scenery = scenery;
+      window.kite = kite;
+      window.dot = dot;
+      window.axon = axon;
+      window.core = core;
+      window.ms = ms; // molecule-shapes prefix
 
-  // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
-  function check() {
-    if ( window.loadedMoleculeShapesConfig ) {
-      // make sure the full sim code doesn't launch immediately
-      window.delayMoleculeShapesLaunch = true;
-
-      require( [ 'molecule-shapes-dev-main', 'SCENERY/main', 'KITE/main', 'DOT/main', 'PHET_CORE/main' ], function( ms, scenery, kite, dot, core ) {
-        window.scenery = scenery;
-        window.kite = kite;
-        window.dot = dot;
-        window.core = core;
-        window.ms = ms; // molecule-shapes prefix
-
-        runMoleculeShapesTests( '.' );
-        runSceneryTests( '../../../scenery/tests/qunit' );
-        runKiteTests( '../../../kite/tests/qunit' );
-        runDotTests( '../../../dot/tests/qunit' );
-        runPhetCoreTests( '../../../phet-core/tests/qunit' );
-
-        if ( console.log ) {
-          console.log( scenery.Util.testAssert() );
-          console.log( scenery.Util.testAssertExtra() );
-        }
-      } );
-    }
-    else {
-      setTimeout( check, 4 );
-    }
-  }
-  setTimeout( check, 4 );
+      runMoleculeShapesTests( '.' );
+      runSceneryTests( '../../../scenery/tests/qunit' );
+      runKiteTests( '../../../kite/tests/qunit' );
+      runDotTests( '../../../dot/tests/qunit' );
+      runAxonTests( '../../../axon/tests/qunit' );
+      runPhetCoreTests( '../../../phet-core/tests/qunit' );
+    } );
+  } );
 </script>
 </body>
 </html>
