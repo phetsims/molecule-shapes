@@ -3,6 +3,13 @@
 /**
  * Location for all colors (especially those that could change for the basics version, or could be tweaked)
  *
+ * There are three profiles, 'default', 'basics' (for the Basics version of the sim), and 'projector' (for the Projector
+ * mode on both the normal and Basics sims).
+ *
+ * We also support iframe communication for molecule-shapes-colors.html, where we both send color information changes to
+ * our iframe parent container, and receive color change requests from the container. This allows testing out color
+ * changes interactively.
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 define( function( require ) {
@@ -13,6 +20,9 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
   var Color = require( 'SCENERY/util/Color' );
 
+  // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the
+  // 'default' value provided.
+  // NOTE: This is NOT provided to clients directly, but is passed to the PropertySet constructor.
   var colors = {
     background: {
       default: new Color( 0, 0, 0 ),
@@ -118,6 +128,7 @@ define( function( require ) {
     initialProperties[ key ] = colors[ key ].default;
   }
 
+  // This sets up MoleculeShapesColors.<string key> and MoleculeShapesColors.<string key>Property for use.
   var MoleculeShapesColors = extend( new PropertySet( initialProperties ), {
     /*
      * Applies all colors for the specific named color scheme, ignoring colors that aren't specified for it.
@@ -158,7 +169,7 @@ define( function( require ) {
     } ), '*' );
   }
 
-  // initial communication
+  // initial communication, which sends the intial color values
   for ( var colorName in colors ) {
     reportColor( colorName );
   }
