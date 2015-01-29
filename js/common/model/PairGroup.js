@@ -134,9 +134,10 @@ define( function( require ) {
     },
 
     /**
-     * @param other          The pair group whose force on this object we want
-     * @param timeElapsed        Time elapsed (thus we return an impulse instead of a force)
-     * @param trueLengthsRatioOverride From 0 to 1. If 0, lone pairs will behave the same as bonds. If 1, lone pair distance will be taken into account
+     * @param {PairGroup} other - The pair group whose force on this object we want
+     * @param {number} timeElapsed - Time elapsed (thus we return an impulse instead of a force)
+     * @param {number} trueLengthsRatioOverride - From 0 to 1. If 0, lone pairs will behave the same as bonds. If 1, lone pair
+     *                                            distance will be taken into account
      * @return Repulsion force on this pair group, from the other pair group
      */
     getRepulsionImpulse: function( other, timeElapsed, trueLengthsRatioOverride ) {
@@ -174,10 +175,19 @@ define( function( require ) {
       return coulombVelocityDelta.times( coulombDowngrade );
     },
 
+    /**
+     * Applies a repulsive force from another PairGroup to this PairGroup.
+     *
+     * @param {PairGroup} other - The pair group whose force on this object we want
+     * @param {number} timeElapsed - Time elapsed (thus we return an impulse instead of a force)
+     * @param {number} trueLengthsRatioOverride - From 0 to 1. If 0, lone pairs will behave the same as bonds. If 1, lone pair
+     *                                            distance will be taken into account
+     */
     repulseFrom: function( other, timeElapsed, trueLengthsRatioOverride ) {
       this.addVelocity( this.getRepulsionImpulse( other, timeElapsed, trueLengthsRatioOverride ) );
     },
 
+    // Adds a {Vector2} to our position if this PairGroup can have non-user-controlled changes
     addPosition: function( positionChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
       if ( !this.userControlled && !this.isCentralAtom() ) {
@@ -185,6 +195,7 @@ define( function( require ) {
       }
     },
 
+    // Adds a {Vector2} to our velocity if this PairGroup can have non-user-controlled changes
     addVelocity: function( velocityChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
       if ( !this.userControlled && !this.isCentralAtom() ) {
