@@ -4,7 +4,7 @@
  * Base type of model of a single-atom-centered molecule which has a certain number of pair groups
  * surrounding it.
  *
- * Events:
+ * Molecule extends Events, so the following events can be triggered/listened to directly:
  *  bondAdded( bond )
  *  bondRemoved( bond )
  *  bondChanged( bond )
