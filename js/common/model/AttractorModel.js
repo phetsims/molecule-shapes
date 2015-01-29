@@ -224,6 +224,15 @@ define( function( require ) {
   var scratchSigma = new FastMath.Array( 9 );
   var scratchV = new FastMath.Array( 9 );
 
+  /**
+   * In 3D, Given n points x_i and n points y_i, determine the rotation matrix that can be applied to the x_i such
+   * that it minimizes the least-squares error between each x_i and y_i.
+   *
+   * @param {number} n - Quantity of points
+   * @param {FastMath.Array} x - A 3xN FastMath matrix where each column represents a point x_i
+   * @param {FastMath.Array} y - A 3xN FastMath matrix where each column represents a point y_i
+   * @param {FastMath.Array} result - A 3x3 FastMath matrix where the rotation matrix result will be stored (there is no return value).
+   */
   AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) {
     // S = X * Y^T, in our case always 3x3
     var s = scratchMatrix;
