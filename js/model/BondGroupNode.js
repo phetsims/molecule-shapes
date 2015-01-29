@@ -78,7 +78,7 @@ define( function( require ) {
       molecule: molecule
     } );
 
-    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub(), molecule, {
+    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
       showLabel: function() {},
       finishedAddingLabels: function() {}
     } );

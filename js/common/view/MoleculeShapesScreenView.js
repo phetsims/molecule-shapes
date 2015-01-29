@@ -523,9 +523,9 @@ define( function( require ) {
     },
 
     // duck-typed to have the same API as needed by views
-    createAPIStub: function() {
+    createAPIStub: function( renderer ) {
       return {
-        threeRenderer: {},
+        threeRenderer: renderer,
         checkOutLabel: function() {
           return {
             setLabel: function() {},
