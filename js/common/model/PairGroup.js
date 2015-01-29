@@ -19,11 +19,11 @@ define( function( require ) {
    * @constructor
    * @param {Vector3} position - Initial position
    * @param {boolean} isLonePair - True for a lone pair, false for an atom
-   * @param {Object} [options] - Supports:
-   *   @param {Element} [element] - The NITROGLYCERIN element if applicable (e.g. real model), or undefined
+   * @param {Object} [options] - See in the constructor for more information
    */
   function PairGroup( position, isLonePair, options ) {
     options = _.extend( {
+      // {Element | null} - The NITROGLYCERIN element if applicable (e.g. real model), or null if there is no element.
       element: null
     }, options );
 
