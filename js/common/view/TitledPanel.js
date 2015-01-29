@@ -1,7 +1,12 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A panel with a title on the top, that relies on a consistent background color.
+ * A Panel, but with an added {Node} title centered along the location of the top border. Additionally, the border
+ * behind the title is hidden.
+ *
+ * NOTE: TitledPanel requires that its background color is the same as the background color BEHIND the panel, since it
+ * is intended that there is no line in-between the two near where the title is. We use a rectangle with this background
+ * color to hide the border, so that it blends well into the content around it.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
