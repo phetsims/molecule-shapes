@@ -15,12 +15,12 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
 
   var MoleculeShapesGlobals = new PropertySet( {
-    showOuterLonePairs: !!window.phetcommon.getQueryParameter( 'showOuterLonePairs' ) || false,
-    projectorColors:    !!window.phetcommon.getQueryParameter( 'projector' ) || false
+    showOuterLonePairs: !!phet.phetcommon.getQueryParameter( 'showOuterLonePairs' ) || false,
+    projectorColors:    !!phet.phetcommon.getQueryParameter( 'projector' ) || false
   } );
 
   return _.extend( MoleculeShapesGlobals, {
-    useWebGL: ( window.phetcommon.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
+    useWebGL: ( phet.phetcommon.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
 
     /*
      * Applies color changes to the material's color field, and also does so immediately upon being called.

@@ -73,7 +73,7 @@ define( function( require ) {
     },
 
     // enable printing out pool counts (type,action,inPool,outOfPool) with ?dev
-    debug: ( window.phetcommon.getQueryParameter( 'dev' ) ) ? function( action ) {
+    debug: ( phet.phetcommon.getQueryParameter( 'dev' ) ) ? function( action ) {
       console.log( this.name, action, this.quantityInside, this.quantityOutside );
     } : function() {}
   } );
