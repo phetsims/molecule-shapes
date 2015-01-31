@@ -11,6 +11,6 @@ function runMoleculeShapesTests( pathToTestBase ) {
     document.getElementsByTagName( 'head' )[ 0 ].appendChild( script );
   }
 
-  loadTestFile( 'js/model.js' );
+  loadTestFile( 'js/fastmath.js' );
   loadTestFile( 'js/linting.js' );
 };
