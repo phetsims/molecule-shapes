@@ -1,7 +1,15 @@
+//  Copyright 2002-2014, University of Colorado Boulder
+
+/**
+ * Tests for the FastMath type used in Molecule Shapes for speedy matrix/vector operations.
+ *
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ */
+
 (function() {
   'use strict';
 
-  module( 'Molecule Shapes: Model' );
+  module( 'Molecule Shapes: FastMath' );
 
   var Color = scenery.Color;
 
@@ -14,10 +22,6 @@
       approxEqual( arr[ i ], barr[ i ], msg + ': index ' + i );
     }
   }
-
-  test( 'The most important test ever', function() {
-    equal( 0, 0, 'Reflexivity failure' );
-  } );
 
   test( 'FastMath 3x3 mults', function() {
     var a = new ms.FastMath.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
