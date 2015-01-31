@@ -76,12 +76,26 @@ define( function( require ) {
 
   return inherit( Events, Molecule, {
     /**
-     * Concrete sub-types of Molecule should provide implementations for the following abstract methods/properties:
+     * Gets the ideal orientations for the bonds around an atom
+     * @abstract
      *
-     * {LocalShape} getLocalShape( atom ) - The ideal orientations for the bonds around an atom
-     * {number | undefined} getMaximumBondLength() - If applicable, a maximum bond length
-     * {boolean} isReal - Whether the Molecule is considered 'real', or is just a 'model'.
+     * @param {PairGroup} atom
+     * @returns {LocalShape}
      */
+    getLocalShape: function( atom ) {
+      throw new Error( 'abstract method' );
+    },
+
+    /**
+     * @abstract
+     * @returns {number | undefined} if applicable
+     */
+    getMaximumBondLength: function() {
+      throw new Error( 'abstract method' );
+    },
+
+    // @abstract - Whether the Molecule is considered 'real', or is just a 'model'.
+    isReal: false,
 
     update: function( dt ) {
       var numGroups = this.groups.length;
