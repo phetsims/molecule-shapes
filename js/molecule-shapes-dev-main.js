@@ -9,7 +9,6 @@ define( function( require ) {
   'use strict';
 
   return {
-    LiberationSansRegularSubset: require( 'MOLECULE_SHAPES/common/data/LiberationSansRegularSubset' ),
     LonePairGeometryData: require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' ),
 
     AttractorModel: require( 'MOLECULE_SHAPES/common/model/AttractorModel' ),

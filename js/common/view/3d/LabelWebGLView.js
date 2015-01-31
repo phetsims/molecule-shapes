@@ -22,10 +22,13 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Util = require( 'SCENERY/util/Util' );
   var Shape = require( 'KITE/Shape' );
-  var LiberationSansRegularSubset = require( 'MOLECULE_SHAPES/common/data/LiberationSansRegularSubset' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
+
+  // grab our font data from the global namespace
+  var liberationSansRegularSubset = phet.liberationSansRegularSubsetNumericDegrees;
+  assert && assert( liberationSansRegularSubset );
 
   /*---------------------------------------------------------------------------*
    * Glyph texture setup
@@ -45,10 +48,10 @@ define( function( require ) {
 
     // compute maxBounds, set glyphs[key].{shape,advance}
     var maxBounds = Bounds2.NOTHING.copy();
-    for ( key in LiberationSansRegularSubset ) {
+    for ( key in liberationSansRegularSubset ) {
       numGlyphs++;
 
-      var fontGlyph = LiberationSansRegularSubset[ key ];
+      var fontGlyph = liberationSansRegularSubset[ key ];
       var shape = new Shape( fontGlyph.path ).transformed( scaleMatrix );
       maxBounds.includeBounds( shape.bounds );
 
@@ -72,7 +75,7 @@ define( function( require ) {
 
     // draw the glyphs into the texture, while recording their coordinate bounds in UV space (0 to 1)
     var n = 0;
-    for ( key in LiberationSansRegularSubset ) {
+    for ( key in liberationSansRegularSubset ) {
       // X,Y offset of the glyph's 0,0 registration point
       var xOffset = ( n + 1 ) * padding + n * maxWidth - maxBounds.minX;
       var yOffset = padding + maxHeight - maxBounds.maxY;
