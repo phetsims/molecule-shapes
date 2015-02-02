@@ -127,7 +127,11 @@ define( function( require ) {
 
     var url = getBondDataURL( isModel, isBasicsVersion );
     var devicePixelRatio = window.devicePixelRatio || 1;
-    this.addChild( new Image( url, { scale: 1 / devicePixelRatio } ) );
+    this.addChild( new Image( url, {
+      scale: 1 / devicePixelRatio,
+      initialWidth: Screen.HOME_SCREEN_ICON_SIZE.width * devicePixelRatio,
+      initialHeight: Screen.HOME_SCREEN_ICON_SIZE.height * devicePixelRatio
+    } ) );
 
     var centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
     var radialLabel = isModel ? 'X' : getRadialElement( isBasicsVersion ).symbol;
