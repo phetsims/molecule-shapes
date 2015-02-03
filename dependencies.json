@@ -1,6 +1,6 @@
 {
   "chipper": {
-    "sha": "a7da724089d9d299ebe9fe6bbc5871a0d220f9c8",
+    "sha": "dbaf65e09de018e0b419f8550ae13d39dbe7c48e",
     "branch": "master"
   },
   "nitroglycerin": {
@@ -12,23 +12,23 @@
     "branch": "master"
   },
   "sun": {
-    "sha": "edd05c3aca85601d7a26d0c0e6268eddeb850478",
+    "sha": "bb8d875e5b4596811ef1151a1e6aa9658b095d5e",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "836ea64dea3255dd6f7ad6bd1c17646822a079e6",
+    "sha": "6bb0b45bc0b4f4bca2245297484f4e779300c298",
     "branch": "master"
   },
   "scenery": {
-    "sha": "1c8d7218a6525e164b5f2e38a444c7f619e348bd",
+    "sha": "08a5cd8a625c50fa99e076ac1fb2348666adcb85",
     "branch": "master"
   },
   "phetcommon": {
-    "sha": "06911f96a3889969e6b588d2f6ed50128b202ec2",
+    "sha": "02e46c304b218c25e515c7e11a6e31a6b2da8da2",
     "branch": "master"
   },
   "phet-core": {
-    "sha": "20c96274346d9fafc1dca9e37051289ad837b859",
+    "sha": "7d8ed534e6ce7e148d834710f42f77ac5e92f0b6",
     "branch": "master"
   },
   "kite": {
@@ -36,11 +36,11 @@
     "branch": "master"
   },
   "joist": {
-    "sha": "b76ab703d64792a7ccacd4ddd9d5acb3d38f7367",
+    "sha": "fa1d1ee0f8409c5f16f626f7e08ca3162c9a0f44",
     "branch": "master"
   },
   "dot": {
-    "sha": "c26f7126e6e63e96a0737fb88769fc892aa552fb",
+    "sha": "5c874cb3fb2359ef3a0390e81159c5e5c26a0634",
     "branch": "master"
   },
   "brand": {
@@ -48,7 +48,7 @@
     "branch": "master"
   },
   "axon": {
-    "sha": "5ee82d888ca4639a7b4d59e5e83843e8e09c6425",
+    "sha": "e7cf0606d1a79f1cd962d3995e6848e10a0fd649",
     "branch": "master"
   },
   "assert": {
@@ -56,8 +56,8 @@
     "branch": "master"
   },
   "molecule-shapes": {
-    "sha": "2aaa5c092f9730afa95d34c3f10faedc89baeefa",
+    "sha": "6d1bed8e16cc7a186d8f55fadbe2ff01feb28cfa",
     "branch": "master"
   },
-  "comment": "# molecule-shapes 1.0.0-dev.13 Sat Jan 31 2015 11:21:10 GMT-0700 (Mountain Standard Time)"
+  "comment": "# molecule-shapes 1.0.0-dev.14 Mon Feb 02 2015 23:21:39 GMT-0700 (Mountain Standard Time)"
 }
