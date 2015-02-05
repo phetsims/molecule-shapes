@@ -93,7 +93,11 @@ define( function( require ) {
       }
       else {
         this.midpointUnit = aDir.plus( bDir ).normalized();
-        this.planarUnit = aDir.minus( this.midpointUnit.times( aDir.dot( this.midpointUnit ) ) ).normalized();
+        this.planarUnit = aDir.minus( this.midpointUnit.times( aDir.dot( this.midpointUnit ) ) );
+        // guard for zero-length bond case, see https://github.com/phetsims/molecule-shapes/issues/101
+        if ( this.planarUnit.magnitude() > 0 ) {
+          this.planarUnit.normalize();
+        }
       }
 
       this.midpoint = this.midpointUnit.times( BondAngleView.radius );
