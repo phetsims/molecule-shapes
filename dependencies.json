@@ -1,10 +1,10 @@
 {
   "chipper": {
-    "sha": "dbaf65e09de018e0b419f8550ae13d39dbe7c48e",
+    "sha": "c9c73a93cf3abb903486443d24220c66e11a81e9",
     "branch": "master"
   },
   "nitroglycerin": {
-    "sha": "0799b2eaa6b555a28190c5f8952011f37f929caf",
+    "sha": "7a4eda54ba6d1a51fb3f7632f6e2b5661181bb5c",
     "branch": "master"
   },
   "sherpa": {
@@ -12,19 +12,19 @@
     "branch": "master"
   },
   "sun": {
-    "sha": "bb8d875e5b4596811ef1151a1e6aa9658b095d5e",
+    "sha": "c9f305dcb38b1218a6099bc27e3541d2d661ecfd",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "6bb0b45bc0b4f4bca2245297484f4e779300c298",
+    "sha": "767cab5d5b983f7e1c6259d94dc2f59eba5a683a",
     "branch": "master"
   },
   "scenery": {
-    "sha": "08a5cd8a625c50fa99e076ac1fb2348666adcb85",
+    "sha": "4c730ba4be75d8098a5f73f61c1642e13d606cbf",
     "branch": "master"
   },
   "phetcommon": {
-    "sha": "02e46c304b218c25e515c7e11a6e31a6b2da8da2",
+    "sha": "e0f0639b0726d07d5bea30f48766892dfcd4480e",
     "branch": "master"
   },
   "phet-core": {
@@ -32,15 +32,15 @@
     "branch": "master"
   },
   "kite": {
-    "sha": "29e2af5a6cbcf47c8bf29ef1715c8ed48765fb8a",
+    "sha": "f5eec48d577f9bcc885d3f72f76ed08703d3e21e",
     "branch": "master"
   },
   "joist": {
-    "sha": "fa1d1ee0f8409c5f16f626f7e08ca3162c9a0f44",
+    "sha": "96e3e8963b735750b2a334f5e958019c322e9131",
     "branch": "master"
   },
   "dot": {
-    "sha": "5c874cb3fb2359ef3a0390e81159c5e5c26a0634",
+    "sha": "ea256f020097d9a706f7207c1315722fa7aa74db",
     "branch": "master"
   },
   "brand": {
@@ -48,7 +48,7 @@
     "branch": "master"
   },
   "axon": {
-    "sha": "e7cf0606d1a79f1cd962d3995e6848e10a0fd649",
+    "sha": "a8762ae83f10e169ff615ffbd2ab906a3a11f1da",
     "branch": "master"
   },
   "assert": {
@@ -56,8 +56,8 @@
     "branch": "master"
   },
   "molecule-shapes": {
-    "sha": "6d1bed8e16cc7a186d8f55fadbe2ff01feb28cfa",
+    "sha": "562e01df0d75e0ca671b6b4115608db9eddafe1a",
     "branch": "master"
   },
-  "comment": "# molecule-shapes 1.0.0-dev.14 Mon Feb 02 2015 23:21:39 GMT-0700 (Mountain Standard Time)"
+  "comment": "# molecule-shapes 1.0.0-dev.15 Wed Feb 04 2015 23:03:10 GMT-0700 (Mountain Standard Time)"
 }
