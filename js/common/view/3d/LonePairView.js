@@ -71,7 +71,7 @@ define( function( require ) {
     this.electronView2.position.x = -0.75;
     this.electronView1.position.y = this.electronView2.position.y = 5;
 
-    if ( phet.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
+    if ( phet.chipper.getQueryParameter( 'showPointerAreas' ) ) {
       var touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
         color: 0xff0000,
         transparent: true,

@@ -44,7 +44,7 @@ define( function( require ) {
 
     this.group = group;
 
-    if ( phet.phetcommon.getQueryParameter( 'showPointerAreas' ) ) {
+    if ( phet.chipper.getQueryParameter( 'showPointerAreas' ) ) {
       if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
         this.add( new THREE.Mesh( new THREE.SphereGeometry( TOUCH_RADIUS, NUM_SAMPLES, NUM_SAMPLES ), new THREE.MeshBasicMaterial( {
           color: 0xff0000,
