@@ -63,19 +63,19 @@ define( function( require ) {
       var strength = timeElapsed * 3 * delta.magnitude();
 
       // change the velocity of all of the pairs, unless it is an atom at the origin!
-      if ( pair.isLonePair || !pair.isCentralAtom() ) {
+      if ( pair.isLonePair || !pair.isCentralAtom ) {
         if ( aroundCenterAtom ) {
           pair.addVelocity( delta.times( strength ) );
         }
       }
 
       // position movement for faster convergence
-      if ( !pair.isCentralAtom() && aroundCenterAtom ) { // TODO: better way of not moving the center atom?
+      if ( !pair.isCentralAtom && aroundCenterAtom ) { // TODO: better way of not moving the center atom?
         pair.addPosition( delta.times( 2.0 * timeElapsed ) );
       }
 
       // if we are a terminal lone pair, move us just with this but much more quickly
-      if ( !pair.isCentralAtom() && !aroundCenterAtom ) {
+      if ( !pair.isCentralAtom && !aroundCenterAtom ) {
         pair.addPosition( delta.times( Math.min( 20.0 * timeElapsed, 1 ) ) );
       }
     }

@@ -165,6 +165,7 @@ define( function( require ) {
     addCentralAtom: function( group ) {
       this.centralAtom = group;
       this.addGroup( group, true );
+      group.isCentralAtom = true;
     },
 
     addGroupAndBond: function( group, parent, bondOrder, bondLength ) {

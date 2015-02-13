@@ -94,7 +94,9 @@ define( function( require ) {
     if ( !isModel ) {
       molecule.isReal = true;
     }
-    var centralAtom = new PairGroup( new Vector3(), false, { element: centralElement } );
+    var centralAtom = new PairGroup( new Vector3(), false, {
+      element: centralElement
+    } );
     molecule.addCentralAtom( centralAtom );
     molecule.addGroupAndBond( new PairGroup( new Vector3( Math.sin( angle ), -Math.cos( angle ) ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
     molecule.addGroupAndBond( new PairGroup( new Vector3( -Math.sin( angle ), -Math.cos( angle ) ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );

@@ -37,7 +37,7 @@ define( function( require ) {
       for ( var i = 0; i < this.atoms.length; i++ ) {
         var atom = this.atoms[ i ];
         if ( this.getNeighborCount( atom ) > 1 ) {
-          if ( atom.isCentralAtom() ) {
+          if ( atom.isCentralAtom ) {
             // attractive force to the correct position
             var error = this.getLocalShape( atom ).applyAttraction( dt );
 

@@ -49,6 +49,7 @@ define( function( require ) {
     } );
 
     this.isLonePair = isLonePair;
+    this.isCentralAtom = false; // will be overridden to true by Molecule.addCentralAtom() if applicable
 
     // undefined for vsepr pair groups
     this.element = options.element;
@@ -56,7 +57,6 @@ define( function( require ) {
     if ( assert ) {
       this.positionProperty.lazyLink( function( newValue, oldValue ) {
         assert && assert( !isNaN( newValue.x ), 'NaN detected in position!' );
-        assert && assert( !oldValue.equals( Vector3.ZERO ), 'center molecule position change?' );
       } );
       this.velocityProperty.lazyLink( function( newValue, oldValue ) {
         assert && assert( !isNaN( newValue.x ), 'NaN detected in velocity!' );
@@ -190,7 +190,7 @@ define( function( require ) {
     // Adds a {Vector2} to our position if this PairGroup can have non-user-controlled changes
     addPosition: function( positionChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
-      if ( !this.userControlled && !this.isCentralAtom() ) {
+      if ( !this.userControlled && !this.isCentralAtom ) {
         this.position = this.position.plus( positionChange );
       }
     },
@@ -198,7 +198,7 @@ define( function( require ) {
     // Adds a {Vector2} to our velocity if this PairGroup can have non-user-controlled changes
     addVelocity: function( velocityChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
-      if ( !this.userControlled && !this.isCentralAtom() ) {
+      if ( !this.userControlled && !this.isCentralAtom ) {
         this.velocity = this.velocity.plus( velocityChange );
       }
     },
@@ -226,10 +226,6 @@ define( function( require ) {
 
       // stop any velocity that was moving the pair
       this.velocity = new Vector3();
-    },
-
-    isCentralAtom: function() {
-      return !this.isLonePair && this.position.equals( Vector3.ZERO );
     }
   } );
 } );
