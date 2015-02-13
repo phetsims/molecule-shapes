@@ -47,6 +47,12 @@ define( function( require ) {
   }
 
   return inherit( MoleculeShapesModel, RealMoleculesModel, {
+    reset: function() {
+      MoleculeShapesModel.prototype.reset.call( this );
+
+      this.rebuildMolecule( true );
+    },
+
     /*
      * Rebuilds our model molecule based on the possibly new "showRealView" or "realMoleculeShape".
      * @private
