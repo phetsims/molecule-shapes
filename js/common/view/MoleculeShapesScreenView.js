@@ -146,6 +146,9 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10
     } ) );
 
+    // for computing rays, don't want to have to recreate it
+    this.projector = new THREE.Projector();
+
     // we only want to support dragging particles OR rotating the molecule (not both) at the same time
     var draggedParticleCount = 0;
     var isRotating = false;
@@ -299,9 +302,7 @@ define( function( require ) {
       var ndcY = 2 * ( 1 - ( screenPoint.y / this.screenHeight ) ) - 1;
 
       var mousePoint = new THREE.Vector3( ndcX, ndcY, 0 );
-      var raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera( mousePoint, this.threeCamera );
-      return raycaster;
+      return this.projector.pickingRay( mousePoint, this.threeCamera );
     },
 
     /*
@@ -309,8 +310,9 @@ define( function( require ) {
      * @returns {THREE.Vector3}
      */
     convertScreenPointFromGlobalPoint: function( globalPoint ) {
-      globalPoint.project( this.threeCamera );
-      return globalPoint;
+      var point = globalPoint.clone();
+      this.projector.projectVector( globalPoint, this.threeCamera );
+      return point;
     },
 
     /*
