@@ -14,7 +14,6 @@ define( function( require ) {
   var AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
   var BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
   var LonePairView = require( 'MOLECULE_SHAPES/common/view/3d/LonePairView' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
   var BondAngleFallbackView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleFallbackView' );
@@ -66,7 +65,7 @@ define( function( require ) {
 
     updateView: function() {
       // angle and bond views need to know information about the camera's position
-      var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
+      var cameraPosition = new THREE.Vector3().copy( MoleculeShapesGlobals.cameraPosition ); // this SETS cameraPosition
       this.worldToLocal( cameraPosition ); // this mutates cameraPosition
       var localCameraOrientation = new Vector3().set( cameraPosition ).normalized();
 

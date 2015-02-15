@@ -22,6 +22,9 @@ define( function( require ) {
   return _.extend( MoleculeShapesGlobals, {
     useWebGL: ( phet.chipper.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
 
+    // where our camera is positioned in world coordinates (manually tuned)
+    cameraPosition: new THREE.Vector3( 0.12 * 50, -0.025 * 50, 40 ),
+
     /*
      * Applies color changes to the material's color field, and also does so immediately upon being called.
      *

@@ -23,6 +23,7 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
   var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
+  var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
   var LabelFallbackNode = require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' );
 
   /**
@@ -58,13 +59,60 @@ define( function( require ) {
       devicePixelRatio: 1 // hopefully helps performance a bit
     } );
 
+    if ( MoleculeShapesGlobals.useWebGL ) {
+      this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
+        // don't have the context reinitialized by default?
+        event.preventDefault();
+
+        console.log( 'lost context' );
+
+        // tear down the old view
+        screenView.removeMoleculeView( screenView.moleculeView );
+        // screenView.moleculeView.dispose(); // don't dispose, since it would access invalid things
+
+        // bail out
+        MoleculeShapesGlobals.useWebGL = false;
+        screenView.threeRenderer = new THREE.WebGLRenderer( { devicePixelRatio: 1 } );
+        var oldNode = screenView.domNode;
+
+        // TODO: remove duplication
+        // add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
+        screenView.domNode = new DOM( screenView.threeRenderer.domElement, {
+          preventTransform: true, // Scenery 0.2 override for transformation
+          invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
+            this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
+          },
+          pickable: false
+        } );
+        screenView.domNode.invalidateDOM();
+        // Scenery 0.1 override for transformation
+        screenView.domNode.updateCSSTransform = function() {};
+
+        screenView.insertChild( screenView.children.indexOf( oldNode ), screenView.domNode );
+        screenView.removeChild( oldNode );
+
+        // create the new view
+        screenView.moleculeView = new MoleculeView( model, screenView, model.molecule );
+        screenView.addMoleculeView( screenView.moleculeView );
+
+        screenView.layout( screenView.screenWidth, screenView.screenHeight );
+
+        // TODO: stop animation?
+      }, false );
+
+      this.threeRenderer.context.canvas.addEventListener( 'webglcontextrestored', function(event) {
+        // Do something
+        console.log( 'regained context' );
+      }, false );
+    }
+
     MoleculeShapesColors.link( 'background', function( color ) {
       screenView.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 
     MoleculeShapesScreenView.addLightsToScene( this.threeScene );
 
-    this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition ); // sets the camera's position
+    this.threeCamera.position.copy( MoleculeShapesGlobals.cameraPosition ); // sets the camera's position
 
     // add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
     this.domNode = new DOM( this.threeRenderer.domElement, {
@@ -506,9 +554,6 @@ define( function( require ) {
       this.threeRenderer.autoClear = true;
     }
   }, {
-    // where our camera is positioned in world coordinates (manually tuned)
-    cameraPosition: new THREE.Vector3( 0.12 * 50, -0.025 * 50, 40 ),
-
     addLightsToScene: function( threeScene ) {
       var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
       threeScene.add( ambientLight );
