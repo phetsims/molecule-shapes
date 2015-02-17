@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var platform = require( 'PHET_CORE/platform' );
   var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Color = require( 'SCENERY/util/Color' );
@@ -18,6 +19,12 @@ define( function( require ) {
     showOuterLonePairs: !!phet.chipper.getQueryParameter( 'showOuterLonePairs' ) || false,
     projectorColors:    !!phet.chipper.getQueryParameter( 'projector' ) || false
   } );
+
+  // polyfill for console.log on IE9, see https://github.com/phetsims/molecule-shapes/issues/108
+  if ( platform.ie9 ) {
+    window.console = window.console || {};
+    window.console.log = window.console.log || function() {};
+  }
 
   return _.extend( MoleculeShapesGlobals, {
     useWebGL: ( phet.chipper.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
