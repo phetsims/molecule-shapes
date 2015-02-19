@@ -37,7 +37,7 @@ define( function( require ) {
   var glyphs = {};
   var maxWidth;
   var maxHeight;
-  var dataURL;
+  var canvas;
   // initializes the above variables with a texture image and data to reference where glyphs are in that texture
   (function setupTexture() {
     var padding = 4; // padding between glyphs in the texture, and between glyphs and the outside
@@ -66,7 +66,7 @@ define( function( require ) {
     maxHeight = maxBounds.height;
 
     // set up Canvas and dimensions (padding between all glyphs and around the outside, rounded out to powers of 2)
-    var canvas = document.createElement( 'canvas' );
+    canvas = document.createElement( 'canvas' );
     var context = canvas.getContext( '2d' );
     var canvasWidth = Util.toPowerOf2( ( numGlyphs + 1 ) * padding + numGlyphs * maxWidth );
     var canvasHeight = Util.toPowerOf2( 2 * padding + maxHeight );
@@ -95,14 +95,13 @@ define( function( require ) {
       glyphs[ key ].yOffset = yOffset;
       n++;
     }
-
-    // the URL containing the texture
-    dataURL = canvas.toDataURL();
   })();
 
   // renderer-local access
   var localTexture = new LocalTexture( function() {
-    var texture = THREE.ImageUtils.loadTexture( dataURL );
+    var texture = new THREE.Texture( canvas );
+    texture.needsUpdate = true;
+
     texture.minFilter = THREE.LinearMipMapLinearFilter; // ensure we have the best-quality mip-mapping
     return texture;
   } );
