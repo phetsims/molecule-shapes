@@ -16,16 +16,11 @@ define( function( require ) {
   var Plane3 = require( 'DOT/Plane3' );
   var Sphere3 = require( 'DOT/Sphere3' );
   var DOM = require( 'SCENERY/nodes/DOM' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var Dialog = require( 'JOIST/Dialog' );
-  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var ContextLossFailureDialog = require( 'SCENERY_PHET/ContextLossFailureDialog' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
   var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
@@ -286,27 +281,28 @@ define( function( require ) {
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
     showContextLossDialog: function() {
-      var warningSign = new FontAwesomeNode( 'warning_sign', {
-        fill: '#E87600', // "safety orange", according to Wikipedia
-        scale: 0.6
-      } );
-      var text = new Text( 'Sorry, a graphics error has occurred.', { font: new PhetFont( 12 ) } );
-      var button = new TextPushButton( 'Reload', {
-        font: new PhetFont( 12 ),
-        baseColor: '#E87600',
-        listener: function() {
-          window.location.reload();
-        }
-      } );
-      new Dialog( new HBox( {
-        children: [ warningSign, text, button ],
-        spacing: 10
-      } ), {
-        modal: true,
-        hasCloseButton: false,
-        xMargin: 10,
-        yMargin: 10
-      } ).show();
+      new ContextLossFailureDialog().show();
+      // var warningSign = new FontAwesomeNode( 'warning_sign', {
+      //   fill: '#E87600', // "safety orange", according to Wikipedia
+      //   scale: 0.6
+      // } );
+      // var text = new Text( 'Sorry, a graphics error has occurred.', { font: new PhetFont( 12 ) } );
+      // var button = new TextPushButton( 'Reload', {
+      //   font: new PhetFont( 12 ),
+      //   baseColor: '#E87600',
+      //   listener: function() {
+      //     window.location.reload();
+      //   }
+      // } );
+      // new Dialog( new HBox( {
+      //   children: [ warningSign, text, button ],
+      //   spacing: 10
+      // } ), {
+      //   modal: true,
+      //   hasCloseButton: false,
+      //   xMargin: 10,
+      //   yMargin: 10
+      // } ).show();
     },
 
     // Removes a bond-angle label from the pool to be controlled
