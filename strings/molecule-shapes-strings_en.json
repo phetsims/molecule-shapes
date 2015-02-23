@@ -37,7 +37,5 @@
   "control.realView": "Real",
   "control.modelView": "Model",
   "options.showOuterLonePairs": "Show Outer Lone Pairs",
-  "options.projectorColors": "Projector Mode",
-  "webglWarning.title": "Running with low graphics quality",
-  "webglWarning.body": "WebGL is not enabled or not available. Click to learn more."
+  "options.projectorColors": "Projector Mode"
 }

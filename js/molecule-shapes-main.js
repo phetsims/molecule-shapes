@@ -14,7 +14,7 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
-  var CanvasWarningNode = require( 'MOLECULE_SHAPES/common/view/CanvasWarningNode' );
+  var CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
