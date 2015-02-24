@@ -31,7 +31,10 @@ define( function( require ) {
       qualityAssurance: 'Oliver Orejola, Bryan Yoelin'
     },
     optionsNode: new GlobalOptionsNode( isBasicsVersion ),
-    homeScreenWarningNode: MoleculeShapesGlobals.useWebGL ? null : new CanvasWarningNode()
+    homeScreenWarningNode: MoleculeShapesGlobals.useWebGL ? null : new CanvasWarningNode(),
+
+    // ?accessibility will turn on accessibility features
+    accessibility: !!phet.chipper.getQueryParameter( 'accessibility' ) // TODO: control with query parameter
   };
 
   // Appending '?dev' to the URL will enable developer-only features.
