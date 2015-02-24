@@ -24,7 +24,7 @@ define( function( require ) {
   var Events = require( 'AXON/Events' );
   var Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
+  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VseprConfiguration' );
   var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
 
   var MAX_PAIRS = 6;
