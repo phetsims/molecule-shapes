@@ -33,7 +33,7 @@ define( function( require ) {
   var shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
   var shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
 
-  // for looking up VseprConfiguration instances
+  // for looking up VSEPRConfiguration instances
   var configurationMap = {}; // x+','+e => {VSEPRConfiguration}
 
   /*
