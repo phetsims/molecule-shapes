@@ -1,63 +1,63 @@
 {
   "chipper": {
-    "sha": "c9c73a93cf3abb903486443d24220c66e11a81e9",
+    "sha": "522ff3ed9ac716816db94aec87f67477601e8068",
     "branch": "master"
   },
   "nitroglycerin": {
-    "sha": "7a4eda54ba6d1a51fb3f7632f6e2b5661181bb5c",
+    "sha": "416641804b46cb393dd99e896bfea47b434d1050",
     "branch": "master"
   },
   "sherpa": {
-    "sha": "2838342b451d0ee829ccc6991f3145c5b61ba42d",
+    "sha": "bf15240caf4ab055d45b669a5a2243b497fc3511",
     "branch": "master"
   },
   "sun": {
-    "sha": "c9f305dcb38b1218a6099bc27e3541d2d661ecfd",
+    "sha": "4a64f9f09175ecc9b9d43fa5f6d8e4d4f0c690ee",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "767cab5d5b983f7e1c6259d94dc2f59eba5a683a",
+    "sha": "c7d198955deff3ac84b022cd677aa62daa5e547b",
     "branch": "master"
   },
   "scenery": {
-    "sha": "4c730ba4be75d8098a5f73f61c1642e13d606cbf",
+    "sha": "d747ba6a4d5e997084bb1177f9569543974f2722",
     "branch": "master"
   },
   "phetcommon": {
-    "sha": "e0f0639b0726d07d5bea30f48766892dfcd4480e",
+    "sha": "dd722834a1cb3f91b2dc2698ea4b95da907301e2",
     "branch": "master"
   },
   "phet-core": {
-    "sha": "7d8ed534e6ce7e148d834710f42f77ac5e92f0b6",
+    "sha": "c98d56c366b265802198a7f3eeee8a7f7644215b",
     "branch": "master"
   },
   "kite": {
-    "sha": "f5eec48d577f9bcc885d3f72f76ed08703d3e21e",
+    "sha": "8d80e165c771500a67fc508767b682139e7906ae",
     "branch": "master"
   },
   "joist": {
-    "sha": "96e3e8963b735750b2a334f5e958019c322e9131",
+    "sha": "fdd87162f9f5bf8dcd15df182e245794596cd2ed",
     "branch": "master"
   },
   "dot": {
-    "sha": "ea256f020097d9a706f7207c1315722fa7aa74db",
+    "sha": "2ea99c21dd0ad24db28e95322efd726357072ece",
     "branch": "master"
   },
   "brand": {
-    "sha": "c7a2cb73871b7f9cbec2b8ea9ee766070a51d466",
+    "sha": "0f9ee9b8ca1a0e121f66d57109bca59f05c2ef2c",
     "branch": "master"
   },
   "axon": {
-    "sha": "a8762ae83f10e169ff615ffbd2ab906a3a11f1da",
+    "sha": "bd81329f76517c7b5eb2afc099fca90e8889503d",
     "branch": "master"
   },
   "assert": {
-    "sha": "386e00157abe609741d3095120e0e425d10e7b51",
+    "sha": "e9e725994176afd0103aff427acda10bf31192c4",
     "branch": "master"
   },
   "molecule-shapes": {
-    "sha": "562e01df0d75e0ca671b6b4115608db9eddafe1a",
+    "sha": "3ecbc21d9223e988f414841209ee23a054c529cf",
     "branch": "master"
   },
-  "comment": "# molecule-shapes 1.0.0-dev.15 Wed Feb 04 2015 23:03:10 GMT-0700 (Mountain Standard Time)"
+  "comment": "# molecule-shapes 1.0.0-dev.15 Mon Feb 23 2015 19:21:27 GMT-0700 (Mountain Standard Time)"
 }
