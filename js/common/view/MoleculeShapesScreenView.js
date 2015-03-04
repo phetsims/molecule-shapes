@@ -32,8 +32,7 @@ define( function( require ) {
    */
   function MoleculeShapesScreenView( model ) {
     ScreenView.call( this, {
-      layoutBounds: new Bounds2( 0, 0, 1024, 618 ),
-      renderer: 'svg'
+      layoutBounds: new Bounds2( 0, 0, 1024, 618 )
     } );
 
     var screenView = this;
