@@ -1,14 +1,15 @@
-PhET's Simulation for exploring VSEPR shapes, and comparing to real molecules
+Molecule Shapes
+================
 
-By PhET Interactive Simulations
-http://phet.colorado.edu/
+"Molecule Shapes" is an educational simulation in HTML5, by <a href="http://phet.colorado.edu/" target="_blank">PhET Interactive Simulations</a>
+at the University of Colorado Boulder.
 
-NOTE: This repository has dependency on other repositories. Those repositories
-much be checked out as siblings to this repository in your directory structure.
-See package.json for a list of dependencies.
+*This simulation is under development and has not been published.*
 
-Third Party Dependencies
-=============
+### Documentation
+The <a href="http://bit.ly/phet-development-overview" target="_blank">PhET Development Overview</a> is the most complete guide to PhET Simulation
+Development. This guide includes how to obtain simulation code and its dependencies, notes about architecture & design, how to test and build
+the sims, as well as other important issues.
 
-This simulation uses a number of third party libraries, which are enumerated in package.json.
-The dependencies and corresponding licenses are available in: https://github.com/phetsims/sherpa
+### License
+See the <a href="https://github.com/phetsims/molecule-shapes/blob/master/LICENSE" target="_blank">LICENSE</a>
