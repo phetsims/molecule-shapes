@@ -89,8 +89,8 @@ define( function( require ) {
     this.model = model;
 
     // text fields that will show the name of the geometry (uses string placeholders for height)
-    this.molecularText = new Text( 'X', { font: geometryNameFont } );
-    this.electronText = new Text( 'Y', { font: geometryNameFont } );
+    this.molecularText = new Text( 'X', { font: geometryNameFont, pickable: false } );
+    this.electronText = new Text( 'Y', { font: geometryNameFont, pickable: false } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronText, 'fill' );
     model.linkAttribute( 'showMolecularShapeName', this.molecularText, 'visible' );
