@@ -1,6 +1,6 @@
 {
   "name": "molecule-shapes",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "license": "GPLv3",
   "simTitleStringKey": "MOLECULE_SHAPES/molecule-shapes.name",
   "phetLibs": [
