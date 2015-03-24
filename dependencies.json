@@ -1,63 +1,63 @@
 {
   "sun": {
     "sha": "a26cf97460dd28c3e1e908f1c75ef5e71a5654dc",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "sherpa": {
     "sha": "9a3ecfeeef516ec6361af14825f0581165625c44",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "scenery-phet": {
     "sha": "2dd07393dccc90a12a565fcc38547392d85ce56d",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "scenery": {
     "sha": "5b3f3c32efb1e7a1088cfee683581679e2899650",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "phetcommon": {
     "sha": "6ca0bbfdd9437ac7ab9f958ebace561bdc40562d",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "phet-core": {
     "sha": "4af6a3c97444c15cd863cf6bf80fd6dd377c9d3b",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "nitroglycerin": {
     "sha": "f4204cf38ab7fd6671669a78a030a699e1c13b4c",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "kite": {
     "sha": "2607cc05ab62e5797c7b52e75e8f855b408c66d3",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "joist": {
     "sha": "b2d25791d4a3b0b3a76c6e56f9fb31494a995de8",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "dot": {
     "sha": "78e2054714294cb362f458600d7c96d7c73d74c4",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "chipper": {
     "sha": "1606cadfe72ba0d3c2b2589a1928ab895e3ac2d2",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "brand": {
     "sha": "33811940cbf5fd3ccde635d2e30dba1b4898fc31",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "axon": {
     "sha": "c434a3b63f4da4eb749326d7b431dd22d924b699",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "assert": {
     "sha": "ea1c11c986527af4c8e428b149639e3f11045fe5",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "87c58180ee9b0523ffd1e8619dd124c73e39ea4e",
-    "branch": "master"
+    "sha": "40b267e70506e9b88b744c6eaabc9bb610029a96",
+    "branch": "1.0"
   },
-  "comment": "# molecule-shapes 1.0.0-rc.2 Tue Mar 17 2015 12:59:15 GMT-0600 (Mountain Daylight Time)"
+  "comment": "# molecule-shapes 1.0.0 Tue Mar 24 2015 00:05:22 GMT-0600 (Mountain Daylight Time)"
 }
