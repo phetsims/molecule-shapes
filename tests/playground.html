@@ -24,14 +24,14 @@
 <body>
 <script>
   require( [ 'molecule-shapes-dev-config' ], function() {
-    require( [ 'molecule-shapes-dev-main', 'SCENERY/main', 'KITE/main', 'DOT/main', 'AXON/main', 'PHET_CORE/main' ], function( ms, scenery, kite, dot, axon, core ) {
+    require( [ 'molecule-shapes-dev-main', 'SCENERY/main', 'KITE/main', 'DOT/main', 'AXON/main', 'PHET_CORE/main' ], function( ms, scenery, kite, dot, axon, phetCore ) {
       // put all of our dev-main into the global namespace
       _.extend( window, ms );
       window.scenery = scenery;
       window.kite = kite;
       window.dot = dot;
       window.axon = axon;
-      window.core = core;
+      window.phetCore = phetCore;
 
       console.log( 'loaded' );
 
