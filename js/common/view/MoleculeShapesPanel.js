@@ -1,4 +1,4 @@
-//  Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * A TitledPanel with colors and sizing specific to the Molecule Shapes simulation.

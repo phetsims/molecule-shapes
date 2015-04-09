@@ -1,4 +1,4 @@
-//  Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * Dynamically generates the screen icons by rendering 3D scenes into an image and displaying atom labels on top.
