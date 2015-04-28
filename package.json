@@ -21,15 +21,8 @@
     "sun"
   ],
   "preload": [
-    "../assert/js/assert.js",
-    "../sherpa/jquery-2.1.0.js",
-    "../sherpa/lodash-2.4.1.js",
     "../sherpa/typedarray.js",
     "../sherpa/three-r68.js",
-    "../sherpa/has.js",
-    "../sherpa/FileSaver.js",
-    "../chipper/js/initialize-globals.js",
-    "../phetcommon/js/analytics/google-analytics.js",
     "../sherpa/liberation-sans-regular-subset-numeric-degrees.js"
   ],
   "repository": {
