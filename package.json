@@ -22,7 +22,7 @@
     "sun"
   ],
   "preload": [
-    "../sherpa/typedarray.js",
+    "../sherpa/typedarray-44f09cf.js",
     "../sherpa/three-r68.js",
     "../sherpa/liberation-sans-regular-subset-numeric-degrees.js"
   ],
