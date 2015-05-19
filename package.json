@@ -5,21 +5,7 @@
   "simTitleStringKey": "MOLECULE_SHAPES/molecule-shapes.name",
   "phetLibs": [
     "molecule-shapes",
-    "assert",
-    "axon",
-    "babel",
-    "brand",
-    "chipper",
-    "dot",
-    "joist",
-    "kite",
-    "nitroglycerin",
-    "phet-core",
-    "phetcommon",
-    "scenery",
-    "scenery-phet",
-    "sherpa",
-    "sun"
+    "nitroglycerin"
   ],
   "preload": [
     "../sherpa/lib/typedarray-44f09cf.js",
