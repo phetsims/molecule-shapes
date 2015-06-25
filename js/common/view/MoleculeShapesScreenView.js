@@ -498,7 +498,17 @@ define( function( require ) {
       if ( sx === 0 || sy === 0 ) {
         return 1;
       }
-      this.threeCamera.fov = ( sy > sx ? sy / sx : 1 ) * 50;
+
+      // It's a bit tricky, since if we are vertically-constrained, we don't need to adjust the camera's FOV (since the
+      // width of the scene will scale proportionally to the scale we display our contents at). It's only when our view
+      // is horizontally-constrained where we have to account for the changed aspect ratio, and adjust the FOV so that
+      // the molecule shows up at a scale of "sy / sx" compared to the normal case. Note that sx === sy is where our
+      // layout bounds fit perfectly in the window, so we don't really have a constraint.
+      // Most of the complexity here is that threeCamera.fov is in degrees, and our ideal vertically-constrained FOV is
+      // 50 (so there's conversion factors in place).
+      var c = Math.tan( 25 * Math.PI / 180 ); // constant that will output the factor to use to maintain our 50 degree FOV
+      var adaptiveScale = Math.atan( c * sy / sx ) * 2 * 180 / Math.PI; // apply correction scales to maintain correct FOV
+      this.threeCamera.fov = sx > sy ? 50 : adaptiveScale;
       this.activeScale = sy > sx ? sx : sy;
 
       // aspect ratio
