@@ -121,16 +121,18 @@ define( function( require ) {
       var toCenter = this.position.minus( origin );
 
       var distance = toCenter.magnitude();
-      var directionToCenter = toCenter.normalized();
+      if ( distance !== 0 ) {
+        var directionToCenter = toCenter.normalized();
 
-      var offset = idealDistanceFromCenter - distance;
+        var offset = idealDistanceFromCenter - distance;
 
-      // just modify position for now so we don't get any oscillations
-      var ratioOfMovement = Math.pow( 0.1, 0.016 / timeElapsed ); // scale this exponentially by how much time has elapsed, so the more time taken, the faster we move towards the ideal distance
-      if ( isTerminalLonePair ) {
-        ratioOfMovement = 1;
+        // just modify position for now so we don't get any oscillations
+        var ratioOfMovement = Math.pow( 0.1, 0.016 / timeElapsed ); // scale this exponentially by how much time has elapsed, so the more time taken, the faster we move towards the ideal distance
+        if ( isTerminalLonePair ) {
+          ratioOfMovement = 1;
+        }
+        this.position = this.position.plus( directionToCenter.times( ratioOfMovement * offset ) );
       }
-      this.position = this.position.plus( directionToCenter.times( ratioOfMovement * offset ) );
     },
 
     /**
