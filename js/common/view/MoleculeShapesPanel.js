@@ -18,7 +18,7 @@ define( function( require ) {
   function MoleculeShapesPanel( titleString, contentNode, options ) {
     options = _.extend( {
       lineWidth: 1.5,
-      xMargin: 15,
+      xMargin: MoleculeShapesPanel.xMargin,
       yMargin: 15,
       cornerRadius: 15,
       resize: true,
@@ -28,9 +28,7 @@ define( function( require ) {
       pickable: true
     }, options );
 
-    var titleNode = new Text( titleString, {
-      font: new PhetFont( 18 )
-    } );
+    var titleNode = MoleculeShapesPanel.createTitleNode( titleString );
     MoleculeShapesColors.linkAttribute( 'controlPanelTitle', titleNode, 'fill' );
 
     TitledPanel.call( this, titleNode, contentNode, options );
@@ -39,6 +37,14 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'controlPanelBorder', this, 'stroke' );
   }
 
-  return inherit( TitledPanel, MoleculeShapesPanel, {} );
+  return inherit( TitledPanel, MoleculeShapesPanel, {}, {
+    createTitleNode: function( titleString ) {
+      return new Text( titleString, {
+        font: new PhetFont( 18 )
+      } );
+    },
+
+    xMargin: 15 // need to make this available for outside code to compute widths
+  } );
 } );
 

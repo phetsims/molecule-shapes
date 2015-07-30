@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
@@ -73,7 +74,9 @@ define( function( require ) {
     updateButtonEnabled();
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
-    var maxWidth = Math.max( optionsNode.width, Math.max( bondingNode.width, lonePairNode.width ) );
+    var maxWidth = Math.max( new MoleculeShapesPanel( optionsString, new Node( { children: [ optionsNode ] } ) ).width,
+                             Math.max( new MoleculeShapesPanel( bondingString, new Node( { children: [ bondingNode ] } ) ).width,
+                                       new MoleculeShapesPanel( lonePairString, new Node( { children: [ lonePairNode ] } ) ).width ) );
 
     var bondingPanel = new MoleculeShapesPanel( bondingString, bondingNode, {
       right:   this.layoutBounds.right - 10,
