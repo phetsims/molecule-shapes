@@ -35,11 +35,6 @@ define( function( require ) {
         self.setColor( color );
       } );
     }
-    if ( options.ambient ) {
-      MoleculeShapesGlobals.toColorProperty( options.ambient ).link( function( color ) {
-        self.setAmbient( color );
-      } );
-    }
     // assumes RGB
     if ( options.uniformColor ) {
       MoleculeShapesGlobals.toColorProperty( options.uniformColor ).link( function( color ) {
@@ -73,12 +68,6 @@ define( function( require ) {
       var hex = color.toNumber();
       this.masterMaterial.color.setHex( hex );
       _.each( this.materials, function( material ) { material.color.setHex( hex ); } );
-    },
-
-    setAmbient: function( color ) {
-      var hex = color.toNumber();
-      this.masterMaterial.ambient.setHex( hex );
-      _.each( this.materials, function( material ) { material.ambient.setHex( hex ); } );
     },
 
     setUniformColor: function( color ) {

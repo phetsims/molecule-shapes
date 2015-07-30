@@ -82,12 +82,10 @@ define( function( require ) {
   }, {
     // renderer-local access
     centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-      color: MoleculeShapesColors.centralAtomProperty,
-      ambient: MoleculeShapesColors.centralAtomProperty
+      color: MoleculeShapesColors.centralAtomProperty
     } ),
     atomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-      color: MoleculeShapesColors.atomProperty,
-      ambient: MoleculeShapesColors.atomProperty
+      color: MoleculeShapesColors.atomProperty
     } ),
 
     /**
@@ -106,7 +104,6 @@ define( function( require ) {
       if ( !localMaterial ) {
         localMaterial = elementLocalMaterials[ element.symbol ] = new LocalMaterial( new THREE.MeshLambertMaterial( {
           color: new Color( element.color ).toNumber(),
-          ambient: new Color( element.color ).toNumber(),
           overdraw: OVERDRAW
         } ) );
       }

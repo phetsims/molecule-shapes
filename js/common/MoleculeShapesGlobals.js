@@ -46,24 +46,6 @@ define( function( require ) {
       };
     },
 
-    /*
-     * Applies color changes to the material's color and ambient fields, and also does so immediately upon being called.
-     *
-     * @param {THREE.Material} material
-     * @param {Property.<Color>} colorProperty
-     * @returns A callback that will unlink
-     */
-    linkColorAndAmbient: function( material, colorProperty ) {
-      var colorListener = function( color ) {
-        material.color.setHex( color.toNumber() );
-        material.ambient.setHex( color.toNumber() );
-      };
-      colorProperty.link( colorListener );
-      return function() {
-        colorProperty.unlink( colorListener );
-      };
-    },
-
     toColorProperty: function( color ) {
       // for now, cast it into place
       var colorProperty;

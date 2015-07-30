@@ -9,7 +9,7 @@
   ],
   "preload": [
     "../sherpa/lib/typedarray-44f09cf.js",
-    "../sherpa/lib/three-r68.js",
+    "../sherpa/lib/three-r71.js",
     "../sherpa/lib/liberation-sans-regular-subset-numeric-degrees.js"
   ],
   "repository": {

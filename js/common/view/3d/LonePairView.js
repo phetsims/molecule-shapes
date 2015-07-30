@@ -32,8 +32,7 @@ define( function( require ) {
     depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
-    color: MoleculeShapesColors.lonePairShellProperty,
-    ambient: MoleculeShapesColors.lonePairShellProperty
+    color: MoleculeShapesColors.lonePairShellProperty
   } );
 
   // geometries used for hit testing (includes a larger touch hit mesh)
