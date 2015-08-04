@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var platform = require( 'PHET_CORE/platform' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Vector3 = require( 'DOT/Vector3' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -56,7 +57,7 @@ define( function( require ) {
     renderer.render( scene, camera );
     scene.remove( view );
 
-    return renderer.domElement.toDataURL();
+    return renderer.domElement;
   }
 
   // tuned parameters to match the desired Canvas sizes for lone pairs and atom bonds
@@ -66,6 +67,7 @@ define( function( require ) {
   var ATOM_WIDTH = 120;
   var LONE_PAIR_HEIGHT = 55;
 
+  // Returns a {string} URL OR a mipmap {object}, both of which are compatible with Scenery's Image
   function getBondDataURL( bondOrder ) {
     var molecule = new VSEPRMolecule();
     var centralAtom = new PairGroup( new Vector3(), false );
@@ -85,8 +87,16 @@ define( function( require ) {
     var orthoSize = bondOrder === 0 ?
                     ( PairGroup.LONE_PAIR_DISTANCE * 1.07 ) :
                     ( PairGroup.BONDED_PAIR_DISTANCE * 1.22 );
-    var url = render( view, ( bondOrder === 0 ? LONE_PAIR_WIDTH : ATOM_WIDTH ) * IMAGE_SCALE, ( bondOrder === 0 ? LONE_PAIR_HEIGHT : ATOM_HEIGHT ) * IMAGE_SCALE, orthoSize );
+    var width = ( bondOrder === 0 ? LONE_PAIR_WIDTH : ATOM_WIDTH ) * IMAGE_SCALE;
+    var height = ( bondOrder === 0 ? LONE_PAIR_HEIGHT : ATOM_HEIGHT ) * IMAGE_SCALE;
+    var baseCanvas = render( view, width, height, orthoSize );
+    var url = baseCanvas.toDataURL();
     view.dispose();
+
+    if ( platform.firefox ) {
+      // Create a mipmap for firefox, see https://github.com/phetsims/molecule-shapes/issues/129
+      url = Image.createFastMipmapFromCanvas( baseCanvas );
+    }
     return url;
   }
 
