@@ -38,9 +38,6 @@ define( function( require ) {
   } ) : new THREE.CanvasRenderer();
   renderer.setClearColor( 0x0, 0 ); // transparent
 
-  // how many physical pixel lengths map to a CSS pixel length (devicePixelRatio of 2 means 4 pixels map to 1)
-  var devicePixelRatio = window.devicePixelRatio || 1;
-
   var camera = new THREE.OrthographicCamera();
   camera.position.set( 0, 0, 40 );
   camera.near = 1; // near clipping plane
@@ -125,12 +122,12 @@ define( function( require ) {
 
     // our image of the lone pair / bond, under the overlay.
     var image = new Image( getBondDataURL( bondOrder ), {
-      scale: 1 / IMAGE_SCALE / devicePixelRatio // retina devices create large images, so for now we normalize the image scale
+      scale: 1 / IMAGE_SCALE // retina devices create large images, so for now we normalize the image scale
     } );
     // override local bounds because the correct bounds may not be loaded yet (loading from a data URL, not an HTMLImageElement)
     image.localBounds = bondOrder === 0 ?
-                        new Bounds2( 0, 0, LONE_PAIR_WIDTH * devicePixelRatio * IMAGE_SCALE, LONE_PAIR_HEIGHT * devicePixelRatio * IMAGE_SCALE ) :
-                        new Bounds2( 0, 0, ATOM_WIDTH * devicePixelRatio * IMAGE_SCALE, ATOM_HEIGHT * devicePixelRatio * IMAGE_SCALE );
+                        new Bounds2( 0, 0, LONE_PAIR_WIDTH * IMAGE_SCALE, LONE_PAIR_HEIGHT * IMAGE_SCALE ) :
+                        new Bounds2( 0, 0, ATOM_WIDTH * IMAGE_SCALE, ATOM_HEIGHT * IMAGE_SCALE );
     image.center = overlay.center;
 
     // handle updates to our color scheme by recreating the images needed

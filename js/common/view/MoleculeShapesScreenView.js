@@ -58,6 +58,8 @@ define( function( require ) {
       devicePixelRatio: 1 // hopefully helps performance a bit
     } );
 
+    this.threeRenderer.setPixelRatio( window.devicePixelRatio || 1 );
+
     // In the event of a context loss, we'll just show a dialog. See https://github.com/phetsims/molecule-shapes/issues/100
     if ( MoleculeShapesGlobals.useWebGL ) {
       this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
