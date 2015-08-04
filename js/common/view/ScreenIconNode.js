@@ -128,11 +128,9 @@ define( function( require ) {
     this.localBounds = Screen.HOME_SCREEN_ICON_SIZE.toBounds();
 
     var url = getBondDataURL( isModel, isBasicsVersion );
-    var devicePixelRatio = window.devicePixelRatio || 1;
     this.addChild( new Image( url, {
-      scale: 1 / devicePixelRatio,
-      initialWidth: Screen.HOME_SCREEN_ICON_SIZE.width * devicePixelRatio,
-      initialHeight: Screen.HOME_SCREEN_ICON_SIZE.height * devicePixelRatio
+      initialWidth: Screen.HOME_SCREEN_ICON_SIZE.width,
+      initialHeight: Screen.HOME_SCREEN_ICON_SIZE.height
     } ) );
 
     var centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
