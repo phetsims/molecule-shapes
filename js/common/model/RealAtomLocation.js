@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var NitroglycerinAtom = require( 'NITROGLYCERIN/Atom' );
+  var Atom = require( 'NITROGLYCERIN/Atom' );
 
   /**
    * @constructor
@@ -19,7 +19,7 @@ define( function( require ) {
    * @param {number} [lonePairCount]
    */
   function RealAtomLocation( element, position, lonePairCount ) {
-    NitroglycerinAtom.call( this, element );
+    Atom.call( this, element );
 
     this.position = position;
     this.orientation = position.magnitude() > 0 ? position.normalized() : position.copy();
@@ -31,5 +31,5 @@ define( function( require ) {
     }
   }
 
-  return inherit( NitroglycerinAtom, RealAtomLocation );
+  return inherit( Atom, RealAtomLocation );
 } );
