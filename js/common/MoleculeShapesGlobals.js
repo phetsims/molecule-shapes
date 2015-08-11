@@ -26,8 +26,13 @@ define( function( require ) {
     window.console.log = window.console.log || function() {};
   }
 
+  var hasBasicWebGLSupport = ( phet.chipper.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported;
+  var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
+
   return _.extend( MoleculeShapesGlobals, {
-    useWebGL: ( phet.chipper.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
+    // @public
+    hasBasicWebGLSupport: hasBasicWebGLSupport, // Whether the basics of WebGL are included
+    useWebGL: useWebGL, // Whether we will be using WebGL
 
     /*
      * Applies color changes to the material's color field, and also does so immediately upon being called.
