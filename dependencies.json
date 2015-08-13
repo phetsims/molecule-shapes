@@ -1,19 +1,19 @@
 {
-  "comment": "# molecule-shapes 1.1.0-rc.1 Mon Jul 20 2015 12:55:18 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# molecule-shapes 1.1.0-rc.2 Thu Aug 13 2015 15:13:24 GMT-0600 (MDT)",
   "assert": {
     "sha": "858e65ac477bf1861883ce06eed56d9fdefa5027",
     "branch": "master"
   },
   "axon": {
-    "sha": "579f8c660b519d9381e4e85833702eb7d370a733",
+    "sha": "5be7fe049bbc0963a28c0125dc90039f04fb651c",
     "branch": "master"
   },
   "brand": {
-    "sha": "4289619609e7b6430e25ddcc47fce6ef40c35f28",
-    "branch": "phet"
+    "sha": "aa39bc48491aaee6c9059e0194c8974fd02bceba",
+    "branch": "master"
   },
   "chipper": {
-    "sha": "d5bea1caf658e4693283e303999c6f882e334d71",
+    "sha": "51c45026022c5096cd180c6f578379cfda7c5414",
     "branch": "master"
   },
   "dot": {
@@ -21,7 +21,7 @@
     "branch": "master"
   },
   "joist": {
-    "sha": "a5de6c778b874a9a4cc86a5a041d73cc22a0e642",
+    "sha": "e9f47dd31e40b11de634fec9e82a12939c98031d",
     "branch": "master"
   },
   "kite": {
@@ -29,7 +29,7 @@
     "branch": "master"
   },
   "molecule-shapes": {
-    "sha": "8a2784f413afd9a2136747486f0e480ef39e69a9",
+    "sha": "43fc3142104c119549953e6024081d40db7342f8",
     "branch": "1.1"
   },
   "nitroglycerin": {
@@ -45,19 +45,19 @@
     "branch": "master"
   },
   "scenery": {
-    "sha": "24a4d9ab86af58c0de7fff1a0c28673227741846",
+    "sha": "be4fc88f1d1e8ddec3ec29b03f45cc5db08287d1",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "f3f305457bc3771a720de717cd17ba27a3de7f24",
+    "sha": "78082cb37084beac1bb3188f616eee901ccffaa5",
     "branch": "master"
   },
   "sherpa": {
-    "sha": "fdc6e97ab4b12364a6e0a8e4b201f8cd4b22ab8f",
+    "sha": "1759eadefb4f6d680f85aef394ea7727df1928e6",
     "branch": "master"
   },
   "sun": {
-    "sha": "dc08e5f3cdf78c54df51fc1cdfcc20b61dc0c98a",
+    "sha": "1320a557747cdae948b731a9398ec3670b139334",
     "branch": "master"
   }
 }
