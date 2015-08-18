@@ -17,7 +17,6 @@
     "requirejsNamespace": "MOLECULE_SHAPES",
     "simTitleStringKey": "MOLECULE_SHAPES/molecule-shapes.name",
     "phetLibs": [
-      "molecule-shapes",
       "nitroglycerin"
     ],
     "preload": [
