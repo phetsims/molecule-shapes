@@ -1,63 +1,63 @@
 {
-  "comment": "# molecule-shapes 1.1.0-rc.2 Thu Aug 13 2015 15:13:24 GMT-0600 (MDT)",
+  "comment": "# molecule-shapes 1.1.0-rc.3 Mon Aug 24 2015 11:23:38 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "858e65ac477bf1861883ce06eed56d9fdefa5027",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "axon": {
     "sha": "5be7fe049bbc0963a28c0125dc90039f04fb651c",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "brand": {
     "sha": "aa39bc48491aaee6c9059e0194c8974fd02bceba",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "chipper": {
     "sha": "51c45026022c5096cd180c6f578379cfda7c5414",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "dot": {
     "sha": "e34c6b2c53b83ea1f8d2a5091cadfdc6353a501d",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "joist": {
     "sha": "e9f47dd31e40b11de634fec9e82a12939c98031d",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "kite": {
     "sha": "2497814682e359a8500fcb2a6dca2e276a00b6f9",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "43fc3142104c119549953e6024081d40db7342f8",
+    "sha": "151776789d87b0c91fd36950daff8599bb08f347",
     "branch": "1.1"
   },
   "nitroglycerin": {
     "sha": "c6f79ce4664a1120a8d1d2393d5d48f9b72d4bc9",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "phet-core": {
     "sha": "8e31808c67a23066b43fbbd2080784daa44433c2",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "phetcommon": {
     "sha": "89a44d2cefd4b66f031f7f3fc30c0578a3130b5e",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "scenery": {
-    "sha": "be4fc88f1d1e8ddec3ec29b03f45cc5db08287d1",
+    "sha": "fe4f01422d583c828b95a60bfc2a2ccd76451ebc",
     "branch": "master"
   },
   "scenery-phet": {
     "sha": "78082cb37084beac1bb3188f616eee901ccffaa5",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "sherpa": {
     "sha": "1759eadefb4f6d680f85aef394ea7727df1928e6",
-    "branch": "master"
+    "branch": "HEAD"
   },
   "sun": {
     "sha": "1320a557747cdae948b731a9398ec3670b139334",
-    "branch": "master"
+    "branch": "HEAD"
   }
 }
