@@ -1,6 +1,6 @@
 {
   "name": "molecule-shapes",
-  "version": "1.1.0-rc.3",
+  "version": "1.1.0",
   "license": "GPLv3",
   "requirejsNamespace": "MOLECULE_SHAPES",
   "simTitleStringKey": "MOLECULE_SHAPES/molecule-shapes.name",
