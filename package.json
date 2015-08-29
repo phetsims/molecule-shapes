@@ -1,20 +1,7 @@
 {
   "name": "molecule-shapes",
-  "version": "1.1.0",
+  "version": "1.1.1-rc.1",
   "license": "GPLv3",
-  "requirejsNamespace": "MOLECULE_SHAPES",
-  "simTitleStringKey": "MOLECULE_SHAPES/molecule-shapes.name",
-  "phetLibs": [
-    "molecule-shapes",
-    "nitroglycerin"
-  ],
-  "preload": [
-    "../sherpa/lib/typedarray-44f09cf.js",
-    "../sherpa/lib/three-r71.js",
-    "../sherpa/lib/three-r71-Projector.js",
-    "../sherpa/lib/three-r71-CanvasRenderer.js",
-    "../sherpa/lib/liberation-sans-regular-subset-numeric-degrees.js"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/molecule-shapes.git"
@@ -25,5 +12,18 @@
     "grunt-contrib-jshint": "~0.6.4",
     "uglify-js": "~2.4.0",
     "requirejs": "~2.1.8"
+  },
+  "phet": {
+    "requirejsNamespace": "MOLECULE_SHAPES",
+    "phetLibs": [
+      "nitroglycerin"
+    ],
+    "preload": [
+      "../sherpa/lib/typedarray-44f09cf.js",
+      "../sherpa/lib/three-r71.js",
+      "../sherpa/lib/three-r71-Projector.js",
+      "../sherpa/lib/three-r71-CanvasRenderer.js",
+      "../sherpa/lib/liberation-sans-regular-subset-numeric-degrees.js"
+    ]
   }
 }
