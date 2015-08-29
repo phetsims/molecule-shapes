@@ -1,63 +1,63 @@
 {
-  "comment": "# molecule-shapes 1.1.0-rc.3 Mon Aug 24 2015 11:23:38 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# molecule-shapes 1.1.1-rc.1 Fri Aug 28 2015 20:56:48 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "858e65ac477bf1861883ce06eed56d9fdefa5027",
-    "branch": "HEAD"
+    "branch": "master"
   },
   "axon": {
     "sha": "5be7fe049bbc0963a28c0125dc90039f04fb651c",
-    "branch": "HEAD"
+    "branch": "master"
   },
   "brand": {
-    "sha": "aa39bc48491aaee6c9059e0194c8974fd02bceba",
-    "branch": "HEAD"
+    "sha": "2af17fe775352982468b0b7215096f413339a32a",
+    "branch": "master"
   },
   "chipper": {
-    "sha": "51c45026022c5096cd180c6f578379cfda7c5414",
-    "branch": "HEAD"
+    "sha": "1c859930d3b12fa6c51a88a9ccdef55e506b69c0",
+    "branch": "master"
   },
   "dot": {
     "sha": "e34c6b2c53b83ea1f8d2a5091cadfdc6353a501d",
-    "branch": "HEAD"
+    "branch": "master"
   },
   "joist": {
-    "sha": "e9f47dd31e40b11de634fec9e82a12939c98031d",
-    "branch": "HEAD"
+    "sha": "27d92033a1970e8e7a4c5f246240d7b07915587f",
+    "branch": "master"
   },
   "kite": {
     "sha": "2497814682e359a8500fcb2a6dca2e276a00b6f9",
-    "branch": "HEAD"
+    "branch": "master"
   },
   "molecule-shapes": {
-    "sha": "151776789d87b0c91fd36950daff8599bb08f347",
+    "sha": "d15858cd83fa5ff0391a7e61ade9add97729b680",
     "branch": "1.1"
   },
   "nitroglycerin": {
     "sha": "c6f79ce4664a1120a8d1d2393d5d48f9b72d4bc9",
-    "branch": "HEAD"
+    "branch": "master"
   },
   "phet-core": {
     "sha": "8e31808c67a23066b43fbbd2080784daa44433c2",
-    "branch": "HEAD"
+    "branch": "master"
   },
   "phetcommon": {
-    "sha": "89a44d2cefd4b66f031f7f3fc30c0578a3130b5e",
-    "branch": "HEAD"
+    "sha": "3cebb2ae12990ea6ca82668d67487a6909500c4d",
+    "branch": "master"
   },
   "scenery": {
-    "sha": "fe4f01422d583c828b95a60bfc2a2ccd76451ebc",
+    "sha": "7379d318ebee43100c5167746a484af4b185140b",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "78082cb37084beac1bb3188f616eee901ccffaa5",
-    "branch": "HEAD"
+    "sha": "1486b5b9a4e465dae85e21cdbfddd6e3dffe66c0",
+    "branch": "master"
   },
   "sherpa": {
     "sha": "1759eadefb4f6d680f85aef394ea7727df1928e6",
-    "branch": "HEAD"
+    "branch": "master"
   },
   "sun": {
-    "sha": "1320a557747cdae948b731a9398ec3670b139334",
-    "branch": "HEAD"
+    "sha": "e400abb482b66d703556f9899cf224f2a3488f35",
+    "branch": "master"
   }
 }
