@@ -2,10 +2,10 @@
   "molecule-shapes.title": {
     "value": "Molecule Shapes"
   },
-  "molecule-shapes.title": {
+  "screen.model": {
     "value": "Model"
   },
-  "real-molecules": {
+  "screen.realMolecules": {
     "value": "Real Molecules"
   },
   "geometry.empty": {

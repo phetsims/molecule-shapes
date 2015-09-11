@@ -17,7 +17,7 @@ define( function( require ) {
   var ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
 
   // strings
-  var screenTitle = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
+  var screenTitle = require( 'string!MOLECULE_SHAPES/screen.model' );
 
   /**
    * Creates the model and view for the ModelMoleculesScreen
