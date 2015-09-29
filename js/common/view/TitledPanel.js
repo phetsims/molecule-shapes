@@ -22,7 +22,7 @@ define( function( require ) {
   function TitledPanel( titleNode, contentNode, options ) {
     Node.call( this );
 
-    options = _.extend( {}, Panel.defaultOptions, options );
+    options = _.extend( {}, Panel.DEFAULT_OPTIONS, options );
 
     this.titleNode = titleNode;
     this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } );
