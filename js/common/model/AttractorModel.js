@@ -15,7 +15,7 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var DotUtil = require( 'DOT/Util' );
   var Matrix = require( 'DOT/Matrix' );
-  var FastMath = require( 'MOLECULE_SHAPES/common/model/FastMath' );
+  var MatrixOps3 = require( 'DOT/MatrixOps3' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
 
   // just static calls, so just create an empty object
@@ -122,9 +122,9 @@ define( function( require ) {
   };
 
   // maximum size of most computations is 3x6
-  var scratchXArray = new FastMath.Array( 18 );
-  var scratchYArray = new FastMath.Array( 18 );
-  var scratchIdealsArray = new FastMath.Array( 18 );
+  var scratchXArray = new MatrixOps3.Array( 18 );
+  var scratchYArray = new MatrixOps3.Array( 18 );
+  var scratchIdealsArray = new MatrixOps3.Array( 18 );
 
   /**
    * Find the closest VSEPR configuration for a particular molecule. Conceptually, we iterate through
@@ -152,18 +152,18 @@ define( function( require ) {
 
     // y == electron pair positions
     var y = scratchYArray;
-    FastMath.setVectors3( currentOrientations, y );
+    MatrixOps3.setVectors3( currentOrientations, y );
 
     var x = scratchXArray;
 
     var ideals = scratchIdealsArray;
-    FastMath.setVectors3( idealOrientations, ideals );
+    MatrixOps3.setVectors3( idealOrientations, ideals );
 
 
     // closure over constant variables
     function calculateTarget( permutation ) {
       // x == configuration positions
-      FastMath.permuteColumns( 3, n, ideals, permutation, x );
+      MatrixOps3.permuteColumns( 3, n, ideals, permutation, x );
 
       // compute the rotation matrix
       var rot = new Matrix( 3, 3 );
@@ -171,7 +171,7 @@ define( function( require ) {
 
       // target matrix, same shape as our y (current position) matrix
       var target = new Matrix( 3, n );
-      FastMath.mult( 3, 3, n, rot.entries, x, target.entries ); // target = rot * x
+      MatrixOps3.mult( 3, 3, n, rot.entries, x, target.entries ); // target = rot * x
 
       // calculate the error
       var error = 0;
@@ -219,35 +219,35 @@ define( function( require ) {
   };
 
   // scratch matrices for the SVD calculations
-  var scratchMatrix = new FastMath.Array( 9 );
-  var scratchU = new FastMath.Array( 9 );
-  var scratchSigma = new FastMath.Array( 9 );
-  var scratchV = new FastMath.Array( 9 );
+  var scratchMatrix = new MatrixOps3.Array( 9 );
+  var scratchU = new MatrixOps3.Array( 9 );
+  var scratchSigma = new MatrixOps3.Array( 9 );
+  var scratchV = new MatrixOps3.Array( 9 );
 
   /**
    * In 3D, Given n points x_i and n points y_i, determine the rotation matrix that can be applied to the x_i such
    * that it minimizes the least-squares error between each x_i and y_i.
    *
    * @param {number} n - Quantity of points
-   * @param {FastMath.Array} x - A 3xN FastMath matrix where each column represents a point x_i
-   * @param {FastMath.Array} y - A 3xN FastMath matrix where each column represents a point y_i
-   * @param {FastMath.Array} result - A 3x3 FastMath matrix where the rotation matrix result will be stored (there is no return value).
+   * @param {MatrixOps3.Array} x - A 3xN MatrixOps3 matrix where each column represents a point x_i
+   * @param {MatrixOps3.Array} y - A 3xN MatrixOps3 matrix where each column represents a point y_i
+   * @param {MatrixOps3.Array} result - A 3x3 MatrixOps3 matrix where the rotation matrix result will be stored (there is no return value).
    */
   AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) {
     // S = X * Y^T, in our case always 3x3
     var s = scratchMatrix;
-    FastMath.multRightTranspose( 3, n, 3, x, y, s );
+    MatrixOps3.multRightTranspose( 3, n, 3, x, y, s );
 
     // this code may loop infinitely on NaN, so we want to double-check
     assert && assert( !isNaN( s[ 0 ] ) );
 
     // Sets U, Sigma, V
-    FastMath.svd3( s, 5, scratchU, scratchSigma, scratchV );
+    MatrixOps3.svd3( s, 5, scratchU, scratchSigma, scratchV );
 
     // If last fastSigma entry is negative, a reflection would have been a better match. Consider [1,0,0 0,1,0 0,0,-1]
     // multiplied in-between to reverse if that will help in the future.
     // result = V * U^T
-    FastMath.mult3RightTranspose( scratchV, scratchU, result );
+    MatrixOps3.mult3RightTranspose( scratchV, scratchU, result );
   };
 
   // double error, Matrix target, Permutation permutation, Matrix rotation
