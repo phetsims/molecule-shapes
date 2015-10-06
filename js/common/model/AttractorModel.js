@@ -325,10 +325,10 @@ define( function( require ) {
   };
 
   AttractorModel.listPrint = function( lists ) {
-    var ret = "";
+    var ret = '';
     for ( var i = 0; i < lists.length; i++ ) {
       var list = lists[ i ];
-      ret += " ";
+      ret += ' ';
       for ( var j = 0; j < list.length; j++ ) {
         ret += list[ j ].toString();
       }
@@ -354,9 +354,9 @@ define( function( require ) {
      */
 
     var arr = [
-      [ "A", "B" ],
-      [ "C" ],
-      [ "D", "E", "F" ]
+      [ 'A', 'B' ],
+      [ 'C' ],
+      [ 'D', 'E', 'F' ]
     ];
 
     AttractorModel.forEachMultiplePermutations( arr, function( lists ) {
