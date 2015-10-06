@@ -100,7 +100,7 @@ define( function( require ) {
       default: new Color( 0, 0, 0 )
     },
     removeButtonBackground: {
-      default: new Color( 255, 200, 0 ),
+      default: new Color( 255, 200, 0 )
     },
     checkBox: {
       default: new Color( 230, 230, 230 ),

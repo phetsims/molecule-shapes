@@ -136,7 +136,7 @@ define( function( require ) {
       else {
         this.label.unsetLabel();
       }
-    },
+    }
   }, {
     // dot product between the camera direction and bond angle normal is below LOW_THRESHOLDS[bondOrder] => alpha = 0
     // dot product between the camera direction and bond angle normal is above LOW_THRESHOLDS[HIGH_THRESHOLDS] => alpha = 1
