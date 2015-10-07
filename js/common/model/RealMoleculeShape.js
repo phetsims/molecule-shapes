@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
-  var DotUtil = require( 'DOT/Util' );
+  var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
   var Element = require( 'NITROGLYCERIN/Element' );
   var RealAtomLocation = require( 'MOLECULE_SHAPES/common/model/RealAtomLocation' );
   var Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );

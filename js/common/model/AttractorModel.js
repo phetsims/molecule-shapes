@@ -13,7 +13,7 @@ define( function( require ) {
   // modules
   var pairs = require( 'PHET_CORE/pairs' );
   var Vector3 = require( 'DOT/Vector3' );
-  var DotUtil = require( 'DOT/Util' );
+  var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
   var Matrix = require( 'DOT/Matrix' );
   var MatrixOps3 = require( 'DOT/MatrixOps3' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
