@@ -21,7 +21,8 @@ define( function( require ) {
    * @param {RealMoleculeShape} realMoleculeShape
    */
   function RealMolecule( realMoleculeShape ) {
-    var i, group;
+    var i;
+    var group;
 
     Molecule.call( this, true );
 
