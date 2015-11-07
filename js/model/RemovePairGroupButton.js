@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * A red button with an 'X' that, when clicked, will remove an atom (with a bond type) or a lone pair from the main molecule

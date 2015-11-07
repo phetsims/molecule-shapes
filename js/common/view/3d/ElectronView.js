@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014, University of Colorado Boulder
 
 /**
  * View of an individual electron in a cloud {THREE.Object3D}
