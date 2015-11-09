@@ -17,17 +17,17 @@ define( function( require ) {
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
 
   // strings
-  var showOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );
-  var projectorColorsString = require( 'string!MOLECULE_SHAPES/options.projectorColors' );
+  var optionsShowOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );
+  var optionsProjectorColorsString = require( 'string!MOLECULE_SHAPES/options.projectorColors' );
 
   function GlobalOptionsNode( isBasicsVersion ) {
     var children = [];
 
     if ( !isBasicsVersion ) {
-      children.push( new CheckBox( new Text( showOuterLonePairsString, { font: OptionsDialog.DEFAULT_FONT } ),
+      children.push( new CheckBox( new Text( optionsShowOuterLonePairsString, { font: OptionsDialog.DEFAULT_FONT } ),
         MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
     }
-    children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
+    children.push( new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       MoleculeShapesGlobals.projectorColorsProperty, {} ) );
 
     VBox.call( this, _.extend( {

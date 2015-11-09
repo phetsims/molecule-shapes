@@ -16,18 +16,18 @@ define( function( require ) {
   var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
 
-  var showLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
-  var showBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
+  var controlShowLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
+  var controlShowBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
 
   var optionsFont = new PhetFont( 14 );
 
   function OptionsNode( model, options ) {
-    var showLonePairsLabel = new Text( showLonePairsString, {
+    var showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showLonePairsLabel, 'fill' );
 
-    var showBondAnglesLabel = new Text( showBondAnglesString, {
+    var showBondAnglesLabel = new Text( controlShowBondAnglesString, {
       font: optionsFont
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );

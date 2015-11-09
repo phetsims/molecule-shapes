@@ -24,10 +24,10 @@ define( function( require ) {
   var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
-  var moleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
-  var optionsString = require( 'string!MOLECULE_SHAPES/control.options' );
-  var realViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
-  var modelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
+  var controlMoleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
+  var controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
+  var controlRealViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
+  var controlModelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
 
   /**
    * Constructor for the RealMoleculesScreenView
@@ -57,12 +57,12 @@ define( function( require ) {
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
     var maxWidth = Math.max( optionsNode.width, comboBox.width );
 
-    var moleculePanel = new MoleculeShapesPanel( moleculeString, comboBox, {
+    var moleculePanel = new MoleculeShapesPanel( controlMoleculeString, comboBox, {
       right:   this.layoutBounds.right - 10,
       top:     this.layoutBounds.top + 10,
       xMargin: ( maxWidth - comboBox.width ) / 2 + 15
     } );
-    var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
+    var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
       right:   this.layoutBounds.right - 10,
       top:     moleculePanel.bottom + 10,
       xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
@@ -77,8 +77,8 @@ define( function( require ) {
       var approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
 
       // NOTE: these font sizes are scaled!
-      var realViewLabel = new Text( realViewString, { font: new PhetFont( 28 ) } );
-      var modelViewLabel = new Text( modelViewString, { font: new PhetFont( 28 ) } );
+      var realViewLabel = new Text( controlRealViewString, { font: new PhetFont( 28 ) } );
+      var modelViewLabel = new Text( controlModelViewString, { font: new PhetFont( 28 ) } );
       MoleculeShapesColors.linkAttribute( 'controlPanelText', realViewLabel, 'fill' );
       MoleculeShapesColors.linkAttribute( 'controlPanelText', modelViewLabel, 'fill' );
 

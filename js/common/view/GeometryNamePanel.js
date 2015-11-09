@@ -18,9 +18,9 @@ define( function( require ) {
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
 
   // strings
-  var geometryNameString = require( 'string!MOLECULE_SHAPES/control.geometryName' );
-  var moleculeGeometryString = require( 'string!MOLECULE_SHAPES/control.moleculeGeometry' );
-  var electronGeometryString = require( 'string!MOLECULE_SHAPES/control.electronGeometry' );
+  var controlGeometryNameString = require( 'string!MOLECULE_SHAPES/control.geometryName' );
+  var controlMoleculeGeometryString = require( 'string!MOLECULE_SHAPES/control.moleculeGeometry' );
+  var controlElectronGeometryString = require( 'string!MOLECULE_SHAPES/control.electronGeometry' );
 
   var geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
   var geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
@@ -98,8 +98,8 @@ define( function( require ) {
 
     // labels for the types of geometries
     var textLabelFont = new PhetFont( 14 );
-    this.molecularTextLabel = new Text( moleculeGeometryString, { font: textLabelFont } );
-    this.electronTextLabel = new Text( electronGeometryString, { font: textLabelFont } );
+    this.molecularTextLabel = new Text( controlMoleculeGeometryString, { font: textLabelFont } );
+    this.electronTextLabel = new Text( controlElectronGeometryString, { font: textLabelFont } );
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
 
@@ -135,7 +135,7 @@ define( function( require ) {
       content.addChild( this.electronText );
     }
 
-    MoleculeShapesPanel.call( this, geometryNameString, content, _.extend( {
+    MoleculeShapesPanel.call( this, controlGeometryNameString, content, _.extend( {
       fill: MoleculeShapesColors.background
     }, options ) );
 

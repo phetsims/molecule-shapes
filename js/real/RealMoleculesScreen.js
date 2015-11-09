@@ -17,7 +17,7 @@ define( function( require ) {
   var ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
 
   // strings
-  var screenTitle = require( 'string!MOLECULE_SHAPES/screen.realMolecules' );
+  var screenRealMoleculesString = require( 'string!MOLECULE_SHAPES/screen.realMolecules' );
 
   /**
    * Creates the model and view for the RealMoleculesScreen
@@ -29,7 +29,7 @@ define( function( require ) {
 
     var screenIcon = new ScreenIconNode( false, isBasicsVersion );
 
-    Screen.call( this, screenTitle, screenIcon,
+    Screen.call( this, screenRealMoleculesString, screenIcon,
       function() { return new RealMoleculesModel( isBasicsVersion ); },
       function( model ) { return new RealMoleculesScreenView( model ); },
       { backgroundColor: MoleculeShapesColors.background.toCSS() }

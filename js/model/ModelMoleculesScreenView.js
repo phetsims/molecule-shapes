@@ -23,10 +23,10 @@ define( function( require ) {
   var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
-  var bondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
-  var lonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );
-  var optionsString = require( 'string!MOLECULE_SHAPES/control.options' );
-  var removeAllString = require( 'string!MOLECULE_SHAPES/control.removeAll' );
+  var controlBondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
+  var controlLonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );
+  var controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
+  var controlRemoveAllString = require( 'string!MOLECULE_SHAPES/control.removeAll' );
 
   /**
    * Constructor for the ModelMoleculesScreenView
@@ -55,7 +55,7 @@ define( function( require ) {
       align: 'left'
     } );
     var lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
-    var removeAllButton = new TextPushButton( removeAllString, {
+    var removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColors.removeButtonText,
       listener: function() {
@@ -77,15 +77,15 @@ define( function( require ) {
     var optionsTempNode = new Node( { children: [ optionsNode ] } );
     var bondingTempNode = new Node( { children: [ bondingNode ] } );
     var lonePairTempNode = new Node( { children: [ lonePairNode ] } );
-    var maxInternalWidth = Math.max( new MoleculeShapesPanel( optionsString, optionsTempNode ).width,
-                                     Math.max( new MoleculeShapesPanel( bondingString, bondingTempNode ).width,
-                                               new MoleculeShapesPanel( lonePairString, lonePairTempNode ).width ) );
+    var maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
+                                     Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
+                                               new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
     optionsTempNode.removeAllChildren();
     bondingTempNode.removeAllChildren();
     lonePairTempNode.removeAllChildren();
 
     var maxExternalWidth = 380; // How big the panels can get before really interfering
-    var bondingPanel = new MoleculeShapesPanel( bondingString, bondingNode, {
+    var bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
       maxWidth: maxExternalWidth,
       right:   this.layoutBounds.right - 10,
       top:     this.layoutBounds.top + 10,
@@ -93,7 +93,7 @@ define( function( require ) {
     } );
     var bottom = bondingPanel.bottom;
     if ( !model.isBasicsVersion ) {
-      var lonePairPanel = new MoleculeShapesPanel( lonePairString, lonePairNode, {
+      var lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
         maxWidth: maxExternalWidth,
         right:   this.layoutBounds.right - 10,
         top:     bondingPanel.bottom + 10,
@@ -104,7 +104,7 @@ define( function( require ) {
     }
     removeAllButton.centerX = bondingPanel.centerX;
     removeAllButton.top = bottom + 15;
-    var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
+    var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
       maxWidth: maxExternalWidth,
       right:   this.layoutBounds.right - 10,
       top:     removeAllButton.bottom + 20,
