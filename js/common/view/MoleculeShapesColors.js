@@ -16,6 +16,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var extend = require( 'PHET_CORE/extend' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Color = require( 'SCENERY/util/Color' );
@@ -145,6 +146,7 @@ define( function( require ) {
       }
     }
   } );
+  moleculeShapes.register( 'MoleculeShapesColors', MoleculeShapesColors );
 
   /*---------------------------------------------------------------------------*
    * Iframe communication

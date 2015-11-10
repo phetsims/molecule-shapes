@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -36,6 +37,7 @@ define( function( require ) {
       align: 'left'
     } ) );
   }
+  moleculeShapes.register( 'GlobalOptionsNode', GlobalOptionsNode );
 
   return inherit( VBox, GlobalOptionsNode );
 } );

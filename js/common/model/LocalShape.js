@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var partition = require( 'PHET_CORE/partition' );
   var Permutation = require( 'DOT/Permutation' );
@@ -36,6 +37,7 @@ define( function( require ) {
     // the ideal orientations (unit vectors) for the groups representing the ideal local shape
     this.idealOrientations = idealOrientations;
   }
+  moleculeShapes.register( 'LocalShape', LocalShape );
 
   inherit( Object, LocalShape, {
     /**

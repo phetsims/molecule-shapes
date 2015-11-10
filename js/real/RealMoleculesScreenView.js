@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var ComboBox = require( 'SUN/ComboBox' );
@@ -112,6 +113,7 @@ define( function( require ) {
       screenView.addMoleculeView( screenView.moleculeView );
     } );
   }
+  moleculeShapes.register( 'RealMoleculesScreenView', RealMoleculesScreenView );
 
   return inherit( MoleculeShapesScreenView, RealMoleculesScreenView );
 } );

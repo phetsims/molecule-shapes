@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
@@ -25,6 +26,7 @@ define( function( require ) {
 
     this.bondLengthOverride = bondLengthOverride;
   }
+  moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
 
   return inherit( Molecule, VSEPRMolecule, {
     // @override

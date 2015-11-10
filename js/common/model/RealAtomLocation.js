@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Atom = require( 'NITROGLYCERIN/Atom' );
 
@@ -30,6 +31,7 @@ define( function( require ) {
       Object.freeze && Object.freeze( this );
     }
   }
+  moleculeShapes.register( 'RealAtomLocation', RealAtomLocation );
 
   return inherit( Atom, RealAtomLocation );
 } );

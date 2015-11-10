@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -24,6 +25,7 @@ define( function( require ) {
     this.order = order;
     this.length = length;
   }
+  moleculeShapes.register( 'Bond', Bond );
 
   return inherit( Object, Bond, {
     toString: function() {

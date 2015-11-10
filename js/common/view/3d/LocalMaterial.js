@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
 
@@ -42,6 +43,7 @@ define( function( require ) {
       } );
     }
   }
+  moleculeShapes.register( 'LocalMaterial', LocalMaterial );
 
   return inherit( Object, LocalMaterial, {
     get: function( renderer ) {

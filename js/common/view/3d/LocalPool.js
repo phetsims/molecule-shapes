@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /*
@@ -28,6 +29,7 @@ define( function( require ) {
     this.quantityOutside = 0;
     this.quantityInside = 0;
   }
+  moleculeShapes.register( 'LocalPool', LocalPool );
 
   return inherit( Object, LocalPool, {
     /*

@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /*
@@ -23,6 +24,7 @@ define( function( require ) {
     this.renderers = [];
     this.textures = [];
   }
+  moleculeShapes.register( 'LocalTexture', LocalTexture );
 
   return inherit( Object, LocalTexture, {
     // @param {THREE.Renderer} renderer

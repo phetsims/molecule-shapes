@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var Vector3 = require( 'DOT/Vector3' );
 
   // strings
@@ -34,6 +35,7 @@ define( function( require ) {
     this.name = name;
     this.unitVectors = unitVectors;
   }
+  moleculeShapes.register( 'GeometryConfiguration', GeometryConfiguration );
 
   // maps number of orientations to the {GeometryConfiguration} with that many orientations
   var geometries = {

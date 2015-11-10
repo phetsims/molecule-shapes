@@ -14,6 +14,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -47,6 +48,7 @@ define( function( require ) {
 
     this.mutate( options );
   }
+  moleculeShapes.register( 'TitledPanel', TitledPanel );
 
   return inherit( Node, TitledPanel, {
     updateTitleLocation: function() {

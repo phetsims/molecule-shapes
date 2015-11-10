@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var platform = require( 'PHET_CORE/platform' );
   var Bounds2 = require( 'DOT/Bounds2' );
@@ -206,6 +207,7 @@ define( function( require ) {
       align: 'center'
     }, options ) );
   }
+  moleculeShapes.register( 'BondGroupNode', BondGroupNode );
 
   return inherit( HBox, BondGroupNode );
 } );

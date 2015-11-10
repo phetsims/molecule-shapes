@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -150,6 +151,7 @@ define( function( require ) {
       updateNames();
     } );
   }
+  moleculeShapes.register( 'GeometryNamePanel', GeometryNamePanel );
 
   return inherit( MoleculeShapesPanel, GeometryNamePanel, {
     updateNames: function() {

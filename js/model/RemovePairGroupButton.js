@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -34,6 +35,7 @@ define( function( require ) {
       button.baseColor = color;
     } );
   }
+  moleculeShapes.register( 'RemovePairGroupButton', RemovePairGroupButton );
 
   return inherit( RectangularPushButton, RemovePairGroupButton );
 } );

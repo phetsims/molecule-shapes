@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var extend = require( 'PHET_CORE/extend' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -30,6 +31,7 @@ define( function( require ) {
       showElectronShapeName: false
     }, options ) );
   }
+  moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
 
   return inherit( PropertySet, MoleculeShapesModel, {
     step: function( dt ) {

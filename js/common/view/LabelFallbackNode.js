@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
@@ -20,6 +21,7 @@ define( function( require ) {
       visible: false
     } );
   }
+  moleculeShapes.register( 'LabelFallbackNode', LabelFallbackNode );
 
   return inherit( Text, LabelFallbackNode, {
     /*

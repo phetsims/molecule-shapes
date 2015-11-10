@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Ray3 = require( 'DOT/Ray3' );
@@ -276,6 +277,7 @@ define( function( require ) {
       }
     }
   }
+  moleculeShapes.register( 'MoleculeShapesScreenView', MoleculeShapesScreenView );
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
     showContextLossDialog: function() {

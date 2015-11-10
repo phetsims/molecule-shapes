@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
@@ -83,6 +84,7 @@ define( function( require ) {
       this.localShapeMap[ radialAtoms[ i ].id ] = this.getLocalVSEPRShape( radialAtoms[ i ] );
     }
   }
+  moleculeShapes.register( 'RealMolecule', RealMolecule );
 
   return inherit( Molecule, RealMolecule, {
     // @override

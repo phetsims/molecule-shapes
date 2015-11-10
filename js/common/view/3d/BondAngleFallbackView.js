@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
@@ -91,6 +92,7 @@ define( function( require ) {
     this.add( this.sectorView );
     this.add( this.arcView );
   }
+  moleculeShapes.register( 'BondAngleFallbackView', BondAngleFallbackView );
 
   return inherit( BondAngleView, BondAngleFallbackView, {
     /*

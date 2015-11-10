@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var platform = require( 'PHET_CORE/platform' );
   var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -19,6 +20,7 @@ define( function( require ) {
     showOuterLonePairs: !!phet.chipper.getQueryParameter( 'showOuterLonePairs' ) || false,
     projectorColors:    !!phet.chipper.getQueryParameter( 'projector' ) || false
   } );
+  moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 
   // polyfill for console.log on IE9, see https://github.com/phetsims/molecule-shapes/issues/108
   if ( platform.ie9 ) {

@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
@@ -43,6 +44,7 @@ define( function( require ) {
       }
     } );
   }
+  moleculeShapes.register( 'ModelMoleculesModel', ModelMoleculesModel );
 
   return inherit( MoleculeShapesModel, ModelMoleculesModel, {
     // @private

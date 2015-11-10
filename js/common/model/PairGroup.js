@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -63,6 +64,7 @@ define( function( require ) {
       } );
     }
   }
+  moleculeShapes.register( 'PairGroup', PairGroup );
 
   /*---------------------------------------------------------------------------*
    * constants

@@ -18,6 +18,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var arrayRemove = require( 'PHET_CORE/arrayRemove' );
   var Matrix3 = require( 'DOT/Matrix3' );
@@ -73,6 +74,7 @@ define( function( require ) {
     this.on( 'groupAdded', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
     this.on( 'groupRemoved', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
   }
+  moleculeShapes.register( 'Molecule', Molecule );
 
   return inherit( Events, Molecule, {
     /**

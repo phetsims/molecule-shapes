@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var pairs = require( 'PHET_CORE/pairs' );
   var Vector3 = require( 'DOT/Vector3' );
   var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
@@ -20,6 +21,7 @@ define( function( require ) {
 
   // just static calls, so just create an empty object
   var AttractorModel = {};
+  moleculeShapes.register( 'AttractorModel', AttractorModel );
 
   /**
    * Apply an attraction to the closest ideal position, with the given time elapsed

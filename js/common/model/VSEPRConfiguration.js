@@ -12,6 +12,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Permutation = require( 'DOT/Permutation' );
   var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
@@ -63,6 +64,7 @@ define( function( require ) {
       }
     }
   }
+  moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
 
   return inherit( Object, VSEPRConfiguration, {
     // for finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'

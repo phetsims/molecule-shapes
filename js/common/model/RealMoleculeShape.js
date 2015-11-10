@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
@@ -38,6 +39,7 @@ define( function( require ) {
 
     this.centralAtomCount = 0;
   }
+  moleculeShapes.register( 'RealMoleculeShape', RealMoleculeShape );
 
   inherit( Object, RealMoleculeShape, {
     addAtom: function( atom ) {

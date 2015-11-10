@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -36,6 +37,7 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'background', this, 'fill' );
     MoleculeShapesColors.linkAttribute( 'controlPanelBorder', this, 'stroke' );
   }
+  moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );
 
   return inherit( TitledPanel, MoleculeShapesPanel, {}, {
     createTitleNode: function( titleString ) {

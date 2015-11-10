@@ -16,6 +16,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
   var Bounds2 = require( 'DOT/Bounds2' );
@@ -215,6 +216,7 @@ define( function( require ) {
 
     THREE.Mesh.call( this, geometry, material );
   }
+  moleculeShapes.register( 'LabelWebGLView', LabelWebGLView );
 
   return inherit( THREE.Mesh, LabelWebGLView, {
     /*

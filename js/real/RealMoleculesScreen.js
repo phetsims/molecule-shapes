@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var RealMoleculesModel = require( 'MOLECULE_SHAPES/real/RealMoleculesModel' );
@@ -39,6 +40,7 @@ define( function( require ) {
       screen.backgroundColor = color;
     } );
   }
+  moleculeShapes.register( 'RealMoleculesScreen', RealMoleculesScreen );
 
   return inherit( Screen, RealMoleculesScreen );
 } );

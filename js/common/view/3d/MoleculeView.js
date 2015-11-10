@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
@@ -61,6 +62,7 @@ define( function( require ) {
     }
     this.add( this.centerAtomView );
   }
+  moleculeShapes.register( 'MoleculeView', MoleculeView );
 
   return inherit( THREE.Object3D, MoleculeView, {
 
