@@ -147,6 +147,11 @@ define( function( require ) {
     getRepulsionImpulse: function( other, timeElapsed, trueLengthsRatioOverride ) {
       // only handle the force on this object for now
 
+      // If the positions overlap, just let the attraction take care of things. See https://github.com/phetsims/molecule-shapes/issues/136
+      if ( this.position.equals( other.position ) ) {
+        return new Vector3();
+      }
+
       /*---------------------------------------------------------------------------*
        * adjust the logical positions when the repulsion modifier is less than 1
        *
