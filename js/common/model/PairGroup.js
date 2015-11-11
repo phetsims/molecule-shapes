@@ -64,6 +64,7 @@ define( function( require ) {
       } );
     }
   }
+
   moleculeShapes.register( 'PairGroup', PairGroup );
 
   /*---------------------------------------------------------------------------*

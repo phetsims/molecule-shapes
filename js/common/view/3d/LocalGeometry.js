@@ -24,6 +24,7 @@ define( function( require ) {
     this.renderers = [];
     this.geometries = [];
   }
+
   moleculeShapes.register( 'LocalGeometry', LocalGeometry );
 
   return inherit( Object, LocalGeometry, {

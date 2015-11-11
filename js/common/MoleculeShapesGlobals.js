@@ -18,7 +18,7 @@ define( function( require ) {
 
   var MoleculeShapesGlobals = new PropertySet( {
     showOuterLonePairs: !!phet.chipper.getQueryParameter( 'showOuterLonePairs' ) || false,
-    projectorColors:    !!phet.chipper.getQueryParameter( 'projector' ) || false
+    projectorColors: !!phet.chipper.getQueryParameter( 'projector' ) || false
   } );
   moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 

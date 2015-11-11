@@ -37,6 +37,7 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'background', this, 'fill' );
     MoleculeShapesColors.linkAttribute( 'controlPanelBorder', this, 'stroke' );
   }
+
   moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );
 
   return inherit( TitledPanel, MoleculeShapesPanel, {}, {

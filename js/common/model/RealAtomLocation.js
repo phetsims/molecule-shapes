@@ -31,6 +31,7 @@ define( function( require ) {
       Object.freeze && Object.freeze( this );
     }
   }
+
   moleculeShapes.register( 'RealAtomLocation', RealAtomLocation );
 
   return inherit( Atom, RealAtomLocation );

@@ -64,6 +64,7 @@ define( function( require ) {
       }
     }
   }
+
   moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
 
   return inherit( Object, VSEPRConfiguration, {

@@ -25,6 +25,7 @@ define( function( require ) {
     this.order = order;
     this.length = length;
   }
+
   moleculeShapes.register( 'Bond', Bond );
 
   return inherit( Object, Bond, {

@@ -216,6 +216,7 @@ define( function( require ) {
 
     THREE.Mesh.call( this, geometry, material );
   }
+
   moleculeShapes.register( 'LabelWebGLView', LabelWebGLView );
 
   return inherit( THREE.Mesh, LabelWebGLView, {

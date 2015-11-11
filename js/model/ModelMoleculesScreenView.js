@@ -79,8 +79,8 @@ define( function( require ) {
     var bondingTempNode = new Node( { children: [ bondingNode ] } );
     var lonePairTempNode = new Node( { children: [ lonePairNode ] } );
     var maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
-                                     Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
-                                               new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
+      Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
+        new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
     optionsTempNode.removeAllChildren();
     bondingTempNode.removeAllChildren();
     lonePairTempNode.removeAllChildren();
@@ -88,16 +88,16 @@ define( function( require ) {
     var maxExternalWidth = 380; // How big the panels can get before really interfering
     var bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
       maxWidth: maxExternalWidth,
-      right:   this.layoutBounds.right - 10,
-      top:     this.layoutBounds.top + 10,
+      right: this.layoutBounds.right - 10,
+      top: this.layoutBounds.top + 10,
       xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15
     } );
     var bottom = bondingPanel.bottom;
     if ( !model.isBasicsVersion ) {
       var lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
         maxWidth: maxExternalWidth,
-        right:   this.layoutBounds.right - 10,
-        top:     bondingPanel.bottom + 10,
+        right: this.layoutBounds.right - 10,
+        top: bondingPanel.bottom + 10,
         xMargin: ( maxInternalWidth - lonePairNode.width ) / 2 + 15
       } );
       this.addChild( lonePairPanel );
@@ -107,14 +107,15 @@ define( function( require ) {
     removeAllButton.top = bottom + 15;
     var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
       maxWidth: maxExternalWidth,
-      right:   this.layoutBounds.right - 10,
-      top:     removeAllButton.bottom + 20,
+      right: this.layoutBounds.right - 10,
+      top: removeAllButton.bottom + 20,
       xMargin: ( maxInternalWidth - optionsNode.width ) / 2 + 15
     } );
     this.addChild( bondingPanel );
     this.addChild( removeAllButton );
     this.addChild( optionsPanel );
   }
+
   moleculeShapes.register( 'ModelMoleculesScreenView', ModelMoleculesScreenView );
 
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {

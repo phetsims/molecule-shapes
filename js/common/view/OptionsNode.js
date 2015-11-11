@@ -68,6 +68,7 @@ define( function( require ) {
       align: 'left'
     }, options ) );
   }
+
   moleculeShapes.register( 'OptionsNode', OptionsNode );
 
   return inherit( VBox, OptionsNode, {} );

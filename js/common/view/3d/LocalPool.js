@@ -29,6 +29,7 @@ define( function( require ) {
     this.quantityOutside = 0;
     this.quantityInside = 0;
   }
+
   moleculeShapes.register( 'LocalPool', LocalPool );
 
   return inherit( Object, LocalPool, {

@@ -56,6 +56,7 @@ define( function( require ) {
       }
     }
   }
+
   moleculeShapes.register( 'AtomView', AtomView );
 
   return inherit( THREE.Mesh, AtomView, {

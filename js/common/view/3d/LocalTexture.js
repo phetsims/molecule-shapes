@@ -24,6 +24,7 @@ define( function( require ) {
     this.renderers = [];
     this.textures = [];
   }
+
   moleculeShapes.register( 'LocalTexture', LocalTexture );
 
   return inherit( Object, LocalTexture, {

@@ -43,6 +43,7 @@ define( function( require ) {
       } );
     }
   }
+
   moleculeShapes.register( 'LocalMaterial', LocalMaterial );
 
   return inherit( Object, LocalMaterial, {

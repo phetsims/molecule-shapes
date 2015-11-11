@@ -35,6 +35,7 @@ define( function( require ) {
       button.baseColor = color;
     } );
   }
+
   moleculeShapes.register( 'RemovePairGroupButton', RemovePairGroupButton );
 
   return inherit( RectangularPushButton, RemovePairGroupButton );

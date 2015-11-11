@@ -92,6 +92,7 @@ define( function( require ) {
     this.add( this.sectorView );
     this.add( this.arcView );
   }
+
   moleculeShapes.register( 'BondAngleFallbackView', BondAngleFallbackView );
 
   return inherit( BondAngleView, BondAngleFallbackView, {

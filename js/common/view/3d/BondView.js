@@ -67,6 +67,7 @@ define( function( require ) {
     _.each( this.aBonds, function( bond ) { view.add( bond ); } );
     _.each( this.bBonds, function( bond ) { view.add( bond ); } );
   }
+
   moleculeShapes.register( 'BondView', BondView );
 
   return inherit( THREE.Object3D, BondView, {

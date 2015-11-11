@@ -74,6 +74,7 @@ define( function( require ) {
     this.on( 'groupAdded', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
     this.on( 'groupRemoved', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
   }
+
   moleculeShapes.register( 'Molecule', Molecule );
 
   return inherit( Events, Molecule, {

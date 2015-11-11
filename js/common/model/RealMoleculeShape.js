@@ -39,6 +39,7 @@ define( function( require ) {
 
     this.centralAtomCount = 0;
   }
+
   moleculeShapes.register( 'RealMoleculeShape', RealMoleculeShape );
 
   inherit( Object, RealMoleculeShape, {

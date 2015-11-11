@@ -101,6 +101,7 @@ define( function( require ) {
         new THREE.Vector3().copy( orientation ) );
     };
   }
+
   moleculeShapes.register( 'LonePairView', LonePairView );
 
   return inherit( THREE.Object3D, LonePairView, {

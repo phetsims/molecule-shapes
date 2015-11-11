@@ -151,6 +151,7 @@ define( function( require ) {
       updateNames();
     } );
   }
+
   moleculeShapes.register( 'GeometryNamePanel', GeometryNamePanel );
 
   return inherit( MoleculeShapesPanel, GeometryNamePanel, {

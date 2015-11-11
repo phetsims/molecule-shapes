@@ -44,6 +44,7 @@ define( function( require ) {
       }
     } );
   }
+
   moleculeShapes.register( 'ModelMoleculesModel', ModelMoleculesModel );
 
   return inherit( MoleculeShapesModel, ModelMoleculesModel, {

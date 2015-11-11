@@ -84,6 +84,7 @@ define( function( require ) {
       this.localShapeMap[ radialAtoms[ i ].id ] = this.getLocalVSEPRShape( radialAtoms[ i ] );
     }
   }
+
   moleculeShapes.register( 'RealMolecule', RealMolecule );
 
   return inherit( Molecule, RealMolecule, {

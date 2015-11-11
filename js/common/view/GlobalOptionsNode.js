@@ -37,6 +37,7 @@ define( function( require ) {
       align: 'left'
     } ) );
   }
+
   moleculeShapes.register( 'GlobalOptionsNode', GlobalOptionsNode );
 
   return inherit( VBox, GlobalOptionsNode );

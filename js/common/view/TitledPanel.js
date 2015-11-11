@@ -48,6 +48,7 @@ define( function( require ) {
 
     this.mutate( options );
   }
+
   moleculeShapes.register( 'TitledPanel', TitledPanel );
 
   return inherit( Node, TitledPanel, {

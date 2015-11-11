@@ -34,6 +34,7 @@ define( function( require ) {
   function ElectronView( renderer ) {
     THREE.Mesh.call( this, localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
   }
+
   moleculeShapes.register( 'ElectronView', ElectronView );
 
   return inherit( THREE.Mesh, ElectronView );

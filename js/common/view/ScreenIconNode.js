@@ -160,6 +160,7 @@ define( function( require ) {
       centerY: centerY + Math.cos( angle ) * viewBondDistance
     } ) );
   }
+
   moleculeShapes.register( 'ScreenIconNode', ScreenIconNode );
 
   return inherit( Node, ScreenIconNode, {} );

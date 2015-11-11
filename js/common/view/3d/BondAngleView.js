@@ -21,6 +21,7 @@ define( function( require ) {
   function BondAngleView() {
     THREE.Object3D.call( this );
   }
+
   moleculeShapes.register( 'BondAngleView', BondAngleView );
 
   return inherit( THREE.Object3D, BondAngleView, {

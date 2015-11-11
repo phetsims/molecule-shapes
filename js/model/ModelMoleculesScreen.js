@@ -40,6 +40,7 @@ define( function( require ) {
       screen.backgroundColor = color;
     } );
   }
+
   moleculeShapes.register( 'ModelMoleculesScreen', ModelMoleculesScreen );
 
   return inherit( Screen, ModelMoleculesScreen );

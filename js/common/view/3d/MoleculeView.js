@@ -62,6 +62,7 @@ define( function( require ) {
     }
     this.add( this.centerAtomView );
   }
+
   moleculeShapes.register( 'MoleculeView', MoleculeView );
 
   return inherit( THREE.Object3D, MoleculeView, {

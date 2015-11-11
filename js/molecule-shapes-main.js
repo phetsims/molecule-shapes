@@ -33,10 +33,10 @@ define( function( require ) {
     },
     optionsNode: new GlobalOptionsNode( isBasicsVersion ),
     homeScreenWarningNode: MoleculeShapesGlobals.useWebGL ?
-                             null :
-                             ( MoleculeShapesGlobals.hasBasicWebGLSupport ?
-                               new IE11StencilWarningNode() : // if we have basic support, we failed due to IE-specific reasons
-                               new CanvasWarningNode() )
+                           null :
+                           ( MoleculeShapesGlobals.hasBasicWebGLSupport ?
+                             new IE11StencilWarningNode() : // if we have basic support, we failed due to IE-specific reasons
+                             new CanvasWarningNode() )
   };
 
   // Appending '?dev' to the URL will enable developer-only features.

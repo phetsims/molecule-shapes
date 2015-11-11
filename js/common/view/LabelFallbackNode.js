@@ -21,6 +21,7 @@ define( function( require ) {
       visible: false
     } );
   }
+
   moleculeShapes.register( 'LabelFallbackNode', LabelFallbackNode );
 
   return inherit( Text, LabelFallbackNode, {

@@ -35,6 +35,7 @@ define( function( require ) {
     this.name = name;
     this.unitVectors = unitVectors;
   }
+
   moleculeShapes.register( 'GeometryConfiguration', GeometryConfiguration );
 
   // maps number of orientations to the {GeometryConfiguration} with that many orientations

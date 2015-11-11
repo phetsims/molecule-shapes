@@ -31,6 +31,7 @@ define( function( require ) {
       showElectronShapeName: false
     }, options ) );
   }
+
   moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
 
   return inherit( PropertySet, MoleculeShapesModel, {

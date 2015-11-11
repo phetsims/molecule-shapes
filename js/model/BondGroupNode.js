@@ -179,8 +179,8 @@ define( function( require ) {
       overlay.cursor = enabled ? 'pointer' : null;
 
       removeButton.visible = _.filter( model.molecule.getBondsAround( model.molecule.centralAtom ), function( bond ) {
-        return bond.order === bondOrder;
-      } ).length > 0;
+          return bond.order === bondOrder;
+        } ).length > 0;
 
       updateOverlayOpacity();
     }
@@ -207,6 +207,7 @@ define( function( require ) {
       align: 'center'
     }, options ) );
   }
+
   moleculeShapes.register( 'BondGroupNode', BondGroupNode );
 
   return inherit( HBox, BondGroupNode );

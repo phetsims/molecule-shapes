@@ -149,7 +149,7 @@ define( function( require ) {
     this.overlayCamera.position.z = 50;
 
     this.addChild( new ResetAllButton( {
-      right:  this.layoutBounds.maxX - 10,
+      right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
         model.reset();
@@ -158,7 +158,7 @@ define( function( require ) {
     } ) );
 
     this.addChild( new GeometryNamePanel( model, {
-      left:   this.layoutBounds.minX + 10,
+      left: this.layoutBounds.minX + 10,
       bottom: this.layoutBounds.maxY - 10
     } ) );
 
@@ -277,6 +277,7 @@ define( function( require ) {
       }
     }
   }
+
   moleculeShapes.register( 'MoleculeShapesScreenView', MoleculeShapesScreenView );
 
   return inherit( ScreenView, MoleculeShapesScreenView, {

@@ -26,6 +26,7 @@ define( function( require ) {
 
     this.bondLengthOverride = bondLengthOverride;
   }
+
   moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
 
   return inherit( Molecule, VSEPRMolecule, {

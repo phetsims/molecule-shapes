@@ -46,6 +46,7 @@ define( function( require ) {
       model.rebuildMolecule( true );
     } );
   }
+
   moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
 
   return inherit( MoleculeShapesModel, RealMoleculesModel, {

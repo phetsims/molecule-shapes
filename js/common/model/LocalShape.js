@@ -37,6 +37,7 @@ define( function( require ) {
     // the ideal orientations (unit vectors) for the groups representing the ideal local shape
     this.idealOrientations = idealOrientations;
   }
+
   moleculeShapes.register( 'LocalShape', LocalShape );
 
   inherit( Object, LocalShape, {
