@@ -79,8 +79,8 @@ define( function( require ) {
     var bondingTempNode = new Node( { children: [ bondingNode ] } );
     var lonePairTempNode = new Node( { children: [ lonePairNode ] } );
     var maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
-      Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
-        new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
+                                     Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
+                                               new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
     optionsTempNode.removeAllChildren();
     bondingTempNode.removeAllChildren();
     lonePairTempNode.removeAllChildren();
