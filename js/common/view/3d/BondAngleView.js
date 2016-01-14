@@ -25,7 +25,7 @@ define( function( require ) {
   moleculeShapes.register( 'BondAngleView', BondAngleView );
 
   return inherit( THREE.Object3D, BondAngleView, {
-    /*
+    /**
      * @param {MoleculeShapesScreenView} screenView - We do various screen-space computations for positioning the labels
      * @param {Property.<boolean>} showBondAnglesProperty
      * @param {Molecule} molecule
@@ -34,30 +34,34 @@ define( function( require ) {
      * @param {LabelWebGLView | LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
      */
     initialize: function( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
-      // @public
-      this.aGroup = aGroup;
-      this.bGroup = bGroup;
-      this.label = label;
-      this.midpoint = null; // {Vector3} updated in updateView
-      this.radius = 5;
+      this.aGroup = aGroup; // @public {PairGroup} - Atom on one end of the bond angle
+      this.bGroup = bGroup; // @public {PairGroup} - Atom on the other end of the bond angle
+      this.label = label; // @public {LabelWebGLView | LabelFallbackNode}
+      this.midpoint = null; // @public {Vector3} - Updated in updateView
+      this.radius = 5; // @public {number}
 
-      // @protected
-      this.screenView = screenView;
-      this.showBondAnglesProperty = showBondAnglesProperty;
-      this.molecule = molecule;
+      this.screenView = screenView; // @protected {MoleculeShapesScreenView}
+      this.showBondAnglesProperty = showBondAnglesProperty; // @protected {Property.<boolean>}
+      this.molecule = molecule; // @protected {Molecule}
 
-      // @protected, updated in updateView super call
-      this.viewOpacity = 0; // {number}
-      this.viewAngle = 0; // {number}
-      this.midpointUnit = null; // {Vector3}
-      this.planarUnit = null; // {Vector3}
+      this.viewOpacity = 0; // @protected {number} - Updated in updateView super call
+      this.viewAngle = 0; // @protected {number} - Updated in updateView super call
+      this.midpointUnit = null; // @protected {Vector3} - Updated in updateView super call
+      this.planarUnit = null; // @protected {Vector3} - Updated in updateView super call
     },
 
+    /**
+     * Disposes the view, so that it can be reinitialized (pooling).
+     * @public
+     */
     dispose: function() {
       // overridden in sub-types
     },
 
     /**
+     * Updates the bond-angle view based on previous information.
+     * @public
+     *
      * @param {Vector3} lastMidpoint - The midpoint of the last frame's bond angle arc, used to stabilize bond angles
      *                                 that are around ~180 degrees.
      * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
@@ -143,12 +147,13 @@ define( function( require ) {
   }, {
     // dot product between the camera direction and bond angle normal is below LOW_THRESHOLDS[bondOrder] => alpha = 0
     // dot product between the camera direction and bond angle normal is above LOW_THRESHOLDS[HIGH_THRESHOLDS] => alpha = 1
-    LOW_THRESHOLDS: [ 0, 0, 0, 0, 0.35, 0.45, 0.5 ],
-    HIGH_THRESHOLDS: [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ],
+    LOW_THRESHOLDS: [ 0, 0, 0, 0, 0.35, 0.45, 0.5 ], // @public
+    HIGH_THRESHOLDS: [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ], // @public
 
     /**
      * Determines the brightness (alpha) of a bond angle based on the orientations of the two radial atoms, the camera,
      * and the total number of bonds around our central atom.
+     * @public
      *
      * @param {Vector3} aDir - The unit vector pointing towards the first radial atom
      * @param {Vector3} bDir - The unit vector pointing towards the second radial atom
@@ -173,11 +178,20 @@ define( function( require ) {
       return Util.clamp( interpolatedValue, 0, 1 );
     },
 
+    /**
+     * Whether our condition for semicircle (almost 180-degree bond angle) is met, as we need to stabilize the
+     * positioning in this case.
+     * @private
+     *
+     * @param {Vector3} startDir
+     * @param {Vector3} endDir
+     * @returns {boolean}
+     */
     isApproximateSemicircle: function( startDir, endDir ) {
       return Math.acos( Util.clamp( startDir.dot( endDir ), -1, 1 ) ) >= 3.12414;
     },
 
-    // radius, in view units
+    // @public {number} - radius, in view units
     radius: 5
   } );
 } );

@@ -163,7 +163,7 @@ define( function( require ) {
   function LabelWebGLView( renderer ) {
     var view = this;
 
-    this.uvs = []; // {Array.<THREE.Vector3>} - stores the texture coordinates used for drawing
+    this.uvs = []; // @private {Array.<THREE.Vector3>} - stores the texture coordinates used for drawing
 
     var texture = localTexture.get( renderer );
 
@@ -195,7 +195,8 @@ define( function( require ) {
     geometry.dynamic = true; // tells three.js that we will change things
     geometry.uvsNeedUpdate = true; // will need when we change UVs
 
-    this.materialUniforms = JSON.parse( JSON.stringify( materialUniforms ) ); // cheap deep copy
+    // @private {Object} - cheap deep copy
+    this.materialUniforms = JSON.parse( JSON.stringify( materialUniforms ) );
     this.materialUniforms.map.value = texture;
 
     MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
@@ -223,6 +224,7 @@ define( function( require ) {
     /*
      * Displays and positions the label, and sets its text.
      * Same as API for LabelFallbackNode
+     * @public
      *
      * @param {string} string
      * @param {number} brightness - In range [0,1]
@@ -255,12 +257,18 @@ define( function( require ) {
     /*
      * Makes the label invisible
      * Same as API for LabelFallbackNode
+     * @public
      */
     unsetLabel: function() {
       this.materialUniforms.opacity.value = 0;
     },
 
-    // @private - sets the UV coordinates to display the requested string
+    /**
+     * Sets the UV coordinates to display the requested string
+     * @private
+     *
+     * @param {string} string
+     */
     setString: function( string ) {
       var idx = 0;
       if ( string.length === 6 ) {
@@ -276,7 +284,13 @@ define( function( require ) {
       this.setGlyph( 5, string[ idx++ ] );
     },
 
-    // @private - sets the UV coordinates for a single glyph, 0-indexed
+    /**
+     * Sets the UV coordinates for a single glyph, 0-indexed
+     * @private
+     *
+     * @param {number} index
+     * @param {string} string
+     */
     setGlyph: function( index, string ) {
       assert && assert( glyphs[ string ] );
 
@@ -289,13 +303,27 @@ define( function( require ) {
       this.setUVs( index, minU, minV, maxU, maxV );
     },
 
-    // @private - makes the character at the index invisible
+    /**
+     * Makes the character at the index invisible.
+     * @private
+     *
+     * @param {number} index
+     */
     unsetGlyph: function( index ) {
       // set all texture coordinates to 0, so it will display nothing
       this.setUVs( index, 0, 0, 0, 0 );
     },
 
-    // @private - sets UVs for a specific character
+    /**
+     * Sets UVs for a specific character.
+     * @private
+     *
+     * @param {number} index
+     * @param {number} minU
+     * @param {number} minV
+     * @param {number} maxU
+     * @param {number} maxV
+     */
     setUVs: function( index, minU, minV, maxU, maxV ) {
       var offset = index * 4;
 

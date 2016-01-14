@@ -19,21 +19,24 @@ define( function( require ) {
    * @param {(THREE.Renderer) => {*}} objectFactory - Creates an object when needed for the pool
    */
   function LocalPool( name, objectFactory ) {
-    this.name = name;
-    this.objectFactory = objectFactory;
+    this.name = name; // @private {string}
+    this.objectFactory = objectFactory; // @private {(THREE.Renderer) => {*}}
 
     // renderers[i] "owns" objects[i]
-    this.renderers = [];
-    this.objects = [];
+    this.renderers = []; // @private {Array.<THREE.Renderer>}
+    this.objects = []; // @private {Array.<*>}
 
-    this.quantityOutside = 0;
-    this.quantityInside = 0;
+    this.quantityOutside = 0; // @private
+    this.quantityInside = 0; // @private
   }
 
   moleculeShapes.register( 'LocalPool', LocalPool );
 
   return inherit( Object, LocalPool, {
     /*
+     * Returns the copy of the object corresponding to the provided three.js renderer.
+     * @public
+     *
      * @param {THREE.Renderer} renderer
      * @returns {*} - Either a fresh object, or one from the pool
      */
@@ -61,6 +64,7 @@ define( function( require ) {
 
     /*
      * Returns an object to the pool
+     * @public
      *
      * @param {*} object
      * @param {THREE.Renderer} renderer
@@ -75,7 +79,10 @@ define( function( require ) {
       this.debug( 'return' );
     },
 
-    // enable printing out pool counts (type,action,inPool,outOfPool) with ?dev
+    /**
+     * Enable printing out pool counts (type,action,inPool,outOfPool) with ?dev
+     * @private
+     */
     debug: ( phet.chipper.getQueryParameter( 'dev' ) ) ? function( action ) {
       console.log( this.name, action, this.quantityInside, this.quantityOutside );
     } : function() {}

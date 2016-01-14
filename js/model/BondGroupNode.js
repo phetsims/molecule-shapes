@@ -101,9 +101,18 @@ define( function( require ) {
     return url;
   }
 
+  /**
+   * @constructor
+   *
+   * @param {MoleculeShapesModel} model
+   * @param {number} bondOrder
+   * @param {Function} addPairCallback - Will be called when the user clicks on the main part (add) of this component.
+   * @param {Function} removePairCallback - Will be called when the user clicks on the remove button in this.
+   * @param {Object} [options]
+   */
   function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, options ) {
-    this.model = model;
-    this.bondOrder = bondOrder;
+    this.model = model; // @private {MoleculeShapesModel}
+    this.bondOrder = bondOrder; // @private {number}
 
     // whether our "button" is enabled
     var enabled = true;

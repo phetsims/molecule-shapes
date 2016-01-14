@@ -28,6 +28,7 @@ define( function( require ) {
     /*
      * Displays and positions the label, and sets its text.
      * Same as API for LabelWebGLView
+     * @public
      *
      * @param {string} string
      * @param {number} brightness - In range [0,1]
@@ -49,6 +50,7 @@ define( function( require ) {
     /*
      * Makes the label invisible.
      * Same as API for LabelWebGLView
+     * @public
      */
     unsetLabel: function() {
       this.visible = false;

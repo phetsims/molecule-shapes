@@ -39,8 +39,8 @@ define( function( require ) {
     MoleculeShapesScreenView.call( this, model );
     var screenView = this;
 
-    this.model = model;
-    this.moleculeView = new MoleculeView( model, this, model.molecule );
+    this.model = model; // @private {MoleculeShapesModel}
+    this.moleculeView = new MoleculeView( model, this, model.molecule ); // @public
     this.addMoleculeView( this.moleculeView );
 
     var comboBoxListContainer = new Node();

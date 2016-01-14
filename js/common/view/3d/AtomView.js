@@ -43,7 +43,7 @@ define( function( require ) {
   function AtomView( group, renderer, localMaterial ) {
     THREE.Mesh.call( this, localAtomGeometry.get( renderer ), localMaterial.get( renderer ) );
 
-    this.group = group;
+    this.group = group; // @private {PairGroup}
 
     if ( phet.chipper.getQueryParameter( 'showPointerAreas' ) ) {
       if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
@@ -61,6 +61,9 @@ define( function( require ) {
 
   return inherit( THREE.Mesh, AtomView, {
     /*
+     * Intersection test for whether the mouse/touch is over this.
+     * @public
+     *
      * @param {THREE.Ray} worldRay - Camera ray in world space
      * @param {boolean} isTouch - Whether expanded touch regions should be included
      * @returns {THREE.Vector3|null} - The first intersection point (in world coordinates) if it exists, otherwise null
@@ -83,10 +86,12 @@ define( function( require ) {
       return new THREE.Vector3().copy( localPoint ).applyMatrix4( this.matrixWorld );
     }
   }, {
-    // renderer-local access
+    // @public {LocalMaterial} - renderer-local access
     centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
       color: MoleculeShapesColors.centralAtomProperty
     } ),
+
+    // @public {LocalMaterial} - renderer-local access
     atomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
       color: MoleculeShapesColors.atomProperty
     } ),
@@ -94,6 +99,7 @@ define( function( require ) {
     /**
      * Returns the shared LocalMaterial for a specific Element (we don't want to have multiple LocalMaterials for the
      * same element due to memory concerns).
+     * @public
      *
      * @param {NITROGLYCERIN.Element} element
      * @returns {LocalMaterial}

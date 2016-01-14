@@ -29,6 +29,7 @@ define( function( require ) {
 
   /**
    * @constructor
+   *
    * @param {ModelMoleculesModel} model the model for the entire screen
    */
   function MoleculeShapesScreenView( model ) {
@@ -38,21 +39,22 @@ define( function( require ) {
 
     var screenView = this;
 
-    this.model = model;
+    this.model = model; // @private {ModelMoleculesModel}
 
     // our target for drags that don't hit other UI components
-    this.backgroundEventTarget = Rectangle.bounds( this.layoutBounds, {} );
+    this.backgroundEventTarget = Rectangle.bounds( this.layoutBounds, {} ); // @private
     this.addChild( this.backgroundEventTarget );
 
     // updated in layout
-    this.activeScale = 1; // scale applied to interaction that isn't directly tied to screen coordinates (rotation)
-    this.screenWidth = null;
-    this.screenHeight = null;
+    this.activeScale = 1; // @private scale applied to interaction that isn't directly tied to screen coordinates (rotation)
+    this.screenWidth = null; // @public
+    this.screenHeight = null; // @public
 
     // main three.js Scene setup
-    this.threeScene = new THREE.Scene();
-    this.threeCamera = new THREE.PerspectiveCamera(); // will set the projection parameters on layout
+    this.threeScene = new THREE.Scene(); // @private
+    this.threeCamera = new THREE.PerspectiveCamera(); // @private will set the projection parameters on layout
 
+    // @public {THREE.Renderer}
     this.threeRenderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
       antialias: true
     } ) : new THREE.CanvasRenderer( {
@@ -82,7 +84,7 @@ define( function( require ) {
 
     this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition ); // sets the camera's position
 
-    // add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
+    // @private add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
     this.domNode = new DOM( this.threeRenderer.domElement, {
       preventTransform: true, // Scenery 0.2 override for transformation
       invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
@@ -144,9 +146,9 @@ define( function( require ) {
     this.addChild( this.domNode );
 
     // overlay Scene for bond-angle labels (if WebGL)
-    this.overlayScene = new THREE.Scene();
-    this.overlayCamera = new THREE.OrthographicCamera();
-    this.overlayCamera.position.z = 50;
+    this.overlayScene = new THREE.Scene(); // @private
+    this.overlayCamera = new THREE.OrthographicCamera(); // @private
+    this.overlayCamera.position.z = 50; // @private
 
     this.addChild( new ResetAllButton( {
       right: this.layoutBounds.maxX - 10,
@@ -263,7 +265,7 @@ define( function( require ) {
       }
     } );
 
-    // create a pool of angle labels of the desired type
+    // @private - create a pool of angle labels of the desired type
     this.angleLabels = [];
     for ( var i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGL ) {
@@ -281,6 +283,9 @@ define( function( require ) {
   moleculeShapes.register( 'MoleculeShapesScreenView', MoleculeShapesScreenView );
 
   return inherit( ScreenView, MoleculeShapesScreenView, {
+    /**
+     * @private
+     */
     showContextLossDialog: function() {
       new ContextLossFailureDialog().show();
       // var warningSign = new FontAwesomeNode( 'warning_sign', {
@@ -306,20 +311,32 @@ define( function( require ) {
       // } ).show();
     },
 
-    // Removes a bond-angle label from the pool to be controlled
+    /**
+     * Removes a bond-angle label from the pool to be controlled
+     * @public
+     */
     checkOutLabel: function() {
       var label = this.angleLabels.pop();
       assert && assert( label );
       return label;
     },
 
-    // Returns a bond-angle label to the pool
+    /**
+     * Returns a bond-angle label to the pool
+     * @public
+     */
     returnLabel: function( label ) {
       assert && assert( !_.contains( this.angleLabels, label ) );
       this.angleLabels.push( label );
       label.unsetLabel();
     },
 
+    /**
+     * Adds a molcule view.
+     * @public
+     *
+     * @param {MoleculeView} moleculeView
+     */
     addMoleculeView: function( moleculeView ) {
       this.threeScene.add( moleculeView );
 
@@ -328,11 +345,18 @@ define( function( require ) {
       this.moleculeView.updateMatrixWorld();
     },
 
+    /**
+     * Removes a molcule view.
+     * @public
+     *
+     * @param {MoleculeView} moleculeView
+     */
     removeMoleculeView: function( moleculeView ) {
       this.threeScene.remove( moleculeView );
     },
 
     /*
+     * @private
      * @param {Vector3} screenPoint
      * @returns {THREE.Raycaster}
      */
@@ -349,6 +373,8 @@ define( function( require ) {
 
     /*
      * Global => NDC
+     * @public
+     *
      * @param {THREE.Vector3} globalPoint
      * @returns {THREE.Vector3}
      */
@@ -357,6 +383,8 @@ define( function( require ) {
     },
 
     /*
+     * @private
+     *
      * @param {Vector3} screenPoint
      * @returns {Ray3}
      */
@@ -367,6 +395,8 @@ define( function( require ) {
     },
 
     /*
+     * @private
+     *
      * @param {Pointer} pointer
      * @param {boolean} isTouch - Whether we should use touch regions
      * @returns {PairGroup | null} - The closest pair group, or null
@@ -397,6 +427,10 @@ define( function( require ) {
     },
 
     /*
+     * The position in the moleculeView's coordinate system (where z=0 in the view coordinate system) for a
+     * corresponding screenPoint.
+     * @public
+     *
      * @param {Vector2} screenPoint
      * @returns {THREE.Vector3} in the moleculeView's local coordinate system
      */
@@ -411,7 +445,8 @@ define( function( require ) {
     },
 
     /*
-     * Returns the closest molecule model-space point on the sphere whose radius is the bond's radius
+     * Returns the closest molecule model-space point on the sphere whose radius is the bond's radius.
+     * @public
      *
      * @param {Vector3} screenPoint
      * @param {PairGroup} draggedParticle
@@ -483,7 +518,10 @@ define( function( require ) {
       }
     },
 
-    // @override
+    /**
+     * @override
+     * @protected
+     */
     layout: function( width, height ) {
       ScreenView.prototype.layout.call( this, width, height );
 
@@ -542,12 +580,24 @@ define( function( require ) {
       this.domNode.invalidateDOM();
     },
 
+    /**
+     * @override
+     * @public
+     *
+     * @param {number} dt - Amount of time elapsed
+     */
     step: function( dt ) {
       this.moleculeView.updateView();
 
       this.render( undefined );
     },
 
+    /**
+     * Renders the simulation to a specific rendering target
+     * @public
+     *
+     * @param {THREE.WebGLRenderTarget | undefined} - undefined for the default target
+     */
     render: function( target ) {
       // render the 3D scene first
       this.threeRenderer.render( this.threeScene, this.threeCamera, target );
@@ -557,9 +607,14 @@ define( function( require ) {
       this.threeRenderer.autoClear = true;
     }
   }, {
-    // where our camera is positioned in world coordinates (manually tuned)
+    // @public - where our camera is positioned in world coordinates (manually tuned)
     cameraPosition: new THREE.Vector3( 0.12 * 50, -0.025 * 50, 40 ),
 
+    /**
+     * @public
+     *
+     * @param {THREE.Scene} threeScene
+     */
     addLightsToScene: function( threeScene ) {
       var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
       threeScene.add( ambientLight );
@@ -573,7 +628,12 @@ define( function( require ) {
       threeScene.add( moonLight );
     },
 
-    // duck-typed to have the same API as needed by views
+    /**
+     * Duck-typed to have the same API as needed by views
+     * @public
+     *
+     * @returns {Object}
+     */
     createAPIStub: function( renderer ) {
       return {
         threeRenderer: renderer,

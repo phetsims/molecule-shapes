@@ -16,6 +16,13 @@ define( function( require ) {
   var TitledPanel = require( 'MOLECULE_SHAPES/common/view/TitledPanel' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
 
+  /**
+   * @constructor
+   *
+   * @param {string} titleString
+   * @param {Node} contentNode
+   * @param {Object} [options]
+   */
   function MoleculeShapesPanel( titleString, contentNode, options ) {
     options = _.extend( {
       lineWidth: 1.5,
@@ -41,6 +48,11 @@ define( function( require ) {
   moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );
 
   return inherit( TitledPanel, MoleculeShapesPanel, {}, {
+    /**
+     * @private
+     *
+     * @param {string} titleString
+     */
     createTitleNode: function( titleString ) {
       return new Text( titleString, {
         font: new PhetFont( 18 )

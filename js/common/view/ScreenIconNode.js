@@ -122,6 +122,12 @@ define( function( require ) {
     return url;
   }
 
+  /**
+   * @constructor
+   *
+   * @param {boolean} isModel
+   * @param {boolean} isBasicsVersion
+   */
   function ScreenIconNode( isModel, isBasicsVersion ) {
     Node.call( this );
 

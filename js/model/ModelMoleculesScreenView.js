@@ -37,9 +37,9 @@ define( function( require ) {
   function ModelMoleculesScreenView( model ) {
     MoleculeShapesScreenView.call( this, model );
 
-    this.model = model;
+    this.model = model; // @private {MoleculeShapesModel}
 
-    this.moleculeView = new MoleculeView( model, this, model.molecule );
+    this.moleculeView = new MoleculeView( model, this, model.molecule ); // @public
     this.addMoleculeView( this.moleculeView );
 
     var addPairCallback = this.addPairGroup.bind( this );
@@ -121,6 +121,7 @@ define( function( require ) {
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
     /**
      * Adds a PairGroup to the model from the Bonding panel location.
+     * @public
      *
      * @param {number} bondOrder - The order of the bond (0 through 3)
      * @param {Bounds2} globalBounds - The bounds of the clicked-on overlay for the pair group (e.g. the lone pair in
@@ -138,6 +139,11 @@ define( function( require ) {
       this.model.molecule.addGroupAndBond( pair, this.model.molecule.centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
     },
 
+    /**
+     * Removes a PairGroup from the model.
+     * @public
+     * @param {number} bondOrder
+     */
     removePairGroup: function( bondOrder ) {
       var molecule = this.model.molecule;
 

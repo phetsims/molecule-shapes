@@ -50,6 +50,9 @@ define( function( require ) {
   moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
 
   return inherit( MoleculeShapesModel, RealMoleculesModel, {
+    /**
+     * @public
+     */
     reset: function() {
       MoleculeShapesModel.prototype.reset.call( this );
 

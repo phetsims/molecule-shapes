@@ -48,7 +48,9 @@ define( function( require ) {
   moleculeShapes.register( 'ModelMoleculesModel', ModelMoleculesModel );
 
   return inherit( MoleculeShapesModel, ModelMoleculesModel, {
-    // @private
+    /**
+     * @private
+     */
     setupInitialMoleculeState: function() {
       // start with two single bonds
       var centralAtom = this.molecule.centralAtom;

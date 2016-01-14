@@ -29,19 +29,19 @@ define( function( require ) {
   function MoleculeView( model, screenView, molecule ) {
     THREE.Object3D.call( this );
 
-    this.model = model;
-    this.screenView = screenView;
-    this.renderer = screenView.threeRenderer; // {THREE.Renderer}
-    this.molecule = molecule;
+    this.model = model; // @private {MoleculeShapesModel}
+    this.screenView = screenView; // @private {MoleculeShapesScreenView}
+    this.renderer = screenView.threeRenderer; // @private {THREE.Renderer}
+    this.molecule = molecule; // @private
 
-    this.atomViews = []; // {Array.<AtomView>}
-    this.lonePairViews = []; // {Array.<LonePairView>}
-    this.bondViews = []; // {Array.<BondView>}
-    this.angleViews = []; // {BondAngleWebGLView[] | Array.<BondAngleFallbackView>}
+    this.atomViews = []; // @private {Array.<AtomView>}
+    this.lonePairViews = []; // @private {Array.<LonePairView>}
+    this.bondViews = []; // @private {Array.<BondView>}
+    this.angleViews = []; // @private {BondAngleWebGLView[] | Array.<BondAngleFallbackView>}
 
-    this.radialViews = []; // all views that we would want to drag
+    this.radialViews = []; // @private {Array.<AtomView | LonePairView>} all views that we would want to drag
 
-    this.lastMidpoint = null; // track the last bond-angle midpoint for a 2-atom system globally
+    this.lastMidpoint = null; // @private {Vector3 | null} - The last bond-angle midpoint for a 2-atom system globally
 
     molecule.on( 'groupAdded', this.addGroup.bind( this ) );
     molecule.on( 'groupRemoved', this.removeGroup.bind( this ) );
@@ -53,7 +53,7 @@ define( function( require ) {
     _.each( molecule.getDistantLonePairs(), this.addGroup.bind( this ) );
     _.each( molecule.getBondsAround( molecule.centralAtom ), this.addBond.bind( this ) );
 
-    // the center atom is special
+    // @private - the center atom is special
     if ( molecule.isReal ) {
       this.centerAtomView = new AtomView( molecule.centralAtom, this.renderer, AtomView.getElementLocalMaterial( molecule.centralAtom.element ) );
     }
@@ -67,6 +67,10 @@ define( function( require ) {
 
   return inherit( THREE.Object3D, MoleculeView, {
 
+    /**
+     * Updates the entire view (including bonds and angles)
+     * @public
+     */
     updateView: function() {
       // angle and bond views need to know information about the camera's position
       var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
@@ -79,7 +83,13 @@ define( function( require ) {
       this.updateAngles( localCameraOrientation );
     },
 
-    // @param {Vector3} localCameraOrientation - A unit vector pointing towards the camera in the molecule's local coordinate frame
+    /**
+     * Updates the angle views
+     * @public
+     *
+     * @param {Vector3} localCameraOrientation - A unit vector pointing towards the camera in the molecule's local
+     *                                           coordinate frame
+     */
     updateAngles: function( localCameraOrientation ) {
       // we need to handle the 2-atom case separately for proper support of 180-degree bonds
       var hasTwoBonds = this.molecule.radialAtoms.length === 2;
@@ -99,6 +109,10 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Disposes this view, so that its components can be reused for new molecules.
+     * @public
+     */
     dispose: function() {
       var i;
       for ( i = 0; i < this.angleViews.length; i++ ) {
@@ -110,7 +124,12 @@ define( function( require ) {
       }
     },
 
-    // @param {PairGroup} group
+    /**
+     * Adds a pair group.
+     * @public
+     *
+     * @param {PairGroup} group
+     */
     addGroup: function( group ) {
       // ignore the central atom, we add it in the constructor by default
       if ( group === this.molecule.centralAtom ) {
@@ -157,7 +176,12 @@ define( function( require ) {
       }
     },
 
-    // @param {PairGroup} group
+    /**
+     * Removes a pair group.
+     * @public
+     *
+     * @param {PairGroup} group
+     */
     removeGroup: function( group ) {
       var i;
       if ( group.isLonePair ) {
@@ -204,7 +228,12 @@ define( function( require ) {
       }
     },
 
-    // @param {Bond} bond
+    /**
+     * Adds a bond.
+     * @public
+     *
+     * @param {Bond.<PairGroup>} bond
+     */
     addBond: function( bond ) {
       assert && assert( bond.contains( this.molecule.centralAtom ) );
       var group = bond.getOtherAtom( this.molecule.centralAtom );
@@ -222,7 +251,12 @@ define( function( require ) {
       }
     },
 
-    // @param {Bond} bond
+    /**
+     * Removes a bond.
+     * @public
+     *
+     * @param {Bond.<PairGroup>} bond
+     */
     removeBond: function( bond ) {
       for ( var i = this.bondViews.length - 1; i >= 0; i-- ) {
         var bondView = this.bondViews[ i ];
@@ -233,12 +267,22 @@ define( function( require ) {
       }
     },
 
-    // changes the view for the BondGroupNode
+    /**
+     * Changes the view for the BondGroupNode.
+     * @public
+     */
     hideCentralAtom: function() {
       this.centerAtomView.visible = false;
     },
 
-    // changes the view for ScreenIconNode
+    /**
+     * Changes the view for ScreenIconNode.
+     * @public
+     *
+     * @param {number} moleculeScale
+     * @param {number} atomScale
+     * @param {number} bondScale
+     */
     tweakViewScales: function( moleculeScale, atomScale, bondScale ) {
       this.scale.x = this.scale.y = this.scale.z = moleculeScale;
       this.centerAtomView.scale.x = this.centerAtomView.scale.y = this.centerAtomView.scale.z = atomScale;

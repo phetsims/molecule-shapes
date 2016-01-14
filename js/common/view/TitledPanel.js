@@ -25,8 +25,10 @@ define( function( require ) {
 
     options = _.extend( {}, Panel.DEFAULT_OPTIONS, options );
 
-    this.titleNode = titleNode;
-    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } );
+    this.titleNode = titleNode; // @private {Node}
+    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } ); // @private {Rectangle}
+
+    // @private {Node}
     this.panel = new Panel( contentNode, {
       lineWidth: options.lineWidth,
       xMargin: options.xMargin,
@@ -52,6 +54,9 @@ define( function( require ) {
   moleculeShapes.register( 'TitledPanel', TitledPanel );
 
   return inherit( Node, TitledPanel, {
+    /**
+     * @private
+     */
     updateTitleLocation: function() {
       this.titleNode.centerX = this.panel.centerX;
       this.titleNode.centerY = this.panel.top;

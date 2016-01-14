@@ -87,11 +87,11 @@ define( function( require ) {
   var maxShapeWidth = getMaximumTextWidth( shapeStrings );
 
   function GeometryNamePanel( model, options ) {
-    this.model = model;
+    this.model = model; // @private {MoleculeShapesModel}
 
     // text fields that will show the name of the geometry (uses string placeholders for height)
-    this.molecularText = new Text( 'X', { font: geometryNameFont, pickable: false } );
-    this.electronText = new Text( 'Y', { font: geometryNameFont, pickable: false } );
+    this.molecularText = new Text( 'X', { font: geometryNameFont, pickable: false } ); // @private
+    this.electronText = new Text( 'Y', { font: geometryNameFont, pickable: false } ); // @private
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronText, 'fill' );
     model.linkAttribute( 'showMolecularShapeName', this.molecularText, 'visible' );
@@ -99,11 +99,12 @@ define( function( require ) {
 
     // labels for the types of geometries
     var textLabelFont = new PhetFont( 14 );
-    this.molecularTextLabel = new Text( controlMoleculeGeometryString, { font: textLabelFont } );
-    this.electronTextLabel = new Text( controlElectronGeometryString, { font: textLabelFont } );
+    this.molecularTextLabel = new Text( controlMoleculeGeometryString, { font: textLabelFont } ); // @private
+    this.electronTextLabel = new Text( controlElectronGeometryString, { font: textLabelFont } ); // @private
     MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
     MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
 
+    // @private
     this.molecularCheckbox = new MoleculeShapesCheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
     this.electronCheckbox = new MoleculeShapesCheckBox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
 
@@ -155,6 +156,9 @@ define( function( require ) {
   moleculeShapes.register( 'GeometryNamePanel', GeometryNamePanel );
 
   return inherit( MoleculeShapesPanel, GeometryNamePanel, {
+    /**
+     * @private
+     */
     updateNames: function() {
       this.molecularText.text = this.getMolecularGeometryName();
       this.electronText.text = this.getElectronGeometryName();
@@ -164,6 +168,9 @@ define( function( require ) {
       this.electronText.centerX = this.electronCheckbox.centerX;
     },
 
+    /**
+     * @private
+     */
     getMolecularGeometryName: function() {
       var name = this.model.molecule.getCentralVSEPRConfiguration().name;
       if ( name === null ) {

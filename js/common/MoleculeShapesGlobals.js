@@ -32,12 +32,15 @@ define( function( require ) {
   var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
   return _.extend( MoleculeShapesGlobals, {
-    // @public
-    hasBasicWebGLSupport: hasBasicWebGLSupport, // Whether the basics of WebGL are included
-    useWebGL: useWebGL, // Whether we will be using WebGL
+    // @public {boolean} - Whether the basics of WebGL are included
+    hasBasicWebGLSupport: hasBasicWebGLSupport,
 
-    /*
+    // @public {boolean} - Whether we will be using WebGL
+    useWebGL: useWebGL,
+
+    /**
      * Applies color changes to the material's color field, and also does so immediately upon being called.
+     * @public
      *
      * @param {THREE.Material} material
      * @param {Property.<Color>} colorProperty
@@ -53,6 +56,13 @@ define( function( require ) {
       };
     },
 
+    /**
+     * Creates a color property from anything that can be provided to Scenery as a constant-color fill/stroke.
+     * @public
+     *
+     * @param {string | Color | Property.<Color>} color
+     * @returns {Property.<Color>}
+     */
     toColorProperty: function( color ) {
       // for now, cast it into place
       var colorProperty;

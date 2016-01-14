@@ -32,7 +32,7 @@ define( function( require ) {
   /*
    * @constructor
    * @param {THREE.Renderer} renderer
-   * @param {Bond} bond
+   * @param {Bond.<PairGroup>} bond
    * @param {Property.<Vector3>} aPositionProperty - position of one end of the bond
    * @param {Property.<Vector3>} bPositionProperty - position of the other end of the bond
    * @param {number} bondRadius - in display units
@@ -41,19 +41,19 @@ define( function( require ) {
   function BondView( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
     var view = this;
 
-    this.aMaterial = localBondMaterial.get( renderer );
-    this.bMaterial = localBondMaterial.get( renderer );
-    this.bondGeometry = localBondGeometry.get( renderer );
+    this.aMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
+    this.bMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
+    this.bondGeometry = localBondGeometry.get( renderer ); // @private {THREE.Geometry}
 
-    this.bond = bond;
-    this.aPositionProperty = aPositionProperty;
-    this.bPositionProperty = bPositionProperty;
-    this.bondOrder = bond.order;
-    this.bondRadius = bondRadius;
-    this.maxLength = maxLength;
+    this.bond = bond; // @public {Bond.<PairGroup>}
+    this.aPositionProperty = aPositionProperty; // @private {Property.<Vector3>}
+    this.bPositionProperty = bPositionProperty; // @private {Property.<Vector3>}
+    this.bondOrder = bond.order; // @public {number}
+    this.bondRadius = bondRadius; // @public {number}
+    this.maxLength = maxLength; // @private {number}
 
-    this.aBonds = [];
-    this.bBonds = [];
+    this.aBonds = []; // @private {Array.<THREE.Mesh>}
+    this.bBonds = []; // @private {Array.<THREE.Mesh>}
 
     for ( var i = 0; i < this.bondOrder; i++ ) {
       // they will have unit height and unit radius. We will scale, rotate and translate them later
@@ -74,6 +74,7 @@ define( function( require ) {
 
     /**
      * Updates the BondView's appearance.
+     * @public
      *
      * @param {THREE.Vector3} cameraPosition - The location of the camera in the molecule's local coordinate frame.
      */

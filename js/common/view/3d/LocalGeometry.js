@@ -21,14 +21,20 @@ define( function( require ) {
     this.masterGeometry = masterGeometry;
 
     // renderers[i] "owns" geometries[i]
-    this.renderers = [];
-    this.geometries = [];
+    this.renderers = []; // @private {Array.<THREE.Renderer>}
+    this.geometries = []; // @private {Array.<THREE.Geometry>}
   }
 
   moleculeShapes.register( 'LocalGeometry', LocalGeometry );
 
   return inherit( Object, LocalGeometry, {
-    // @param {THREE.Renderer} renderer
+    /**
+     * Returns the copy of the geometry corresponding to the provided three.js renderer.
+     * @public
+     *
+     * @param {THREE.Renderer} renderer
+     * @returns {THREE.Geometry}
+     */
     get: function( renderer ) {
       for ( var i = 0; i < this.renderers.length; i++ ) {
         if ( this.renderers[ i ] === renderer ) {
