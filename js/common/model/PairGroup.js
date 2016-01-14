@@ -30,17 +30,16 @@ define( function( require ) {
 
     var group = this;
 
-    // unique identifier
+    // @public {number - Unique identifier.
     this.id = nextId++;
 
     PropertySet.call( this, {
-      position: position,
-      velocity: Vector3.ZERO,
-      userControlled: false
+      position: position, // @public {Vector3}
+      velocity: Vector3.ZERO, // @public {Vector3}
+      userControlled: false // @public {boolean} - Whether the user is directly manipulating the position currently.
     } );
 
-    // @public (read-only) - normalized position (unit vector)
-    this.orientation = new Vector3();
+    this.orientation = new Vector3(); // @public (read-only) {Vector3} - Normalized position (unit vector).
     this.link( 'position', function( position ) {
       group.orientation.set( position );
 
@@ -49,11 +48,10 @@ define( function( require ) {
       }
     } );
 
-    this.isLonePair = isLonePair;
-    this.isCentralAtom = false; // will be overridden to true by Molecule.addCentralAtom() if applicable
+    this.isLonePair = isLonePair; // @public {boolean}
+    this.isCentralAtom = false; // @public {boolean - Might be overridden to true by Molecule.addCentralAtom().
 
-    // undefined for vsepr pair groups
-    this.element = options.element;
+    this.element = options.element; // @public {Element | undefined} - undefined for VSEPR pair group
 
     if ( assert ) {
       this.positionProperty.lazyLink( function( newValue, oldValue ) {
@@ -70,19 +68,37 @@ define( function( require ) {
   /*---------------------------------------------------------------------------*
    * constants
    *----------------------------------------------------------------------------*/
-  PairGroup.BONDED_PAIR_DISTANCE = 10.0; // ideal distance from atom to atom (model screen)
-  PairGroup.LONE_PAIR_DISTANCE = 7.0; // ideal distance from atom to lone pair (both screens)
 
-  PairGroup.ELECTRON_PAIR_REPULSION_SCALE = 30000; // Control on Coulomb effect. Tuned for stability and aesthetic.
-  PairGroup.ANGLE_REPULSION_SCALE = 3; // Tuned control of fake force to push angles between pair groups to their ideal.
-  PairGroup.JITTER_SCALE = 0.001; // Tuned control for force to jitter locations of atoms (planar cases otherwise stable)
-  PairGroup.DAMPING_FACTOR = 0.1; // Tuned control to reduce velocity, in order to ensure stability.
+  // @public {number} - Ideal distance from atom to atom (model screen).
+  PairGroup.BONDED_PAIR_DISTANCE = 10.0;
+
+  // @public {number} - Ideal distance from atom to lone pair (both screens).
+  PairGroup.LONE_PAIR_DISTANCE = 7.0;
+
+  // @public {number} - Control on Coulomb effect. Tuned for stability and aesthetic.
+  PairGroup.ELECTRON_PAIR_REPULSION_SCALE = 30000;
+
+  // @public {number} - Tuned control of fake force to push angles between pair groups to their ideal.
+  PairGroup.ANGLE_REPULSION_SCALE = 3;
+
+  // @public {number} - Tuned control for force to jitter locations of atoms (planar cases otherwise stable)
+  PairGroup.JITTER_SCALE = 0.001;
+
+  // @public {number} - Tuned control to reduce velocity, in order to ensure stability.
+  PairGroup.DAMPING_FACTOR = 0.1;
 
   function interpolate( a, b, ratio ) {
     return a * ( 1 - ratio ) + b * ratio;
   }
 
-  // helps avoid oscillation when the frame-rate is low, due to how the damping is implemented
+  /**
+   * Returns a multiplicative factor based on the time elapsed, so that we can avoid oscillation when the frame-rate is
+   * low, due to how the damping is implemented.
+   * @public
+   *
+   * @param {number} timeElapsed
+   * @returns {number}
+   */
   PairGroup.getTimescaleImpulseFactor = function( timeElapsed ) {
     return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
   };
@@ -91,6 +107,7 @@ define( function( require ) {
 
     /**
      * Applies a damped spring-like system to move this pair group towards the "ideal" distance from its parent atom.
+     * @public
      *
      * @param {number} timeElapsed - Amount of time the attraction is to be applied over
      * @param {number} oldDistance - Previous distance from the pair group to its parent atom
@@ -139,11 +156,15 @@ define( function( require ) {
     },
 
     /**
+     * Returns the repulsion impulse (force * time) for the repulsion applied to this pair from FROM the provided
+     * pair group.
+     * @public
+     *
      * @param {PairGroup} other - The pair group whose force on this object we want
      * @param {number} timeElapsed - Time elapsed (thus we return an impulse instead of a force)
      * @param {number} trueLengthsRatioOverride - From 0 to 1. If 0, lone pairs will behave the same as bonds. If 1, lone pair
      *                                            distance will be taken into account
-     * @return Repulsion force on this pair group, from the other pair group
+     * @returns Repulsion force on this pair group, from the other pair group
      */
     getRepulsionImpulse: function( other, timeElapsed, trueLengthsRatioOverride ) {
       // only handle the force on this object for now
@@ -187,6 +208,7 @@ define( function( require ) {
 
     /**
      * Applies a repulsive force from another PairGroup to this PairGroup.
+     * @public
      *
      * @param {PairGroup} other - The pair group whose force on this object we want
      * @param {number} timeElapsed - Time elapsed (thus we return an impulse instead of a force)
@@ -197,7 +219,12 @@ define( function( require ) {
       this.addVelocity( this.getRepulsionImpulse( other, timeElapsed, trueLengthsRatioOverride ) );
     },
 
-    // Adds a {Vector2} to our position if this PairGroup can have non-user-controlled changes
+    /**
+     * Adds a change to our position if this PairGroup can have non-user-controlled changes.
+     * @public
+     *
+     * @param {Vector3} positionChange
+     */
     addPosition: function( positionChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
       if ( !this.userControlled && !this.isCentralAtom ) {
@@ -205,7 +232,12 @@ define( function( require ) {
       }
     },
 
-    // Adds a {Vector2} to our velocity if this PairGroup can have non-user-controlled changes
+    /**
+     * Adds a change to our velocity if this PairGroup can have non-user-controlled changes.
+     * @public
+     *
+     * @param {Vector3} velocityChange
+     */
     addVelocity: function( velocityChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
       if ( !this.userControlled && !this.isCentralAtom ) {
@@ -213,6 +245,12 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Steps this pair group forward in time (moving in the direction of its velocity), and slowly damps the velocity.
+     * @public
+     *
+     * @param {number} timeElapsed
+     */
     stepForward: function( timeElapsed ) {
       if ( this.userControlled ) { return; }
 
@@ -231,6 +269,12 @@ define( function( require ) {
       this.velocity = this.velocity.times( damping );
     },
 
+    /**
+     * Sets the position and zeros the velocity.
+     * @public
+     *
+     * @param {Vector3} vector
+     */
     dragToPosition: function( vector ) {
       this.position = vector;
 

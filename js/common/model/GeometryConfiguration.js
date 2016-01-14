@@ -23,6 +23,7 @@ define( function( require ) {
   var geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
   var geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
 
+  // Constant for the tetrahedral shape
   var TETRA_CONST = Math.PI * -19.471220333 / 180;
 
   /*
@@ -31,9 +32,8 @@ define( function( require ) {
    * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
    */
   function GeometryConfiguration( name, unitVectors ) {
-    // @public
-    this.name = name;
-    this.unitVectors = unitVectors;
+    this.name = name; // @public {string}
+    this.unitVectors = unitVectors; // @public {Array.<Vector3>}
   }
 
   moleculeShapes.register( 'GeometryConfiguration', GeometryConfiguration );
@@ -100,6 +100,9 @@ define( function( require ) {
   };
 
   /*
+   * Lookup for the configuration, based on the number of pair groups it contains.
+   * @public
+   *
    * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
    * @returns {GeometryConfiguration}
    */

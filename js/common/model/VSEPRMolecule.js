@@ -24,13 +24,19 @@ define( function( require ) {
   function VSEPRMolecule( bondLengthOverride ) {
     Molecule.call( this, false );
 
-    this.bondLengthOverride = bondLengthOverride;
+    this.bondLengthOverride = bondLengthOverride; // @public {number}
   }
 
   moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
 
   return inherit( Molecule, VSEPRMolecule, {
-    // @override
+    /**
+     * Steps the model.
+     * @override
+     * @public
+     *
+     * @param {number} dt - Amount of time elapsed
+     */
     update: function( dt ) {
       Molecule.prototype.update.call( this, dt );
 
@@ -66,10 +72,24 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Returns the LocalShape around a specific atom.
+     * @public
+     *
+     * @param {PairGroup} atom
+     * @returns {LocalShape}
+     */
     getLocalShape: function( atom ) {
       return this.getLocalVSEPRShape( atom );
     },
 
+    /**
+     * Returns the maximum bond length (either overridden, or the normal bonded pair distance).
+     * @override
+     * @public
+     *
+     * @returns {number}
+     */
     getMaximumBondLength: function() {
       if ( this.bondLengthOverride !== undefined ) {
         return this.bondLengthOverride;

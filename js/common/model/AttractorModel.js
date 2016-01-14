@@ -12,6 +12,7 @@ define( function( require ) {
 
   // modules
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var pairs = require( 'PHET_CORE/pairs' );
   var Vector3 = require( 'DOT/Vector3' );
   var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
@@ -25,13 +26,14 @@ define( function( require ) {
 
   /**
    * Apply an attraction to the closest ideal position, with the given time elapsed
+   * @public
    *
    * @param {Array.<PairGroup>} groups - An ordered list of pair groups that should be considered, along with the relevant permutations
    * @param {number} timeElapsed - Time elapsed (seconds)
    * @param {Array.<Vector3>} idealOrientations - An ideal position, that may be rotated.
    * @param {Array.<Permutation>} allowablePermutations - The un-rotated stable position that we are attracted towards
    * @param {Vector3} center - The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
-   * @return {number} A measure of total error (least squares-style)
+   * @returns {number} A measure of total error (least squares-style)
    */
   AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
     var currentOrientations = _.map( groups, function( group ) {
@@ -133,12 +135,13 @@ define( function( require ) {
    * each possible valid 1-to-1 mapping from electron pair to direction in our VSEPR geometry. For each
    * mapping, we calculate the rotation that makes the best match, and then calculate the error. We return
    * a result for the mapping (permutation) with the lowest error.
-   * <p/>
+   * @public
+   *
    * This uses a slightly modified rotation computation from http://igl.ethz.ch/projects/ARAP/svd_rot.pdf
    * (Least-Squares Rigid Motion Using SVD). Basically, we ignore the centroid and translation computations,
    * since we want everything to be rotated around the origin. We also don't weight the individual electron
    * pairs.
-   * <p/>
+   *
    * Of note, the lower-index slots in the VSEPRConfiguration (GeometryConfiguration) are for higher-repulsion
    * pair groups (the order is triple > double > lone pair > single). We need to iterate through all permutations,
    * but with the repulsion-ordering constraint (no single bond will be assigned a lower-index slot than a lone pair)
@@ -147,7 +150,7 @@ define( function( require ) {
    * @param {Array.<Vector3>} currentOrientations - An ordered list of orientations (normalized) that should be considered, along with the relevant permutations
    * @param {Array.<Vector3>} idealOrientations - The un-rotated stable position that we are attracted towards
    * @param {Array.<Permutation>} allowablePermutations - A list of permutations that map stable positions to pair groups in order.
-   * @return {ResultMapping} (see docs there)
+   * @returns {ResultMapping} (see docs there)
    */
   AttractorModel.findClosestMatchingConfiguration = function( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) {
     var n = currentOrientations.length; // number of total pairs
@@ -214,6 +217,12 @@ define( function( require ) {
     return bestResult;
   };
 
+  /**
+   * Convenience for extracting orientations from an array of PairGroups
+   * @public
+   *
+   * @param {Array.<PairGroup>} groups
+   */
   AttractorModel.getOrientationsFromOrigin = function( groups ) {
     return _.map( groups, function( group ) {
       return group.orientation;
@@ -229,6 +238,7 @@ define( function( require ) {
   /**
    * In 3D, Given n points x_i and n points y_i, determine the rotation matrix that can be applied to the x_i such
    * that it minimizes the least-squares error between each x_i and y_i.
+   * @private
    *
    * @param {number} n - Quantity of points
    * @param {MatrixOps3.Array} x - A 3xN MatrixOps3 matrix where each column represents a point x_i
@@ -252,7 +262,15 @@ define( function( require ) {
     MatrixOps3.mult3RightTranspose( scratchV, scratchU, result );
   };
 
-  // double error, Matrix target, Permutation permutation, Matrix rotation
+  /**
+   * Result mapping between the current positions and ideal positions. Returned as a data object.
+   * @public
+   *
+   * @param {number} error - Total error of this mapping
+   * @param {Matrix} target - The locations of ideal pair groups
+   * @param {Permutation} permutation - The permutation between current pair groups and ideal pair groups
+   * @param {Matrix} rotation - The rotation between the current and ideal
+   */
   AttractorModel.ResultMapping = function( error, target, permutation, rotation ) {
     this.error = error;
     this.target = target;
@@ -260,18 +278,24 @@ define( function( require ) {
     this.rotation = rotation;
   };
 
-  AttractorModel.ResultMapping.prototype = {
-    constructor: AttractorModel.ResultMapping,
-
+  inherit( Object, AttractorModel.ResultMapping, {
+    /**
+     * Returns a copy of the input vector, rotated from the "current" frame of reference to the "ideal" frame of
+     * reference.
+     * @public
+     *
+     * @param {Vector3} v
+     */
     rotateVector: function( v ) {
       var x = Matrix.columnVector3( v );
       var rotated = this.rotation.times( x );
       return rotated.extractVector3( 0 );
     }
-  };
+  } );
 
   /**
    * Call the function with each individual permutation of the list elements of "lists"
+   * @private
    *
    * @param lists  List of lists. Order of lists will not change, however each possible permutation involving sub-lists will be used
    * @param callback Function to call
@@ -302,6 +326,7 @@ define( function( require ) {
 
   /**
    * Call our function with each permutation of the provided list PREFIXED by prefix, in lexicographic order
+   * @private
    *
    * @param list   List to generate permutations of
    * @param prefix   Elements that should be inserted at the front of each list before each call
@@ -326,6 +351,12 @@ define( function( require ) {
     }
   };
 
+  /**
+   * Debugging aid for converting an array of arrays to a string.
+   * @private
+   *
+   * @param {Array.<Array.<*>>} lists
+   */
   AttractorModel.listPrint = function( lists ) {
     var ret = '';
     for ( var i = 0; i < lists.length; i++ ) {
@@ -338,6 +369,10 @@ define( function( require ) {
     return ret;
   };
 
+  /**
+   * Testing function for permutations
+   * @private
+   */
   AttractorModel.testMe = function() {
     /*
      Testing of permuting each individual list. Output:

@@ -27,8 +27,8 @@ define( function( require ) {
 
     Molecule.call( this, true );
 
-    this.realMoleculeShape = realMoleculeShape;
-    this.localShapeMap = {}; // {number} atom ID => {LocalShape}
+    this.realMoleculeShape = realMoleculeShape; // @public {RealMoleculeShape} - Our ideal shape
+    this.localShapeMap = {}; // @private {number} - Maps atom IDs => {LocalShape}
 
     var numLonePairs = realMoleculeShape.centralAtom.lonePairCount;
     var numBonds = realMoleculeShape.bonds.length;
@@ -88,7 +88,13 @@ define( function( require ) {
   moleculeShapes.register( 'RealMolecule', RealMolecule );
 
   return inherit( Molecule, RealMolecule, {
-    // @override
+    /**
+     * Step function for the molecule.
+     * @override
+     * @public
+     *
+     * @param {number} dt - Amount of time elapsed
+     */
     update: function( dt ) {
       Molecule.prototype.update.call( this, dt );
 
@@ -104,10 +110,21 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Looks up a LocalShape for a particular atom.
+     * @public
+     *
+     * @param {PairGroup} atom
+     * @returns {LocalShape}
+     */
     getLocalShape: function( atom ) {
       return this.localShapeMap[ atom.id ];
     },
 
+    /**
+     * @override - We don't want to specify this for real molecules.
+     * @returns {undefined}
+     */
     getMaximumBondLength: function() {
       return undefined;
     }
