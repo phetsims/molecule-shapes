@@ -59,6 +59,7 @@ define( function( require ) {
     var removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColors.removeButtonText,
+      maxWidth: 320,
       listener: function() {
         model.molecule.removeAllGroups();
       }
@@ -85,7 +86,7 @@ define( function( require ) {
     bondingTempNode.removeAllChildren();
     lonePairTempNode.removeAllChildren();
 
-    var maxExternalWidth = 380; // How big the panels can get before really interfering
+    var maxExternalWidth = 350; // How big the panels can get before really interfering
     var bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,

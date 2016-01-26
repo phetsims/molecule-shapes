@@ -158,6 +158,8 @@ define( function( require ) {
       }
       updateNames();
     } );
+
+    this.maxWidth = 900; // See https://github.com/phetsims/molecule-shapes/issues/137
   }
 
   moleculeShapes.register( 'GeometryNamePanel', GeometryNamePanel );

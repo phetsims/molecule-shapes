@@ -57,13 +57,16 @@ define( function( require ) {
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
     var maxWidth = Math.max( optionsNode.width, comboBox.width );
+    var maxExternalWidth = 350; // How big the panels can get before really interfering
 
     var moleculePanel = new MoleculeShapesPanel( controlMoleculeString, comboBox, {
+      maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
       xMargin: ( maxWidth - comboBox.width ) / 2 + 15
     } );
     var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
+      maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: moleculePanel.bottom + 10,
       xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
@@ -89,12 +92,14 @@ define( function( require ) {
       var realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,
-        right: approximateVisualCenterX - horizontalSpacing / 2
+        right: approximateVisualCenterX - horizontalSpacing / 2,
+        maxWidth: 320
       } );
       var modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,
-        left: approximateVisualCenterX + horizontalSpacing / 2
+        left: approximateVisualCenterX + horizontalSpacing / 2,
+        maxWidth: 320
       } );
       realRadioButton.touchArea = realRadioButton.mouseArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
       modelRadioButton.touchArea = modelRadioButton.mouseArea = modelRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
