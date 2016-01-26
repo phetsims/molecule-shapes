@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * The ideal local shape for a certain central atom and its (local) neighbors.
@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var partition = require( 'PHET_CORE/partition' );
   var Permutation = require( 'DOT/Permutation' );
@@ -24,39 +25,51 @@ define( function( require ) {
    * @param {Array.<Vector3>} idealOrientations
    */
   function LocalShape( allowedPermutations, centralAtom, groups, idealOrientations ) {
-    // denotes how we can map the groups into the orientation vectors. some combinations may not be possible
+    // @public {Array.<Permutation>} - Denotes how we can map the groups into the orientation vectors.
+    // Some combinations may not be possible.
     this.allowedPermutations = allowedPermutations;
 
-    // all of our pair groups should be connected to this atom
+    // @public {PairGroup} - All of our pair groups should be connected to this atom.
     this.centralAtom = centralAtom;
 
-
+    // @public {Array.<PairGroup>}
     this.groups = groups;
 
-    // the ideal orientations (unit vectors) for the groups representing the ideal local shape
+    // @public {Array.<Vector3>} - The ideal orientations (unit vectors) for the groups representing the
+    // ideal local shape.
     this.idealOrientations = idealOrientations;
   }
+
+  moleculeShapes.register( 'LocalShape', LocalShape );
 
   inherit( Object, LocalShape, {
     /**
      * Attracts the atoms to their ideal shape, and returns the current approximate "error" that they have at this state.
+     * @public
      *
      * Attraction done by adding in velocity.
      *
-     * @param {number} dt - Time elapsed.
-     * @return {number} Amount of error (least squares-style)
+     * @param {number} dt - Amount of time elapsed.
+     * @returns {number} Amount of error (least squares-style)
      */
     applyAttraction: function( dt ) {
       return AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, false );
     },
 
+    /**
+     * Forces pair-groups with similar angles away from each other.
+     * @public
+     *
+     * @param {number} dt - Amount of time elapsed
+     */
     applyAngleAttractionRepulsion: function( dt ) {
       AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, true );
     }
   }, {
     /**
      * Given a list of permutations, return all permutations that exist with the specified indices permuted in all different ways.
-     * <p/>
+     * @private
+     *
      * IE, if given the list of the single permutation (12), and specified indices {3,4,5}, the permutations returned will be
      * (12)(34),(12)(35),(12)(45),(12)(453),(12)(534),(12)
      */
@@ -77,8 +90,16 @@ define( function( require ) {
       return result;
     },
 
-    // allow switching of lone pairs with each other, and all other types of bonds with each other
-    // NOTE: I recommended double or triple bonds being put in "higher repulsion" spots over single bonds, but this was specifically rejected. -JO
+    /**
+     * Allow switching of lone pairs with each other, and all other types of bonds with each other.
+     * @public
+     *
+     * NOTE: I recommended double or triple bonds being put in "higher repulsion" spots over single bonds,
+     * but this was specifically rejected. -JO.
+     *
+     * @param {Array.<PairGroup>} neighbors
+     * @param {Array.<Permutation>} permutations
+     */
     vseprPermutations: function( neighbors ) {
       var permutations = [];
       permutations.push( Permutation.identity( neighbors.length ) );
@@ -103,7 +124,13 @@ define( function( require ) {
       return permutations;
     },
 
-    // allow switching of lone pairs with each other, and all other types of bonds with the same type of element
+    /**
+     * Allow switching of lone pairs with each other, and all other types of bonds with the same type of element.
+     * @public
+     *
+     * @param {Array.<PairGroup>} neighbors
+     * @param {Array.<Permutation>} permutations
+     */
     realPermutations: function( neighbors ) {
       var permutations = [];
       permutations.push( Permutation.identity( neighbors.length ) );

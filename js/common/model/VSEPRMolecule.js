@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs
@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
@@ -23,11 +24,19 @@ define( function( require ) {
   function VSEPRMolecule( bondLengthOverride ) {
     Molecule.call( this, false );
 
-    this.bondLengthOverride = bondLengthOverride;
+    this.bondLengthOverride = bondLengthOverride; // @public {number}
   }
 
+  moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
+
   return inherit( Molecule, VSEPRMolecule, {
-    // @override
+    /**
+     * Steps the model.
+     * @override
+     * @public
+     *
+     * @param {number} dt - Amount of time elapsed
+     */
     update: function( dt ) {
       Molecule.prototype.update.call( this, dt );
 
@@ -63,10 +72,24 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Returns the LocalShape around a specific atom.
+     * @public
+     *
+     * @param {PairGroup} atom
+     * @returns {LocalShape}
+     */
     getLocalShape: function( atom ) {
       return this.getLocalVSEPRShape( atom );
     },
 
+    /**
+     * Returns the maximum bond length (either overridden, or the normal bonded pair distance).
+     * @override
+     * @public
+     *
+     * @returns {number}
+     */
     getMaximumBondLength: function() {
       if ( this.bondLengthOverride !== undefined ) {
         return this.bondLengthOverride;

@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * Contains the "optimal" molecule structures (pair group directions stored as unit vectors),
@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var Vector3 = require( 'DOT/Vector3' );
 
   // strings
@@ -22,6 +23,7 @@ define( function( require ) {
   var geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
   var geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
 
+  // Constant for the tetrahedral shape
   var TETRA_CONST = Math.PI * -19.471220333 / 180;
 
   /*
@@ -30,10 +32,11 @@ define( function( require ) {
    * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
    */
   function GeometryConfiguration( name, unitVectors ) {
-    // @public
-    this.name = name;
-    this.unitVectors = unitVectors;
+    this.name = name; // @public {string}
+    this.unitVectors = unitVectors; // @public {Array.<Vector3>}
   }
+
+  moleculeShapes.register( 'GeometryConfiguration', GeometryConfiguration );
 
   // maps number of orientations to the {GeometryConfiguration} with that many orientations
   var geometries = {
@@ -97,6 +100,9 @@ define( function( require ) {
   };
 
   /*
+   * Lookup for the configuration, based on the number of pair groups it contains.
+   * @public
+   *
    * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
    * @returns {GeometryConfiguration}
    */

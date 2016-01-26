@@ -12,5 +12,4 @@ function runMoleculeShapesTests( pathToTestBase ) {
   }
 
   loadTestFile( 'js/fastmath.js' );
-  loadTestFile( 'js/linting.js' );
 };

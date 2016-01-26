@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * A Panel, but with an added {Node} title centered along the location of the top border. Additionally, the border
@@ -14,6 +14,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -22,10 +23,12 @@ define( function( require ) {
   function TitledPanel( titleNode, contentNode, options ) {
     Node.call( this );
 
-    options = _.extend( {}, Panel.defaultOptions, options );
+    options = _.extend( {}, Panel.DEFAULT_OPTIONS, options );
 
-    this.titleNode = titleNode;
-    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } );
+    this.titleNode = titleNode; // @private {Node}
+    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } ); // @private {Rectangle}
+
+    // @private {Node}
     this.panel = new Panel( contentNode, {
       lineWidth: options.lineWidth,
       xMargin: options.xMargin,
@@ -48,7 +51,12 @@ define( function( require ) {
     this.mutate( options );
   }
 
+  moleculeShapes.register( 'TitledPanel', TitledPanel );
+
   return inherit( Node, TitledPanel, {
+    /**
+     * @private
+     */
     updateTitleLocation: function() {
       this.titleNode.centerX = this.panel.centerX;
       this.titleNode.centerY = this.panel.top;

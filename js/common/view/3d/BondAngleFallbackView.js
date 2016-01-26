@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View of the angle (sector and line) between two bonds, written in three.js so it can be displayed with Canvas instead
@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
@@ -49,23 +50,26 @@ define( function( require ) {
   }
 
   /*
-   * constructor
+   * @constructor
+   *
+   * @param {THREE.Renderer} renderer
    */
   function BondAngleFallbackView( renderer ) {
     BondAngleView.call( this );
 
-    this.renderer = renderer;
+    this.renderer = renderer; // @public {THREE.Renderer}
 
-    // shared vertex array between both geometries
+    // @private {Array.<THREE.Vector3>} shared vertex array between both geometries
     this.arcVertices = [];
     for ( var i = 0; i < NUM_VERTICES; i++ ) {
       this.arcVertices.push( new THREE.Vector3() );
     }
 
     // geometries on each instance, since we need to modify them directly
-    this.arcGeometry = createArcGeometry( this.arcVertices );
-    this.sectorGeometry = createSectorGeometry( this.arcVertices );
+    this.arcGeometry = createArcGeometry( this.arcVertices ); // @private {THREE.Geometry}
+    this.sectorGeometry = createSectorGeometry( this.arcVertices ); // @private {THREE.Geometry}
 
+    // @private {THREE.MeshBasicMaterial}
     this.sectorMaterial = new THREE.MeshBasicMaterial( {
       side: THREE.DoubleSide,
       transparent: true,
@@ -74,6 +78,8 @@ define( function( require ) {
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
     } );
     MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColors.bondAngleSweepProperty );
+
+    // @private {THREE.MeshBasicMaterial}
     this.arcMaterial = new THREE.LineBasicMaterial( {
       transparent: true,
       opacity: 0.7,
@@ -81,8 +87,8 @@ define( function( require ) {
     } );
     MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColors.bondAngleArcProperty );
 
-    this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial );
-    this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial );
+    this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
+    this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
 
     // render the bond angle views on top of everything (but still depth-testing), with arcs on top
     this.sectorView.renderDepth = 10;
@@ -92,9 +98,13 @@ define( function( require ) {
     this.add( this.arcView );
   }
 
+  moleculeShapes.register( 'BondAngleFallbackView', BondAngleFallbackView );
+
   return inherit( BondAngleView, BondAngleFallbackView, {
     /*
+     * @public
      * @override
+     *
      * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
      * @param {Property.<boolean>} showBondAnglesProperty
      * @param {Molecule} molecule
@@ -108,7 +118,11 @@ define( function( require ) {
       return this;
     },
 
-    // @override
+    /**
+     * Disposes so that it can be initialized later. Puts it in the pool.
+     * @override
+     * @public
+     */
     dispose: function() {
       BondAngleView.prototype.dispose.call( this );
 
@@ -117,6 +131,8 @@ define( function( require ) {
 
     /**
      * @override
+     * @public
+     *
      * @param {Vector3} lastMidpoint - The midpoint of the last frame's bond angle arc, used to stabilize bond angles
      *                                 that are around ~180 degrees.
      * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
@@ -149,6 +165,7 @@ define( function( require ) {
       this.sectorGeometry.verticesNeedUpdate = true;
     }
   }, {
+    // @private {LocalPool}
     pool: new LocalPool( 'BondAngleFallbackView', function( renderer ) {
       return new BondAngleFallbackView( renderer );
     } )

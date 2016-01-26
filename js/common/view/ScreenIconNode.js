@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Dynamically generates the screen icons by rendering 3D scenes into an image and displaying atom labels on top.
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var Util = require( 'DOT/Util' );
@@ -121,6 +122,12 @@ define( function( require ) {
     return url;
   }
 
+  /**
+   * @constructor
+   *
+   * @param {boolean} isModel
+   * @param {boolean} isBasicsVersion
+   */
   function ScreenIconNode( isModel, isBasicsVersion ) {
     Node.call( this );
 
@@ -159,6 +166,8 @@ define( function( require ) {
       centerY: centerY + Math.cos( angle ) * viewBondDistance
     } ) );
   }
+
+  moleculeShapes.register( 'ScreenIconNode', ScreenIconNode );
 
   return inherit( Node, ScreenIconNode, {} );
 } );

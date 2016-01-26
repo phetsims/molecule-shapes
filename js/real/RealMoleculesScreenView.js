@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View for the 'Real Molecules' screen.
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var ComboBox = require( 'SUN/ComboBox' );
@@ -24,10 +25,10 @@ define( function( require ) {
   var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
-  var moleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
-  var optionsString = require( 'string!MOLECULE_SHAPES/control.options' );
-  var realViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
-  var modelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
+  var controlMoleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
+  var controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
+  var controlRealViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
+  var controlModelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
 
   /**
    * Constructor for the RealMoleculesScreenView
@@ -38,8 +39,8 @@ define( function( require ) {
     MoleculeShapesScreenView.call( this, model );
     var screenView = this;
 
-    this.model = model;
-    this.moleculeView = new MoleculeView( model, this, model.molecule );
+    this.model = model; // @private {MoleculeShapesModel}
+    this.moleculeView = new MoleculeView( model, this, model.molecule ); // @public
     this.addMoleculeView( this.moleculeView );
 
     var comboBoxListContainer = new Node();
@@ -56,15 +57,18 @@ define( function( require ) {
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
     var maxWidth = Math.max( optionsNode.width, comboBox.width );
+    var maxExternalWidth = 350; // How big the panels can get before really interfering
 
-    var moleculePanel = new MoleculeShapesPanel( moleculeString, comboBox, {
-      right:   this.layoutBounds.right - 10,
-      top:     this.layoutBounds.top + 10,
+    var moleculePanel = new MoleculeShapesPanel( controlMoleculeString, comboBox, {
+      maxWidth: maxExternalWidth,
+      right: this.layoutBounds.right - 10,
+      top: this.layoutBounds.top + 10,
       xMargin: ( maxWidth - comboBox.width ) / 2 + 15
     } );
-    var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
-      right:   this.layoutBounds.right - 10,
-      top:     moleculePanel.bottom + 10,
+    var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
+      maxWidth: maxExternalWidth,
+      right: this.layoutBounds.right - 10,
+      top: moleculePanel.bottom + 10,
       xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
     } );
     this.addChild( moleculePanel );
@@ -77,8 +81,8 @@ define( function( require ) {
       var approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
 
       // NOTE: these font sizes are scaled!
-      var realViewLabel = new Text( realViewString, { font: new PhetFont( 28 ) } );
-      var modelViewLabel = new Text( modelViewString, { font: new PhetFont( 28 ) } );
+      var realViewLabel = new Text( controlRealViewString, { font: new PhetFont( 28 ) } );
+      var modelViewLabel = new Text( controlModelViewString, { font: new PhetFont( 28 ) } );
       MoleculeShapesColors.linkAttribute( 'controlPanelText', realViewLabel, 'fill' );
       MoleculeShapesColors.linkAttribute( 'controlPanelText', modelViewLabel, 'fill' );
 
@@ -87,13 +91,15 @@ define( function( require ) {
       var radioButtonScale = 0.7;
       var realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
         scale: radioButtonScale,
-        top:   this.layoutBounds.top + 20,
-        right: approximateVisualCenterX - horizontalSpacing / 2
+        top: this.layoutBounds.top + 20,
+        right: approximateVisualCenterX - horizontalSpacing / 2,
+        maxWidth: 320
       } );
       var modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
         scale: radioButtonScale,
-        top:  this.layoutBounds.top + 20,
-        left: approximateVisualCenterX + horizontalSpacing / 2
+        top: this.layoutBounds.top + 20,
+        left: approximateVisualCenterX + horizontalSpacing / 2,
+        maxWidth: 320
       } );
       realRadioButton.touchArea = realRadioButton.mouseArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
       modelRadioButton.touchArea = modelRadioButton.mouseArea = modelRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
@@ -112,6 +118,8 @@ define( function( require ) {
       screenView.addMoleculeView( screenView.moleculeView );
     } );
   }
+
+  moleculeShapes.register( 'RealMoleculesScreenView', RealMoleculesScreenView );
 
   return inherit( MoleculeShapesScreenView, RealMoleculesScreenView );
 } );

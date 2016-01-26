@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View of an individual electron in a cloud {THREE.Object3D}
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
@@ -33,6 +34,8 @@ define( function( require ) {
   function ElectronView( renderer ) {
     THREE.Mesh.call( this, localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
   }
+
+  moleculeShapes.register( 'ElectronView', ElectronView );
 
   return inherit( THREE.Mesh, ElectronView );
 } );

@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Location for all colors (especially those that could change for the basics version, or could be tweaked)
@@ -16,6 +16,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var extend = require( 'PHET_CORE/extend' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Color = require( 'SCENERY/util/Color' );
@@ -100,7 +101,7 @@ define( function( require ) {
       default: new Color( 0, 0, 0 )
     },
     removeButtonBackground: {
-      default: new Color( 255, 200, 0 ),
+      default: new Color( 255, 200, 0 )
     },
     checkBox: {
       default: new Color( 230, 230, 230 ),
@@ -145,6 +146,7 @@ define( function( require ) {
       }
     }
   } );
+  moleculeShapes.register( 'MoleculeShapesColors', MoleculeShapesColors );
 
   /*---------------------------------------------------------------------------*
    * Iframe communication

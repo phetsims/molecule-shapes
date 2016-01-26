@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View for the 'Model' screen.
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -23,10 +24,10 @@ define( function( require ) {
   var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
-  var bondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
-  var lonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );
-  var optionsString = require( 'string!MOLECULE_SHAPES/control.options' );
-  var removeAllString = require( 'string!MOLECULE_SHAPES/control.removeAll' );
+  var controlBondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
+  var controlLonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );
+  var controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
+  var controlRemoveAllString = require( 'string!MOLECULE_SHAPES/control.removeAll' );
 
   /**
    * Constructor for the ModelMoleculesScreenView
@@ -36,9 +37,9 @@ define( function( require ) {
   function ModelMoleculesScreenView( model ) {
     MoleculeShapesScreenView.call( this, model );
 
-    this.model = model;
+    this.model = model; // @private {MoleculeShapesModel}
 
-    this.moleculeView = new MoleculeView( model, this, model.molecule );
+    this.moleculeView = new MoleculeView( model, this, model.molecule ); // @public
     this.addMoleculeView( this.moleculeView );
 
     var addPairCallback = this.addPairGroup.bind( this );
@@ -55,9 +56,10 @@ define( function( require ) {
       align: 'left'
     } );
     var lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
-    var removeAllButton = new TextPushButton( removeAllString, {
+    var removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColors.removeButtonText,
+      maxWidth: 320,
       listener: function() {
         model.molecule.removeAllGroups();
       }
@@ -77,26 +79,26 @@ define( function( require ) {
     var optionsTempNode = new Node( { children: [ optionsNode ] } );
     var bondingTempNode = new Node( { children: [ bondingNode ] } );
     var lonePairTempNode = new Node( { children: [ lonePairNode ] } );
-    var maxInternalWidth = Math.max( new MoleculeShapesPanel( optionsString, optionsTempNode ).width,
-                                     Math.max( new MoleculeShapesPanel( bondingString, bondingTempNode ).width,
-                                               new MoleculeShapesPanel( lonePairString, lonePairTempNode ).width ) );
+    var maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
+      Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
+        new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
     optionsTempNode.removeAllChildren();
     bondingTempNode.removeAllChildren();
     lonePairTempNode.removeAllChildren();
 
-    var maxExternalWidth = 380; // How big the panels can get before really interfering
-    var bondingPanel = new MoleculeShapesPanel( bondingString, bondingNode, {
+    var maxExternalWidth = 350; // How big the panels can get before really interfering
+    var bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
       maxWidth: maxExternalWidth,
-      right:   this.layoutBounds.right - 10,
-      top:     this.layoutBounds.top + 10,
+      right: this.layoutBounds.right - 10,
+      top: this.layoutBounds.top + 10,
       xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15
     } );
     var bottom = bondingPanel.bottom;
     if ( !model.isBasicsVersion ) {
-      var lonePairPanel = new MoleculeShapesPanel( lonePairString, lonePairNode, {
+      var lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
         maxWidth: maxExternalWidth,
-        right:   this.layoutBounds.right - 10,
-        top:     bondingPanel.bottom + 10,
+        right: this.layoutBounds.right - 10,
+        top: bondingPanel.bottom + 10,
         xMargin: ( maxInternalWidth - lonePairNode.width ) / 2 + 15
       } );
       this.addChild( lonePairPanel );
@@ -104,10 +106,10 @@ define( function( require ) {
     }
     removeAllButton.centerX = bondingPanel.centerX;
     removeAllButton.top = bottom + 15;
-    var optionsPanel = new MoleculeShapesPanel( optionsString, optionsNode, {
+    var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
       maxWidth: maxExternalWidth,
-      right:   this.layoutBounds.right - 10,
-      top:     removeAllButton.bottom + 20,
+      right: this.layoutBounds.right - 10,
+      top: removeAllButton.bottom + 20,
       xMargin: ( maxInternalWidth - optionsNode.width ) / 2 + 15
     } );
     this.addChild( bondingPanel );
@@ -115,9 +117,12 @@ define( function( require ) {
     this.addChild( optionsPanel );
   }
 
+  moleculeShapes.register( 'ModelMoleculesScreenView', ModelMoleculesScreenView );
+
   return inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
     /**
      * Adds a PairGroup to the model from the Bonding panel location.
+     * @public
      *
      * @param {number} bondOrder - The order of the bond (0 through 3)
      * @param {Bounds2} globalBounds - The bounds of the clicked-on overlay for the pair group (e.g. the lone pair in
@@ -135,6 +140,11 @@ define( function( require ) {
       this.model.molecule.addGroupAndBond( pair, this.model.molecule.centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
     },
 
+    /**
+     * Removes a PairGroup from the model.
+     * @public
+     * @param {number} bondOrder
+     */
     removePairGroup: function( bondOrder ) {
       var molecule = this.model.molecule;
 

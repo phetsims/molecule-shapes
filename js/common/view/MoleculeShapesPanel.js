@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * A TitledPanel with colors and sizing specific to the Molecule Shapes simulation.
@@ -9,12 +9,20 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TitledPanel = require( 'MOLECULE_SHAPES/common/view/TitledPanel' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
 
+  /**
+   * @constructor
+   *
+   * @param {string} titleString
+   * @param {Node} contentNode
+   * @param {Object} [options]
+   */
   function MoleculeShapesPanel( titleString, contentNode, options ) {
     options = _.extend( {
       lineWidth: 1.5,
@@ -37,7 +45,14 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'controlPanelBorder', this, 'stroke' );
   }
 
+  moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );
+
   return inherit( TitledPanel, MoleculeShapesPanel, {}, {
+    /**
+     * @private
+     *
+     * @param {string} titleString
+     */
     createTitleNode: function( titleString ) {
       return new Text( titleString, {
         font: new PhetFont( 18 )

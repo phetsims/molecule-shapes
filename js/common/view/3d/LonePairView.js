@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View of a lone pair
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LonePairGeometryData = require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
@@ -48,11 +49,11 @@ define( function( require ) {
 
     THREE.Object3D.call( this );
 
-    this.renderer = renderer;
-    this.shellGeometry = localShellGeometry.get( renderer );
-    this.shellMaterial = localShellMaterial.get( renderer );
+    this.renderer = renderer; // @private {THREE.Renderer}
+    this.shellGeometry = localShellGeometry.get( renderer ); // @private {THREE.Geometry}
+    this.shellMaterial = localShellMaterial.get( renderer ); // @private {THREE.Material}
 
-    this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial );
+    this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial ); // @private {THREE.Mesh}
 
     // scale for the shell geometries (for display and hit testing)
     var shellScale = 2.5;
@@ -61,8 +62,8 @@ define( function( require ) {
     this.shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
     this.add( this.shell );
 
-    this.electronView1 = new ElectronView( renderer );
-    this.electronView2 = new ElectronView( renderer );
+    this.electronView1 = new ElectronView( renderer ); // @private
+    this.electronView2 = new ElectronView( renderer ); // @private
     this.add( this.electronView1 );
     this.add( this.electronView2 );
 
@@ -82,7 +83,7 @@ define( function( require ) {
       this.add( touchShell );
     }
 
-    // per-instance listener, so it's easier to link and unlink
+    // @private - per-instance listener, so it's easier to link and unlink
     this.positionListener = function( position ) {
       var offsetFromParentAtom = position.minus( view.parentAtom.position );
       var orientation = offsetFromParentAtom.normalized();
@@ -101,11 +102,17 @@ define( function( require ) {
     };
   }
 
+  moleculeShapes.register( 'LonePairView', LonePairView );
+
   return inherit( THREE.Object3D, LonePairView, {
     /*
+     * Initializes this view. Should be a fresh object, OR should have dispose() called first.
+     * @public
+     *
      * @param {PairGroup} group
      * @param {PairGroup} parentAtom
      * @param {Property.<boolean>} visibilityProperty
+     * @returns {LonePairView} this
      */
     initialize: function( group, parentAtom, visibilityProperty ) {
       this.group = group;
@@ -118,6 +125,10 @@ define( function( require ) {
       return this;
     },
 
+    /**
+     * Disposes this view, so that it can be re-initialized later. Also adds it to the object pool.
+     * @public
+     */
     dispose: function() {
       this.visibilityProperty.unlink( this.visibilityListener );
 
@@ -134,6 +145,9 @@ define( function( require ) {
     },
 
     /*
+     * Intersection hit-test to determine if a pointer is over the lone pair view.
+     * @public
+     *
      * @param {THREE.Ray} worldRay - Camera ray in world space
      * @param {boolean} isTouch - Whether expanded touch regions should be included
      * @returns {THREE.Vector3|null} - The first intersection point (in world coordinates) found if it exists, otherwise
@@ -169,6 +183,7 @@ define( function( require ) {
       return null;
     }
   }, {
+    // @private {LocalPool}
     pool: new LocalPool( 'LonePairView', function( renderer ) {
       return new LonePairView( renderer );
     } )

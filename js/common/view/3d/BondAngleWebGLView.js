@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View of the angle (sector and arc) between two bonds. The sector is the filled-in area between two bonds, and the
@@ -14,6 +14,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
@@ -136,6 +137,7 @@ define( function( require ) {
 
   /*
    * @constructor
+   *
    * @param {THREE.Renderer} renderer
    */
   function BondAngleWebGLView( renderer ) {
@@ -144,12 +146,11 @@ define( function( require ) {
 
     var view = this;
 
-    // @private
-    this.renderer = renderer;
-    this.arcGeometry = localArcGeometry.get( renderer );
-    this.sectorGeometry = localSectorGeometry.get( renderer );
+    this.renderer = renderer; // @private {THREE.Renderer}
+    this.arcGeometry = localArcGeometry.get( renderer ); // @private {THREE.Geometry}
+    this.sectorGeometry = localSectorGeometry.get( renderer ); // @private {THREE.Geometry}
 
-    // we require one material per view so we can change the uniforms independently
+    // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently.
     this.sectorMaterial = new THREE.ShaderMaterial( {
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
@@ -164,7 +165,7 @@ define( function( require ) {
     };
     MoleculeShapesColors.bondAngleSweepProperty.link( this.sweepColorListener );
 
-    // we require one material per view so we can change the uniforms independently
+    // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently
     // NOTE: we don't seem to be able to use the same material for rendering both the sector and arc
     this.arcMaterial = new THREE.ShaderMaterial( {
       vertexShader: vertexShader,
@@ -179,8 +180,8 @@ define( function( require ) {
     };
     MoleculeShapesColors.bondAngleArcProperty.link( this.arcColorListener );
 
-    this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial );
-    this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial );
+    this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
+    this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
 
     // render the bond angle views on top of everything (but still depth-testing), with arcs on top
     this.sectorView.renderDepth = 10;
@@ -190,9 +191,13 @@ define( function( require ) {
     this.add( this.arcView );
   }
 
+  moleculeShapes.register( 'BondAngleWebGLView', BondAngleWebGLView );
+
   return inherit( BondAngleView, BondAngleWebGLView, {
     /*
      * @override
+     * @public
+     *
      * @param {MoleculeShapesScreenView} screenView - Some screen-space information and transformations are needed
      * @param {Property.<boolean>} showBondAnglesProperty
      * @param {Molecule} molecule
@@ -206,7 +211,11 @@ define( function( require ) {
       return this;
     },
 
-    // @override
+    /**
+     * Disposes this, so it goes to the pool and can be re-initialized.
+     * @override
+     * @public
+     */
     dispose: function() {
       BondAngleView.prototype.dispose.call( this );
 
@@ -215,6 +224,8 @@ define( function( require ) {
 
     /**
      * @override
+     * @public
+     *
      * @param {Vector3} lastMidpoint - The midpoint of the last frame's bond angle arc, used to stabilize bond angles
      *                                 that are around ~180 degrees.
      * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
@@ -240,6 +251,7 @@ define( function( require ) {
       this.arcMaterial.uniforms.planarUnit.value = planarUnitArray;
     }
   }, {
+    // @private {LocalPool}
     pool: new LocalPool( 'BondAngleWebGLView', function( renderer ) {
       return new BondAngleWebGLView( renderer );
     } )

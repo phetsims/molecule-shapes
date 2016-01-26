@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * The first (model) screen.
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var ModelMoleculesModel = require( 'MOLECULE_SHAPES/model/ModelMoleculesModel' );
@@ -17,7 +18,7 @@ define( function( require ) {
   var ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
 
   // strings
-  var screenTitle = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
+  var screenModelString = require( 'string!MOLECULE_SHAPES/screen.model' );
 
   /**
    * Creates the model and view for the ModelMoleculesScreen
@@ -29,7 +30,7 @@ define( function( require ) {
 
     var screenIcon = new ScreenIconNode( true, isBasicsVersion );
 
-    Screen.call( this, screenTitle, screenIcon,
+    Screen.call( this, screenModelString, screenIcon,
       function() { return new ModelMoleculesModel( isBasicsVersion ); },
       function( model ) { return new ModelMoleculesScreenView( model ); },
       { backgroundColor: MoleculeShapesColors.background.toCSS() }
@@ -39,6 +40,8 @@ define( function( require ) {
       screen.backgroundColor = color;
     } );
   }
+
+  moleculeShapes.register( 'ModelMoleculesScreen', ModelMoleculesScreen );
 
   return inherit( Screen, ModelMoleculesScreen );
 } );

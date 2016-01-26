@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Global settings and quality information
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var platform = require( 'PHET_CORE/platform' );
   var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -17,8 +18,9 @@ define( function( require ) {
 
   var MoleculeShapesGlobals = new PropertySet( {
     showOuterLonePairs: !!phet.chipper.getQueryParameter( 'showOuterLonePairs' ) || false,
-    projectorColors:    !!phet.chipper.getQueryParameter( 'projector' ) || false
+    projectorColors: !!phet.chipper.getQueryParameter( 'projector' ) || false
   } );
+  moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 
   // polyfill for console.log on IE9, see https://github.com/phetsims/molecule-shapes/issues/108
   if ( platform.ie9 ) {
@@ -30,12 +32,15 @@ define( function( require ) {
   var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
   return _.extend( MoleculeShapesGlobals, {
-    // @public
-    hasBasicWebGLSupport: hasBasicWebGLSupport, // Whether the basics of WebGL are included
-    useWebGL: useWebGL, // Whether we will be using WebGL
+    // @public {boolean} - Whether the basics of WebGL are included
+    hasBasicWebGLSupport: hasBasicWebGLSupport,
 
-    /*
+    // @public {boolean} - Whether we will be using WebGL
+    useWebGL: useWebGL,
+
+    /**
      * Applies color changes to the material's color field, and also does so immediately upon being called.
+     * @public
      *
      * @param {THREE.Material} material
      * @param {Property.<Color>} colorProperty
@@ -51,6 +56,13 @@ define( function( require ) {
       };
     },
 
+    /**
+     * Creates a color property from anything that can be provided to Scenery as a constant-color fill/stroke.
+     * @public
+     *
+     * @param {string | Color | Property.<Color>} color
+     * @returns {Property.<Color>}
+     */
     toColorProperty: function( color ) {
       // for now, cast it into place
       var colorProperty;

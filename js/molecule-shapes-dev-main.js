@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Development testing entry point
@@ -13,7 +13,7 @@ define( function( require ) {
 
     AttractorModel: require( 'MOLECULE_SHAPES/common/model/AttractorModel' ),
     Bond: require( 'MOLECULE_SHAPES/common/model/Bond' ),
-    FastMath: require( 'MOLECULE_SHAPES/common/model/FastMath' ),
+    FastMath: require( 'DOT/MatrixOps3' ),
     GeometryConfiguration: require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' ),
     LocalShape: require( 'MOLECULE_SHAPES/common/model/LocalShape' ),
     Molecule: require( 'MOLECULE_SHAPES/common/model/Molecule' ),

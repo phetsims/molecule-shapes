@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Bond angle label in Scenery
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
@@ -21,10 +22,13 @@ define( function( require ) {
     } );
   }
 
+  moleculeShapes.register( 'LabelFallbackNode', LabelFallbackNode );
+
   return inherit( Text, LabelFallbackNode, {
     /*
      * Displays and positions the label, and sets its text.
      * Same as API for LabelWebGLView
+     * @public
      *
      * @param {string} string
      * @param {number} brightness - In range [0,1]
@@ -46,6 +50,7 @@ define( function( require ) {
     /*
      * Makes the label invisible.
      * Same as API for LabelWebGLView
+     * @public
      */
     unsetLabel: function() {
       this.visible = false;

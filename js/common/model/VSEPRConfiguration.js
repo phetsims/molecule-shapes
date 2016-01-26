@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * A simple molecule configuration that doesn't discriminate between bond or atom types (only lone pairs vs bonds).
@@ -12,6 +12,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Permutation = require( 'DOT/Permutation' );
   var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
@@ -42,16 +43,14 @@ define( function( require ) {
    * @param {number} e - Number of radial lone pairs connected to the central atom
    */
   function VSEPRConfiguration( x, e ) {
-    // @public
-    this.x = x;
-    this.e = e;
-    this.name = VSEPRConfiguration.getName( x, e );
+    this.x = x; // @public {number} - Number of radial atoms connected to the central atom
+    this.e = e; // @public {number} - Number of radial lone pairs connected to the central atom
+    this.name = VSEPRConfiguration.getName( x, e ); // @public {string}
 
-    // @public
-    this.geometry = GeometryConfiguration.getConfiguration( x + e ); // undefined?
-    this.bondOrientations = []; // {Array.<Vector3>}
-    this.lonePairOrientations = []; // {Array.<Vector3>}
-    this.allOrientations = this.geometry.unitVectors; // {Array.<Vector3>}
+    this.geometry = GeometryConfiguration.getConfiguration( x + e ); // @public {GeometryConfiguration}
+    this.bondOrientations = []; // @public {Array.<Vector3>}
+    this.lonePairOrientations = []; // @public {Array.<Vector3>}
+    this.allOrientations = this.geometry.unitVectors; // @public {Array.<Vector3>}
 
     for ( var i = 0; i < x + e; i++ ) {
       if ( i < e ) {
@@ -64,8 +63,16 @@ define( function( require ) {
     }
   }
 
+  moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
+
   return inherit( Object, VSEPRConfiguration, {
-    // for finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'
+    /**
+     * For finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'.
+     * @public
+     *
+     * @param {Array.<PairGroup>} groups
+     * @returns {AttractorModel.ResultMapping}
+     */
     getIdealGroupRotationToPositions: function( groups ) {
       assert && assert( ( this.x + this.e ) === groups.length );
 
@@ -75,7 +82,13 @@ define( function( require ) {
         LocalShape.vseprPermutations( groups ) );
     },
 
-    // for finding ideal rotations exclusively using the 'bonded' portions
+    /**
+     * For finding ideal rotations exclusively using the 'bonded' portions.
+     * @public
+     *
+     * @param {Array.<PairGroup>} groups
+     * @returns {AttractorModel.ResultMapping}
+     */
     getIdealBondRotationToPositions: function( groups ) {
       // ideal vectors excluding lone pairs (just for the bonds)
       assert && assert( ( this.x ) === groups.length );
@@ -86,8 +99,10 @@ define( function( require ) {
         Permutation.permutations( this.bondOrientations.length ) );
     }
   }, {
-    /*
+    /**
+     * Returns the "geometry" name.
      * @public
+     *
      * @param {number} x - Number of radial atoms connected to the central atom
      * @param {number} e - Number of radial lone pairs connected to the central atom
      * @returns {string}
@@ -164,6 +179,9 @@ define( function( require ) {
     },
 
     /*
+     * Returns cached VSEPRConfigurations based on radial atom/lone-pair counts.
+     * @public
+     *
      * @param {number} x - Number of radial atoms connected to the central atom
      * @param {number} e - Number of radial lone pairs connected to the central atom
      * @returns {VSEPRConfiguration} - Cached configuration

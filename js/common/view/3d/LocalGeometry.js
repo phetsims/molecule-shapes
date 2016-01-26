@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Provides access to renderer-specific geometries which are otherwise identical. We can't share geometries across
@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /*
@@ -20,12 +21,20 @@ define( function( require ) {
     this.masterGeometry = masterGeometry;
 
     // renderers[i] "owns" geometries[i]
-    this.renderers = [];
-    this.geometries = [];
+    this.renderers = []; // @private {Array.<THREE.Renderer>}
+    this.geometries = []; // @private {Array.<THREE.Geometry>}
   }
 
+  moleculeShapes.register( 'LocalGeometry', LocalGeometry );
+
   return inherit( Object, LocalGeometry, {
-    // @param {THREE.Renderer} renderer
+    /**
+     * Returns the copy of the geometry corresponding to the provided three.js renderer.
+     * @public
+     *
+     * @param {THREE.Renderer} renderer
+     * @returns {THREE.Geometry}
+     */
     get: function( renderer ) {
       for ( var i = 0; i < this.renderers.length; i++ ) {
         if ( this.renderers[ i ] === renderer ) {

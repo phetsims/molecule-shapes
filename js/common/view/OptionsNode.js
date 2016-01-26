@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Options (lone pair and bond angle toggles) that are shown within a panel
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -16,18 +17,18 @@ define( function( require ) {
   var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
 
-  var showLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
-  var showBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
+  var controlShowLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
+  var controlShowBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
 
   var optionsFont = new PhetFont( 14 );
 
   function OptionsNode( model, options ) {
-    var showLonePairsLabel = new Text( showLonePairsString, {
+    var showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showLonePairsLabel, 'fill' );
 
-    var showBondAnglesLabel = new Text( showBondAnglesString, {
+    var showBondAnglesLabel = new Text( controlShowBondAnglesString, {
       font: optionsFont
     } );
     MoleculeShapesColors.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
@@ -67,6 +68,8 @@ define( function( require ) {
       align: 'left'
     }, options ) );
   }
+
+  moleculeShapes.register( 'OptionsNode', OptionsNode );
 
   return inherit( VBox, OptionsNode, {} );
 } );

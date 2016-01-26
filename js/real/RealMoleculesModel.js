@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Model for the 'Real' screen.
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
@@ -46,7 +47,12 @@ define( function( require ) {
     } );
   }
 
+  moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
+
   return inherit( MoleculeShapesModel, RealMoleculesModel, {
+    /**
+     * @public
+     */
     reset: function() {
       MoleculeShapesModel.prototype.reset.call( this );
 

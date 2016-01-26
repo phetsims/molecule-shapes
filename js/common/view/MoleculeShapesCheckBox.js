@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * A CheckBox with customized color handling for Molecule Shapes
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var CheckBox = require( 'SUN/CheckBox' );
   var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
@@ -25,6 +26,8 @@ define( function( require ) {
     MoleculeShapesColors.linkAttribute( 'checkBox', this, 'checkBoxColor' );
     MoleculeShapesColors.linkAttribute( 'checkBoxBackground', this, 'checkBoxColorBackground' );
   }
+
+  moleculeShapes.register( 'MoleculeShapesCheckBox', MoleculeShapesCheckBox );
 
   return inherit( CheckBox, MoleculeShapesCheckBox, {} );
 } );

@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * The second (real molecules) screen.
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var RealMoleculesModel = require( 'MOLECULE_SHAPES/real/RealMoleculesModel' );
@@ -17,7 +18,7 @@ define( function( require ) {
   var ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
 
   // strings
-  var screenTitle = require( 'string!MOLECULE_SHAPES/real-molecules' );
+  var screenRealMoleculesString = require( 'string!MOLECULE_SHAPES/screen.realMolecules' );
 
   /**
    * Creates the model and view for the RealMoleculesScreen
@@ -29,7 +30,7 @@ define( function( require ) {
 
     var screenIcon = new ScreenIconNode( false, isBasicsVersion );
 
-    Screen.call( this, screenTitle, screenIcon,
+    Screen.call( this, screenRealMoleculesString, screenIcon,
       function() { return new RealMoleculesModel( isBasicsVersion ); },
       function( model ) { return new RealMoleculesScreenView( model ); },
       { backgroundColor: MoleculeShapesColors.background.toCSS() }
@@ -39,6 +40,8 @@ define( function( require ) {
       screen.backgroundColor = color;
     } );
   }
+
+  moleculeShapes.register( 'RealMoleculesScreen', RealMoleculesScreen );
 
   return inherit( Screen, RealMoleculesScreen );
 } );

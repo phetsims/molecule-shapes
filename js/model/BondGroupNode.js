@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Displays a thumbnail of the bond type (single, double, triple) or lone pair, along with a red 'X' for removal.
@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var platform = require( 'PHET_CORE/platform' );
   var Bounds2 = require( 'DOT/Bounds2' );
@@ -100,9 +101,18 @@ define( function( require ) {
     return url;
   }
 
+  /**
+   * @constructor
+   *
+   * @param {MoleculeShapesModel} model
+   * @param {number} bondOrder
+   * @param {Function} addPairCallback - Will be called when the user clicks on the main part (add) of this component.
+   * @param {Function} removePairCallback - Will be called when the user clicks on the remove button in this.
+   * @param {Object} [options]
+   */
   function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, options ) {
-    this.model = model;
-    this.bondOrder = bondOrder;
+    this.model = model; // @private {MoleculeShapesModel}
+    this.bondOrder = bondOrder; // @private {number}
 
     // whether our "button" is enabled
     var enabled = true;
@@ -178,8 +188,8 @@ define( function( require ) {
       overlay.cursor = enabled ? 'pointer' : null;
 
       removeButton.visible = _.filter( model.molecule.getBondsAround( model.molecule.centralAtom ), function( bond ) {
-        return bond.order === bondOrder;
-      } ).length > 0;
+          return bond.order === bondOrder;
+        } ).length > 0;
 
       updateOverlayOpacity();
     }
@@ -206,6 +216,8 @@ define( function( require ) {
       align: 'center'
     }, options ) );
   }
+
+  moleculeShapes.register( 'BondGroupNode', BondGroupNode );
 
   return inherit( HBox, BondGroupNode );
 } );
