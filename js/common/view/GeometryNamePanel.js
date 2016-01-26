@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Bounds2 = require( 'DOT/Bounds2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -123,12 +124,18 @@ define( function( require ) {
     maxShapeWidth = Math.max( maxShapeWidth, this.electronCheckbox.width );
 
     // layout
+    var horizontalPadding = 20;
+    var contentWidth = maxGeometryWidth + ( model.isBasicsVersion ? 0 : ( horizontalPadding + maxGeometryWidth ) );
     var checkBoxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
     this.molecularCheckbox.centerX = maxGeometryWidth / 2;
-    this.electronCheckbox.centerX = maxGeometryWidth + 20 + maxShapeWidth / 2;
+    this.electronCheckbox.centerX = maxGeometryWidth + horizontalPadding + maxShapeWidth / 2;
     this.molecularText.top = this.electronText.top = checkBoxBottom + 10;
 
-    var content = new Node();
+    var content = new Node( {
+      // Make sure we include the extra (possibly unused) space so that the panel can contain all of the content,
+      // regardless of which string is shown. See https://github.com/phetsims/molecule-shapes/issues/138
+      localBounds: new Bounds2( 0, this.molecularCheckbox.top, contentWidth, this.molecularText.bottom )
+    } );
     content.addChild( this.molecularCheckbox );
     content.addChild( this.molecularText );
     if ( !model.isBasicsVersion ) {
