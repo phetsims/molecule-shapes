@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.1.4-rc.1 Sat Mar 05 2016 02:23:40 GMT-0700 (MST)",
+  "comment": "# molecule-shapes 1.1.4-rc.1 Mon Mar 07 2016 11:54:47 GMT-0700 (MST)",
   "assert": {
     "sha": "d4909677d27ed571d5d859d709a0612bf7811db8",
     "branch": "HEAD"
@@ -29,7 +29,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "4b0beff1a71437c25f242738f522303e2af61c99",
+    "sha": "c15c1cecf079629bf463a94d3ee9ac0383b2d203",
     "branch": "1.1"
   },
   "nitroglycerin": {
