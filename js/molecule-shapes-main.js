@@ -39,13 +39,6 @@ define( function( require ) {
                              new CanvasWarningNode() )
   };
 
-  // Appending '?dev' to the URL will enable developer-only features.
-  if ( phet.chipper.getQueryParameter( 'dev' ) ) {
-    simOptions = _.extend( {
-      // add dev-specific options here
-    }, simOptions );
-  }
-
   // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
   MoleculeShapesGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
