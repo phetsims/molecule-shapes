@@ -26,14 +26,19 @@ define( function( require ) {
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function ModelMoleculesScreen( isBasicsVersion ) {
+
     var screen = this;
 
-    var screenIcon = new ScreenIconNode( true, isBasicsVersion );
+    var options = {
+      name: screenModelString,
+      backgroundColor: MoleculeShapesColors.background.toCSS(),
+      homeScreenIcon: new ScreenIconNode( true, isBasicsVersion )
+    };
 
-    Screen.call( this, screenModelString, screenIcon,
+    Screen.call( this,
       function() { return new ModelMoleculesModel( isBasicsVersion ); },
       function( model ) { return new ModelMoleculesScreenView( model ); },
-      { backgroundColor: MoleculeShapesColors.background.toCSS() }
+      options
     );
 
     MoleculeShapesColors.link( 'background', function( color ) {
