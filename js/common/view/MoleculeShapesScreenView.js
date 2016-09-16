@@ -37,7 +37,7 @@ define( function( require ) {
       layoutBounds: new Bounds2( 0, 0, 1024, 618 )
     } );
 
-    var screenView = this;
+    var self = this;
 
     this.model = model; // @private {ModelMoleculesModel}
 
@@ -68,7 +68,7 @@ define( function( require ) {
       this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
         event.preventDefault();
 
-        screenView.showContextLossDialog();
+        self.showContextLossDialog();
 
         if ( document.domain === 'phet.colorado.edu' ) {
           window._gaq && window._gaq.push( [ '_trackEvent', 'WebGL Context Loss', 'molecule-shapes ' + phet.joist.sim.version, document.URL ] );
@@ -77,7 +77,7 @@ define( function( require ) {
     }
 
     MoleculeShapesColors.link( 'background', function( color ) {
-      screenView.threeRenderer.setClearColor( color.toNumber(), 1 );
+      self.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 
     MoleculeShapesScreenView.addLightsToScene( this.threeScene );
@@ -105,40 +105,40 @@ define( function( require ) {
       // share the view (three.js constraint).
       if ( MoleculeShapesGlobals.useWebGL ) {
         // set up a framebuffer (target is three.js terminology) to render into
-        var target = new THREE.WebGLRenderTarget( screenView.screenWidth, screenView.screenHeight, {
+        var target = new THREE.WebGLRenderTarget( self.screenWidth, self.screenHeight, {
           minFilter: THREE.LinearFilter,
           magFilter: THREE.NearestFilter,
           format: THREE.RGBAFormat
         } );
         // render our screen content into the framebuffer
-        screenView.render( target );
+        self.render( target );
 
         // set up a buffer for pixel data, in the exact typed formats we will need
-        var buffer = new window.ArrayBuffer( screenView.screenWidth * screenView.screenHeight * 4 );
+        var buffer = new window.ArrayBuffer( self.screenWidth * self.screenHeight * 4 );
         var imageDataBuffer = new window.Uint8ClampedArray( buffer );
         var pixels = new window.Uint8Array( buffer );
 
         // read the pixel data into the buffer
-        var gl = screenView.threeRenderer.getContext();
-        gl.readPixels( 0, 0, screenView.screenWidth, screenView.screenHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
+        var gl = self.threeRenderer.getContext();
+        gl.readPixels( 0, 0, self.screenWidth, self.screenHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
 
         // create a Canvas with the correct size, and fill it with the pixel data
         canvas = document.createElement( 'canvas' );
-        canvas.width = screenView.screenWidth;
-        canvas.height = screenView.screenHeight;
+        canvas.width = self.screenWidth;
+        canvas.height = self.screenHeight;
         var tmpContext = canvas.getContext( '2d' );
-        var imageData = tmpContext.createImageData( screenView.screenWidth, screenView.screenHeight );
+        var imageData = tmpContext.createImageData( self.screenWidth, self.screenHeight );
         imageData.data.set( imageDataBuffer );
         tmpContext.putImageData( imageData, 0, 0 );
       }
       else {
         // If just falling back to Canvas, we can directly render out!
-        canvas = screenView.threeRenderer.domElement;
+        canvas = self.threeRenderer.domElement;
       }
 
       var context = wrapper.context;
       context.save();
-      context.setTransform( 1, 0, 0, -1, 0, screenView.screenHeight ); // no need to take pixel scaling into account
+      context.setTransform( 1, 0, 0, -1, 0, self.screenHeight ); // no need to take pixel scaling into account
       context.drawImage( canvas, 0, 0 );
       context.restore();
     };
@@ -183,7 +183,7 @@ define( function( require ) {
         var dragMode = null;
         var draggedParticle = null;
 
-        var pair = screenView.getElectronPairUnderPointer( event.pointer, !event.pointer.isMouse );
+        var pair = self.getElectronPairUnderPointer( event.pointer, !event.pointer.isMouse );
         if ( pair && !pair.userControlled ) {
           // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
           dragMode = 'pairExistingSpherical';
@@ -218,14 +218,14 @@ define( function( require ) {
               var delta = event.pointer.point.minus( lastGlobalPoint );
               lastGlobalPoint.set( event.pointer.point );
 
-              var scale = 0.007 / screenView.activeScale; // tuned constant for acceptable drag motion
+              var scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
               var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
               newQuaternion.multiply( model.moleculeQuaternion );
               model.moleculeQuaternion = newQuaternion;
             }
             else if ( dragMode === 'pairExistingSpherical' ) {
               if ( _.contains( model.molecule.groups, draggedParticle ) ) {
-                draggedParticle.dragToPosition( screenView.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
+                draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
               }
             }
           },
@@ -251,17 +251,17 @@ define( function( require ) {
     // decision is to ignore this edge case in favor of performance.
     this.backgroundEventTarget.addInputListener( {
       mousemove: function( event, trail ) {
-        screenView.backgroundEventTarget.cursor = screenView.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
+        self.backgroundEventTarget.cursor = self.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
       }
     } );
 
     // update the molecule view's rotation when the model's rotation changes
     model.moleculeQuaternionProperty.link( function( quaternion ) {
       // moleculeView is created in the subtype (not yet). will handle initial rotation in addMoleculeView
-      if ( screenView.moleculeView ) {
-        screenView.moleculeView.quaternion.copy( quaternion );
-        screenView.moleculeView.updateMatrix();
-        screenView.moleculeView.updateMatrixWorld();
+      if ( self.moleculeView ) {
+        self.moleculeView.quaternion.copy( quaternion );
+        self.moleculeView.updateMatrix();
+        self.moleculeView.updateMatrixWorld();
       }
     } );
 

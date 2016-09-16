@@ -23,7 +23,7 @@ define( function( require ) {
   } );
 
   function RemovePairGroupButton( options ) {
-    var button = this;
+    var self = this;
 
     RectangularPushButton.call( this, _.extend( {
       content: crossNode,
@@ -32,7 +32,7 @@ define( function( require ) {
     }, options ) );
 
     MoleculeShapesColors.link( 'removePairGroup', function( color ) {
-      button.baseColor = color;
+      self.baseColor = color;
     } );
   }
 

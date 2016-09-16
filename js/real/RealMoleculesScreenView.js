@@ -37,7 +37,7 @@ define( function( require ) {
    */
   function RealMoleculesScreenView( model ) {
     MoleculeShapesScreenView.call( this, model );
-    var screenView = this;
+    var self = this;
 
     this.model = model; // @private {MoleculeShapesModel}
     this.moleculeView = new MoleculeView( model, this, model.molecule ); // @public
@@ -110,12 +110,12 @@ define( function( require ) {
     // rebuild our view when we switch molecules
     model.moleculeProperty.lazyLink( function( newMolecule, oldMolecule ) {
       // tear down the old view
-      screenView.removeMoleculeView( screenView.moleculeView );
-      screenView.moleculeView.dispose();
+      self.removeMoleculeView( self.moleculeView );
+      self.moleculeView.dispose();
 
       // create the new view
-      screenView.moleculeView = new MoleculeView( model, screenView, newMolecule );
-      screenView.addMoleculeView( screenView.moleculeView );
+      self.moleculeView = new MoleculeView( model, self, newMolecule );
+      self.addMoleculeView( self.moleculeView );
     } );
   }
 

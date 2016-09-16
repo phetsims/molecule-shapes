@@ -28,7 +28,7 @@ define( function( require ) {
       element: null
     }, options );
 
-    var group = this;
+    var self = this;
 
     // @public {number - Unique identifier.
     this.id = nextId++;
@@ -41,10 +41,10 @@ define( function( require ) {
 
     this.orientation = new Vector3(); // @public (read-only) {Vector3} - Normalized position (unit vector).
     this.link( 'position', function( position ) {
-      group.orientation.set( position );
+      self.orientation.set( position );
 
       if ( position.magnitude() > 0 ) {
-        group.orientation.normalize();
+        self.orientation.normalize();
       }
     } );
 

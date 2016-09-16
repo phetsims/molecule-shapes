@@ -144,7 +144,7 @@ define( function( require ) {
     assert && assert( MoleculeShapesGlobals.useWebGL );
     BondAngleView.call( this );
 
-    var view = this;
+    var self = this;
 
     this.renderer = renderer; // @private {THREE.Renderer}
     this.arcGeometry = localArcGeometry.get( renderer ); // @private {THREE.Geometry}
@@ -161,7 +161,7 @@ define( function( require ) {
     } );
     // set and update our color
     this.sweepColorListener = function( color ) {
-      view.sectorMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
+      self.sectorMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
     MoleculeShapesColors.bondAngleSweepProperty.link( this.sweepColorListener );
 
@@ -176,7 +176,7 @@ define( function( require ) {
     } );
     // set and update our color
     this.arcColorListener = function( color ) {
-      view.arcMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
+      self.arcMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
     MoleculeShapesColors.bondAngleArcProperty.link( this.arcColorListener );
 

@@ -39,7 +39,7 @@ define( function( require ) {
    * @param {number | null} maxLength - in display units
    */
   function BondView( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
-    var view = this;
+    var self = this;
 
     this.aMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
     this.bMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
@@ -64,8 +64,8 @@ define( function( require ) {
     THREE.Object3D.call( this );
 
     // bind won't work
-    _.each( this.aBonds, function( bond ) { view.add( bond ); } );
-    _.each( this.bBonds, function( bond ) { view.add( bond ); } );
+    _.each( this.aBonds, function( bond ) { self.add( bond ); } );
+    _.each( this.bBonds, function( bond ) { self.add( bond ); } );
   }
 
   moleculeShapes.register( 'BondView', BondView );

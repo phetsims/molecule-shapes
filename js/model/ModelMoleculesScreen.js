@@ -27,7 +27,7 @@ define( function( require ) {
    */
   function ModelMoleculesScreen( isBasicsVersion ) {
 
-    var screen = this;
+    var self = this;
 
     var options = {
       name: screenModelString,
@@ -42,7 +42,7 @@ define( function( require ) {
     );
 
     MoleculeShapesColors.link( 'background', function( color ) {
-      screen.backgroundColor = color;
+      self.backgroundColor = color;
     } );
   }
 

@@ -161,7 +161,7 @@ define( function( require ) {
    * @param {THREE.Renderer} renderer
    */
   function LabelWebGLView( renderer ) {
-    var view = this;
+    var self = this;
 
     this.uvs = []; // @private {Array.<THREE.Vector3>} - stores the texture coordinates used for drawing
 
@@ -200,7 +200,7 @@ define( function( require ) {
     this.materialUniforms.map.value = texture;
 
     MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
-      view.materialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
+      self.materialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 
     var material = MoleculeShapesGlobals.useWebGL ? new THREE.ShaderMaterial( {

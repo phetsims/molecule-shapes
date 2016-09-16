@@ -21,7 +21,7 @@ define( function( require ) {
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function ModelMoleculesModel( isBasicsVersion ) {
-    var model = this;
+    var self = this;
 
     var initialMolecule = new VSEPRMolecule();
 
@@ -39,8 +39,8 @@ define( function( require ) {
 
     // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
     this.molecule.on( 'bondChanged', function() {
-      if ( model.molecule.radialLonePairs.length === 0 ) {
-        model.showLonePairs = true;
+      if ( self.molecule.radialLonePairs.length === 0 ) {
+        self.showLonePairs = true;
       }
     } );
   }

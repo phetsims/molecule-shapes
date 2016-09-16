@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function RealMoleculesModel( isBasicsVersion ) {
-    var model = this;
+    var self = this;
 
     var startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[ 0 ] : RealMoleculeShape.TAB_2_MOLECULES[ 0 ];
     var startingMolecule = new RealMolecule( startingMoleculeShape );
@@ -39,11 +39,11 @@ define( function( require ) {
     } );
 
     this.showRealViewProperty.lazyLink( function() {
-      model.rebuildMolecule( false );
+      self.rebuildMolecule( false );
     } );
 
     this.realMoleculeShapeProperty.lazyLink( function() {
-      model.rebuildMolecule( true );
+      self.rebuildMolecule( true );
     } );
   }
 

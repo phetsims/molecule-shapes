@@ -45,7 +45,7 @@ define( function( require ) {
    * @param {THREE.Renderer} renderer
    */
   function LonePairView( renderer ) {
-    var view = this;
+    var self = this;
 
     THREE.Object3D.call( this );
 
@@ -85,7 +85,7 @@ define( function( require ) {
 
     // @private - per-instance listener, so it's easier to link and unlink
     this.positionListener = function( position ) {
-      var offsetFromParentAtom = position.minus( view.parentAtom.position );
+      var offsetFromParentAtom = position.minus( self.parentAtom.position );
       var orientation = offsetFromParentAtom.normalized();
 
       var translation;
@@ -93,11 +93,11 @@ define( function( require ) {
         translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
       }
       else {
-        translation = view.parentAtom.position;
+        translation = self.parentAtom.position;
       }
 
-      view.position.set( translation.x, translation.y, translation.z );
-      view.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
+      self.position.set( translation.x, translation.y, translation.z );
+      self.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
         new THREE.Vector3().copy( orientation ) );
     };
   }

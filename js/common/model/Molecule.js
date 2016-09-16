@@ -48,7 +48,7 @@ define( function( require ) {
 
     this.isReal = isReal; // @public {boolean} - Whether this molecule is based on real angles or on a model.
 
-    var molecule = this;
+    var self = this;
 
     // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
     this.groups = [];
@@ -68,10 +68,10 @@ define( function( require ) {
     this.centralAtom = null; // @public {PairGroup} - Will be filled in later.
 
     // composite events
-    this.on( 'bondAdded', function( bond ) { molecule.trigger1( 'bondChanged', bond ); } );
-    this.on( 'bondRemoved', function( bond ) { molecule.trigger1( 'bondChanged', bond ); } );
-    this.on( 'groupAdded', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
-    this.on( 'groupRemoved', function( group ) { molecule.trigger1( 'groupChanged', group ); } );
+    this.on( 'bondAdded', function( bond ) { self.trigger1( 'bondChanged', bond ); } );
+    this.on( 'bondRemoved', function( bond ) { self.trigger1( 'bondChanged', bond ); } );
+    this.on( 'groupAdded', function( group ) { self.trigger1( 'groupChanged', group ); } );
+    this.on( 'groupRemoved', function( group ) { self.trigger1( 'groupChanged', group ); } );
   }
 
   moleculeShapes.register( 'Molecule', Molecule );
