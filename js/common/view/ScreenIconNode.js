@@ -117,7 +117,7 @@ define( function( require ) {
     var bondScale = 1;
     view.tweakViewScales( moleculeScale, atomScale, bondScale );
 
-    var url = render( view, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, isBasicsVersion );
+    var url = render( view, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, isBasicsVersion );
     view.dispose();
     return url;
   }
@@ -132,12 +132,12 @@ define( function( require ) {
     Node.call( this );
 
     // Firefox doesn't immediately have the correct image bounds, so we set it to be overridden here
-    this.localBounds = Screen.HOME_SCREEN_ICON_SIZE.toBounds();
+    this.localBounds = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.toBounds();
 
     var url = getBondDataURL( isModel, isBasicsVersion );
     this.addChild( new Image( url, {
-      initialWidth: Screen.HOME_SCREEN_ICON_SIZE.width,
-      initialHeight: Screen.HOME_SCREEN_ICON_SIZE.height
+      initialWidth: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width,
+      initialHeight: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height
     } ) );
 
     var centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
@@ -145,8 +145,8 @@ define( function( require ) {
 
     var viewBondDistance = 192 * getRelativeScale( isBasicsVersion );
     var angle = getAngle( isModel, isBasicsVersion );
-    var centerX = Screen.HOME_SCREEN_ICON_SIZE.width * 0.5;
-    var centerY = Screen.HOME_SCREEN_ICON_SIZE.height * ( isBasicsVersion ? 0.5 : 0.4 );
+    var centerX = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width * 0.5;
+    var centerY = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height * ( isBasicsVersion ? 0.5 : 0.4 );
     this.addChild( new Text( centralLabel, {
       fontSize: 80,
       fill: 'black',
