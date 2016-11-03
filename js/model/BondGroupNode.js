@@ -68,7 +68,7 @@ define( function( require ) {
   var ATOM_WIDTH = 120;
   var LONE_PAIR_HEIGHT = 55;
 
-  // Returns a {string} URL OR a mipmap {object}, both of which are compatible with Scenery's Image
+  // Returns a {string} URL OR a mipmap {Object}, both of which are compatible with Scenery's Image
   function getBondDataURL( bondOrder ) {
     var molecule = new VSEPRMolecule();
     var centralAtom = new PairGroup( new Vector3(), false );
