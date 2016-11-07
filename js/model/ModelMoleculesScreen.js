@@ -42,7 +42,7 @@ define( function( require ) {
     );
 
     MoleculeShapesColors.link( 'background', function( color ) {
-      self.backgroundColor = color;
+      self.backgroundColorProperty.value = color;
     } );
   }
 
