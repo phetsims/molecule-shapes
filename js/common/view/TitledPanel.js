@@ -45,7 +45,7 @@ define( function( require ) {
     this.addChild( this.titleBackgroundNode );
     this.addChild( this.titleNode );
 
-    contentNode.addEventListener( 'bounds', this.updateTitleLocation.bind( this ) );
+    contentNode.on( 'bounds', this.updateTitleLocation.bind( this ) );
     this.updateTitleLocation();
 
     this.mutate( options );
