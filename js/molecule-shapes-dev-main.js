@@ -43,7 +43,7 @@ define( function( require ) {
     GlobalOptionsNode: require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' ),
     LabelFallbackNode: require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' ),
     MoleculeShapesCheckBox: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' ),
-    MoleculeShapesColors: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' ),
+    MoleculeShapesColorProfile: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' ),
     MoleculeShapesPanel: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' ),
     MoleculeShapesScreenView: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' ),
     OptionsNode: require( 'MOLECULE_SHAPES/common/view/OptionsNode' ),

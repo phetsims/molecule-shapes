@@ -12,7 +12,7 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   function LabelFallbackNode() {
@@ -44,7 +44,7 @@ define( function( require ) {
       var localMidpoint = this.globalToParentPoint( midScreenPoint );
 
       this.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
-      this.fill = MoleculeShapesColors.bondAngleReadout.withAlpha( brightness );
+      this.fill = MoleculeShapesColorProfile.bondAngleReadout.withAlpha( brightness );
     },
 
     /*

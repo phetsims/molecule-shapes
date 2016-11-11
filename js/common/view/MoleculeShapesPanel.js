@@ -14,7 +14,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TitledPanel = require( 'MOLECULE_SHAPES/common/view/TitledPanel' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
 
   /**
    * @constructor
@@ -37,12 +37,12 @@ define( function( require ) {
     }, options );
 
     var titleNode = MoleculeShapesPanel.createTitleNode( titleString );
-    MoleculeShapesColors.linkAttribute( 'controlPanelTitle', titleNode, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'controlPanelTitle', titleNode, 'fill' );
 
     TitledPanel.call( this, titleNode, contentNode, options );
 
-    MoleculeShapesColors.linkAttribute( 'background', this, 'fill' );
-    MoleculeShapesColors.linkAttribute( 'controlPanelBorder', this, 'stroke' );
+    MoleculeShapesColorProfile.linkAttribute( 'background', this, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'controlPanelBorder', this, 'stroke' );
   }
 
   moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );

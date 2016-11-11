@@ -14,7 +14,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
 
   var CROSS_SIZE = 10;
   var crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( CROSS_SIZE, CROSS_SIZE ).moveTo( 0, CROSS_SIZE ).lineTo( CROSS_SIZE, 0 ), {
@@ -31,7 +31,7 @@ define( function( require ) {
       yMargin: 5
     }, options ) );
 
-    MoleculeShapesColors.link( 'removePairGroup', function( color ) {
+    MoleculeShapesColorProfile.link( 'removePairGroup', function( color ) {
       self.baseColor = color;
     } );
   }

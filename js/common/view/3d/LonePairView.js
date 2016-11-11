@@ -13,7 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var LonePairGeometryData = require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var ElectronView = require( 'MOLECULE_SHAPES/common/view/3d/ElectronView' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
@@ -33,7 +33,7 @@ define( function( require ) {
     depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
-    color: MoleculeShapesColors.lonePairShellProperty
+    color: MoleculeShapesColorProfile.lonePairShellProperty
   } );
 
   // geometries used for hit testing (includes a larger touch hit mesh)

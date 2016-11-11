@@ -15,7 +15,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
 
   var controlShowLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
   var controlShowBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
@@ -26,12 +26,12 @@ define( function( require ) {
     var showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont
     } );
-    MoleculeShapesColors.linkAttribute( 'controlPanelText', showLonePairsLabel, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'controlPanelText', showLonePairsLabel, 'fill' );
 
     var showBondAnglesLabel = new Text( controlShowBondAnglesString, {
       font: optionsFont
     } );
-    MoleculeShapesColors.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
 
     var showLonePairsCheckbox = new MoleculeShapesCheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
     var showBondAnglesCheckbox = new MoleculeShapesCheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );

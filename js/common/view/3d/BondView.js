@@ -13,7 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 
@@ -26,7 +26,7 @@ define( function( require ) {
   var localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
-    color: MoleculeShapesColors.bondProperty
+    color: MoleculeShapesColorProfile.bondProperty
   } );
 
   /*

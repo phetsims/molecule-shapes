@@ -24,7 +24,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
   var Shape = require( 'KITE/Shape' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
 
   // grab our font data from the global namespace
@@ -199,7 +199,7 @@ define( function( require ) {
     this.materialUniforms = JSON.parse( JSON.stringify( materialUniforms ) );
     this.materialUniforms.map.value = texture;
 
-    MoleculeShapesColors.link( 'bondAngleReadout', function( color ) {
+    MoleculeShapesColorProfile.link( 'bondAngleReadout', function( color ) {
       self.materialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 

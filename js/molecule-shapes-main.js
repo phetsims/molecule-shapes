@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var ModelMoleculesScreen = require( 'MOLECULE_SHAPES/model/ModelMoleculesScreen' );
   var RealMoleculesScreen = require( 'MOLECULE_SHAPES/real/RealMoleculesScreen' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
   var CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
@@ -43,10 +43,10 @@ define( function( require ) {
 
   MoleculeShapesGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
     if ( useProjectorColors ) {
-      MoleculeShapesColors.applyProfile( 'projector' );
+      MoleculeShapesColorProfile.profileNameProperty.set( 'projector' );
     }
     else {
-      MoleculeShapesColors.applyProfile( 'default' );
+      MoleculeShapesColorProfile.profileNameProperty.set( 'default' );
     }
   } );
 

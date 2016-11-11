@@ -14,7 +14,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var RealMoleculesModel = require( 'MOLECULE_SHAPES/real/RealMoleculesModel' );
   var RealMoleculesScreenView = require( 'MOLECULE_SHAPES/real/RealMoleculesScreenView' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
 
   // strings
@@ -31,7 +31,7 @@ define( function( require ) {
 
     var options = {
       name: screenRealMoleculesString,
-      backgroundColor: MoleculeShapesColors.background.toCSS(),
+      backgroundColor: MoleculeShapesColorProfile.background.toCSS(),
       homeScreenIcon: new ScreenIconNode( false, isBasicsVersion )
     };
 
@@ -41,7 +41,7 @@ define( function( require ) {
       options
     );
 
-    MoleculeShapesColors.link( 'background', function( color ) {
+    MoleculeShapesColorProfile.link( 'background', function( color ) {
       self.backgroundColorProperty.value = color;
     } );
   }

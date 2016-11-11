@@ -14,7 +14,7 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
   var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
 
@@ -77,7 +77,7 @@ define( function( require ) {
       depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
       overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
     } );
-    MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColors.bondAngleSweepProperty );
+    MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColorProfile.bondAngleSweepProperty );
 
     // @private {THREE.MeshBasicMaterial}
     this.arcMaterial = new THREE.LineBasicMaterial( {
@@ -85,7 +85,7 @@ define( function( require ) {
       opacity: 0.7,
       depthWrite: false // don't write depth values, so we don't cause other transparent objects to render
     } );
-    MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColors.bondAngleArcProperty );
+    MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColorProfile.bondAngleArcProperty );
 
     this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
     this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}

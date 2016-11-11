@@ -21,7 +21,7 @@ define( function( require ) {
   var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
@@ -83,8 +83,8 @@ define( function( require ) {
       // NOTE: these font sizes are scaled!
       var realViewLabel = new Text( controlRealViewString, { font: new PhetFont( 28 ) } );
       var modelViewLabel = new Text( controlModelViewString, { font: new PhetFont( 28 ) } );
-      MoleculeShapesColors.linkAttribute( 'controlPanelText', realViewLabel, 'fill' );
-      MoleculeShapesColors.linkAttribute( 'controlPanelText', modelViewLabel, 'fill' );
+      MoleculeShapesColorProfile.linkAttribute( 'controlPanelText', realViewLabel, 'fill' );
+      MoleculeShapesColorProfile.linkAttribute( 'controlPanelText', modelViewLabel, 'fill' );
 
       var horizontalSpacing = 30;
 

@@ -17,7 +17,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
 
   // strings
   var controlGeometryNameString = require( 'string!MOLECULE_SHAPES/control.geometryName' );
@@ -93,8 +93,8 @@ define( function( require ) {
     // text fields that will show the name of the geometry (uses string placeholders for height)
     this.molecularText = new Text( 'X', { font: geometryNameFont, pickable: false } ); // @private
     this.electronText = new Text( 'Y', { font: geometryNameFont, pickable: false } ); // @private
-    MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
-    MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronText, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'electronGeometryName', this.electronText, 'fill' );
     model.linkAttribute( 'showMolecularShapeName', this.molecularText, 'visible' );
     model.linkAttribute( 'showElectronShapeName', this.electronText, 'visible' );
 
@@ -102,8 +102,8 @@ define( function( require ) {
     var textLabelFont = new PhetFont( 14 );
     this.molecularTextLabel = new Text( controlMoleculeGeometryString, { font: textLabelFont } ); // @private
     this.electronTextLabel = new Text( controlElectronGeometryString, { font: textLabelFont } ); // @private
-    MoleculeShapesColors.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
-    MoleculeShapesColors.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
+    MoleculeShapesColorProfile.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
 
     // @private
     this.molecularCheckbox = new MoleculeShapesCheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
@@ -145,7 +145,7 @@ define( function( require ) {
     }
 
     MoleculeShapesPanel.call( this, controlGeometryNameString, content, _.extend( {
-      fill: MoleculeShapesColors.background
+      fill: MoleculeShapesColorProfile.background
     }, options ) );
 
     var updateNames = this.updateNames.bind( this );

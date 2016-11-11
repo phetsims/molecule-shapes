@@ -23,7 +23,7 @@ define( function( require ) {
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var RemovePairGroupButton = require( 'MOLECULE_SHAPES/model/RemovePairGroupButton' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
 
@@ -156,12 +156,12 @@ define( function( require ) {
     }
 
     if ( bondOrder === 0 ) {
-      MoleculeShapesColors.lonePairShellProperty.lazyLink( updateImage );
-      MoleculeShapesColors.lonePairElectronProperty.lazyLink( updateImage );
+      MoleculeShapesColorProfile.lonePairShellProperty.lazyLink( updateImage );
+      MoleculeShapesColorProfile.lonePairElectronProperty.lazyLink( updateImage );
     }
     else {
-      MoleculeShapesColors.atomProperty.lazyLink( updateImage );
-      MoleculeShapesColors.bondProperty.lazyLink( updateImage );
+      MoleculeShapesColorProfile.atomProperty.lazyLink( updateImage );
+      MoleculeShapesColorProfile.bondProperty.lazyLink( updateImage );
     }
 
     // move the lone pair over to the right more, so that it looks more centered
@@ -203,12 +203,12 @@ define( function( require ) {
       else {
         alpha = 0.4;
       }
-      overlay.fill = MoleculeShapesColors.background.withAlpha( alpha );
+      overlay.fill = MoleculeShapesColorProfile.background.withAlpha( alpha );
     }
 
     model.molecule.on( 'bondChanged', update );
     model.link( 'showLonePairs', update );
-    MoleculeShapesColors.backgroundProperty.lazyLink( update );
+    MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
 
     HBox.call( this, _.extend( {
       children: [ thumbnail, removeButton ],

@@ -12,7 +12,7 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var CheckBox = require( 'SUN/CheckBox' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
 
   /**
    * @param {Node} content
@@ -23,8 +23,8 @@ define( function( require ) {
   function MoleculeShapesCheckBox( content, property, options ) {
     CheckBox.call( this, content, property, options );
 
-    MoleculeShapesColors.linkAttribute( 'checkBox', this, 'checkBoxColor' );
-    MoleculeShapesColors.linkAttribute( 'checkBoxBackground', this, 'checkBoxColorBackground' );
+    MoleculeShapesColorProfile.linkAttribute( 'checkBox', this, 'checkBoxColor' );
+    MoleculeShapesColorProfile.linkAttribute( 'checkBoxBackground', this, 'checkBoxColorBackground' );
   }
 
   moleculeShapes.register( 'MoleculeShapesCheckBox', MoleculeShapesCheckBox );

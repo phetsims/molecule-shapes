@@ -16,7 +16,7 @@ define( function( require ) {
   var Ray3 = require( 'DOT/Ray3' );
   var Color = require( 'SCENERY/util/Color' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
 
@@ -88,12 +88,12 @@ define( function( require ) {
   }, {
     // @public {LocalMaterial} - renderer-local access
     centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-      color: MoleculeShapesColors.centralAtomProperty
+      color: MoleculeShapesColorProfile.centralAtomProperty
     } ),
 
     // @public {LocalMaterial} - renderer-local access
     atomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-      color: MoleculeShapesColors.atomProperty
+      color: MoleculeShapesColorProfile.atomProperty
     } ),
 
     /**

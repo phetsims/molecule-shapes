@@ -19,7 +19,7 @@ define( function( require ) {
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var BondGroupNode = require( 'MOLECULE_SHAPES/model/BondGroupNode' );
   var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
@@ -58,13 +58,13 @@ define( function( require ) {
     var lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
     var removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
-      textFill: MoleculeShapesColors.removeButtonText,
+      textFill: MoleculeShapesColorProfile.removeButtonText,
       maxWidth: 320,
       listener: function() {
         model.molecule.removeAllGroups();
       }
     } );
-    MoleculeShapesColors.link( 'removeButtonBackground', function( color ) {
+    MoleculeShapesColorProfile.link( 'removeButtonBackground', function( color ) {
       removeAllButton.baseColor = color;
     } );
     removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );

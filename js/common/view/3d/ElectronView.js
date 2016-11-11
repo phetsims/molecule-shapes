@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
@@ -24,7 +24,7 @@ define( function( require ) {
   var localElectronMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
-    color: MoleculeShapesColors.lonePairElectronProperty
+    color: MoleculeShapesColorProfile.lonePairElectronProperty
   } );
 
   /*

@@ -22,7 +22,7 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ContextLossFailureDialog = require( 'SCENERY_PHET/ContextLossFailureDialog' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
   var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
   var LabelFallbackNode = require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' );
@@ -76,7 +76,7 @@ define( function( require ) {
       } );
     }
 
-    MoleculeShapesColors.link( 'background', function( color ) {
+    MoleculeShapesColorProfile.link( 'background', function( color ) {
       self.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 

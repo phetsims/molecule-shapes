@@ -17,7 +17,7 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColors = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColors' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var BondAngleView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleView' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
@@ -163,7 +163,7 @@ define( function( require ) {
     this.sweepColorListener = function( color ) {
       self.sectorMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
-    MoleculeShapesColors.bondAngleSweepProperty.link( this.sweepColorListener );
+    MoleculeShapesColorProfile.bondAngleSweepProperty.link( this.sweepColorListener );
 
     // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently
     // NOTE: we don't seem to be able to use the same material for rendering both the sector and arc
@@ -178,7 +178,7 @@ define( function( require ) {
     this.arcColorListener = function( color ) {
       self.arcMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
-    MoleculeShapesColors.bondAngleArcProperty.link( this.arcColorListener );
+    MoleculeShapesColorProfile.bondAngleArcProperty.link( this.arcColorListener );
 
     this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
     this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
