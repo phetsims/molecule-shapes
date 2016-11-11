@@ -199,7 +199,7 @@ define( function( require ) {
     this.materialUniforms = JSON.parse( JSON.stringify( materialUniforms ) );
     this.materialUniforms.map.value = texture;
 
-    MoleculeShapesColorProfile.link( 'bondAngleReadout', function( color ) {
+    MoleculeShapesColorProfile.bondAngleReadoutProperty.link( function( color ) {
       self.materialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 

@@ -203,7 +203,7 @@ define( function( require ) {
       else {
         alpha = 0.4;
       }
-      overlay.fill = MoleculeShapesColorProfile.background.withAlpha( alpha );
+      overlay.fill = MoleculeShapesColorProfile.backgroundProperty.get().withAlpha( alpha );
     }
 
     model.molecule.on( 'bondChanged', update );

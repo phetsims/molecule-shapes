@@ -31,7 +31,7 @@ define( function( require ) {
 
     var options = {
       name: screenModelString,
-      backgroundColor: MoleculeShapesColorProfile.background.toCSS(),
+      backgroundColor: MoleculeShapesColorProfile.backgroundProperty.get().toCSS(),
       homeScreenIcon: new ScreenIconNode( true, isBasicsVersion )
     };
 
@@ -41,9 +41,9 @@ define( function( require ) {
       options
     );
 
-    MoleculeShapesColorProfile.link( 'background', function( color ) {
+    MoleculeShapesColorProfile.backgroundProperty.link( function( color ) {
       self.backgroundColorProperty.value = color;
-    } );
+    } );  
   }
 
   moleculeShapes.register( 'ModelMoleculesScreen', ModelMoleculesScreen );

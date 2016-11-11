@@ -44,7 +44,7 @@ define( function( require ) {
       var localMidpoint = this.globalToParentPoint( midScreenPoint );
 
       this.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
-      this.fill = MoleculeShapesColorProfile.bondAngleReadout.withAlpha( brightness );
+      this.fill = MoleculeShapesColorProfile.bondAngleReadoutProperty.get().withAlpha( brightness );
     },
 
     /*

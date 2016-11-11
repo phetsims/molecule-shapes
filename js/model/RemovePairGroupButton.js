@@ -31,7 +31,7 @@ define( function( require ) {
       yMargin: 5
     }, options ) );
 
-    MoleculeShapesColorProfile.link( 'removePairGroup', function( color ) {
+    MoleculeShapesColorProfile.removePairGroupProperty.link( function( color ) {
       self.baseColor = color;
     } );
   }

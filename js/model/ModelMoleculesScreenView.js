@@ -64,7 +64,8 @@ define( function( require ) {
         model.molecule.removeAllGroups();
       }
     } );
-    MoleculeShapesColorProfile.link( 'removeButtonBackground', function( color ) {
+
+    MoleculeShapesColorProfile.removeButtonBackgroundProperty.link( function( color ) {
       removeAllButton.baseColor = color;
     } );
     removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );

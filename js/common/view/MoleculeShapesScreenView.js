@@ -76,7 +76,7 @@ define( function( require ) {
       } );
     }
 
-    MoleculeShapesColorProfile.link( 'background', function( color ) {
+    MoleculeShapesColorProfile.backgroundProperty.link( function( color ) {
       self.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 
