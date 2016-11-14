@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LonePairGeometryData = require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
@@ -71,7 +72,7 @@ define( function( require ) {
     this.electronView2.position.x = -0.75;
     this.electronView1.position.y = this.electronView2.position.y = 5;
 
-    if ( phet.chipper.getQueryParameter( 'showPointerAreas' ) ) {
+    if ( MoleculeShapesQueryParameters.showPointerAreas ) {
       var touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
         color: 0xff0000,
         transparent: true,

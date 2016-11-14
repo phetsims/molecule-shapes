@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
   var platform = require( 'PHET_CORE/platform' );
   var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -17,8 +18,8 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
 
   var MoleculeShapesGlobals = new PropertySet( {
-    showOuterLonePairs: !!phet.chipper.getQueryParameter( 'showOuterLonePairs' ) || false,
-    projectorColors: !!phet.chipper.getQueryParameter( 'projector' ) || false
+    showOuterLonePairs: MoleculeShapesQueryParameters.showOuterLonePairs,
+    projectorColors: ( MoleculeShapesQueryParameters.colorProfile === 'projector' )
   } );
   moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 
@@ -28,7 +29,7 @@ define( function( require ) {
     window.console.log = window.console.log || function() {};
   }
 
-  var hasBasicWebGLSupport = ( phet.chipper.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported;
+  var hasBasicWebGLSupport = MoleculeShapesQueryParameters.webgl && Util.isWebGLSupported;
   var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
   return _.extend( MoleculeShapesGlobals, {

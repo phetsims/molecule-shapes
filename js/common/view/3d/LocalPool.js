@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /*
@@ -83,7 +84,7 @@ define( function( require ) {
      * Enable printing out pool counts (type,action,inPool,outOfPool) with ?dev
      * @private
      */
-    debug: ( phet.chipper.getQueryParameter( 'dev' ) ) ? function( action ) {
+    debug: ( MoleculeShapesQueryParameters.dev ) ? function( action ) {
       console.log( this.name, action, this.quantityInside, this.quantityOutside );
     } : function() {}
   } );

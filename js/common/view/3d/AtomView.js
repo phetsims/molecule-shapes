@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector3 = require( 'DOT/Vector3' );
   var Sphere3 = require( 'DOT/Sphere3' );
@@ -45,7 +46,7 @@ define( function( require ) {
 
     this.group = group; // @private {PairGroup}
 
-    if ( phet.chipper.getQueryParameter( 'showPointerAreas' ) ) {
+    if ( MoleculeShapesQueryParameters.showPointerAreas ) {
       if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
         this.add( new THREE.Mesh( new THREE.SphereGeometry( TOUCH_RADIUS, NUM_SAMPLES, NUM_SAMPLES ), new THREE.MeshBasicMaterial( {
           color: 0xff0000,
