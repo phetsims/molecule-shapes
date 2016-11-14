@@ -90,20 +90,35 @@ define( function( require ) {
   function GeometryNamePanel( model, options ) {
     this.model = model; // @private {MoleculeShapesModel}
 
-    // text fields that will show the name of the geometry (uses string placeholders for height)
-    this.molecularText = new Text( 'X', { font: geometryNameFont, pickable: false } ); // @private
-    this.electronText = new Text( 'Y', { font: geometryNameFont, pickable: false } ); // @private
-    MoleculeShapesColorProfile.linkAttribute( 'moleculeGeometryName', this.molecularText, 'fill' );
-    MoleculeShapesColorProfile.linkAttribute( 'electronGeometryName', this.electronText, 'fill' );
+    // @private - text fields that will show the name of the geometry (uses string placeholders for height)
+    this.molecularText = new Text( 'X', {
+      font: geometryNameFont,
+      pickable: false,
+      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
+    } );
+    // @private
+    this.electronText = new Text( 'Y', {
+      font: geometryNameFont,
+      pickable: false,
+      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
+    } );
     model.linkAttribute( 'showMolecularShapeName', this.molecularText, 'visible' );
     model.linkAttribute( 'showElectronShapeName', this.electronText, 'visible' );
 
     // labels for the types of geometries
     var textLabelFont = new PhetFont( 14 );
-    this.molecularTextLabel = new Text( controlMoleculeGeometryString, { font: textLabelFont } ); // @private
-    this.electronTextLabel = new Text( controlElectronGeometryString, { font: textLabelFont } ); // @private
-    MoleculeShapesColorProfile.linkAttribute( 'moleculeGeometryName', this.molecularTextLabel, 'fill' );
-    MoleculeShapesColorProfile.linkAttribute( 'electronGeometryName', this.electronTextLabel, 'fill' );
+
+    // @private
+    this.molecularTextLabel = new Text( controlMoleculeGeometryString, {
+      font: textLabelFont,
+      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
+    } );
+
+    // @private
+    this.electronTextLabel = new Text( controlElectronGeometryString, {
+      font: textLabelFont,
+      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
+    } );
 
     // @private
     this.molecularCheckbox = new MoleculeShapesCheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );

@@ -115,7 +115,7 @@ define( function( require ) {
     removePairGroup: {
       default: new Color( '#d00' )
     }
-  } );
+  }, [ 'default', 'basics', 'projector' ] );
 
   moleculeShapes.register( 'MoleculeShapesColorProfile', MoleculeShapesColorProfile );
 

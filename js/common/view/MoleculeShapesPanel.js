@@ -37,12 +37,12 @@ define( function( require ) {
     }, options );
 
     var titleNode = MoleculeShapesPanel.createTitleNode( titleString );
-    MoleculeShapesColorProfile.linkAttribute( 'controlPanelTitle', titleNode, 'fill' );
+    MoleculeShapesColorProfile.controlPanelTitleProperty.linkAttribute( titleNode, 'fill' );
 
     TitledPanel.call( this, titleNode, contentNode, options );
 
-    MoleculeShapesColorProfile.linkAttribute( 'background', this, 'fill' );
-    MoleculeShapesColorProfile.linkAttribute( 'controlPanelBorder', this, 'stroke' );
+    MoleculeShapesColorProfile.backgroundProperty.linkAttribute( this, 'fill' );
+    MoleculeShapesColorProfile.controlPanelBorderProperty.linkAttribute( this, 'stroke' );
   }
 
   moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );

@@ -23,8 +23,8 @@ define( function( require ) {
   function MoleculeShapesCheckBox( content, property, options ) {
     CheckBox.call( this, content, property, options );
 
-    MoleculeShapesColorProfile.linkAttribute( 'checkBox', this, 'checkBoxColor' );
-    MoleculeShapesColorProfile.linkAttribute( 'checkBoxBackground', this, 'checkBoxColorBackground' );
+    MoleculeShapesColorProfile.checkBoxProperty.linkAttribute( this, 'checkBoxColor' );
+    MoleculeShapesColorProfile.checkBoxBackgroundProperty.linkAttribute( this, 'checkBoxColorBackground' );
   }
 
   moleculeShapes.register( 'MoleculeShapesCheckBox', MoleculeShapesCheckBox );

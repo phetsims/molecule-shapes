@@ -26,12 +26,12 @@ define( function( require ) {
     var showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont
     } );
-    MoleculeShapesColorProfile.linkAttribute( 'controlPanelText', showLonePairsLabel, 'fill' );
+    MoleculeShapesColorProfile.controlPanelTextProperty.linkAttribute( showLonePairsLabel, 'fill' );
 
     var showBondAnglesLabel = new Text( controlShowBondAnglesString, {
       font: optionsFont
     } );
-    MoleculeShapesColorProfile.linkAttribute( 'controlPanelText', showBondAnglesLabel, 'fill' );
+    MoleculeShapesColorProfile.controlPanelTextProperty.linkAttribute( showBondAnglesLabel, 'fill' );
 
     var showLonePairsCheckbox = new MoleculeShapesCheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
     var showBondAnglesCheckbox = new MoleculeShapesCheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );

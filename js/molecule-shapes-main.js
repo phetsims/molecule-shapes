@@ -42,12 +42,7 @@ define( function( require ) {
   // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
   MoleculeShapesGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
-    if ( useProjectorColors ) {
-      MoleculeShapesColorProfile.profileNameProperty.set( 'projector' );
-    }
-    else {
-      MoleculeShapesColorProfile.profileNameProperty.set( 'default' );
-    }
+    MoleculeShapesColorProfile.profileNameProperty.set( useProjectorColors ? 'projector' : 'default' );
   } );
 
   SimLauncher.launch( function() {

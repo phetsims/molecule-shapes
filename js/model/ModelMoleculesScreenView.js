@@ -58,7 +58,7 @@ define( function( require ) {
     var lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
     var removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
-      textFill: MoleculeShapesColorProfile.removeButtonText,
+      textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
       listener: function() {
         model.molecule.removeAllGroups();
