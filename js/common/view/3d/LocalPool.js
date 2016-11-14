@@ -84,7 +84,7 @@ define( function( require ) {
      * Enable printing out pool counts (type,action,inPool,outOfPool) with ?dev
      * @private
      */
-    debug: ( MoleculeShapesQueryParameters.dev ) ? function( action ) {
+    debug: ( phet.chipper.queryParameters.dev ) ? function( action ) {
       console.log( this.name, action, this.quantityInside, this.quantityOutside );
     } : function() {}
   } );

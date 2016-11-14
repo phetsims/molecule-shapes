@@ -12,26 +12,7 @@ define( function( require ) {
   var MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
 
     //TODO document
-    showOuterLonePairs: { type: 'flag' },
-
-    //TODO use phet.chipper.queryParameters.colorProfile
-    colorProfile: {
-      type: 'string',
-      defaultValue: 'default',
-      validValues: [ 'default', 'projector' ]
-    },
-
-    //TODO use phet.chipper.queryParameters.webgl
-    webgl: {
-      type: 'flag',
-      defaultValue: true
-    },
-
-    //TODO use phet.chipper.queryParameters.showPointerAreas
-    showPointerAreas: { type: 'flag' },
-
-    //TODO use phet.chipper.queryParameters.dev
-    dev: { type: 'flag' }
+    showOuterLonePairs: { type: 'flag' }
   } );
 
   moleculeShapes.register( 'MoleculeShapesQueryParameters', MoleculeShapesQueryParameters );

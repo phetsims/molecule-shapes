@@ -46,7 +46,7 @@ define( function( require ) {
 
     this.group = group; // @private {PairGroup}
 
-    if ( MoleculeShapesQueryParameters.showPointerAreas ) {
+    if ( phet.chipper.queryParameters.showPointerAreas ) {
       if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
         this.add( new THREE.Mesh( new THREE.SphereGeometry( TOUCH_RADIUS, NUM_SAMPLES, NUM_SAMPLES ), new THREE.MeshBasicMaterial( {
           color: 0xff0000,

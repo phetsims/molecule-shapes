@@ -19,7 +19,7 @@ define( function( require ) {
 
   var MoleculeShapesGlobals = new PropertySet( {
     showOuterLonePairs: MoleculeShapesQueryParameters.showOuterLonePairs,
-    projectorColors: ( MoleculeShapesQueryParameters.colorProfile === 'projector' )
+    projectorColors: ( phet.chipper.queryParameters.colorProfile === 'projector' )
   } );
   moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 
@@ -29,7 +29,7 @@ define( function( require ) {
     window.console.log = window.console.log || function() {};
   }
 
-  var hasBasicWebGLSupport = MoleculeShapesQueryParameters.webgl && Util.isWebGLSupported;
+  var hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Util.isWebGLSupported;
   var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
   return _.extend( MoleculeShapesGlobals, {
