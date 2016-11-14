@@ -160,7 +160,7 @@ define( function( require ) {
     }
 
     MoleculeShapesPanel.call( this, controlGeometryNameString, content, _.extend( {
-      fill: MoleculeShapesColorProfile.backgroundProperty.get()
+      fill: MoleculeShapesColorProfile.backgroundProperty
     }, options ) );
 
     var updateNames = this.updateNames.bind( this );

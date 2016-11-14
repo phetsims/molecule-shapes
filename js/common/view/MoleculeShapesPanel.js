@@ -33,32 +33,22 @@ define( function( require ) {
 
       // we want everything to absorb events, since things behind the panel are pickable
       backgroundPickable: true,
-      pickable: true
+      pickable: true,
+      fill: MoleculeShapesColorProfile.backgroundProperty,
+      stroke: MoleculeShapesColorProfile.controlPanelBorderProperty
     }, options );
 
-    var titleNode = MoleculeShapesPanel.createTitleNode( titleString );
-    MoleculeShapesColorProfile.controlPanelTitleProperty.linkAttribute( titleNode, 'fill' );
+    var titleNode = new Text( titleString, {
+      font: new PhetFont( 18 ),
+      fill: MoleculeShapesColorProfile.controlPanelTitleProperty
+    } );
 
     TitledPanel.call( this, titleNode, contentNode, options );
-
-    MoleculeShapesColorProfile.backgroundProperty.linkAttribute( this, 'fill' );
-    MoleculeShapesColorProfile.controlPanelBorderProperty.linkAttribute( this, 'stroke' );
   }
 
   moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );
 
   return inherit( TitledPanel, MoleculeShapesPanel, {}, {
-    /**
-     * @private
-     *
-     * @param {string} titleString
-     */
-    createTitleNode: function( titleString ) {
-      return new Text( titleString, {
-        font: new PhetFont( 18 )
-      } );
-    },
-
     xMargin: 15 // need to make this available for outside code to compute widths
   } );
 } );

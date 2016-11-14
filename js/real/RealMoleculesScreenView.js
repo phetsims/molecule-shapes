@@ -81,10 +81,14 @@ define( function( require ) {
       var approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
 
       // NOTE: these font sizes are scaled!
-      var realViewLabel = new Text( controlRealViewString, { font: new PhetFont( 28 ) } );
-      var modelViewLabel = new Text( controlModelViewString, { font: new PhetFont( 28 ) } );
-      MoleculeShapesColorProfile.controlPanelTextProperty.linkAttribute( realViewLabel, 'fill' );
-      MoleculeShapesColorProfile.controlPanelTextProperty.linkAttribute( modelViewLabel, 'fill' );
+      var realViewLabel = new Text( controlRealViewString, {
+        font: new PhetFont( 28 ),
+        fill: MoleculeShapesColorProfile.controlPanelTextProperty
+      } );
+      var modelViewLabel = new Text( controlModelViewString, {
+        font: new PhetFont( 28 ),
+        fill: MoleculeShapesColorProfile.controlPanelTextProperty
+      } );
 
       var horizontalSpacing = 30;
 

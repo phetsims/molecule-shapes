@@ -24,14 +24,14 @@ define( function( require ) {
 
   function OptionsNode( model, options ) {
     var showLonePairsLabel = new Text( controlShowLonePairsString, {
-      font: optionsFont
+      font: optionsFont,
+      fill: MoleculeShapesColorProfile.controlPanelTextProperty
     } );
-    MoleculeShapesColorProfile.controlPanelTextProperty.linkAttribute( showLonePairsLabel, 'fill' );
 
     var showBondAnglesLabel = new Text( controlShowBondAnglesString, {
-      font: optionsFont
+      font: optionsFont,
+      fill: MoleculeShapesColorProfile.controlPanelTextProperty
     } );
-    MoleculeShapesColorProfile.controlPanelTextProperty.linkAttribute( showBondAnglesLabel, 'fill' );
 
     var showLonePairsCheckbox = new MoleculeShapesCheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
     var showBondAnglesCheckbox = new MoleculeShapesCheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
