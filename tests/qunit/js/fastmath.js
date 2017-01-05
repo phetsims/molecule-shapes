@@ -11,8 +11,6 @@
 
   module( 'Molecule Shapes: FastMath' );
 
-  var Color = scenery.Color;
-
   function approxEqual( a, b, msg ) {
     ok( Math.abs( a - b ) < 0.0001, msg );
   }
