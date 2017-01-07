@@ -21,6 +21,7 @@
     }
   }
 
+  /* eslint-disable no-undef */
   test( 'FastMath 3x3 mults', function() {
     var a = new ms.FastMath.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
     var b = new ms.FastMath.Array( [ 4, 3, 1, -7, 2, -1, -1, 0, -2 ] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}
@@ -119,4 +120,6 @@
     approxEqual( FastMath.det3( u ), 1, 'U should be a rotation matrix with the current customs' );
     approxEqual( FastMath.det3( v ), 1, 'V should be a rotation matrix with the current customs' );
   } );
+
+  /* eslint-enable */
 })();
