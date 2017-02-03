@@ -224,7 +224,7 @@ define( function( require ) {
               model.moleculeQuaternion = newQuaternion;
             }
             else if ( dragMode === 'pairExistingSpherical' ) {
-              if ( _.contains( model.molecule.groups, draggedParticle ) ) {
+              if ( _.includes( model.molecule.groups, draggedParticle ) ) {
                 draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
               }
             }
@@ -326,7 +326,7 @@ define( function( require ) {
      * @public
      */
     returnLabel: function( label ) {
-      assert && assert( !_.contains( this.angleLabels, label ) );
+      assert && assert( !_.includes( this.angleLabels, label ) );
       this.angleLabels.push( label );
       label.unsetLabel();
     },

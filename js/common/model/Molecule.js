@@ -394,7 +394,7 @@ define( function( require ) {
      */
     getDistantLonePairs: function() {
       var closeLonePairs = this.radialLonePairs;
-      return _.filter( this.lonePairs, function( lonePair ) { return !_.contains( closeLonePairs, lonePair ); } );
+      return _.filter( this.lonePairs, function( lonePair ) { return !_.includes( closeLonePairs, lonePair ); } );
     },
 
     /**

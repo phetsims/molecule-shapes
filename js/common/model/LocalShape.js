@@ -146,7 +146,7 @@ define( function( require ) {
       // allow interchanging of pair groups when they have the same chemical element
       var atoms = _.filter( neighbors, function( group ) { return !group.isLonePair; } );
 
-      var usedElements = _.unique( _.map( atoms, function( group ) { return group.element; } ) );
+      var usedElements = _.uniq( _.map( atoms, function( group ) { return group.element; } ) );
 
       for ( var i = 0; i < usedElements.length; i++ ) {
         var element = usedElements[ i ];
