@@ -170,7 +170,7 @@ define( function( require ) {
       // only handle the force on this object for now
 
       // If the positions overlap, just let the attraction take care of things. See https://github.com/phetsims/molecule-shapes/issues/136
-      if ( this.position.equals( other.position ) ) {
+      if ( this.position.equalsEpsilon( other.position, 1e-6 ) ) {
         return new Vector3();
       }
 

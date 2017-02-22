@@ -126,19 +126,28 @@ define( function( require ) {
 
         var angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
 
-        // screen coordinates
-        var screenCenterPoint = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
-          ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
-        var screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
-          ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
+        // Potential fix for https://github.com/phetsims/molecule-shapes/issues/145.
+        // The THREE.Vector3.project( THREE.Camera ) is giving is nonsense near startup. Longer-term could identify, but
+        // switching bonds to true very quickly might cause this.
+        if ( isFinite( centerDevicePoint.x ) && isFinite( centerDevicePoint.y ) ) {
+          // screen coordinates
+          var screenCenterPoint = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+            ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
+          var screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+            ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
 
-        var labelString = Util.toFixed( angle, 1 ) + '°';
-        while ( labelString.length < 5 ) {
-          // handle single-digit labels by padding them
-          labelString = '0' + labelString;
+          var labelString = Util.toFixed( angle, 1 ) + '°';
+          while ( labelString.length < 5 ) {
+            // handle single-digit labels by padding them
+            labelString = '0' + labelString;
+          }
+
+          this.label.setLabel( labelString, this.viewOpacity, screenCenterPoint, screenMidPoint, layoutScale );
+        }
+        else {
+          this.label.unsetLabel();
         }
 
-        this.label.setLabel( labelString, this.viewOpacity, screenCenterPoint, screenMidPoint, layoutScale );
       }
       else {
         this.label.unsetLabel();
