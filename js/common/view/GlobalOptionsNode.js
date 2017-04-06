@@ -25,10 +25,10 @@ define( function( require ) {
     var children = [];
 
     if ( !isBasicsVersion ) {
-      children.push( new CheckBox( new Text( optionsShowOuterLonePairsString, { font: OptionsDialog.DEFAULT_FONT } ),
+      children.push( new CheckBox( new Text( optionsShowOuterLonePairsString, { font: OptionsDialog.DEFAULT_FONT, maxWidth: 500 } ),
         MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
     }
-    children.push( new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
+    children.push( new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT, maxWidth: 500 } ),
       MoleculeShapesGlobals.projectorColorsProperty, {} ) );
 
     VBox.call( this, _.extend( {
