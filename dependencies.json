@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.1.9 Thu Apr 13 2017 13:50:22 GMT-0600 (MDT)",
+  "comment": "# molecule-shapes 1.1.9 Thu Apr 13 2017 19:48:33 GMT-0600 (MDT)",
   "assert": {
     "sha": "d4909677d27ed571d5d859d709a0612bf7811db8",
     "branch": "HEAD"
@@ -10,26 +10,26 @@
   },
   "brand": {
     "sha": "bb617e3ac5d383a1e697b8edaa773a833c7c9c15",
-    "branch": "molecule-shapes-1.1"
+    "branch": "HEAD"
   },
   "chipper": {
     "sha": "72a39f977fa36e7a7a65eb4149a5de58e9e42d66",
-    "branch": "molecule-shapes-1.1"
+    "branch": "HEAD"
   },
   "dot": {
     "sha": "7a28b1a92733cee778e2cf5d22ca45042884d416",
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "43cc9a8b363c4e8fcfa4d6642402f27cfcbe56e5",
-    "branch": "HEAD"
+    "sha": "ee9bad0d23fdb4f3960bfae5de646fd88c43843f",
+    "branch": "molecule-shapes-1.1"
   },
   "kite": {
     "sha": "4a947119f6e57cb6a6d9d1bf4596502ca721464c",
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "6f9ca2cc533e0d490c8a909b1eb3e78bb705d9e1",
+    "sha": "30ba7b832bd75ef38f84aa095409234e36bcc1d7",
     "branch": "1.1"
   },
   "nitroglycerin": {
@@ -42,7 +42,7 @@
   },
   "phetcommon": {
     "sha": "9abff61f682777abcaee8353038c8b72eab859b4",
-    "branch": "molecule-shapes-1.1"
+    "branch": "HEAD"
   },
   "scenery": {
     "sha": "5ef7dde69f024ea21d588cb817db70dcf56e8f92",
