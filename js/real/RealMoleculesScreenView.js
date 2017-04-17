@@ -17,7 +17,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var SubSupText = require( 'SCENERY_PHET/SubSupText' );
+  var RichText = require( 'SCENERY_PHET/RichText' );
   var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
@@ -48,7 +48,7 @@ define( function( require ) {
     var comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
       return {
         value: realMoleculeShape,
-        node: new SubSupText( ChemUtils.toSubscript( realMoleculeShape.displayName ), {
+        node: new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ), {
           // default font is OK
         } )
       };
