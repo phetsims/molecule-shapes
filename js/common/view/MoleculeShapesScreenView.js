@@ -63,6 +63,10 @@ define( function( require ) {
 
     this.threeRenderer.setPixelRatio( window.devicePixelRatio || 1 );
 
+    // @private {ContextLossFailureDialog|null} - dialog shown on context loss, constructed
+    // lazily because Dialog requires sim bounds during construction
+    this.contextLossDialog = null;
+
     // In the event of a context loss, we'll just show a dialog. See https://github.com/phetsims/molecule-shapes/issues/100
     if ( MoleculeShapesGlobals.useWebGL ) {
       this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
@@ -287,7 +291,10 @@ define( function( require ) {
      * @private
      */
     showContextLossDialog: function() {
-      new ContextLossFailureDialog().show();
+      if ( !this.contextLossDialog ) {
+        this.contextLossDialog = new ContextLossFailureDialog();        
+      }
+      this.contextLossDialog.show();
       // var warningSign = new FontAwesomeNode( 'warning_sign', {
       //   fill: '#E87600', // "safety orange", according to Wikipedia
       //   scale: 0.6
