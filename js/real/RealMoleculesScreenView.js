@@ -17,7 +17,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RichText = require( 'SCENERY_PHET/RichText' );
+  var RichText = require( 'SCENERY/nodes/RichText' );
   var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
