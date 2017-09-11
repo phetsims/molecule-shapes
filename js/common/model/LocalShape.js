@@ -11,11 +11,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var partition = require( 'PHET_CORE/partition' );
   var Permutation = require( 'DOT/Permutation' );
-  var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
 
   /*
    * @constructor

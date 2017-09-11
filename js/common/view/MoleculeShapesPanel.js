@@ -9,12 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var TitledPanel = require( 'MOLECULE_SHAPES/common/view/TitledPanel' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var TitledPanel = require( 'MOLECULE_SHAPES/common/view/TitledPanel' );
 
   /**
    * @constructor

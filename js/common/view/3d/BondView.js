@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   var NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGL ? 32 : 8;
   var NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGL ? 1 : 8;

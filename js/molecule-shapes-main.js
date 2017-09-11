@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
+  var GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
+  var IE11StencilWarningNode = require( 'SCENERY_PHET/IE11StencilWarningNode' );
   var ModelMoleculesScreen = require( 'MOLECULE_SHAPES/model/ModelMoleculesScreen' );
-  var RealMoleculesScreen = require( 'MOLECULE_SHAPES/real/RealMoleculesScreen' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
-  var CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
-  var IE11StencilWarningNode = require( 'SCENERY_PHET/IE11StencilWarningNode' );
+  var RealMoleculesScreen = require( 'MOLECULE_SHAPES/real/RealMoleculesScreen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 

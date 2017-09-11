@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
   var AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
-  var BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
-  var LonePairView = require( 'MOLECULE_SHAPES/common/view/3d/LonePairView' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
   var BondAngleFallbackView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleFallbackView' );
+  var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
+  var BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var LonePairView = require( 'MOLECULE_SHAPES/common/view/3d/LonePairView' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   /*
    * @constructor

@@ -10,8 +10,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
 
   /**
    * The two ends of the bond (a,b) should be of the same (arbitrary) type, noted as {*} in the documentation.

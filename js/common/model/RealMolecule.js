@@ -9,12 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
   var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
   var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  var Vector3 = require( 'DOT/Vector3' );
   var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
 
   /*

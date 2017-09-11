@@ -9,20 +9,20 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var BondGroupNode = require( 'MOLECULE_SHAPES/model/BondGroupNode' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
+  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
+  var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
+  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var BondGroupNode = require( 'MOLECULE_SHAPES/model/BondGroupNode' );
-  var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
-  var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   var controlBondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
   var controlLonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );

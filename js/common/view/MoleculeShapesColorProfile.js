@@ -16,9 +16,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var ColorProfile = require( 'SCENERY_PHET/ColorProfile' );
   var Color = require( 'SCENERY/util/Color' );
+  var ColorProfile = require( 'SCENERY_PHET/ColorProfile' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
 
   // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the
   // 'default' value provided.

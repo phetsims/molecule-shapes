@@ -9,17 +9,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
+  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
+  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var RealMolecule = require( 'MOLECULE_SHAPES/common/model/RealMolecule' );
   var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
+  var Vector3 = require( 'DOT/Vector3' );
   var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
-  var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
-  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
 
   /**
    * @constructor

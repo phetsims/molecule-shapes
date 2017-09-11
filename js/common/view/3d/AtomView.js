@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var Sphere3 = require( 'DOT/Sphere3' );
-  var Ray3 = require( 'DOT/Ray3' );
   var Color = require( 'SCENERY/util/Color' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
   var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var Ray3 = require( 'DOT/Ray3' );
+  var Sphere3 = require( 'DOT/Sphere3' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   var DISPLAY_RADIUS = 2;
   var TOUCH_RADIUS = 3;

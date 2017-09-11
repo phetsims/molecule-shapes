@@ -18,15 +18,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var arrayRemove = require( 'PHET_CORE/arrayRemove' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Events = require( 'AXON/Events' );
   var Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
+  var Events = require( 'AXON/Events' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
-  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
 
   var MAX_PAIRS = 6;
 

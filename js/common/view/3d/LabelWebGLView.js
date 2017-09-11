@@ -16,16 +16,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Vector2 = require( 'DOT/Vector2' );
   var Bounds2 = require( 'DOT/Bounds2' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Util = require( 'SCENERY/util/Util' );
-  var Shape = require( 'KITE/Shape' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var LocalTexture = require( 'MOLECULE_SHAPES/common/view/3d/LocalTexture' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var Shape = require( 'KITE/Shape' );
+  var Util = require( 'SCENERY/util/Util' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // grab our font data from the global namespace
   var liberationSansRegularSubset = phet.liberationSansRegularSubsetNumericDegrees;

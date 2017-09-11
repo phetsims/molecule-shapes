@@ -15,13 +15,13 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
 
   // strings
-  var geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
   var geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
+  var geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
   var geometryLinearString = require( 'string!MOLECULE_SHAPES/geometry.linear' );
-  var geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
+  var geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
   var geometryTetrahedralString = require( 'string!MOLECULE_SHAPES/geometry.tetrahedral' );
   var geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
-  var geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
+  var geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
 
   // Constant for the tetrahedral shape
   var TETRA_CONST = Math.PI * -19.471220333 / 180;

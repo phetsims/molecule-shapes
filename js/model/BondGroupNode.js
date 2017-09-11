@@ -9,23 +9,23 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var platform = require( 'PHET_CORE/platform' );
   var Bounds2 = require( 'DOT/Bounds2' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
-  var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var RemovePairGroupButton = require( 'MOLECULE_SHAPES/model/RemovePairGroupButton' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var Image = require( 'SCENERY/nodes/Image' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
   var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  var platform = require( 'PHET_CORE/platform' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var RemovePairGroupButton = require( 'MOLECULE_SHAPES/model/RemovePairGroupButton' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
 
   /*---------------------------------------------------------------------------*
    * Dynamic generation of the bonding/lone-pair panel images, by rendering a three.js scene to an image

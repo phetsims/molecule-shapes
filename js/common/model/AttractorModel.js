@@ -11,14 +11,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var pairs = require( 'PHET_CORE/pairs' );
-  var Vector3 = require( 'DOT/Vector3' );
   var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
+  var inherit = require( 'PHET_CORE/inherit' );
   var Matrix = require( 'DOT/Matrix' );
   var MatrixOps3 = require( 'DOT/MatrixOps3' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  var pairs = require( 'PHET_CORE/pairs' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   // just static calls, so just create an empty object
   var AttractorModel = {};

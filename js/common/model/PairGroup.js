@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vector3 = require( 'DOT/Vector3' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   var nextId = 0;
 

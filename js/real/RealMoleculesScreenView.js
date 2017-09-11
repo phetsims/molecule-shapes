@@ -9,26 +9,26 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var ComboBox = require( 'SUN/ComboBox' );
   var ChemUtils = require( 'NITROGLYCERIN/ChemUtils' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
+  var ComboBox = require( 'SUN/ComboBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
+  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
+  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
   var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
+  var RichText = require( 'SCENERY/nodes/RichText' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
+  var controlModelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
   var controlMoleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
   var controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
   var controlRealViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
-  var controlModelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
 
   /**
    * Constructor for the RealMoleculesScreenView

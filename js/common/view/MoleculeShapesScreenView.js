@@ -9,23 +9,23 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
-  var Ray3 = require( 'DOT/Ray3' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var Plane3 = require( 'DOT/Plane3' );
-  var Sphere3 = require( 'DOT/Sphere3' );
-  var DOM = require( 'SCENERY/nodes/DOM' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ContextLossFailureDialog = require( 'SCENERY_PHET/ContextLossFailureDialog' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var DOM = require( 'SCENERY/nodes/DOM' );
   var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
-  var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var LabelFallbackNode = require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' );
+  var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
+  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var Plane3 = require( 'DOT/Plane3' );
+  var Ray3 = require( 'DOT/Ray3' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var ScreenView = require( 'JOIST/ScreenView' );
+  var Sphere3 = require( 'DOT/Sphere3' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   /**
    * @constructor
