@@ -153,14 +153,14 @@ define( function( require ) {
                                                    AtomView.atomLocalMaterial );
         this.atomViews.push( view );
 
-        group.link( 'position', function( position ) {
+        group.positionProperty.link( function( position ) {
           view.position.set( position.x, position.y, position.z );
         } );
 
         for ( var i = 0; i < this.atomViews.length; i++ ) {
           var otherView = this.atomViews[ i ];
           if ( otherView !== view ) {
-            var bondAngleView = MoleculeShapesGlobals.useWebGL ?
+            var bondAngleView = MoleculeShapesGlobals.useWebGLProperty.get() ?
                                 BondAngleWebGLView.pool.get( this.renderer ) :
                                 BondAngleFallbackView.pool.get( this.renderer );
             bondAngleView.initialize( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );

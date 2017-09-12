@@ -40,7 +40,7 @@ define( function( require ) {
     var self = this;
 
     this.model = model; // @private {MoleculeShapesModel}
-    this.moleculeView = new MoleculeView( model, this, model.molecule ); // @public
+    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
     this.addMoleculeView( this.moleculeView );
 
     var comboBoxListContainer = new Node();

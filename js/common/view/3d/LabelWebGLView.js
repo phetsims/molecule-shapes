@@ -203,7 +203,7 @@ define( function( require ) {
       self.materialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 
-    var material = MoleculeShapesGlobals.useWebGL ? new THREE.ShaderMaterial( {
+    var material = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.ShaderMaterial( {
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       side: THREE.DoubleSide,

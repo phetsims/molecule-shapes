@@ -102,8 +102,8 @@ define( function( require ) {
       pickable: false,
       fill: MoleculeShapesColorProfile.electronGeometryNameProperty
     } );
-    model.linkAttribute( 'showMolecularShapeName', this.molecularText, 'visible' );
-    model.linkAttribute( 'showElectronShapeName', this.electronText, 'visible' );
+    model.showMolecularShapeNameProperty.linkAttribute( this.molecularText, 'visible' );
+    model.showElectronShapeNameProperty.linkAttribute( this.electronText, 'visible' );
 
     // labels for the types of geometries
     var textLabelFont = new PhetFont( 14 );
@@ -164,7 +164,7 @@ define( function( require ) {
     }, options ) );
 
     var updateNames = this.updateNames.bind( this );
-    model.link( 'molecule', function( newMolecule, oldMolecule ) {
+    model.moleculeProperty.link( function( newMolecule, oldMolecule ) {
       if ( oldMolecule ) {
         oldMolecule.off( 'bondChanged', updateNames );
       }
@@ -196,7 +196,7 @@ define( function( require ) {
      * @private
      */
     getMolecularGeometryName: function() {
-      var name = this.model.molecule.getCentralVSEPRConfiguration().name;
+      var name = this.model.moleculeProperty.get().getCentralVSEPRConfiguration().name;
       if ( name === null ) {
         return shapeEmptyString;
       }
@@ -206,7 +206,7 @@ define( function( require ) {
     },
 
     getElectronGeometryName: function() {
-      var name = this.model.molecule.getCentralVSEPRConfiguration().geometry.name;
+      var name = this.model.moleculeProperty.get().getCentralVSEPRConfiguration().geometry.name;
       if ( name === null ) {
         return geometryEmptyString;
       }

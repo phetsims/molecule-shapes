@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var Vector3 = require( 'DOT/Vector3' );
 
   var nextId = 0;
@@ -33,14 +33,12 @@ define( function( require ) {
     // @public {number - Unique identifier.
     this.id = nextId++;
 
-    PropertySet.call( this, {
-      position: position, // @public {Vector3}
-      velocity: Vector3.ZERO, // @public {Vector3}
-      userControlled: false // @public {boolean} - Whether the user is directly manipulating the position currently.
-    } );
+    this.positionProperty = new Property( position ); // @public {Vector3}
+    this.velocityProperty = new Property( Vector3.ZERO ); // @public {Vector3}
+    this.userControlledProperty = new Property( false ); // @public {boolean} - Whether the user is directly manipulating the position currently.
 
     this.orientation = new Vector3(); // @public (read-only) {Vector3} - Normalized position (unit vector).
-    this.link( 'position', function( position ) {
+    this.positionProperty.link( function( position ) {
       self.orientation.set( position );
 
       if ( position.magnitude() > 0 ) {
@@ -103,7 +101,7 @@ define( function( require ) {
     return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
   };
 
-  return inherit( PropertySet, PairGroup, {
+  return inherit( Object, PairGroup, {
 
     /**
      * Applies a damped spring-like system to move this pair group towards the "ideal" distance from its parent atom.
@@ -114,11 +112,11 @@ define( function( require ) {
      * @param {Bond} bond - Bond to the parent atom
      */
     attractToIdealDistance: function( timeElapsed, oldDistance, bond ) {
-      if ( this.userControlled ) {
+      if ( this.userControlledProperty.get() ) {
         // don't process if being dragged
         return;
       }
-      var origin = bond.getOtherAtom( this ).position;
+      var origin = bond.getOtherAtom( this ).positionProperty.get();
 
       var isTerminalLonePair = !origin.equals( Vector3.ZERO );
 
@@ -127,18 +125,18 @@ define( function( require ) {
       /*---------------------------------------------------------------------------*
        * prevent movement away from our ideal distance
        *----------------------------------------------------------------------------*/
-      var currentError = Math.abs( ( this.position.minus( origin ) ).magnitude() - idealDistanceFromCenter );
+      var currentError = Math.abs( ( this.positionProperty.get().minus( origin ) ).magnitude() - idealDistanceFromCenter );
       var oldError = Math.abs( oldDistance - idealDistanceFromCenter );
       if ( currentError > oldError ) {
         // our error is getting worse! for now, don't let us slide AWAY from the ideal distance ever
         // set our distance to the old one, so it is easier to process
-        this.position = this.orientation.times( oldDistance ).plus( origin );
+        this.positionProperty.set( this.orientation.times( oldDistance ).plus( origin ) );
       }
 
       /*---------------------------------------------------------------------------*
        * use damped movement towards our ideal distance
        *----------------------------------------------------------------------------*/
-      var toCenter = this.position.minus( origin );
+      var toCenter = this.positionProperty.get().minus( origin );
 
       var distance = toCenter.magnitude();
       if ( distance !== 0 ) {
@@ -151,7 +149,7 @@ define( function( require ) {
         if ( isTerminalLonePair ) {
           ratioOfMovement = 1;
         }
-        this.position = this.position.plus( directionToCenter.times( ratioOfMovement * offset ) );
+        this.positionProperty.set( this.positionProperty.get().plus( directionToCenter.times( ratioOfMovement * offset ) ) );
       }
     },
 
@@ -170,7 +168,7 @@ define( function( require ) {
       // only handle the force on this object for now
 
       // If the positions overlap, just let the attraction take care of things. See https://github.com/phetsims/molecule-shapes/issues/136
-      if ( this.position.equalsEpsilon( other.position, 1e-6 ) ) {
+      if ( this.positionProperty.get().equalsEpsilon( other.positionProperty.get(), 1e-6 ) ) {
         return new Vector3();
       }
 
@@ -184,12 +182,12 @@ define( function( require ) {
        *----------------------------------------------------------------------------*/
 
       // adjusted distances from the center atom
-      var adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.position.magnitude(), trueLengthsRatioOverride );
-      var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.position.magnitude(), trueLengthsRatioOverride );
+      var adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.positionProperty.get().magnitude(), trueLengthsRatioOverride );
+      var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.positionProperty.get().magnitude(), trueLengthsRatioOverride );
 
       // adjusted positions
       var adjustedPosition = this.orientation.times( adjustedMagnitude );
-      var adjustedOtherPosition = other.position.magnitude() === 0 ? new Vector3() : other.orientation.times( adjustedOtherMagnitude );
+      var adjustedOtherPosition = other.positionProperty.get().magnitude() === 0 ? new Vector3() : other.orientation.times( adjustedOtherMagnitude );
 
       // from other => this (adjusted)
       var delta = adjustedPosition.minus( adjustedOtherPosition );
@@ -227,8 +225,8 @@ define( function( require ) {
      */
     addPosition: function( positionChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
-      if ( !this.userControlled && !this.isCentralAtom ) {
-        this.position = this.position.plus( positionChange );
+      if ( !this.userControlledProperty.get() && !this.isCentralAtom ) {
+        this.positionProperty.value = this.positionProperty.get().plus( positionChange );
       }
     },
 
@@ -240,8 +238,8 @@ define( function( require ) {
      */
     addVelocity: function( velocityChange ) {
       // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
-      if ( !this.userControlled && !this.isCentralAtom ) {
-        this.velocity = this.velocity.plus( velocityChange );
+      if ( !this.userControlledProperty.get() && !this.isCentralAtom ) {
+        this.velocityProperty.value = this.velocityProperty.get().plus( velocityChange );
       }
     },
 
@@ -252,21 +250,21 @@ define( function( require ) {
      * @param {number} timeElapsed
      */
     stepForward: function( timeElapsed ) {
-      if ( this.userControlled ) { return; }
+      if ( this.userControlledProperty.get() ) { return; }
 
       // velocity changes so that it doesn't point at all towards or away from the origin
-      var velocityMagnitudeOutwards = this.velocity.dot( this.orientation );
-      if ( this.position.magnitude() > 0 ) {
-        this.velocity = this.velocity.minus( this.orientation.times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
+      var velocityMagnitudeOutwards = this.velocityProperty.get().dot( this.orientation );
+      if ( this.positionProperty.get().magnitude() > 0 ) {
+        this.velocityProperty.value = this.velocityProperty.get().minus( this.orientation.times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
       }
 
       // move position forward by scaled velocity
-      this.position = this.position.plus( this.velocity.times( timeElapsed ) );
+      this.positionProperty.value = this.positionProperty.get().plus( this.velocityProperty.get().times( timeElapsed ) );
 
       // add in damping so we don't get the kind of oscillation that we are seeing
       var damping = 1 - PairGroup.DAMPING_FACTOR;
       damping = Math.pow( damping, timeElapsed / 0.017 ); // based so that we have no modification at 0.017
-      this.velocity = this.velocity.times( damping );
+      this.velocityProperty.value = this.velocityProperty.get().times( damping );
     },
 
     /**
@@ -276,10 +274,10 @@ define( function( require ) {
      * @param {Vector3} vector
      */
     dragToPosition: function( vector ) {
-      this.position = vector;
+      this.positionProperty.set( vector );
 
       // stop any velocity that was moving the pair
-      this.velocity = new Vector3();
+      this.velocityProperty.set( new Vector3() );
     }
   } );
 } );

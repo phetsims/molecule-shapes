@@ -121,7 +121,7 @@ define( function( require ) {
         var parentGroup = parentBond.getOtherAtom( group );
 
         // store the old distance before stepping in time
-        var oldDistance = group.position.distance( parentGroup.position );
+        var oldDistance = group.positionProperty.get().distance( parentGroup.positionProperty.get() );
 
         group.stepForward( dt );
         group.attractToIdealDistance( dt, oldDistance, parentBond );
@@ -229,13 +229,13 @@ define( function( require ) {
      * @param {PairGroup} group
      * @param {PairGroup} parent
      * @param {number} bondOrder - 0 for lone pairs.
-     * @param {number} bondLength - Length of the bond.
+     * @param {number} [bondLength] - Length of the bond.
      */
     addGroupAndBond: function( group, parent, bondOrder, bondLength ) {
       // add the group, but delay notifications (inconsistent state)
       this.addGroup( group, false );
 
-      bondLength = bondLength || group.position.minus( parent.position ).magnitude();
+      bondLength = bondLength || group.positionProperty.get().minus( parent.positionProperty.get() ).magnitude();
 
       // add the bond after the group so we can reference things properly
       this.addBond( new Bond( group, parent, bondOrder, bondLength ) );
@@ -453,7 +453,7 @@ define( function( require ) {
       for ( var i = 0; i < quantity; i++ ) {
         // mapped into our coordinates
         var lonePairOrientation = matrix.timesVector3( lonePairOrientations[ i ] );
-        this.addGroupAndBond( new PairGroup( atom.position.plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
+        this.addGroupAndBond( new PairGroup( atom.positionProperty.get().plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
       }
     }
   } );

@@ -33,7 +33,7 @@ define( function( require ) {
   var scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
 
-  var renderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
+  var renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
     antialias: true,
     preserveDrawingBuffer: true, // so we can toDataURL() it
     alpha: true // so we can render the transparency
@@ -181,15 +181,15 @@ define( function( require ) {
 
     // updates the visual state of the thumbnail (image/overlay) and removal button
     function update() {
-      enabled = model.molecule.wouldAllowBondOrder( bondOrder );
+      enabled = model.moleculeProperty.get().wouldAllowBondOrder( bondOrder );
       if ( bondOrder === 0 ) {
-        enabled = enabled && model.showLonePairs;
+        enabled = enabled && model.showLonePairsProperty.get();
       }
       overlay.cursor = enabled ? 'pointer' : null;
 
-      removeButton.visible = _.filter( model.molecule.getBondsAround( model.molecule.centralAtom ), function( bond ) {
-          return bond.order === bondOrder;
-        } ).length > 0;
+      removeButton.visible = _.filter( model.moleculeProperty.get().getBondsAround( model.moleculeProperty.get().centralAtom ), function( bond ) {
+        return bond.order === bondOrder;
+      } ).length > 0;
 
       updateOverlayOpacity();
     }
@@ -206,8 +206,10 @@ define( function( require ) {
       overlay.fill = MoleculeShapesColorProfile.backgroundProperty.get().withAlpha( alpha );
     }
 
-    model.molecule.on( 'bondChanged', update );
-    model.link( 'showLonePairs', update );
+    model.moleculeProperty.get().on( 'bondChanged', update );
+    model.showLonePairsProperty.link( function( pair ) {
+      pair.update;
+    } );
     MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
 
     HBox.call( this, _.extend( {

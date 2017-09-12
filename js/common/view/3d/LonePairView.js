@@ -23,15 +23,14 @@ define( function( require ) {
   var jsonLoader = new THREE.JSONLoader();
 
   // geometry used for display
-  var masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGL ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
-
+  var masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGLProperty.get() ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
   // renderer-local access
   var localShellGeometry = new LocalGeometry( masterShellGeometry );
   var localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     transparent: true,
     opacity: 0.7,
     depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
+    overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
     color: MoleculeShapesColorProfile.lonePairShellProperty
   } );
@@ -85,7 +84,7 @@ define( function( require ) {
 
     // @private - per-instance listener, so it's easier to link and unlink
     this.positionListener = function( position ) {
-      var offsetFromParentAtom = position.minus( self.parentAtom.position );
+      var offsetFromParentAtom = position.minus( self.parentAtom.positionProperty.get() );
       var orientation = offsetFromParentAtom.normalized();
 
       var translation;
@@ -93,7 +92,7 @@ define( function( require ) {
         translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
       }
       else {
-        translation = self.parentAtom.position;
+        translation = self.parentAtom.positionProperty.get();
       }
 
       self.position.set( translation.x, translation.y, translation.z );
@@ -120,8 +119,7 @@ define( function( require ) {
       this.visibilityProperty = visibilityProperty;
       this.visibilityListener = visibilityProperty.linkAttribute( this, 'visible' );
 
-      group.link( 'position', this.positionListener );
-
+      group.positionProperty.link( this.positionListener );
       return this;
     },
 

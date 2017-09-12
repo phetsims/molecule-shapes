@@ -37,7 +37,7 @@ define( function( require ) {
    */
   AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
     var currentOrientations = _.map( groups, function( group ) {
-      return group.position.minus( center ).normalized();
+      return group.positionProperty.get().minus( center ).normalized();
     } );
     var mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
 
@@ -52,10 +52,10 @@ define( function( require ) {
       var pair = groups[ i ];
 
       var targetOrientation = mapping.target.extractVector3( i );
-      var currentMagnitude = ( pair.position.minus( center ) ).magnitude();
+      var currentMagnitude = ( pair.positionProperty.get().minus( center ) ).magnitude();
       var targetLocation = targetOrientation.times( currentMagnitude ).plus( center );
 
-      var delta = targetLocation.minus( pair.position );
+      var delta = targetLocation.minus( pair.positionProperty.get() );
       totalDeltaMagnitude += delta.magnitude() * delta.magnitude();
 
       /*
@@ -97,8 +97,8 @@ define( function( require ) {
         var b = groups[ bIndex ];
 
         // current orientations w.r.t. the center
-        var aOrientation = a.position.minus( center ).normalized();
-        var bOrientation = b.position.minus( center ).normalized();
+        var aOrientation = a.positionProperty.get().minus( center ).normalized();
+        var bOrientation = b.positionProperty.get().minus( center ).normalized();
 
         // desired orientations
         var aTarget = mapping.target.extractVector3( aIndex ).normalized();
@@ -107,7 +107,7 @@ define( function( require ) {
         var currentAngle = Math.acos( DotUtil.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
         var angleDifference = ( targetAngle - currentAngle );
 
-        var dirTowardsA = a.position.minus( b.position ).normalized();
+        var dirTowardsA = a.positionProperty.get().minus( b.positionProperty.get() ).normalized();
         var timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
 
         var extraClosePushFactor = DotUtil.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );

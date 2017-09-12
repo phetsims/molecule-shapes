@@ -17,14 +17,14 @@ define( function( require ) {
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var Vector3 = require( 'DOT/Vector3' );
 
-  var NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGL ? 32 : 8;
-  var NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGL ? 1 : 8;
+  var NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 32 : 8;
+  var NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 1 : 8;
   var globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, NUM_RADIAL_SAMPLES, NUM_AXIAL_SAMPLES, false ); // 1 radius, 1 height, 32 segments, open-ended
 
   // renderer-local access
   var localBondGeometry = new LocalGeometry( globalBondGeometry );
   var localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
-    overdraw: MoleculeShapesGlobals.useWebGL ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
+    overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
     color: MoleculeShapesColorProfile.bondProperty
   } );

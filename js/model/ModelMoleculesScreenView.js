@@ -39,7 +39,7 @@ define( function( require ) {
 
     this.model = model; // @private {MoleculeShapesModel}
 
-    this.moleculeView = new MoleculeView( model, this, model.molecule ); // @public
+    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
     this.addMoleculeView( this.moleculeView );
 
     var addPairCallback = this.addPairGroup.bind( this );
@@ -61,7 +61,7 @@ define( function( require ) {
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
       listener: function() {
-        model.molecule.removeAllGroups();
+        model.moleculeProperty.get().removeAllGroups();
       }
     } );
 
@@ -70,10 +70,10 @@ define( function( require ) {
     } );
     removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
     function updateButtonEnabled() {
-      removeAllButton.enabled = model.molecule.radialGroups.length > 0;
+      removeAllButton.enabled = model.moleculeProperty.get().radialGroups.length > 0;
     }
 
-    model.molecule.on( 'bondChanged', updateButtonEnabled );
+    model.moleculeProperty.get() && model.moleculeProperty.get().on( 'bondChanged', updateButtonEnabled );
     updateButtonEnabled();
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
@@ -138,7 +138,7 @@ define( function( require ) {
       var extraFactor = 1.2;
 
       var pair = new PairGroup( new Vector3().set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
-      this.model.molecule.addGroupAndBond( pair, this.model.molecule.centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
+      this.model.moleculeProperty.get().addGroupAndBond( pair, this.model.moleculeProperty.get().centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
     },
 
     /**
@@ -147,7 +147,7 @@ define( function( require ) {
      * @param {number} bondOrder
      */
     removePairGroup: function( bondOrder ) {
-      var molecule = this.model.molecule;
+      var molecule = this.model.moleculeProperty.get();
 
       var bonds = molecule.getBondsAround( molecule.centralAtom );
 

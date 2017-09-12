@@ -31,7 +31,7 @@ define( function( require ) {
   var scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
 
-  var renderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
+  var renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
     antialias: true,
     preserveDrawingBuffer: true, // so we can toDataURL() it
     alpha: true // transparency needs to be enabled, even though we don't need it here. see #98

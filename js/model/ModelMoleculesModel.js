@@ -13,6 +13,7 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  var Property = require( 'AXON/Property' );
   var Vector3 = require( 'DOT/Vector3' );
   var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
 
@@ -26,21 +27,20 @@ define( function( require ) {
     var initialMolecule = new VSEPRMolecule();
 
     // inherits PropertySet, these are made into properties
-    MoleculeShapesModel.call( this, isBasicsVersion, {
-      molecule: initialMolecule,
-      addSingleBondEnabled: true,
-      addDoubleBondEnabled: true,
-      addTripleBondEnabled: true,
-      addLonePairEnabled: true
-    } );
+    MoleculeShapesModel.call( this, isBasicsVersion );
+    this.moleculeProperty = new Property( initialMolecule );
+    this.addSingleBondEnabledProperty = new Property( true );
+    this.addDoubleBondEnabledProperty = new Property( true );
+    this.addTripleBondEnabledProperty = new Property( true );
+    this.addLonePairEnabledProperty = new Property( true );
 
-    this.molecule.addCentralAtom( new PairGroup( new Vector3(), false ) );
+    this.moleculeProperty.get().addCentralAtom( new PairGroup( new Vector3(), false ) );
     this.setupInitialMoleculeState();
 
     // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
-    this.molecule.on( 'bondChanged', function() {
-      if ( self.molecule.radialLonePairs.length === 0 ) {
-        self.showLonePairs = true;
+    this.moleculeProperty.get().on( 'bondChanged', function() {
+      if ( self.moleculeProperty.get().radialLonePairs.length === 0 ) {
+        self.showLonePairsProperty.set( true );
       }
     } );
   }
@@ -53,22 +53,24 @@ define( function( require ) {
      */
     setupInitialMoleculeState: function() {
       // start with two single bonds
-      var centralAtom = this.molecule.centralAtom;
-      this.molecule.addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
-      this.molecule.addGroupAndBond( new PairGroup( new Vector3( 2, 8, -5 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
+      var centralAtom = this.moleculeProperty.get().centralAtom;
+      this.moleculeProperty.get().addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
+      this.moleculeProperty.get().addGroupAndBond( new PairGroup( new Vector3( 2, 8, -5 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
     },
 
     // @override
     reset: function() {
       MoleculeShapesModel.prototype.reset.call( this );
 
-      this.molecule.removeAllGroups();
-      this.setupInitialMoleculeState();
-    },
+      this.moleculeProperty.reset();
+      this.addSingleBondEnabledProperty.reset();
+      this.addDoubleBondEnabledProperty.reset();
+      this.addTripleBondEnabledProperty.reset();
+      this.addLonePairEnabledProperty.reset();
 
-    // @override
-    step: function( dt ) {
-      MoleculeShapesModel.prototype.step.call( this, dt );
+
+      this.moleculeProperty.get().removeAllGroups();
+      this.setupInitialMoleculeState();
     }
   } );
 } );

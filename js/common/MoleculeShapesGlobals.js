@@ -14,13 +14,13 @@ define( function( require ) {
   var MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
   var platform = require( 'PHET_CORE/platform' );
   var Property = require( 'AXON/Property' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var Util = require( 'SCENERY/util/Util' );
 
-  var MoleculeShapesGlobals = new PropertySet( {
-    showOuterLonePairs: MoleculeShapesQueryParameters.showOuterLonePairs,
-    projectorColors: ( phet.chipper.queryParameters.colorProfile === 'projector' )
-  } );
+  var MoleculeShapesGlobals = {
+    showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs ),
+    projectorColorsProperty: new Property( phet.chipper.queryParameters.colorProfile === 'projector' )
+  };
+
   moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 
   // polyfill for console.log on IE9, see https://github.com/phetsims/molecule-shapes/issues/108
@@ -34,10 +34,10 @@ define( function( require ) {
 
   return _.extend( MoleculeShapesGlobals, {
     // @public {boolean} - Whether the basics of WebGL are included
-    hasBasicWebGLSupport: hasBasicWebGLSupport,
+    hasBasicWebGLSupportProperty: new Property( hasBasicWebGLSupport ),
 
     // @public {boolean} - Whether we will be using WebGL
-    useWebGL: useWebGL,
+    useWebGLProperty: new Property( useWebGL ),
 
     /**
      * Applies color changes to the material's color field, and also does so immediately upon being called.

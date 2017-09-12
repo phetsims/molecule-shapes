@@ -15,6 +15,7 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
   var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  var Property = require( 'AXON/Property' );
   var RealMolecule = require( 'MOLECULE_SHAPES/common/model/RealMolecule' );
   var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
   var Vector3 = require( 'DOT/Vector3' );
@@ -31,12 +32,11 @@ define( function( require ) {
     var startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[ 0 ] : RealMoleculeShape.TAB_2_MOLECULES[ 0 ];
     var startingMolecule = new RealMolecule( startingMoleculeShape );
 
-    // inherits PropertySet, these are made into properties
-    MoleculeShapesModel.call( this, isBasicsVersion, {
-      molecule: startingMolecule, // @override {Molecule}
-      realMoleculeShape: startingMoleculeShape, // {RealMoleculeShape}
-      showRealView: true // whether the "Real" or "Model" view is shown
-    } );
+    MoleculeShapesModel.call( this, isBasicsVersion );
+    this.moleculeProperty = new Property( startingMolecule ); // @override {Molecule}
+    this.realMoleculeShapeProperty = new Property( startingMoleculeShape ); // {RealMoleculeShape}
+    this.showRealViewProperty = new Property( true ); // whether the "Real" or "Model" view is shown
+
 
     this.showRealViewProperty.lazyLink( function() {
       self.rebuildMolecule( false );
@@ -68,17 +68,17 @@ define( function( require ) {
      *                                         do any matching of orientation.
      */
     rebuildMolecule: function( switchedRealMolecule ) {
-      var molecule = this.molecule;
+      var molecule = this.moleculeProperty.get();
 
-      var numRadialAtoms = this.realMoleculeShape.centralAtomCount;
-      var numRadialLonePairs = this.realMoleculeShape.centralAtom.lonePairCount;
+      var numRadialAtoms = this.realMoleculeShapeProperty.get().centralAtomCount;
+      var numRadialLonePairs = this.realMoleculeShapeProperty.get().centralAtom.lonePairCount;
       var vseprConfiguration = VSEPRConfiguration.getConfiguration( numRadialAtoms, numRadialLonePairs );
 
       // get a copy of what might be the "old" molecule into whose space we need to rotate into
       var mappingMolecule;
       if ( switchedRealMolecule ) {
         // rebuild from scratch
-        mappingMolecule = new RealMolecule( this.realMoleculeShape );
+        mappingMolecule = new RealMolecule( this.realMoleculeShapeProperty.get() );
       }
       else {
         // base the rotation on our original
@@ -87,13 +87,13 @@ define( function( require ) {
 
       var newMolecule;
       var mapping;
-      if ( this.showRealView ) {
-        newMolecule = new RealMolecule( this.realMoleculeShape );
+      if ( this.showRealViewProperty.get() ) {
+        newMolecule = new RealMolecule( this.realMoleculeShapeProperty.get() );
         if ( !switchedRealMolecule ) {
           // NOTE: this might miss a couple improper mappings?
 
           // compute the mapping from our "ideal" to our "old" molecule
-          var groups = new RealMolecule( this.realMoleculeShape ).radialGroups;
+          var groups = new RealMolecule( this.realMoleculeShapeProperty.get() ).radialGroups;
           mapping = AttractorModel.findClosestMatchingConfiguration(
             AttractorModel.getOrientationsFromOrigin( mappingMolecule.radialGroups ),
             _.map( groups, function( pair ) {
@@ -102,7 +102,7 @@ define( function( require ) {
             LocalShape.vseprPermutations( mappingMolecule.radialGroups ) );
           _.each( newMolecule.groups, function( group ) {
             if ( group !== newMolecule.centralAtom ) {
-              group.position = mapping.rotateVector( group.position );
+              group.positionProperty.set( mapping.rotateVector( group.positionProperty.get() ) );
             }
           } );
         }
@@ -134,7 +134,7 @@ define( function( require ) {
         }
       }
 
-      this.molecule = newMolecule;
+      this.moleculeProperty.set( newMolecule );
     }
   } );
 } );

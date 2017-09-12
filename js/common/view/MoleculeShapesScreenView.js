@@ -55,7 +55,7 @@ define( function( require ) {
     this.threeCamera = new THREE.PerspectiveCamera(); // @private will set the projection parameters on layout
 
     // @public {THREE.Renderer}
-    this.threeRenderer = MoleculeShapesGlobals.useWebGL ? new THREE.WebGLRenderer( {
+    this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
       antialias: true
     } ) : new THREE.CanvasRenderer( {
       devicePixelRatio: 1 // hopefully helps performance a bit
@@ -68,7 +68,7 @@ define( function( require ) {
     this.contextLossDialog = null;
 
     // In the event of a context loss, we'll just show a dialog. See https://github.com/phetsims/molecule-shapes/issues/100
-    if ( MoleculeShapesGlobals.useWebGL ) {
+    if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
       this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
         event.preventDefault();
 
@@ -107,7 +107,7 @@ define( function( require ) {
       // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
       // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
       // share the view (three.js constraint).
-      if ( MoleculeShapesGlobals.useWebGL ) {
+      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
         // set up a framebuffer (target is three.js terminology) to render into
         var target = new THREE.WebGLRenderTarget( self.screenWidth, self.screenHeight, {
           minFilter: THREE.LinearFilter,
@@ -188,11 +188,11 @@ define( function( require ) {
         var draggedParticle = null;
 
         var pair = self.getElectronPairUnderPointer( event.pointer, !event.pointer.isMouse );
-        if ( pair && !pair.userControlled ) {
+        if ( pair && !pair.userControlledProperty.get() ) {
           // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
           dragMode = 'pairExistingSpherical';
           draggedParticle = pair;
-          pair.userControlled = true;
+          pair.userControlledProperty.set( true );
           draggedParticleCount++;
         }
         else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
@@ -224,11 +224,11 @@ define( function( require ) {
 
               var scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
               var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
-              newQuaternion.multiply( model.moleculeQuaternion );
-              model.moleculeQuaternion = newQuaternion;
+              newQuaternion.multiply( model.moleculeQuaternionProperty.get() );
+              model.moleculeQuaternionProperty.value = newQuaternion;
             }
             else if ( dragMode === 'pairExistingSpherical' ) {
-              if ( _.includes( model.molecule.groups, draggedParticle ) ) {
+              if ( _.includes( model.moleculeProperty.get().groups, draggedParticle ) ) {
                 draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
               }
             }
@@ -237,7 +237,7 @@ define( function( require ) {
           // not a Scenery event
           endDrag: function( event, trail ) {
             if ( dragMode === 'pairExistingSpherical' ) {
-              draggedParticle.userControlled = false;
+              draggedParticle.userControlledProperty.set( false );
               draggedParticleCount--;
             }
             else if ( dragMode === 'modelRotate' ) {
@@ -254,7 +254,7 @@ define( function( require ) {
     // Consider updating the cursor even if we don't move? (only if we have mouse movement)? Current development
     // decision is to ignore this edge case in favor of performance.
     this.backgroundEventTarget.addInputListener( {
-      mousemove: function( event, trail ) {
+      mousemove: function( event ) {
         self.backgroundEventTarget.cursor = self.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
       }
     } );
@@ -272,7 +272,7 @@ define( function( require ) {
     // @private - create a pool of angle labels of the desired type
     this.angleLabels = [];
     for ( var i = 0; i < 15; i++ ) {
-      if ( MoleculeShapesGlobals.useWebGL ) {
+      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
         this.angleLabels[ i ] = new LabelWebGLView( this.threeRenderer );
         this.overlayScene.add( this.angleLabels[ i ] );
         this.angleLabels[ i ].unsetLabel();
@@ -292,30 +292,9 @@ define( function( require ) {
      */
     showContextLossDialog: function() {
       if ( !this.contextLossDialog ) {
-        this.contextLossDialog = new ContextLossFailureDialog();        
+        this.contextLossDialog = new ContextLossFailureDialog();
       }
       this.contextLossDialog.show();
-      // var warningSign = new FontAwesomeNode( 'warning_sign', {
-      //   fill: '#E87600', // "safety orange", according to Wikipedia
-      //   scale: 0.6
-      // } );
-      // var text = new Text( 'Sorry, a graphics error has occurred.', { font: new PhetFont( 12 ) } );
-      // var button = new TextPushButton( 'Reload', {
-      //   font: new PhetFont( 12 ),
-      //   baseColor: '#E87600',
-      //   listener: function() {
-      //     window.location.reload();
-      //   }
-      // } );
-      // new Dialog( new HBox( {
-      //   children: [ warningSign, text, button ],
-      //   spacing: 10
-      // } ), {
-      //   modal: true,
-      //   hasCloseButton: false,
-      //   xMargin: 10,
-      //   yMargin: 10
-      // } ).show();
     },
 
     /**
@@ -347,7 +326,7 @@ define( function( require ) {
     addMoleculeView: function( moleculeView ) {
       this.threeScene.add( moleculeView );
 
-      this.moleculeView.quaternion.copy( this.model.moleculeQuaternion );
+      this.moleculeView.quaternion.copy( this.model.moleculeQuaternionProperty.get() );
       this.moleculeView.updateMatrix();
       this.moleculeView.updateMatrixWorld();
     },
@@ -474,7 +453,7 @@ define( function( require ) {
       var localCameraDirection = new Vector3().set( ray.direction ).normalize();
 
       // how far we will end up from the center atom
-      var finalDistance = this.model.molecule.getIdealDistanceFromCenter( draggedParticle );
+      var finalDistance = this.model.moleculeProperty.get().getIdealDistanceFromCenter( draggedParticle );
 
       // our sphere to cast our ray against
       var sphere = new Sphere3( new Vector3(), finalDistance );
@@ -519,7 +498,7 @@ define( function( require ) {
       }
       else {
         // pick the hitPoint closer to our current point (won't flip to the other side of our sphere)
-        return intersections[ 0 ].hitPoint.distance( draggedParticle.position ) < intersections[ 1 ].hitPoint.distance( draggedParticle.position ) ?
+        return intersections[ 0 ].hitPoint.distance( draggedParticle.positionProperty.get() ) < intersections[ 1 ].hitPoint.distance( draggedParticle.positionProperty.get() ) ?
                intersections[ 0 ].hitPoint :
                intersections[ 1 ].hitPoint;
       }

@@ -141,7 +141,7 @@ define( function( require ) {
    * @param {THREE.Renderer} renderer
    */
   function BondAngleWebGLView( renderer ) {
-    assert && assert( MoleculeShapesGlobals.useWebGL );
+    assert && assert( MoleculeShapesGlobals.useWebGLProperty.get() );
     BondAngleView.call( this );
 
     var self = this;

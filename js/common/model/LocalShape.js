@@ -53,7 +53,7 @@ define( function( require ) {
      * @returns {number} Amount of error (least squares-style)
      */
     applyAttraction: function( dt ) {
-      return AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, false );
+      return AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.positionProperty.get(), false );
     },
 
     /**
@@ -63,7 +63,7 @@ define( function( require ) {
      * @param {number} dt - Amount of time elapsed
      */
     applyAngleAttractionRepulsion: function( dt ) {
-      AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.position, true );
+      AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.positionProperty.get(), true );
     }
   }, {
     /**

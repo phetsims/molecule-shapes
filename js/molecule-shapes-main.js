@@ -32,9 +32,9 @@ define( function( require ) {
       qualityAssurance: 'Oliver Orejola, Bryan Yoelin'
     },
     optionsNode: new GlobalOptionsNode( isBasicsVersion ),
-    homeScreenWarningNode: MoleculeShapesGlobals.useWebGL ?
+    homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
                            null :
-                           ( MoleculeShapesGlobals.hasBasicWebGLSupport ?
+                           ( MoleculeShapesGlobals.hasBasicWebGLSupportProperty.get() ?
                              new IE11StencilWarningNode() : // if we have basic support, we failed due to IE-specific reasons
                              new CanvasWarningNode() )
   };
