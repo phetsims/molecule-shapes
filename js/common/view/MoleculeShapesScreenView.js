@@ -56,7 +56,8 @@ define( function( require ) {
 
     // @public {THREE.Renderer}
     this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
-      antialias: true
+      antialias: true,
+      preserveDrawingBuffer: phet.chipper.queryParameters.preserveDrawingBuffer
     } ) : new THREE.CanvasRenderer( {
       devicePixelRatio: 1 // hopefully helps performance a bit
     } );
