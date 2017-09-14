@@ -55,7 +55,9 @@ define( function( require ) {
      */
     reset: function() {
       MoleculeShapesModel.prototype.reset.call( this );
-
+      this.moleculeProperty.reset();
+      this.realMoleculeShapeProperty.reset();
+      this.showRealViewProperty.reset();
       this.rebuildMolecule( true );
     },
 
