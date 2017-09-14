@@ -129,8 +129,6 @@ define( function( require ) {
      */
     dispose: function() {
       this.visibilityProperty.unlink( this.visibilityListener );
-
-      // no PropertySet.unlink?
       this.group.positionProperty.unlink( this.positionListener );
 
       // clean references

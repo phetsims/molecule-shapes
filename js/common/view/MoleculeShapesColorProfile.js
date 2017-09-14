@@ -22,7 +22,6 @@ define( function( require ) {
 
   // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the
   // 'default' value provided.
-  // NOTE: This is NOT provided to clients directly, but is passed to the PropertySet constructor.
   var MoleculeShapesColorProfile = new ColorProfile( {
     background: {
       default: new Color( 0, 0, 0 ),

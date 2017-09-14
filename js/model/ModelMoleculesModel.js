@@ -26,7 +26,6 @@ define( function( require ) {
 
     var initialMolecule = new VSEPRMolecule();
 
-    // inherits PropertySet, these are made into properties
     MoleculeShapesModel.call( this, isBasicsVersion );
     this.moleculeProperty = new Property( initialMolecule );
     this.addSingleBondEnabledProperty = new Property( true );
