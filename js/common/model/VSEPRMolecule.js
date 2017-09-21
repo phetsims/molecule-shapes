@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2017, University of Colorado Boulder
 
 /**
  * A molecule that behaves with a behavior that doesn't discriminate between bond or atom types (only lone pairs vs

@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2017, University of Colorado Boulder
 
 /**
  * Represents a 'real' molecule with exact positions, as opposed to a molecule model (which is VSEPR-based
