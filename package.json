@@ -20,6 +20,11 @@
       "../sherpa/lib/three-r71-Projector.js",
       "../sherpa/lib/three-r71-CanvasRenderer.js",
       "../sherpa/lib/liberation-sans-regular-subset-numeric-degrees.js"
-    ]
+    ],
+    "runnable": true,
+    "supportedBrands": [
+      "phet"
+    ],
+    "simulation": true
   }
 }
