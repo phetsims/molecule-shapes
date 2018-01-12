@@ -1,7 +1,7 @@
 // Copyright 2014-2017, University of Colorado Boulder
 
 /**
- * A CheckBox with customized color handling for Molecule Shapes
+ * A Checkbox with customized color handling for Molecule Shapes
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
@@ -20,15 +20,15 @@ define( function( require ) {
    * @constructor
    * @param {Object} [options]
    */
-  function MoleculeShapesCheckBox( content, property, options ) {
-    CheckBox.call( this, content, property, options );
+  function MoleculeShapesCheckbox( content, property, options ) {
+    Checkbox.call( this, content, property, options );
 
-    MoleculeShapesColorProfile.checkBoxProperty.linkAttribute( this, 'checkBoxColor' );
-    MoleculeShapesColorProfile.checkBoxBackgroundProperty.linkAttribute( this, 'checkBoxColorBackground' );
+    MoleculeShapesColorProfile.checkboxProperty.linkAttribute( this, 'checkboxColor' );
+    MoleculeShapesColorProfile.checkboxBackgroundProperty.linkAttribute( this, 'checkboxColorBackground' );
   }
 
-  moleculeShapes.register( 'MoleculeShapesCheckBox', MoleculeShapesCheckBox );
+  moleculeShapes.register( 'MoleculeShapesCheckbox', MoleculeShapesCheckbox );
 
-  return inherit( CheckBox, MoleculeShapesCheckBox, {} );
+  return inherit( Checkbox, MoleculeShapesCheckbox, {} );
 } );
 

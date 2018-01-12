@@ -42,7 +42,7 @@ define( function( require ) {
     GeometryNamePanel: require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' ),
     GlobalOptionsNode: require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' ),
     LabelFallbackNode: require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' ),
-    MoleculeShapesCheckBox: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' ),
+    MoleculeShapesCheckbox: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' ),
     MoleculeShapesColorProfile: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' ),
     MoleculeShapesPanel: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' ),
     MoleculeShapesScreenView: require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' ),

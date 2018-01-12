@@ -12,7 +12,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' );
+  var MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -121,8 +121,8 @@ define( function( require ) {
     } );
 
     // @private
-    this.molecularCheckbox = new MoleculeShapesCheckBox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
-    this.electronCheckbox = new MoleculeShapesCheckBox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
+    this.molecularCheckbox = new MoleculeShapesCheckbox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
+    this.electronCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
 
     var pointerAreaXPadding = 10;
     var pointerAreaYPadding = 15;
@@ -141,10 +141,10 @@ define( function( require ) {
     // layout
     var horizontalPadding = 20;
     var contentWidth = maxGeometryWidth + ( model.isBasicsVersion ? 0 : ( horizontalPadding + maxGeometryWidth ) );
-    var checkBoxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
+    var checkboxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
     this.molecularCheckbox.centerX = maxGeometryWidth / 2;
     this.electronCheckbox.centerX = maxGeometryWidth + horizontalPadding + maxShapeWidth / 2;
-    this.molecularText.top = this.electronText.top = checkBoxBottom + 10;
+    this.molecularText.top = this.electronText.top = checkboxBottom + 10;
 
     var content = new Node( {
       // Make sure we include the extra (possibly unused) space so that the panel can contain all of the content,

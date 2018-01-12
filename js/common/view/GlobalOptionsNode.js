@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
@@ -25,10 +25,16 @@ define( function( require ) {
     var children = [];
 
     if ( !isBasicsVersion ) {
-      children.push( new CheckBox( new Text( optionsShowOuterLonePairsString, { font: OptionsDialog.DEFAULT_FONT, maxWidth: 500 } ),
+      children.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
+          font: OptionsDialog.DEFAULT_FONT,
+          maxWidth: 500
+        } ),
         MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
     }
-    children.push( new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT, maxWidth: 500 } ),
+    children.push( new Checkbox( new Text( optionsProjectorColorsString, {
+        font: OptionsDialog.DEFAULT_FONT,
+        maxWidth: 500
+      } ),
       MoleculeShapesGlobals.projectorColorsProperty, {} ) );
 
     VBox.call( this, _.extend( {

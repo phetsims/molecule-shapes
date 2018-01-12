@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesCheckBox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckBox' );
+  var MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -33,8 +33,8 @@ define( function( require ) {
       fill: MoleculeShapesColorProfile.controlPanelTextProperty
     } );
 
-    var showLonePairsCheckbox = new MoleculeShapesCheckBox( showLonePairsLabel, model.showLonePairsProperty, {} );
-    var showBondAnglesCheckbox = new MoleculeShapesCheckBox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
+    var showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {} );
+    var showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
 
     // touch areas
     var lonePairTouchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
