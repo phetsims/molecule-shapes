@@ -134,7 +134,7 @@ define( function( require ) {
       .withMaxY( this.electronCheckbox.localBounds.maxY + pointerAreaBottomExtension );
     this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = electronPointerArea;
 
-    // increase our maximums if our check box labels are larger than the shape names
+    // increase our maximums if our checkbox labels are larger than the shape names
     maxGeometryWidth = Math.max( maxGeometryWidth, this.molecularCheckbox.width );
     maxShapeWidth = Math.max( maxShapeWidth, this.electronCheckbox.width );
 
