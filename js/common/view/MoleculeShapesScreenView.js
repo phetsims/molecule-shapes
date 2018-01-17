@@ -19,6 +19,7 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  var Mouse = require( 'SCENERY/input/Mouse' );
   var Plane3 = require( 'DOT/Plane3' );
   var Ray3 = require( 'DOT/Ray3' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -176,7 +177,7 @@ define( function( require ) {
     var multiDragListener = {
       down: function( event, trail ) {
         // ignore non-main-mouse-buttons
-        if ( event.pointer.isMouse && event.domEvent && event.domEvent.button !== 0 ) {
+        if ( event.pointer instanceof Mouse && event.domEvent && event.domEvent.button !== 0 ) {
           return;
         }
 
@@ -188,7 +189,7 @@ define( function( require ) {
         var dragMode = null;
         var draggedParticle = null;
 
-        var pair = self.getElectronPairUnderPointer( event.pointer, !event.pointer.isMouse );
+        var pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
         if ( pair && !pair.userControlledProperty.get() ) {
           // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
           dragMode = 'pairExistingSpherical';
