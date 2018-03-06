@@ -176,10 +176,7 @@ define( function( require ) {
 
     var multiDragListener = {
       down: function( event, trail ) {
-        // ignore non-main-mouse-buttons
-        if ( event.pointer instanceof Mouse && event.domEvent && event.domEvent.button !== 0 ) {
-          return;
-        }
+        if ( !event.canStartPress() ) { return; }
 
         // if we are already rotating the entire molecule, no more drags can be handled
         if ( isRotating ) {
