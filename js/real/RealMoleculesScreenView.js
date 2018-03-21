@@ -94,12 +94,14 @@ define( function( require ) {
 
       var radioButtonScale = 0.7;
       var realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
+        radius: 16,
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,
         right: approximateVisualCenterX - horizontalSpacing / 2,
         maxWidth: 320
       } );
       var modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
+        radius: 16,
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,
         left: approximateVisualCenterX + horizontalSpacing / 2,
