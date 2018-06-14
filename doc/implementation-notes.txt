@@ -18,7 +18,6 @@ Notable directory structure:
   js/real/ - All files specific to the "Real Molecules" tab
   js/molecule-shapes-dev-{config,main}.js - Config and main to load the sim code without running the sim.
                                             Useful for the unit tests and playground.
-  tests/qunit/ - Unit tests, set up like Scenery/Kite/Dot. Run from molecule-shapes/tests/qunit/unit-tests.html
   tests/playground.html - Loads require.js modules into the global namespace without running the sim (for manual testing)
 
 Libraries used:
