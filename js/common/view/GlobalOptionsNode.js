@@ -14,11 +14,11 @@ define( function( require ) {
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
+  var ProjectorModeCheckbox = require( 'JOIST/ProjectorModeCheckbox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var optionsProjectorColorsString = require( 'string!MOLECULE_SHAPES/options.projectorColors' );
   var optionsShowOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );
 
   function GlobalOptionsNode( isBasicsVersion ) {
@@ -31,11 +31,9 @@ define( function( require ) {
         } ),
         MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
     }
-    children.push( new Checkbox( new Text( optionsProjectorColorsString, {
-        font: OptionsDialog.DEFAULT_FONT,
-        maxWidth: 500
-      } ),
-      MoleculeShapesGlobals.projectorColorsProperty, {} ) );
+    children.push( new ProjectorModeCheckbox( {
+      projectorModeEnabledProperty: MoleculeShapesGlobals.projectorColorsProperty
+    } ) );
 
     VBox.call( this, _.extend( {
       children: children,
