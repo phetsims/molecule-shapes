@@ -105,7 +105,7 @@ define( function( require ) {
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
     this.domNode.renderToCanvasSelf = function( wrapper ) {
       var canvas = null;
-      
+
       var effectiveWidth = Math.ceil( self.screenWidth );
       var effectiveHeight = Math.ceil( self.screenHeight );
 
@@ -148,7 +148,13 @@ define( function( require ) {
 
       var context = wrapper.context;
       context.save();
-      context.setTransform( 1, 0, 0, -1, 0, effectiveHeight ); // no need to take pixel scaling into account
+
+      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+        context.setTransform( 1, 0, 0, -1, 0, effectiveHeight ); // no need to take pixel scaling into account
+      }
+      else {
+        context.setTransform( 1, 0, 0, 1, 0, 0 );
+      }
       context.drawImage( canvas, 0, 0 );
       context.restore();
     };
