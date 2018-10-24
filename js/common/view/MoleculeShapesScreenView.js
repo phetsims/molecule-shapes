@@ -105,13 +105,17 @@ define( function( require ) {
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
     this.domNode.renderToCanvasSelf = function( wrapper ) {
       var canvas = null;
+      
+      var effectiveWidth = Math.ceil( self.screenWidth );
+      var effectiveHeight = Math.ceil( self.screenHeight );
 
       // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
       // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
       // share the view (three.js constraint).
       if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+
         // set up a framebuffer (target is three.js terminology) to render into
-        var target = new THREE.WebGLRenderTarget( self.screenWidth, self.screenHeight, {
+        var target = new THREE.WebGLRenderTarget( effectiveWidth, effectiveHeight, {
           minFilter: THREE.LinearFilter,
           magFilter: THREE.NearestFilter,
           format: THREE.RGBAFormat
@@ -120,20 +124,20 @@ define( function( require ) {
         self.render( target );
 
         // set up a buffer for pixel data, in the exact typed formats we will need
-        var buffer = new window.ArrayBuffer( self.screenWidth * self.screenHeight * 4 );
+        var buffer = new window.ArrayBuffer( effectiveWidth * effectiveHeight * 4 );
         var imageDataBuffer = new window.Uint8ClampedArray( buffer );
         var pixels = new window.Uint8Array( buffer );
 
         // read the pixel data into the buffer
         var gl = self.threeRenderer.getContext();
-        gl.readPixels( 0, 0, self.screenWidth, self.screenHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
+        gl.readPixels( 0, 0, effectiveWidth, effectiveHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
 
         // create a Canvas with the correct size, and fill it with the pixel data
         canvas = document.createElement( 'canvas' );
-        canvas.width = self.screenWidth;
-        canvas.height = self.screenHeight;
+        canvas.width = effectiveWidth;
+        canvas.height = effectiveHeight;
         var tmpContext = canvas.getContext( '2d' );
-        var imageData = tmpContext.createImageData( self.screenWidth, self.screenHeight );
+        var imageData = tmpContext.createImageData( effectiveWidth, effectiveHeight );
         imageData.data.set( imageDataBuffer );
         tmpContext.putImageData( imageData, 0, 0 );
       }
@@ -144,7 +148,7 @@ define( function( require ) {
 
       var context = wrapper.context;
       context.save();
-      context.setTransform( 1, 0, 0, -1, 0, self.screenHeight ); // no need to take pixel scaling into account
+      context.setTransform( 1, 0, 0, -1, 0, effectiveHeight ); // no need to take pixel scaling into account
       context.drawImage( canvas, 0, 0 );
       context.restore();
     };
