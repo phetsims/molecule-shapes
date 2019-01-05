@@ -46,12 +46,7 @@ define( function( require ) {
     var comboBoxListContainer = new Node();
     var comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
     var comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
-      return {
-        value: realMoleculeShape,
-        node: new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ), {
-          // default font is OK
-        } )
-      };
+      return ComboBox.createItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape );
     } ), model.realMoleculeShapeProperty, comboBoxListContainer, {} );
     var optionsNode = new OptionsNode( model );
 
