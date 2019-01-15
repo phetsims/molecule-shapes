@@ -47,7 +47,10 @@ define( function( require ) {
     var comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
     var comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
       return ComboBox.createItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape );
-    } ), model.realMoleculeShapeProperty, comboBoxListContainer, {} );
+    } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
+      xMargin: 13,
+      yMargin: 10
+    } );
     var optionsNode = new OptionsNode( model );
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
