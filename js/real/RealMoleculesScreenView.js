@@ -49,7 +49,8 @@ define( function( require ) {
       return ComboBox.createItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape );
     } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
       xMargin: 13,
-      yMargin: 10
+      yMargin: 10,
+      cornerRadius: 8
     } );
     var optionsNode = new OptionsNode( model );
 
