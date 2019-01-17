@@ -12,6 +12,7 @@ define( function( require ) {
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var ChemUtils = require( 'NITROGLYCERIN/ChemUtils' );
   var ComboBox = require( 'SUN/ComboBox' );
+  var ComboBoxItem = require( 'SUN/ComboBoxItem' );
   var inherit = require( 'PHET_CORE/inherit' );
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
@@ -46,7 +47,7 @@ define( function( require ) {
     var comboBoxListContainer = new Node();
     var comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
     var comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
-      return ComboBox.createItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape );
+      return new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape );
     } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
       xMargin: 13,
       yMargin: 10,
