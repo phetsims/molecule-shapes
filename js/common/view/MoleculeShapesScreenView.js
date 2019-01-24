@@ -171,8 +171,7 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
         model.reset();
-      },
-      touchAreaDilation: 15 // just to where it almost touches the PhET Menu button, can't make it any bigger
+      }
     } ) );
 
     this.addChild( new GeometryNamePanel( model, {
