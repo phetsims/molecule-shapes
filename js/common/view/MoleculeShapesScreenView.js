@@ -384,8 +384,8 @@ define( function( require ) {
      */
     getRayFromScreenPoint: function( screenPoint ) {
       var threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
-      return new Ray3( new Vector3().set( threeRay.origin ),
-        new Vector3().set( threeRay.direction ).normalize() );
+      return new Ray3( new Vector3( 0, 0, 0 ).set( threeRay.origin ),
+        new Vector3( 0, 0, 0 ).set( threeRay.direction ).normalize() );
     },
 
     /*
@@ -457,14 +457,14 @@ define( function( require ) {
       var ray = raycaster.ray.clone(); // {THREE.Ray}
       ray.applyMatrix4( threeInverseMatrix ); // global to local
 
-      var localCameraPosition = new Vector3().set( ray.origin );
-      var localCameraDirection = new Vector3().set( ray.direction ).normalize();
+      var localCameraPosition = new Vector3( 0, 0, 0 ).set( ray.origin );
+      var localCameraDirection = new Vector3( 0, 0, 0 ).set( ray.direction ).normalize();
 
       // how far we will end up from the center atom
       var finalDistance = this.model.moleculeProperty.get().getIdealDistanceFromCenter( draggedParticle );
 
       // our sphere to cast our ray against
-      var sphere = new Sphere3( new Vector3(), finalDistance );
+      var sphere = new Sphere3( new Vector3( 0, 0, 0 ), finalDistance );
 
       var epsilon = 0.000001;
       var intersections = sphere.intersections( new Ray3( localCameraPosition, localCameraDirection ), epsilon );

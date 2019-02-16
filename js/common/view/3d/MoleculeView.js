@@ -75,7 +75,7 @@ define( function( require ) {
       // angle and bond views need to know information about the camera's position
       var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
       this.worldToLocal( cameraPosition ); // this mutates cameraPosition
-      var localCameraOrientation = new Vector3().set( cameraPosition ).normalized();
+      var localCameraOrientation = new Vector3( 0, 0, 0 ).set( cameraPosition ).normalized();
 
       for ( var i = 0; i < this.bondViews.length; i++ ) {
         this.bondViews[ i ].updateView( cameraPosition );

@@ -115,7 +115,7 @@ define( function( require ) {
       var bondSeparation = this.bondRadius * ( 12 / 5 );
       switch( this.bondOrder ) {
         case 1:
-          offsets = [ new Vector3() ];
+          offsets = [ new Vector3( 0, 0, 0 ) ];
           break;
         case 2:
           offsets = [ perpendicular.times( bondSeparation / 2 ), perpendicular.times( -bondSeparation / 2 ) ];

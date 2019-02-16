@@ -78,7 +78,7 @@ define( function( require ) {
       inverseMatrix.getInverse( this.matrixWorld );
       ray.copy( worldRay ).applyMatrix4( inverseMatrix );
 
-      var hitResult = sphere.intersect( new Ray3( new Vector3().set( ray.origin ), new Vector3().set( ray.direction ) ), 0.00001 );
+      var hitResult = sphere.intersect( new Ray3( new Vector3( 0, 0, 0 ).set( ray.origin ), new Vector3( 0, 0, 0 ).set( ray.direction ) ), 0.00001 );
       if ( hitResult === null ) {
         return null;
       }

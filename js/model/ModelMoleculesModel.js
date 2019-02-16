@@ -33,7 +33,7 @@ define( function( require ) {
     this.addTripleBondEnabledProperty = new Property( true );
     this.addLonePairEnabledProperty = new Property( true );
 
-    this.moleculeProperty.get().addCentralAtom( new PairGroup( new Vector3(), false ) );
+    this.moleculeProperty.get().addCentralAtom( new PairGroup( new Vector3( 0, 0, 0 ), false ) );
     this.setupInitialMoleculeState();
 
     // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)

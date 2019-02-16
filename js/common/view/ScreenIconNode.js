@@ -95,7 +95,7 @@ define( function( require ) {
     if ( !isModel ) {
       molecule.isReal = true;
     }
-    var centralAtom = new PairGroup( new Vector3(), false, {
+    var centralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false, {
       element: centralElement
     } );
     molecule.addCentralAtom( centralAtom );

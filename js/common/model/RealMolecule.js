@@ -36,7 +36,7 @@ define( function( require ) {
     var idealCentralOrientations = [];
     var radialGroups = [];
 
-    this.addCentralAtom( new PairGroup( new Vector3(), false, {
+    this.addCentralAtom( new PairGroup( new Vector3( 0, 0, 0 ), false, {
       element: realMoleculeShape.centralAtom.element
     } ) );
 

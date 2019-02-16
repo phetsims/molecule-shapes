@@ -37,7 +37,7 @@ define( function( require ) {
     this.velocityProperty = new Property( Vector3.ZERO ); // @public {Vector3}
     this.userControlledProperty = new Property( false ); // @public {boolean} - Whether the user is directly manipulating the position currently.
 
-    this.orientation = new Vector3(); // @public (read-only) {Vector3} - Normalized position (unit vector).
+    this.orientation = new Vector3( 0, 0, 0 ); // @public (read-only) {Vector3} - Normalized position (unit vector).
     this.positionProperty.link( function( position ) {
       self.orientation.set( position );
 
@@ -169,7 +169,7 @@ define( function( require ) {
 
       // If the positions overlap, just let the attraction take care of things. See https://github.com/phetsims/molecule-shapes/issues/136
       if ( this.positionProperty.get().equalsEpsilon( other.positionProperty.get(), 1e-6 ) ) {
-        return new Vector3();
+        return new Vector3( 0, 0, 0 );
       }
 
       /*---------------------------------------------------------------------------*
@@ -187,7 +187,7 @@ define( function( require ) {
 
       // adjusted positions
       var adjustedPosition = this.orientation.times( adjustedMagnitude );
-      var adjustedOtherPosition = other.positionProperty.get().magnitude() === 0 ? new Vector3() : other.orientation.times( adjustedOtherMagnitude );
+      var adjustedOtherPosition = other.positionProperty.get().magnitude() === 0 ? new Vector3( 0, 0, 0 ) : other.orientation.times( adjustedOtherMagnitude );
 
       // from other => this (adjusted)
       var delta = adjustedPosition.minus( adjustedOtherPosition );
@@ -277,7 +277,7 @@ define( function( require ) {
       this.positionProperty.set( vector );
 
       // stop any velocity that was moving the pair
-      this.velocityProperty.set( new Vector3() );
+      this.velocityProperty.set( new Vector3( 0, 0, 0 ) );
     }
   } );
 } );

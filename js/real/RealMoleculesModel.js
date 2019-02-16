@@ -117,7 +117,7 @@ define( function( require ) {
 
         newMolecule = new VSEPRMolecule();
 
-        var newCentralAtom = new PairGroup( new Vector3(), false );
+        var newCentralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false );
         newMolecule.addCentralAtom( newCentralAtom );
         for ( var i = 0; i < numRadialAtoms + numRadialLonePairs; i++ ) {
           var unitVector = mapping.rotateVector( idealUnitVectors[ i ] );

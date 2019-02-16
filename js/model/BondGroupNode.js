@@ -71,7 +71,7 @@ define( function( require ) {
   // Returns a {string} URL OR a mipmap {Object}, both of which are compatible with Scenery's Image
   function getBondDataURL( bondOrder ) {
     var molecule = new VSEPRMolecule();
-    var centralAtom = new PairGroup( new Vector3(), false );
+    var centralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false );
     molecule.addCentralAtom( centralAtom );
     molecule.addGroupAndBond( new PairGroup( Vector3.X_UNIT.times( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ), bondOrder === 0 ), centralAtom, bondOrder );
     var model = new MoleculeShapesModel( false, {

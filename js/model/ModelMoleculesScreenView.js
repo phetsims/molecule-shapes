@@ -137,7 +137,7 @@ define( function( require ) {
       // when adding a pair group in the location of the control panel, it looks better when starting further away
       var extraFactor = 1.2;
 
-      var pair = new PairGroup( new Vector3().set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
+      var pair = new PairGroup( new Vector3( 0, 0, 0 ).set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
       this.model.moleculeProperty.get().addGroupAndBond( pair, this.model.moleculeProperty.get().centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
     },
 
