@@ -1,4 +1,4 @@
-// Copyright 2014-2018, University of Colorado Boulder
+// Copyright 2014-2019, University of Colorado Boulder
 
 /**
  * Base view for all "show a single molecule in the center" screens
