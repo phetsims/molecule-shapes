@@ -44,6 +44,7 @@ define( function( require ) {
 
     this.realMoleculeShapeProperty.lazyLink( function() {
       self.rebuildMolecule( true );
+      self.moleculeQuaternionProperty.reset();
     } );
   }
 
