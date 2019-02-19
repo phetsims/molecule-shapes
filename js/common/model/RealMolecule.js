@@ -46,7 +46,7 @@ define( function( require ) {
       var bond = bonds[ i ];
       var atom = bond.getOtherAtom( realMoleculeShape.centralAtom );
       idealCentralOrientations.push( atom.orientation );
-      var bondLength = atom.position.magnitude();
+      var bondLength = atom.position.magnitude;
 
       var atomLocation = atom.orientation.times( bondLength );
       group = new PairGroup( atomLocation, false, {

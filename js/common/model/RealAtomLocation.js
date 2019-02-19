@@ -23,7 +23,7 @@ define( function( require ) {
     Atom.call( this, element );
 
     this.position = position; // @public {Vector3}
-    this.orientation = position.magnitude() > 0 ? position.normalized() : position.copy(); // @public {Vector3}
+    this.orientation = position.magnitude > 0 ? position.normalized() : position.copy(); // @public {Vector3}
     this.lonePairCount = lonePairCount || 0; // @public {number} - How many external lone pairs it has.
 
     // we should be immutable

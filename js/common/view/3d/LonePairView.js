@@ -88,7 +88,7 @@ define( function( require ) {
       var orientation = offsetFromParentAtom.normalized();
 
       var translation;
-      if ( offsetFromParentAtom.magnitude() > PairGroup.LONE_PAIR_DISTANCE ) {
+      if ( offsetFromParentAtom.magnitude > PairGroup.LONE_PAIR_DISTANCE ) {
         translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
       }
       else {

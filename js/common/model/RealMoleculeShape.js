@@ -96,7 +96,7 @@ define( function( require ) {
         atom.position.normalize().multiplyScalar( this.bondLengthOverride );
       }
       this.addAtom( atom );
-      this.addBond( atom, this.centralAtom, bondOrder, USE_SIMPLIFIED_BOND_LENGTH ? this.bondLengthOverride : atom.position.magnitude() );
+      this.addBond( atom, this.centralAtom, bondOrder, USE_SIMPLIFIED_BOND_LENGTH ? this.bondLengthOverride : atom.position.magnitude );
     },
 
     /**

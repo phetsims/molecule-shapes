@@ -495,7 +495,7 @@ define( function( require ) {
 
         // intersect our camera ray against our perpendicular plane (perpendicular to our camera position from the origin) to determine the orientations
         var planeNormal = localCameraPosition.normalized();
-        var t = -( localCameraPosition.magnitude() ) / ( planeNormal.dot( localCameraDirection ) );
+        var t = -( localCameraPosition.magnitude ) / ( planeNormal.dot( localCameraDirection ) );
         var planeHitDirection = localCameraPosition.plus( localCameraDirection.times( t ) ).normalized();
 
         // use the above plane hit direction (perpendicular to the camera) and plane normal (collinear with the camera) to calculate the result

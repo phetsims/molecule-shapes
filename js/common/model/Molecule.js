@@ -235,7 +235,7 @@ define( function( require ) {
       // add the group, but delay notifications (inconsistent state)
       this.addGroup( group, false );
 
-      bondLength = bondLength || group.positionProperty.get().minus( parent.positionProperty.get() ).magnitude();
+      bondLength = bondLength || group.positionProperty.get().minus( parent.positionProperty.get() ).magnitude;
 
       // add the bond after the group so we can reference things properly
       this.addBond( new Bond( group, parent, bondOrder, bondLength ) );

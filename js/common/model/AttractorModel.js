@@ -52,11 +52,11 @@ define( function( require ) {
       var pair = groups[ i ];
 
       var targetOrientation = mapping.target.extractVector3( i );
-      var currentMagnitude = ( pair.positionProperty.get().minus( center ) ).magnitude();
+      var currentMagnitude = ( pair.positionProperty.get().minus( center ) ).magnitude;
       var targetLocation = targetOrientation.times( currentMagnitude ).plus( center );
 
       var delta = targetLocation.minus( pair.positionProperty.get() );
-      totalDeltaMagnitude += delta.magnitude() * delta.magnitude();
+      totalDeltaMagnitude += delta.magnitude * delta.magnitude;
 
       /*
        * NOTE: adding delta here effectively is squaring the distance, thus more force when far from the target,
@@ -64,7 +64,7 @@ define( function( require ) {
        * otherwise-stable position, and less force where our coulomb-like repulsion will settle it into a stable
        * position
        */
-      var strength = timeElapsed * 3 * delta.magnitude();
+      var strength = timeElapsed * 3 * delta.magnitude;
 
       // change the velocity of all of the pairs, unless it is an atom at the origin!
       if ( pair.isLonePair || !pair.isCentralAtom ) {

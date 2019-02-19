@@ -249,7 +249,7 @@ define( function( require ) {
       // Mutably construct offset amount. Magic number vector is tuned to correspond well with the extra horizontal
       // and vertical spacing needed (if it wasn't applied, our text would be centered on the actual arc instead of
       // being pushed farther away).
-      var offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.38, 0.2 ) ).magnitude();
+      var offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.38, 0.2 ) ).magnitude;
       this.position.x = midScreenPoint.x + offset.x * offsetAmount + xCentering * scale;
       this.position.y = midScreenPoint.y + offset.y * offsetAmount + yCentering * scale;
     },

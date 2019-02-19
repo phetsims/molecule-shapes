@@ -87,7 +87,7 @@ define( function( require ) {
 
         // find a vector that is as orthogonal to both directions as possible
         var badCross = aDir.cross( lastMidpointDir ).plus( lastMidpointDir.cross( bDir ) );
-        var averageCross = badCross.magnitude() > 0 ? badCross.normalized() : new Vector3( 0, 0, 1 );
+        var averageCross = badCross.magnitude > 0 ? badCross.normalized() : new Vector3( 0, 0, 1 );
 
         // find a vector that gives us a balance between aDir and bDir (so our semicircle will balance out at the endpoints)
         var averagePointDir = aDir.minus( bDir ).normalized();
@@ -102,7 +102,7 @@ define( function( require ) {
         this.midpointUnit = aDir.plus( bDir ).normalized();
         this.planarUnit = aDir.minus( this.midpointUnit.times( aDir.dot( this.midpointUnit ) ) );
         // guard for zero-length bond case, see https://github.com/phetsims/molecule-shapes/issues/101
-        if ( this.planarUnit.magnitude() > 0 ) {
+        if ( this.planarUnit.magnitude > 0 ) {
           this.planarUnit.normalize();
         }
       }

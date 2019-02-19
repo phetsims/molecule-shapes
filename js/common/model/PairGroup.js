@@ -41,7 +41,7 @@ define( function( require ) {
     this.positionProperty.link( function( position ) {
       self.orientation.set( position );
 
-      if ( position.magnitude() > 0 ) {
+      if ( position.magnitude > 0 ) {
         self.orientation.normalize();
       }
     } );
@@ -125,7 +125,7 @@ define( function( require ) {
       /*---------------------------------------------------------------------------*
        * prevent movement away from our ideal distance
        *----------------------------------------------------------------------------*/
-      var currentError = Math.abs( ( this.positionProperty.get().minus( origin ) ).magnitude() - idealDistanceFromCenter );
+      var currentError = Math.abs( ( this.positionProperty.get().minus( origin ) ).magnitude - idealDistanceFromCenter );
       var oldError = Math.abs( oldDistance - idealDistanceFromCenter );
       if ( currentError > oldError ) {
         // our error is getting worse! for now, don't let us slide AWAY from the ideal distance ever
@@ -138,7 +138,7 @@ define( function( require ) {
        *----------------------------------------------------------------------------*/
       var toCenter = this.positionProperty.get().minus( origin );
 
-      var distance = toCenter.magnitude();
+      var distance = toCenter.magnitude;
       if ( distance !== 0 ) {
         var directionToCenter = toCenter.normalized();
 
@@ -182,12 +182,12 @@ define( function( require ) {
        *----------------------------------------------------------------------------*/
 
       // adjusted distances from the center atom
-      var adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.positionProperty.get().magnitude(), trueLengthsRatioOverride );
-      var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.positionProperty.get().magnitude(), trueLengthsRatioOverride );
+      var adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.positionProperty.get().magnitude, trueLengthsRatioOverride );
+      var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.positionProperty.get().magnitude, trueLengthsRatioOverride );
 
       // adjusted positions
       var adjustedPosition = this.orientation.times( adjustedMagnitude );
-      var adjustedOtherPosition = other.positionProperty.get().magnitude() === 0 ? new Vector3( 0, 0, 0 ) : other.orientation.times( adjustedOtherMagnitude );
+      var adjustedOtherPosition = other.positionProperty.get().magnitude === 0 ? new Vector3( 0, 0, 0 ) : other.orientation.times( adjustedOtherMagnitude );
 
       // from other => this (adjusted)
       var delta = adjustedPosition.minus( adjustedOtherPosition );
@@ -197,7 +197,7 @@ define( function( require ) {
        *----------------------------------------------------------------------------*/
 
       // mimic Coulomb's Law
-      var coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE / ( delta.magnitude() * delta.magnitude() ) );
+      var coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE / ( delta.magnitude * delta.magnitude ) );
 
       // apply a nonphysical reduction on coulomb's law when the frame-rate is low, so we can avoid oscillation
       var coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed );
@@ -254,7 +254,7 @@ define( function( require ) {
 
       // velocity changes so that it doesn't point at all towards or away from the origin
       var velocityMagnitudeOutwards = this.velocityProperty.get().dot( this.orientation );
-      if ( this.positionProperty.get().magnitude() > 0 ) {
+      if ( this.positionProperty.get().magnitude > 0 ) {
         this.velocityProperty.value = this.velocityProperty.get().minus( this.orientation.times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
       }
 
