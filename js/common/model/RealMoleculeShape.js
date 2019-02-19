@@ -118,6 +118,7 @@ define( function( require ) {
 
   var B = Element.B;
   var Be = Element.Be;
+  var Br = Element.Br;
   var C = Element.C;
   var Cl = Element.Cl;
   var F = Element.F;
@@ -147,7 +148,7 @@ define( function( require ) {
 
   // @public {RealMoleculeShape}
   RealMoleculeShape.BROMINE_PENTAFLUORIDE = createMoleculeShape( 'BrF5', 1.774, function( shape ) {
-    shape.addCentralAtom( new RealAtomLocation( B, new Vector3(), 1 ) );
+    shape.addCentralAtom( new RealAtomLocation( Br, new Vector3(), 1 ) );
     var axialBondLength = 1.689;
     var radialBondLength = 1.774;
     var angle = DotUtil.toRadians( 84.8 );
