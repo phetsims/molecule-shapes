@@ -27,7 +27,7 @@ define( function( require ) {
     if ( !isBasicsVersion ) {
       children.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
           font: OptionsDialog.DEFAULT_FONT,
-          maxWidth: 500
+          maxWidth: 350
         } ),
         MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
     }
