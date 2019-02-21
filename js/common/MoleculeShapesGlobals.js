@@ -33,10 +33,10 @@ define( function( require ) {
   var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
   return _.extend( MoleculeShapesGlobals, {
-    // @public {boolean} - Whether the basics of WebGL are included
+    // @public {Property.<boolean>} - Whether the basics of WebGL are included
     hasBasicWebGLSupportProperty: new Property( hasBasicWebGLSupport ),
 
-    // @public {boolean} - Whether we will be using WebGL
+    // @public {Property.<boolean>} - Whether we will be using WebGL
     useWebGLProperty: new Property( useWebGL ),
 
     /**
