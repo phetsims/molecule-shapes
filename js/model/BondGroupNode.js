@@ -207,9 +207,8 @@ define( function( require ) {
     }
 
     model.moleculeProperty.get().on( 'bondChanged', update );
-    model.showLonePairsProperty.link( function( pair ) {
-      pair.update;
-    } );
+    model.showLonePairsProperty.link( update );
+
     MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
 
     HBox.call( this, _.extend( {
