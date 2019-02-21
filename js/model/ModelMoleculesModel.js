@@ -28,10 +28,6 @@ define( function( require ) {
 
     MoleculeShapesModel.call( this, isBasicsVersion );
     this.moleculeProperty = new Property( initialMolecule );
-    this.addSingleBondEnabledProperty = new Property( true );
-    this.addDoubleBondEnabledProperty = new Property( true );
-    this.addTripleBondEnabledProperty = new Property( true );
-    this.addLonePairEnabledProperty = new Property( true );
 
     this.moleculeProperty.get().addCentralAtom( new PairGroup( new Vector3( 0, 0, 0 ), false ) );
     this.setupInitialMoleculeState();
@@ -62,11 +58,6 @@ define( function( require ) {
       MoleculeShapesModel.prototype.reset.call( this );
 
       this.moleculeProperty.reset();
-      this.addSingleBondEnabledProperty.reset();
-      this.addDoubleBondEnabledProperty.reset();
-      this.addTripleBondEnabledProperty.reset();
-      this.addLonePairEnabledProperty.reset();
-
 
       this.moleculeProperty.get().removeAllGroups();
       this.setupInitialMoleculeState();
