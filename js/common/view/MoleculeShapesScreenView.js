@@ -149,11 +149,14 @@ define( function( require ) {
       var context = wrapper.context;
       context.save();
 
+      // Take the pixel ratio into account, see https://github.com/phetsims/molecule-shapes/issues/149
+      const inverse = 1 / ( window.devicePixelRatio || 1 );
+
       if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
         context.setTransform( 1, 0, 0, -1, 0, effectiveHeight ); // no need to take pixel scaling into account
       }
       else {
-        context.setTransform( 1, 0, 0, 1, 0, 0 );
+        context.setTransform( inverse, 0, 0, inverse, 0, 0 );
       }
       context.drawImage( canvas, 0, 0 );
       context.restore();
