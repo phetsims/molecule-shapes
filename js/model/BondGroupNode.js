@@ -38,7 +38,7 @@ define( function( require ) {
     preserveDrawingBuffer: true, // so we can toDataURL() it
     alpha: true // so we can render the transparency
   } ) : new THREE.CanvasRenderer();
-  renderer.setClearColor( 0x0, 0 ); // transparent
+  MoleculeShapesColorProfile.backgroundProperty.link( color => renderer.setClearColor( color.toNumber(), 1 ) );
 
   var camera = new THREE.OrthographicCamera();
   camera.position.set( 0, 0, 40 );
@@ -163,6 +163,7 @@ define( function( require ) {
       MoleculeShapesColorProfile.atomProperty.lazyLink( updateImage );
       MoleculeShapesColorProfile.bondProperty.lazyLink( updateImage );
     }
+    MoleculeShapesColorProfile.backgroundProperty.lazyLink( updateImage );
 
     // move the lone pair over to the right more, so that it looks more centered
     if ( bondOrder === 0 ) {
