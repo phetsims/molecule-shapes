@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.2.0-rc.1 Tue Mar 19 2019 14:23:19 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# molecule-shapes 1.2.0-rc.1 Tue Mar 19 2019 14:24:24 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "d8a2e8992420327ff72a6fc4bb93ec76549ded0e",
     "branch": "HEAD"
@@ -10,7 +10,7 @@
   },
   "brand": {
     "sha": "db62184d1057d23830b7ba9dbb2388d75d3e6ff8",
-    "branch": "molecule-shapes-1.2"
+    "branch": "HEAD"
   },
   "chipper": {
     "sha": "af71f857ff5761bd7dd20cc60f3b0c4290c5c242",
@@ -21,15 +21,15 @@
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "49ab2b06877c989c7ffb9eb82cf2244c89a2a1b0",
-    "branch": "HEAD"
+    "sha": "5e90f5d73224185580489eec941ebd7c254688d6",
+    "branch": "molecule-shapes-1.2"
   },
   "kite": {
     "sha": "20a875b740cbb9c441c72911e60617cd05a5d4e1",
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "4c9f760058b183ddb60d7e7e15bf961ac8207946",
+    "sha": "6bf183af956f7d5165d982e386b430c490d50765",
     "branch": "1.2"
   },
   "nitroglycerin": {
