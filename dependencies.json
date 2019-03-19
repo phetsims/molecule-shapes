@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.2.0-rc.1 Tue Mar 05 2019 14:24:47 GMT-0700 (Mountain Standard Time)",
+  "comment": "# molecule-shapes 1.2.0-rc.1 Tue Mar 19 2019 13:58:01 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "d8a2e8992420327ff72a6fc4bb93ec76549ded0e",
     "branch": "HEAD"
@@ -13,8 +13,8 @@
     "branch": "HEAD"
   },
   "chipper": {
-    "sha": "89e65e662d8399c8ade8b37dedaab985334da208",
-    "branch": "HEAD"
+    "sha": "af71f857ff5761bd7dd20cc60f3b0c4290c5c242",
+    "branch": "molecule-shapes-1.2"
   },
   "dot": {
     "sha": "782f9d54fb356c7f1d29ee4449f2e866de3d1717",
@@ -29,7 +29,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "52bce26256717b6a62bc93a981aea537ffca6178",
+    "sha": "fd3c209980e2a44ce2a4e86007abf0c8cfda1a12",
     "branch": "1.2"
   },
   "nitroglycerin": {
@@ -64,13 +64,17 @@
     "sha": "fa4055ab385803b7e9d46877c9a5efbe2b88da6a",
     "branch": "HEAD"
   },
+  "phetmarks": {
+    "sha": "8decc0216e90f38a005b0d6726ccc2672286628b",
+    "branch": "HEAD"
+  },
   "query-string-machine": {
     "sha": "e47329ccba50671352daf74eb8de1b7b7d80da48",
     "branch": "HEAD"
   },
   "scenery": {
     "sha": "5fe8d2b5e61f14a2550d36617fccfebcce93365d",
-    "branch": "molecule-shapes-1.2"
+    "branch": "HEAD"
   },
   "scenery-phet": {
     "sha": "06c0deafe0d9c4092762cdbe6f0d9c804aa534c8",
@@ -91,9 +95,5 @@
   "tandem": {
     "sha": "9159dfc84efcc1d683d48467c73177eae1101d87",
     "branch": "HEAD"
-  },
-  "phetmarks": {
-    "branch": "master",
-    "sha": "8decc0216e90f38a005b0d6726ccc2672286628b"
   }
 }
