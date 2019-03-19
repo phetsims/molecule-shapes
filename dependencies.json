@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.1.16 Fri Mar 08 2019 13:50:50 GMT-0500 (EST)",
+  "comment": "# molecule-shapes 1.1.16 Tue Mar 19 2019 17:02:32 GMT-0400 (EDT)",
   "assert": {
     "sha": "d4909677d27ed571d5d859d709a0612bf7811db8",
     "branch": "HEAD"
@@ -10,11 +10,11 @@
   },
   "brand": {
     "sha": "e9fa4103c67b219c5afc5644de3e97338041f1aa",
-    "branch": "molecule-shapes-1.1"
+    "branch": "HEAD"
   },
   "chipper": {
-    "sha": "dc98eda94949e2de1485a8bb4d66ad44c6f596b5",
-    "branch": "HEAD"
+    "sha": "7b7f603e9c33f61872fb379f215de6b4a06afcac",
+    "branch": "molecule-shapes-1.1"
   },
   "dot": {
     "sha": "7a28b1a92733cee778e2cf5d22ca45042884d416",
@@ -22,14 +22,14 @@
   },
   "joist": {
     "sha": "6dd138b5c3730fc88dc80982a0fc50bef20bd979",
-    "branch": "molecule-shapes-1.1"
+    "branch": "HEAD"
   },
   "kite": {
     "sha": "4a947119f6e57cb6a6d9d1bf4596502ca721464c",
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "18496177fd5b0970378e4439f11d392991b6f214",
+    "sha": "101733a08da25d59e2a32e98107fd313900980e8",
     "branch": "1.1"
   },
   "nitroglycerin": {
@@ -42,6 +42,10 @@
   },
   "phetcommon": {
     "sha": "9fcef176ab6629e73a8619984273ab1bd47574f3",
+    "branch": "HEAD"
+  },
+  "phetmarks": {
+    "sha": "401c40af550fac7610e66a5c2eeea037180ea0c3",
     "branch": "HEAD"
   },
   "scenery": {
@@ -63,9 +67,5 @@
   "tandem": {
     "sha": "873e03879d6af9bf642151585cb27e1605c817fb",
     "branch": "HEAD"
-  },
-  "phetmarks": {
-    "branch": "master",
-    "sha": "401c40af550fac7610e66a5c2eeea037180ea0c3"
   }
 }
