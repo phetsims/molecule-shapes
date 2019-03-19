@@ -30,6 +30,13 @@ define( function( require ) {
   }
 
   var hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Util.isWebGLSupported;
+
+  // Check for the presence of a webgl/three.js bug present in https://github.com/phetsims/molecule-shapes/issues/161
+  if ( navigator.userAgent.indexOf( 'Firefox/' ) >= 0 &&
+       navigator.userAgent.match( /OS X 10\.1[0123]/ ) ) {
+    hasBasicWebGLSupport = false;
+  }
+
   var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
   return _.extend( MoleculeShapesGlobals, {
