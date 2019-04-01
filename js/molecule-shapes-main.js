@@ -29,7 +29,7 @@ define( function( require ) {
       leadDesign: 'Emily B. Moore',
       softwareDevelopment: 'Jonathan Olson',
       team: 'Julia Chamberlain, Kelly Lancaster, Ariel Paul, Kathy Perkins',
-      qualityAssurance: 'Oliver Orejola, Bryan Yoelin, Jacob Romero, Kathryn Woessner'
+      qualityAssurance: 'Steele Dalton, Bryce Griebenow, Elise Morgan, Oliver Orejola, Jacob Romero, Kathryn Woessner, Bryan Yoelin'
     },
     optionsNode: new GlobalOptionsNode( isBasicsVersion ),
     homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
