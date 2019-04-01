@@ -95,8 +95,15 @@ define( function( require ) {
     view.dispose();
 
     if ( platform.firefox ) {
+      // Create a Canvas copy if we are going to keep a reference to the Canvas
+      var canvasCopy = document.createElement( 'canvas' );
+      var contextCopy = canvasCopy.getContext( '2d' );
+      canvasCopy.width = baseCanvas.width;
+      canvasCopy.height = baseCanvas.height;
+      contextCopy.drawImage( baseCanvas, 0, 0 );
+
       // Create a mipmap for firefox, see https://github.com/phetsims/molecule-shapes/issues/129
-      url = Image.createFastMipmapFromCanvas( baseCanvas );
+      url = Image.createFastMipmapFromCanvas( canvasCopy );
     }
     return url;
   }
