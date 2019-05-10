@@ -31,6 +31,7 @@ define( function( require ) {
       team: 'Julia Chamberlain, Kelly Lancaster, Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Oliver Orejola, Bryan Yoelin'
     },
+    webgl: true,
     optionsNode: new GlobalOptionsNode( isBasicsVersion ),
     homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
                            null :
