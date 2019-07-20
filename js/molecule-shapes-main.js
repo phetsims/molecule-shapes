@@ -31,7 +31,10 @@ define( function( require ) {
       qualityAssurance: 'Oliver Orejola, Bryan Yoelin'
     },
     webgl: true,
-    optionsNode: new GlobalOptionsNode( isBasicsVersion ),
+
+    // Creates content for the Options dialog
+    createOptionsDialogContent: () => new GlobalOptionsNode( isBasicsVersion ),
+
     homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
                            null :
                            ( MoleculeShapesGlobals.hasBasicWebGLSupportProperty.get() ?
