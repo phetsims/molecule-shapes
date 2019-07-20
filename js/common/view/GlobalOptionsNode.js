@@ -12,6 +12,7 @@ define( function( require ) {
   var Checkbox = require( 'SUN/Checkbox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
   var ProjectorModeCheckbox = require( 'JOIST/ProjectorModeCheckbox' );
@@ -21,7 +22,12 @@ define( function( require ) {
   // strings
   var optionsShowOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );
 
-  function GlobalOptionsNode( isBasicsVersion ) {
+  function GlobalOptionsNode( isBasicsVersion, options ) {
+
+    options = _.extend( {
+      defaultColorProfileName: 'default'
+    }, options );
+
     var children = [];
 
     if ( !isBasicsVersion ) {
@@ -31,8 +37,9 @@ define( function( require ) {
         } ),
         MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
     }
-    children.push( new ProjectorModeCheckbox( {
-      projectorModeEnabledProperty: MoleculeShapesGlobals.projectorColorsProperty
+
+    children.push( new ProjectorModeCheckbox( MoleculeShapesColorProfile, {
+      defaultColorProfileName: options.defaultColorProfileName
     } ) );
 
     VBox.call( this, _.extend( {

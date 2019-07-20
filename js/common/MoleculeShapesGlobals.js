@@ -17,8 +17,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
 
   var MoleculeShapesGlobals = {
-    showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs ),
-    projectorColorsProperty: new Property( phet.chipper.queryParameters.colorProfile === 'projector' )
+    showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs )
   };
 
   moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
@@ -65,7 +64,7 @@ define( function( require ) {
     },
 
     /**
-     * Creates a color property from anything that can be provided to Scenery as a constant-color fill/stroke.
+     * Creates a color Property from anything that can be provided to Scenery as a constant-color fill/stroke.
      * @public
      *
      * @param {string | Color | Property.<Color>} color
