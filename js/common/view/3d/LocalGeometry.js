@@ -36,14 +36,14 @@ define( require => {
      * @returns {THREE.Geometry}
      */
     get: function( renderer ) {
-      for ( var i = 0; i < this.renderers.length; i++ ) {
+      for ( let i = 0; i < this.renderers.length; i++ ) {
         if ( this.renderers[ i ] === renderer ) {
           return this.geometries[ i ];
         }
       }
 
       this.renderers.push( renderer );
-      var geometry = this.masterGeometry.clone();
+      const geometry = this.masterGeometry.clone();
       this.geometries.push( geometry );
 
       return geometry;

@@ -14,7 +14,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Vector3 = require( 'DOT/Vector3' );
 
-  var nextId = 0;
+  let nextId = 0;
 
   /**
    * @constructor
@@ -28,7 +28,7 @@ define( require => {
       element: null
     }, options );
 
-    var self = this;
+    const self = this;
 
     // @public {number - Unique identifier.
     this.id = nextId++;
@@ -116,17 +116,17 @@ define( require => {
         // don't process if being dragged
         return;
       }
-      var origin = bond.getOtherAtom( this ).positionProperty.get();
+      const origin = bond.getOtherAtom( this ).positionProperty.get();
 
-      var isTerminalLonePair = !origin.equals( Vector3.ZERO );
+      const isTerminalLonePair = !origin.equals( Vector3.ZERO );
 
-      var idealDistanceFromCenter = bond.length;
+      const idealDistanceFromCenter = bond.length;
 
       /*---------------------------------------------------------------------------*
        * prevent movement away from our ideal distance
        *----------------------------------------------------------------------------*/
-      var currentError = Math.abs( ( this.positionProperty.get().minus( origin ) ).magnitude - idealDistanceFromCenter );
-      var oldError = Math.abs( oldDistance - idealDistanceFromCenter );
+      const currentError = Math.abs( ( this.positionProperty.get().minus( origin ) ).magnitude - idealDistanceFromCenter );
+      const oldError = Math.abs( oldDistance - idealDistanceFromCenter );
       if ( currentError > oldError ) {
         // our error is getting worse! for now, don't let us slide AWAY from the ideal distance ever
         // set our distance to the old one, so it is easier to process
@@ -136,16 +136,16 @@ define( require => {
       /*---------------------------------------------------------------------------*
        * use damped movement towards our ideal distance
        *----------------------------------------------------------------------------*/
-      var toCenter = this.positionProperty.get().minus( origin );
+      const toCenter = this.positionProperty.get().minus( origin );
 
-      var distance = toCenter.magnitude;
+      const distance = toCenter.magnitude;
       if ( distance !== 0 ) {
-        var directionToCenter = toCenter.normalized();
+        const directionToCenter = toCenter.normalized();
 
-        var offset = idealDistanceFromCenter - distance;
+        const offset = idealDistanceFromCenter - distance;
 
         // just modify position for now so we don't get any oscillations
-        var ratioOfMovement = Math.pow( 0.1, 0.016 / timeElapsed ); // scale this exponentially by how much time has elapsed, so the more time taken, the faster we move towards the ideal distance
+        let ratioOfMovement = Math.pow( 0.1, 0.016 / timeElapsed ); // scale this exponentially by how much time has elapsed, so the more time taken, the faster we move towards the ideal distance
         if ( isTerminalLonePair ) {
           ratioOfMovement = 1;
         }
@@ -182,25 +182,25 @@ define( require => {
        *----------------------------------------------------------------------------*/
 
       // adjusted distances from the center atom
-      var adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.positionProperty.get().magnitude, trueLengthsRatioOverride );
-      var adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.positionProperty.get().magnitude, trueLengthsRatioOverride );
+      const adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.positionProperty.get().magnitude, trueLengthsRatioOverride );
+      const adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.positionProperty.get().magnitude, trueLengthsRatioOverride );
 
       // adjusted positions
-      var adjustedPosition = this.orientation.times( adjustedMagnitude );
-      var adjustedOtherPosition = other.positionProperty.get().magnitude === 0 ? new Vector3( 0, 0, 0 ) : other.orientation.times( adjustedOtherMagnitude );
+      const adjustedPosition = this.orientation.times( adjustedMagnitude );
+      const adjustedOtherPosition = other.positionProperty.get().magnitude === 0 ? new Vector3( 0, 0, 0 ) : other.orientation.times( adjustedOtherMagnitude );
 
       // from other => this (adjusted)
-      var delta = adjustedPosition.minus( adjustedOtherPosition );
+      const delta = adjustedPosition.minus( adjustedOtherPosition );
 
       /*---------------------------------------------------------------------------*
        * coulomb repulsion
        *----------------------------------------------------------------------------*/
 
       // mimic Coulomb's Law
-      var coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE / ( delta.magnitude * delta.magnitude ) );
+      const coulombVelocityDelta = delta.withMagnitude( timeElapsed * PairGroup.ELECTRON_PAIR_REPULSION_SCALE / ( delta.magnitude * delta.magnitude ) );
 
       // apply a nonphysical reduction on coulomb's law when the frame-rate is low, so we can avoid oscillation
-      var coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed );
+      const coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed );
       return coulombVelocityDelta.times( coulombDowngrade );
     },
 
@@ -253,7 +253,7 @@ define( require => {
       if ( this.userControlledProperty.get() ) { return; }
 
       // velocity changes so that it doesn't point at all towards or away from the origin
-      var velocityMagnitudeOutwards = this.velocityProperty.get().dot( this.orientation );
+      const velocityMagnitudeOutwards = this.velocityProperty.get().dot( this.orientation );
       if ( this.positionProperty.get().magnitude > 0 ) {
         this.velocityProperty.value = this.velocityProperty.get().minus( this.orientation.times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
       }
@@ -262,7 +262,7 @@ define( require => {
       this.positionProperty.value = this.positionProperty.get().plus( this.velocityProperty.get().times( timeElapsed ) );
 
       // add in damping so we don't get the kind of oscillation that we are seeing
-      var damping = 1 - PairGroup.DAMPING_FACTOR;
+      let damping = 1 - PairGroup.DAMPING_FACTOR;
       damping = Math.pow( damping, timeElapsed / 0.017 ); // based so that we have no modification at 0.017
       this.velocityProperty.value = this.velocityProperty.get().times( damping );
     },

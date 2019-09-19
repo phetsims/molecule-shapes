@@ -30,17 +30,17 @@ define( require => {
   /*---------------------------------------------------------------------------*
    * Dynamic generation of the bonding/lone-pair panel images, by rendering a three.js scene to an image
    *----------------------------------------------------------------------------*/
-  var scene = new THREE.Scene();
+  const scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
 
-  var renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
+  const renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
     antialias: true,
     preserveDrawingBuffer: true, // so we can toDataURL() it
     alpha: true // so we can render the transparency
   } ) : new THREE.CanvasRenderer();
   MoleculeShapesColorProfile.backgroundProperty.link( color => renderer.setClearColor( color.toNumber(), 1 ) );
 
-  var camera = new THREE.OrthographicCamera();
+  const camera = new THREE.OrthographicCamera();
   camera.position.set( 0, 0, 40 );
   camera.near = 1; // near clipping plane
   camera.far = 100; // far clipping plane
@@ -62,42 +62,42 @@ define( require => {
   }
 
   // tuned parameters to match the desired Canvas sizes for lone pairs and atom bonds
-  var IMAGE_SCALE = 3;
-  var LONE_PAIR_WIDTH = 78;
-  var ATOM_HEIGHT = 42;
-  var ATOM_WIDTH = 120;
-  var LONE_PAIR_HEIGHT = 55;
+  const IMAGE_SCALE = 3;
+  const LONE_PAIR_WIDTH = 78;
+  const ATOM_HEIGHT = 42;
+  const ATOM_WIDTH = 120;
+  const LONE_PAIR_HEIGHT = 55;
 
   // Returns a {string} URL OR a mipmap {Object}, both of which are compatible with Scenery's Image
   function getBondDataURL( bondOrder ) {
-    var molecule = new VSEPRMolecule();
-    var centralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false );
+    const molecule = new VSEPRMolecule();
+    const centralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false );
     molecule.addCentralAtom( centralAtom );
     molecule.addGroupAndBond( new PairGroup( Vector3.X_UNIT.times( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ), bondOrder === 0 ), centralAtom, bondOrder );
-    var model = new MoleculeShapesModel( false, {
+    const model = new MoleculeShapesModel( false, {
       molecule: molecule
     } );
 
-    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
+    const view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
       showLabel: function() {},
       finishedAddingLabels: function() {}
     } );
     view.updateView();
     view.hideCentralAtom();
 
-    var orthoSize = bondOrder === 0 ?
+    const orthoSize = bondOrder === 0 ?
                     ( PairGroup.LONE_PAIR_DISTANCE * 1.07 ) :
                     ( PairGroup.BONDED_PAIR_DISTANCE * 1.22 );
-    var width = ( bondOrder === 0 ? LONE_PAIR_WIDTH : ATOM_WIDTH ) * IMAGE_SCALE;
-    var height = ( bondOrder === 0 ? LONE_PAIR_HEIGHT : ATOM_HEIGHT ) * IMAGE_SCALE;
-    var baseCanvas = render( view, width, height, orthoSize );
-    var url = baseCanvas.toDataURL();
+    const width = ( bondOrder === 0 ? LONE_PAIR_WIDTH : ATOM_WIDTH ) * IMAGE_SCALE;
+    const height = ( bondOrder === 0 ? LONE_PAIR_HEIGHT : ATOM_HEIGHT ) * IMAGE_SCALE;
+    const baseCanvas = render( view, width, height, orthoSize );
+    let url = baseCanvas.toDataURL();
     view.dispose();
 
     if ( platform.firefox ) {
       // Create a Canvas copy if we are going to keep a reference to the Canvas
-      var canvasCopy = document.createElement( 'canvas' );
-      var contextCopy = canvasCopy.getContext( '2d' );
+      const canvasCopy = document.createElement( 'canvas' );
+      const contextCopy = canvasCopy.getContext( '2d' );
       canvasCopy.width = baseCanvas.width;
       canvasCopy.height = baseCanvas.height;
       contextCopy.drawImage( baseCanvas, 0, 0 );
@@ -122,14 +122,14 @@ define( require => {
     this.bondOrder = bondOrder; // @private {number}
 
     // whether our "button" is enabled
-    var enabled = true;
+    let enabled = true;
 
     // how many pointers are over our node, used for changing the highlighting for the "button over"
-    var overCount = 0;
+    let overCount = 0;
 
     // A semi-transparent overlay with the same color as the background (and variable alpha). Used to adjust the visual
     // "opacity" of the underlying image (by toggling our alpha), and as a hit-area for events.
-    var overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? ATOM_HEIGHT : LONE_PAIR_HEIGHT, 0, 0, options );
+    const overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? ATOM_HEIGHT : LONE_PAIR_HEIGHT, 0, 0, options );
     overlay.addInputListener( {
       down: function() {
         if ( enabled ) {
@@ -148,7 +148,7 @@ define( require => {
     overlay.touchArea = overlay.localBounds.dilatedY( 4 ).withMinX( -10 );
 
     // our image of the lone pair / bond, under the overlay.
-    var image = new Image( getBondDataURL( bondOrder ), {
+    const image = new Image( getBondDataURL( bondOrder ), {
       scale: 1 / IMAGE_SCALE // retina devices create large images, so for now we normalize the image scale
     } );
     // override local bounds because the correct bounds may not be loaded yet (loading from a data URL, not an HTMLImageElement)
@@ -177,10 +177,10 @@ define( require => {
       image.right = overlay.right - 10;
     }
 
-    var thumbnail = new Node( { children: [ image, overlay ] } );
+    const thumbnail = new Node( { children: [ image, overlay ] } );
 
     // button to remove a copy of the bond / lone pair
-    var removeButton = new RemovePairGroupButton( {
+    const removeButton = new RemovePairGroupButton( {
       listener: function() {
         removePairCallback( bondOrder );
       }
@@ -203,7 +203,7 @@ define( require => {
     }
 
     function updateOverlayOpacity() {
-      var alpha;
+      let alpha;
       if ( enabled ) {
         // when "button over" the overlay will show through more of the image
         alpha = overCount > 0 ? 0 : 0.1;

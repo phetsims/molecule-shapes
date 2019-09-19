@@ -28,7 +28,7 @@ define( require => {
   const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   const VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
 
-  var MAX_PAIRS = 6;
+  const MAX_PAIRS = 6;
 
   function addToEndOfArray( array, item, addToFront ) {
     if ( addToFront ) {
@@ -48,7 +48,7 @@ define( require => {
 
     this.isReal = isReal; // @public {boolean} - Whether this molecule is based on real angles or on a model.
 
-    var self = this;
+    const self = this;
 
     // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
     this.groups = [];
@@ -108,20 +108,20 @@ define( require => {
      * @param {number} dt
      */
     update: function( dt ) {
-      var numGroups = this.groups.length;
-      for ( var i = 0; i < numGroups; i++ ) {
-        var group = this.groups[ i ];
+      const numGroups = this.groups.length;
+      for ( let i = 0; i < numGroups; i++ ) {
+        const group = this.groups[ i ];
 
         // ignore processing on the central atom
         if ( group === this.centralAtom ) {
           continue;
         }
 
-        var parentBond = this.getParentBond( group );
-        var parentGroup = parentBond.getOtherAtom( group );
+        const parentBond = this.getParentBond( group );
+        const parentGroup = parentBond.getOtherAtom( group );
 
         // store the old distance before stepping in time
-        var oldDistance = group.positionProperty.get().distance( parentGroup.positionProperty.get() );
+        const oldDistance = group.positionProperty.get().distance( parentGroup.positionProperty.get() );
 
         group.stepForward( dt );
         group.attractToIdealDistance( dt, oldDistance, parentBond );
@@ -159,8 +159,8 @@ define( require => {
      * @returns {number}
      */
     getNeighborCount: function( group ) {
-      var count = 0;
-      for ( var i = 0; i < this.bonds.length; i++ ) {
+      let count = 0;
+      for ( let i = 0; i < this.bonds.length; i++ ) {
         if ( this.bonds[ i ].contains( group ) ) {
           count++;
         }
@@ -192,8 +192,8 @@ define( require => {
         return this.getBondsAround( group )[ 0 ];
       }
       else {
-        var centralAtom = this.centralAtom;
-        var result = _.filter( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[ 0 ];
+        const centralAtom = this.centralAtom;
+        const result = _.filter( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[ 0 ];
         return result || null;
       }
     },
@@ -276,12 +276,12 @@ define( require => {
      * @param {Bond.<PairGroup>}
      */
     addBond: function( bond ) {
-      var isLonePairBond = bond.order === 0;
+      const isLonePairBond = bond.order === 0;
 
       addToEndOfArray( this.bonds, bond, isLonePairBond );
 
       if ( bond.contains( this.centralAtom ) ) {
-        var group = bond.getOtherAtom( this.centralAtom );
+        const group = bond.getOtherAtom( this.centralAtom );
         addToEndOfArray( this.radialGroups, group, isLonePairBond );
         if ( group.isLonePair ) {
           addToEndOfArray( this.radialLonePairs, group, isLonePairBond );
@@ -304,7 +304,7 @@ define( require => {
       arrayRemove( this.bonds, bond );
 
       if ( bond.contains( this.centralAtom ) ) {
-        var group = bond.getOtherAtom( this.centralAtom );
+        const group = bond.getOtherAtom( this.centralAtom );
         arrayRemove( this.radialGroups, group );
         if ( group.isLonePair ) {
           arrayRemove( this.radialLonePairs, group );
@@ -324,12 +324,12 @@ define( require => {
      * @param {PairGroup}
      */
     removeGroup: function( group ) {
-      var i;
+      let i;
 
       assert && assert( this.centralAtom !== group );
 
       // remove all of its bonds first
-      var bondList = this.getBondsAround( group );
+      const bondList = this.getBondsAround( group );
       for ( i = 0; i < bondList.length; i++ ) {
         this.removeBond( bondList[ i ] );
       }
@@ -355,8 +355,8 @@ define( require => {
      * @public
      */
     removeAllGroups: function() {
-      var groupsCopy = this.groups.slice();
-      for ( var i = 0; i < groupsCopy.length; i++ ) {
+      const groupsCopy = this.groups.slice();
+      for ( let i = 0; i < groupsCopy.length; i++ ) {
         if ( groupsCopy[ i ] !== this.centralAtom ) {
           this.removeGroup( groupsCopy[ i ] );
         }
@@ -393,7 +393,7 @@ define( require => {
      * @param {Array.<PairGroup>}
      */
     getDistantLonePairs: function() {
-      var closeLonePairs = this.radialLonePairs;
+      const closeLonePairs = this.radialLonePairs;
       return _.filter( this.lonePairs, function( lonePair ) { return !_.includes( closeLonePairs, lonePair ); } );
     },
 
@@ -406,17 +406,17 @@ define( require => {
      * @returns {LocalShape}
      */
     getLocalVSEPRShape: function( atom ) {
-      var groups = this.getNeighbors( atom );
+      const groups = this.getNeighbors( atom );
 
       // count lone pairs
-      var numLonePairs = 0;
-      for ( var i = 0; i < groups.length; i++ ) {
+      let numLonePairs = 0;
+      for ( let i = 0; i < groups.length; i++ ) {
         if ( groups[ i ].isLonePair ) {
           numLonePairs++;
         }
       }
 
-      var numAtoms = groups.length - numLonePairs;
+      const numAtoms = groups.length - numLonePairs;
       return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VSEPRConfiguration.getConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
     },
 
@@ -429,7 +429,7 @@ define( require => {
      */
     getIdealDistanceFromCenter: function( group ) {
       // this only works on pair groups adjacent to the central atom
-      var bond = this.getParentBond( group );
+      const bond = this.getParentBond( group );
       assert && assert( bond.contains( this.centralAtom ) );
 
       return group.isLonePair ? PairGroup.LONE_PAIR_DISTANCE : bond.length;
@@ -444,15 +444,15 @@ define( require => {
      * @param {number} quantity
      */
     addTerminalLonePairs: function( atom, quantity ) {
-      var pairConfig = VSEPRConfiguration.getConfiguration( 1, quantity );
-      var lonePairOrientations = pairConfig.geometry.unitVectors;
+      const pairConfig = VSEPRConfiguration.getConfiguration( 1, quantity );
+      const lonePairOrientations = pairConfig.geometry.unitVectors;
 
       // we want to rotate the ideal configuration of lone pairs to the atom's orientation
-      var matrix = Matrix3.rotateAToB( lonePairOrientations[ lonePairOrientations.length - 1 ].negated(), atom.orientation );
+      const matrix = Matrix3.rotateAToB( lonePairOrientations[ lonePairOrientations.length - 1 ].negated(), atom.orientation );
 
-      for ( var i = 0; i < quantity; i++ ) {
+      for ( let i = 0; i < quantity; i++ ) {
         // mapped into our coordinates
-        var lonePairOrientation = matrix.timesVector3( lonePairOrientations[ i ] );
+        const lonePairOrientation = matrix.timesVector3( lonePairOrientations[ i ] );
         this.addGroupAndBond( new PairGroup( atom.positionProperty.get().plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
       }
     }

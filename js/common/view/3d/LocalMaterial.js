@@ -21,7 +21,7 @@ define( require => {
    * @param {THREE.Material} masterMaterial - The material to clone for each renderer
    */
   function LocalMaterial( masterMaterial, options ) {
-    var self = this;
+    const self = this;
 
     options = _.extend( {
       // default options?
@@ -57,14 +57,14 @@ define( require => {
      * @returns {THREE.Material}
      */
     get: function( renderer ) {
-      for ( var i = 0; i < this.renderers.length; i++ ) {
+      for ( let i = 0; i < this.renderers.length; i++ ) {
         if ( this.renderers[ i ] === renderer ) {
           return this.materials[ i ];
         }
       }
 
       this.renderers.push( renderer );
-      var material = this.masterMaterial.clone();
+      const material = this.masterMaterial.clone();
       this.materials.push( material );
 
       return material;
@@ -89,7 +89,7 @@ define( require => {
      * @param {Color} color
      */
     setColor: function( color ) {
-      var hex = color.toNumber();
+      const hex = color.toNumber();
       this.masterMaterial.color.setHex( hex );
       _.each( this.materials, function( material ) { material.color.setHex( hex ); } );
     },
@@ -101,7 +101,7 @@ define( require => {
      * @param {Color} color
      */
     setUniformColor: function( color ) {
-      var colorArray = [ color.r / 255, color.g / 255, color.b / 255 ];
+      const colorArray = [ color.r / 255, color.g / 255, color.b / 255 ];
       this.setUniform( 'color', colorArray );
     }
   } );

@@ -28,7 +28,7 @@ define( require => {
       defaultColorProfileName: 'default'
     }, options );
 
-    var children = [];
+    const children = [];
 
     if ( !isBasicsVersion ) {
       children.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {

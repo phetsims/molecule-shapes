@@ -47,7 +47,7 @@ define( require => {
   const shapeTShapedString = require( 'string!MOLECULE_SHAPES/shape.tShaped' );
 
   // string list needed to compute maximum label bounds
-  var geometryStrings = [
+  const geometryStrings = [
     geometryEmptyString,
     geometryDiatomicString,
     geometryLinearString,
@@ -58,7 +58,7 @@ define( require => {
   ];
 
   // string list needed to compute maximum label bounds
-  var shapeStrings = [
+  const shapeStrings = [
     shapeEmptyString,
     shapeDiatomicString,
     shapeLinearString,
@@ -74,18 +74,18 @@ define( require => {
     shapeOctahedralString
   ];
 
-  var geometryNameFont = new PhetFont( 16 );
+  const geometryNameFont = new PhetFont( 16 );
 
   function getMaximumTextWidth( strings ) {
-    var maxWidth = 0;
+    let maxWidth = 0;
     _.each( strings, function( string ) {
       maxWidth = Math.max( maxWidth, new Text( string, { font: geometryNameFont } ).width );
     } );
     return maxWidth;
   }
 
-  var maxGeometryWidth = getMaximumTextWidth( geometryStrings );
-  var maxShapeWidth = getMaximumTextWidth( shapeStrings );
+  let maxGeometryWidth = getMaximumTextWidth( geometryStrings );
+  let maxShapeWidth = getMaximumTextWidth( shapeStrings );
 
   function GeometryNamePanel( model, options ) {
     this.model = model; // @private {MoleculeShapesModel}
@@ -106,7 +106,7 @@ define( require => {
     model.showElectronShapeNameProperty.linkAttribute( this.electronText, 'visible' );
 
     // labels for the types of geometries
-    var textLabelFont = new PhetFont( 14 );
+    const textLabelFont = new PhetFont( 14 );
 
     // @private
     this.molecularTextLabel = new Text( controlMoleculeGeometryString, {
@@ -124,13 +124,13 @@ define( require => {
     this.molecularCheckbox = new MoleculeShapesCheckbox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
     this.electronCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
 
-    var pointerAreaXPadding = 10;
-    var pointerAreaYPadding = 15;
-    var pointerAreaBottomExtension = 40;
-    var molecularPointerArea = this.molecularCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
+    const pointerAreaXPadding = 10;
+    const pointerAreaYPadding = 15;
+    const pointerAreaBottomExtension = 40;
+    const molecularPointerArea = this.molecularCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
       .withMaxY( this.molecularCheckbox.localBounds.maxY + pointerAreaBottomExtension );
     this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = molecularPointerArea;
-    var electronPointerArea = this.electronCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
+    const electronPointerArea = this.electronCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
       .withMaxY( this.electronCheckbox.localBounds.maxY + pointerAreaBottomExtension );
     this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = electronPointerArea;
 
@@ -139,14 +139,14 @@ define( require => {
     maxShapeWidth = Math.max( maxShapeWidth, this.electronCheckbox.width );
 
     // layout
-    var horizontalPadding = 20;
-    var contentWidth = maxGeometryWidth + ( model.isBasicsVersion ? 0 : ( horizontalPadding + maxGeometryWidth ) );
-    var checkboxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
+    const horizontalPadding = 20;
+    const contentWidth = maxGeometryWidth + ( model.isBasicsVersion ? 0 : ( horizontalPadding + maxGeometryWidth ) );
+    const checkboxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
     this.molecularCheckbox.centerX = maxGeometryWidth / 2;
     this.electronCheckbox.centerX = maxGeometryWidth + horizontalPadding + maxShapeWidth / 2;
     this.molecularText.top = this.electronText.top = checkboxBottom + 10;
 
-    var content = new Node( {
+    const content = new Node( {
       // Make sure we include the extra (possibly unused) space so that the panel can contain all of the content,
       // regardless of which string is shown. See https://github.com/phetsims/molecule-shapes/issues/138
       localBounds: new Bounds2( 0, this.molecularCheckbox.top, contentWidth, this.molecularText.bottom )
@@ -163,7 +163,7 @@ define( require => {
       fill: MoleculeShapesColorProfile.backgroundProperty
     }, options ) );
 
-    var updateNames = this.updateNames.bind( this );
+    const updateNames = this.updateNames.bind( this );
     model.moleculeProperty.link( function( newMolecule, oldMolecule ) {
       if ( oldMolecule ) {
         oldMolecule.off( 'bondChanged', updateNames );
@@ -196,7 +196,7 @@ define( require => {
      * @private
      */
     getMolecularGeometryName: function() {
-      var name = this.model.moleculeProperty.get().getCentralVSEPRConfiguration().name;
+      const name = this.model.moleculeProperty.get().getCentralVSEPRConfiguration().name;
       if ( name === null ) {
         return shapeEmptyString;
       }
@@ -206,7 +206,7 @@ define( require => {
     },
 
     getElectronGeometryName: function() {
-      var name = this.model.moleculeProperty.get().getCentralVSEPRConfiguration().geometry.name;
+      const name = this.model.moleculeProperty.get().getCentralVSEPRConfiguration().geometry.name;
       if ( name === null ) {
         return geometryEmptyString;
       }

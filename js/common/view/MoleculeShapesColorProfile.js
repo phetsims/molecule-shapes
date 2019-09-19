@@ -22,7 +22,7 @@ define( require => {
 
   // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the
   // 'default' value provided.
-  var MoleculeShapesColorProfile = new ColorProfile( [ 'default', 'basics', 'projector' ], {
+  const MoleculeShapesColorProfile = new ColorProfile( [ 'default', 'basics', 'projector' ], {
     background: {
       default: new Color( 0, 0, 0 ),
       basics: new Color( 198, 226, 246 ),

@@ -68,8 +68,8 @@ define( require => {
      *                                           to the camera.
      */
     updateView: function( lastMidpoint, localCameraOrientation ) {
-      var aDir = this.aGroup.orientation;
-      var bDir = this.bGroup.orientation;
+      const aDir = this.aGroup.orientation;
+      const bDir = this.bGroup.orientation;
 
       this.viewOpacity = this.showBondAnglesProperty.value ? BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length ) : 0;
 
@@ -78,19 +78,19 @@ define( require => {
 
       // If we have an approximate semicircle, we'll need to use the last midpoint to provide a stable position to
       // display the 180-degree semicircle. Otherwise, it would be unstable and wildly vary.
-      var isApproximateSemicircle = BondAngleView.isApproximateSemicircle( aDir, bDir );
+      const isApproximateSemicircle = BondAngleView.isApproximateSemicircle( aDir, bDir );
       if ( isApproximateSemicircle ) {
         if ( !lastMidpoint ) {
           lastMidpoint = Vector3.Y_UNIT.times( BondAngleView.radius );
         }
-        var lastMidpointDir = lastMidpoint.normalized();
+        const lastMidpointDir = lastMidpoint.normalized();
 
         // find a vector that is as orthogonal to both directions as possible
-        var badCross = aDir.cross( lastMidpointDir ).plus( lastMidpointDir.cross( bDir ) );
-        var averageCross = badCross.magnitude > 0 ? badCross.normalized() : new Vector3( 0, 0, 1 );
+        const badCross = aDir.cross( lastMidpointDir ).plus( lastMidpointDir.cross( bDir ) );
+        const averageCross = badCross.magnitude > 0 ? badCross.normalized() : new Vector3( 0, 0, 1 );
 
         // find a vector that gives us a balance between aDir and bDir (so our semicircle will balance out at the endpoints)
-        var averagePointDir = aDir.minus( bDir ).normalized();
+        const averagePointDir = aDir.minus( bDir ).normalized();
 
         // (basis vector 1) make that average point planar to our arc surface
         this.planarUnit = averagePointDir.minus( averageCross.times( averageCross.dot( averagePointDir ) ) ).normalized();
@@ -111,8 +111,8 @@ define( require => {
 
       // label handling
       if ( this.viewOpacity !== 0 ) {
-        var centerDevicePoint = new THREE.Vector3(); // e.g. zero
-        var midDevicePoint = new THREE.Vector3().copy( this.midpoint );
+        const centerDevicePoint = new THREE.Vector3(); // e.g. zero
+        const midDevicePoint = new THREE.Vector3().copy( this.midpoint );
 
         // transform to world coordinates
         this.parent.localToWorld( centerDevicePoint );
@@ -122,21 +122,21 @@ define( require => {
         // inverse projection into normalized device coordinates
         this.screenView.convertScreenPointFromGlobalPoint( centerDevicePoint );
         this.screenView.convertScreenPointFromGlobalPoint( midDevicePoint );
-        var layoutScale = this.screenView.getLayoutScale( this.screenView.screenWidth, this.screenView.screenHeight );
+        const layoutScale = this.screenView.getLayoutScale( this.screenView.screenWidth, this.screenView.screenHeight );
 
-        var angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
+        const angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
 
         // Potential fix for https://github.com/phetsims/molecule-shapes/issues/145.
         // The THREE.Vector3.project( THREE.Camera ) is giving is nonsense near startup. Longer-term could identify, but
         // switching bonds to true very quickly might cause this.
         if ( isFinite( centerDevicePoint.x ) && isFinite( centerDevicePoint.y ) ) {
           // screen coordinates
-          var screenCenterPoint = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+          const screenCenterPoint = new Vector2( ( centerDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
             ( -centerDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
-          var screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
+          const screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
             ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
 
-          var labelString = Util.toFixed( angle, 1 ) + '°';
+          let labelString = Util.toFixed( angle, 1 ) + '°';
           while ( labelString.length < 5 ) {
             // handle single-digit labels by padding them
             labelString = '0' + labelString;
@@ -177,12 +177,12 @@ define( require => {
       }
 
       // a combined measure of how close the angles are AND how orthogonal they are to the camera
-      var brightness = Math.abs( aDir.cross( bDir ).dot( localCameraOrientation ) );
+      const brightness = Math.abs( aDir.cross( bDir ).dot( localCameraOrientation ) );
 
-      var lowThreshold = BondAngleView.LOW_THRESHOLDS[ bondQuantity ];
-      var highThreshold = BondAngleView.HIGH_THRESHOLDS[ bondQuantity ];
+      const lowThreshold = BondAngleView.LOW_THRESHOLDS[ bondQuantity ];
+      const highThreshold = BondAngleView.HIGH_THRESHOLDS[ bondQuantity ];
 
-      var interpolatedValue = brightness / ( highThreshold - lowThreshold ) - lowThreshold / ( highThreshold - lowThreshold );
+      const interpolatedValue = brightness / ( highThreshold - lowThreshold ) - lowThreshold / ( highThreshold - lowThreshold );
 
       return Util.clamp( interpolatedValue, 0, 1 );
     },

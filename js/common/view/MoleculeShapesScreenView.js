@@ -38,7 +38,7 @@ define( require => {
       layoutBounds: new Bounds2( 0, 0, 1024, 618 )
     } );
 
-    var self = this;
+    const self = this;
 
     this.model = model; // @private {ModelMoleculesModel}
 
@@ -104,10 +104,10 @@ define( require => {
 
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
     this.domNode.renderToCanvasSelf = function( wrapper ) {
-      var canvas = null;
+      let canvas = null;
 
-      var effectiveWidth = Math.ceil( self.screenWidth );
-      var effectiveHeight = Math.ceil( self.screenHeight );
+      const effectiveWidth = Math.ceil( self.screenWidth );
+      const effectiveHeight = Math.ceil( self.screenHeight );
 
       // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
       // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
@@ -115,7 +115,7 @@ define( require => {
       if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
 
         // set up a framebuffer (target is three.js terminology) to render into
-        var target = new THREE.WebGLRenderTarget( effectiveWidth, effectiveHeight, {
+        const target = new THREE.WebGLRenderTarget( effectiveWidth, effectiveHeight, {
           minFilter: THREE.LinearFilter,
           magFilter: THREE.NearestFilter,
           format: THREE.RGBAFormat
@@ -124,20 +124,20 @@ define( require => {
         self.render( target );
 
         // set up a buffer for pixel data, in the exact typed formats we will need
-        var buffer = new window.ArrayBuffer( effectiveWidth * effectiveHeight * 4 );
-        var imageDataBuffer = new window.Uint8ClampedArray( buffer );
-        var pixels = new window.Uint8Array( buffer );
+        const buffer = new window.ArrayBuffer( effectiveWidth * effectiveHeight * 4 );
+        const imageDataBuffer = new window.Uint8ClampedArray( buffer );
+        const pixels = new window.Uint8Array( buffer );
 
         // read the pixel data into the buffer
-        var gl = self.threeRenderer.getContext();
+        const gl = self.threeRenderer.getContext();
         gl.readPixels( 0, 0, effectiveWidth, effectiveHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
 
         // create a Canvas with the correct size, and fill it with the pixel data
         canvas = document.createElement( 'canvas' );
         canvas.width = effectiveWidth;
         canvas.height = effectiveHeight;
-        var tmpContext = canvas.getContext( '2d' );
-        var imageData = tmpContext.createImageData( effectiveWidth, effectiveHeight );
+        const tmpContext = canvas.getContext( '2d' );
+        const imageData = tmpContext.createImageData( effectiveWidth, effectiveHeight );
         imageData.data.set( imageDataBuffer );
         tmpContext.putImageData( imageData, 0, 0 );
       }
@@ -146,7 +146,7 @@ define( require => {
         canvas = self.threeRenderer.domElement;
       }
 
-      var context = wrapper.context;
+      const context = wrapper.context;
       context.save();
 
       // Take the pixel ratio into account, see https://github.com/phetsims/molecule-shapes/issues/149
@@ -183,10 +183,10 @@ define( require => {
     } ) );
 
     // we only want to support dragging particles OR rotating the molecule (not both) at the same time
-    var draggedParticleCount = 0;
-    var isRotating = false;
+    let draggedParticleCount = 0;
+    let isRotating = false;
 
-    var multiDragListener = {
+    const multiDragListener = {
       down: function( event, trail ) {
         if ( !event.canStartPress() ) { return; }
 
@@ -195,10 +195,10 @@ define( require => {
           return;
         }
 
-        var dragMode = null;
-        var draggedParticle = null;
+        let dragMode = null;
+        let draggedParticle = null;
 
-        var pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
+        const pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
         if ( pair && !pair.userControlledProperty.get() ) {
           // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
           dragMode = 'pairExistingSpherical';
@@ -216,7 +216,7 @@ define( require => {
           return;
         }
 
-        var lastGlobalPoint = event.pointer.point.copy();
+        const lastGlobalPoint = event.pointer.point.copy();
 
         event.pointer.cursor = 'pointer';
         event.pointer.addInputListener( {
@@ -230,11 +230,11 @@ define( require => {
 
           move: function( event, trail ) {
             if ( dragMode === 'modelRotate' ) {
-              var delta = event.pointer.point.minus( lastGlobalPoint );
+              const delta = event.pointer.point.minus( lastGlobalPoint );
               lastGlobalPoint.set( event.pointer.point );
 
-              var scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
-              var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
+              const scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
+              const newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
               newQuaternion.multiply( model.moleculeQuaternionProperty.get() );
               model.moleculeQuaternionProperty.value = newQuaternion;
             }
@@ -282,7 +282,7 @@ define( require => {
 
     // @private - create a pool of angle labels of the desired type
     this.angleLabels = [];
-    for ( var i = 0; i < 15; i++ ) {
+    for ( let i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
         this.angleLabels[ i ] = new LabelWebGLView( this.threeRenderer );
         this.overlayScene.add( this.angleLabels[ i ] );
@@ -313,7 +313,7 @@ define( require => {
      * @public
      */
     checkOutLabel: function() {
-      var label = this.angleLabels.pop();
+      const label = this.angleLabels.pop();
       assert && assert( label );
       return label;
     },
@@ -359,11 +359,11 @@ define( require => {
      */
     getRaycasterFromScreenPoint: function( screenPoint ) {
       // normalized device coordinates
-      var ndcX = 2 * screenPoint.x / this.screenWidth - 1;
-      var ndcY = 2 * ( 1 - ( screenPoint.y / this.screenHeight ) ) - 1;
+      const ndcX = 2 * screenPoint.x / this.screenWidth - 1;
+      const ndcY = 2 * ( 1 - ( screenPoint.y / this.screenHeight ) ) - 1;
 
-      var mousePoint = new THREE.Vector3( ndcX, ndcY, 0 );
-      var raycaster = new THREE.Raycaster();
+      const mousePoint = new THREE.Vector3( ndcX, ndcY, 0 );
+      const raycaster = new THREE.Raycaster();
       raycaster.setFromCamera( mousePoint, this.threeCamera );
       return raycaster;
     },
@@ -386,7 +386,7 @@ define( require => {
      * @returns {Ray3}
      */
     getRayFromScreenPoint: function( screenPoint ) {
-      var threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
+      const threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
       return new Ray3( new Vector3( 0, 0, 0 ).set( threeRay.origin ),
         new Vector3( 0, 0, 0 ).set( threeRay.direction ).normalize() );
     },
@@ -399,20 +399,20 @@ define( require => {
      * @returns {PairGroup | null} - The closest pair group, or null
      */
     getElectronPairUnderPointer: function( pointer, isTouch ) {
-      var raycaster = this.getRaycasterFromScreenPoint( pointer.point );
-      var worldRay = raycaster.ray;
-      var cameraOrigin = worldRay.origin; // THREE.Vector3
+      const raycaster = this.getRaycasterFromScreenPoint( pointer.point );
+      const worldRay = raycaster.ray;
+      const cameraOrigin = worldRay.origin; // THREE.Vector3
 
-      var shortestDistanceSquared = Number.POSITIVE_INFINITY;
-      var closestGroup = null;
+      let shortestDistanceSquared = Number.POSITIVE_INFINITY;
+      let closestGroup = null;
 
-      var length = this.moleculeView.radialViews.length;
-      for ( var i = 0; i < length; i++ ) {
-        var view = this.moleculeView.radialViews[ i ];
+      const length = this.moleculeView.radialViews.length;
+      for ( let i = 0; i < length; i++ ) {
+        const view = this.moleculeView.radialViews[ i ];
 
-        var intersectionPoint = view.intersect( worldRay, isTouch ); // THREE.Vector3
+        const intersectionPoint = view.intersect( worldRay, isTouch ); // THREE.Vector3
         if ( intersectionPoint ) {
-          var distance = cameraOrigin.distanceToSquared( intersectionPoint );
+          const distance = cameraOrigin.distanceToSquared( intersectionPoint );
           if ( distance < shortestDistanceSquared ) {
             shortestDistanceSquared = distance;
             closestGroup = view.group;
@@ -432,9 +432,9 @@ define( require => {
      * @returns {THREE.Vector3} in the moleculeView's local coordinate system
      */
     getPlanarMoleculePosition: function( screenPoint ) {
-      var cameraRay = this.getRayFromScreenPoint( screenPoint );
-      var intersection = Plane3.XY.intersectWithRay( cameraRay );
-      var position = new THREE.Vector3( intersection.x, intersection.y, 0 );
+      const cameraRay = this.getRayFromScreenPoint( screenPoint );
+      const intersection = Plane3.XY.intersectWithRay( cameraRay );
+      const position = new THREE.Vector3( intersection.x, intersection.y, 0 );
 
       this.moleculeView.worldToLocal( position );
 
@@ -451,26 +451,26 @@ define( require => {
      */
     getSphericalMoleculePosition: function( screenPoint, draggedParticle ) {
       // our main transform matrix and inverse
-      var threeMatrix = this.moleculeView.matrix.clone();
-      var threeInverseMatrix = new THREE.Matrix4();
+      const threeMatrix = this.moleculeView.matrix.clone();
+      const threeInverseMatrix = new THREE.Matrix4();
       threeInverseMatrix.getInverse( threeMatrix );
 
-      var raycaster = this.getRaycasterFromScreenPoint( screenPoint ); // {THREE.Raycaster}
+      const raycaster = this.getRaycasterFromScreenPoint( screenPoint ); // {THREE.Raycaster}
 
-      var ray = raycaster.ray.clone(); // {THREE.Ray}
+      const ray = raycaster.ray.clone(); // {THREE.Ray}
       ray.applyMatrix4( threeInverseMatrix ); // global to local
 
-      var localCameraPosition = new Vector3( 0, 0, 0 ).set( ray.origin );
-      var localCameraDirection = new Vector3( 0, 0, 0 ).set( ray.direction ).normalize();
+      const localCameraPosition = new Vector3( 0, 0, 0 ).set( ray.origin );
+      const localCameraDirection = new Vector3( 0, 0, 0 ).set( ray.direction ).normalize();
 
       // how far we will end up from the center atom
-      var finalDistance = this.model.moleculeProperty.get().getIdealDistanceFromCenter( draggedParticle );
+      const finalDistance = this.model.moleculeProperty.get().getIdealDistanceFromCenter( draggedParticle );
 
       // our sphere to cast our ray against
-      var sphere = new Sphere3( new Vector3( 0, 0, 0 ), finalDistance );
+      const sphere = new Sphere3( new Vector3( 0, 0, 0 ), finalDistance );
 
-      var epsilon = 0.000001;
-      var intersections = sphere.intersections( new Ray3( localCameraPosition, localCameraDirection ), epsilon );
+      const epsilon = 0.000001;
+      const intersections = sphere.intersections( new Ray3( localCameraPosition, localCameraDirection ), epsilon );
       if ( intersections.length === 0 ) {
         /*
          * Compute the point where the closest line through the camera and tangent to our bounding sphere intersects the sphere
@@ -483,12 +483,12 @@ define( require => {
          * Now, back to 3D. Since camera is (0,0,d), our z == 1/d and our x^2 + y^2 == (our 2D y := height), then rescale them out of the unit sphere
          */
 
-        var distanceFromCamera = localCameraPosition.distance( Vector3.ZERO );
+        const distanceFromCamera = localCameraPosition.distance( Vector3.ZERO );
 
         // first, calculate it in unit-sphere, as noted above
-        var d = distanceFromCamera / finalDistance; // scaled distance to the camera (from the origin)
-        var z = 1 / d; // our result z (down-scaled)
-        var height = Math.sqrt( d * d - 1 ) / d; // our result (down-scaled) magnitude of (x,y,0), which is the radius of the circle composed of all points that could be tangent
+        const d = distanceFromCamera / finalDistance; // scaled distance to the camera (from the origin)
+        const z = 1 / d; // our result z (down-scaled)
+        const height = Math.sqrt( d * d - 1 ) / d; // our result (down-scaled) magnitude of (x,y,0), which is the radius of the circle composed of all points that could be tangent
 
         /*
          * Since our camera isn't actually on the z-axis, we need to calculate two vectors. One is the direction towards
@@ -497,12 +497,12 @@ define( require => {
          */
 
         // intersect our camera ray against our perpendicular plane (perpendicular to our camera position from the origin) to determine the orientations
-        var planeNormal = localCameraPosition.normalized();
-        var t = -( localCameraPosition.magnitude ) / ( planeNormal.dot( localCameraDirection ) );
-        var planeHitDirection = localCameraPosition.plus( localCameraDirection.times( t ) ).normalized();
+        const planeNormal = localCameraPosition.normalized();
+        const t = -( localCameraPosition.magnitude ) / ( planeNormal.dot( localCameraDirection ) );
+        const planeHitDirection = localCameraPosition.plus( localCameraDirection.times( t ) ).normalized();
 
         // use the above plane hit direction (perpendicular to the camera) and plane normal (collinear with the camera) to calculate the result
-        var downscaledResult = planeHitDirection.times( height ).plus( planeNormal.times( z ) );
+        const downscaledResult = planeHitDirection.times( height ).plus( planeNormal.times( z ) );
 
         // scale it back to our sized sphere
         return downscaledResult.times( finalDistance );
@@ -527,12 +527,12 @@ define( require => {
       this.screenWidth = width;
       this.screenHeight = height;
 
-      var canvasWidth = Math.ceil( width );
-      var canvasHeight = Math.ceil( height );
+      const canvasWidth = Math.ceil( width );
+      const canvasHeight = Math.ceil( height );
 
       // field of view (FOV) computation for the isometric view scaling we use
-      var sx = canvasWidth / this.layoutBounds.width;
-      var sy = canvasHeight / this.layoutBounds.height;
+      const sx = canvasWidth / this.layoutBounds.width;
+      const sy = canvasHeight / this.layoutBounds.height;
       if ( sx === 0 || sy === 0 ) {
         return 1;
       }
@@ -544,8 +544,8 @@ define( require => {
       // layout bounds fit perfectly in the window, so we don't really have a constraint.
       // Most of the complexity here is that threeCamera.fov is in degrees, and our ideal vertically-constrained FOV is
       // 50 (so there's conversion factors in place).
-      var c = Math.tan( 25 * Math.PI / 180 ); // constant that will output the factor to use to maintain our 50 degree FOV
-      var adaptiveScale = Math.atan( c * sy / sx ) * 2 * 180 / Math.PI; // apply correction scales to maintain correct FOV
+      const c = Math.tan( 25 * Math.PI / 180 ); // constant that will output the factor to use to maintain our 50 degree FOV
+      const adaptiveScale = Math.atan( c * sy / sx ) * 2 * 180 / Math.PI; // apply correction scales to maintain correct FOV
       this.threeCamera.fov = sx > sy ? 50 : adaptiveScale;
       this.activeScale = sy > sx ? sx : sy;
 
@@ -613,14 +613,14 @@ define( require => {
      * @param {THREE.Scene} threeScene
      */
     addLightsToScene: function( threeScene ) {
-      var ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
+      const ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
       threeScene.add( ambientLight );
 
-      var sunLight = new THREE.DirectionalLight( 0xffffff, 0.8 * 0.9 );
+      const sunLight = new THREE.DirectionalLight( 0xffffff, 0.8 * 0.9 );
       sunLight.position.set( -1.0, 0.5, 2.0 );
       threeScene.add( sunLight );
 
-      var moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
+      const moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
       moonLight.position.set( 2.0, -1.0, 1.0 );
       threeScene.add( moonLight );
     },

@@ -38,7 +38,7 @@ define( require => {
       stroke: MoleculeShapesColorProfile.controlPanelBorderProperty
     }, options );
 
-    var titleNode = new Text( titleString, {
+    const titleNode = new Text( titleString, {
       font: new PhetFont( 18 ),
       fill: MoleculeShapesColorProfile.controlPanelTitleProperty
     } );

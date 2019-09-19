@@ -9,7 +9,7 @@ define( require => {
   // modules
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
 
-  var MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
+  const MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
 
     //TODO document
     showOuterLonePairs: { type: 'flag' }

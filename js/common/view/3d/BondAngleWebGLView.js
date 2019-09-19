@@ -22,7 +22,7 @@ define( require => {
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
 
-  var RADIAL_VERTEX_COUNT = 24; // how many vertices to use along the view
+  const RADIAL_VERTEX_COUNT = 24; // how many vertices to use along the view
 
   /*---------------------------------------------------------------------------*
    * Geometry for the sector and arc
@@ -37,19 +37,19 @@ define( require => {
    */
 
   function createSectorGeometry() {
-    var geometry = new THREE.Geometry();
+    const geometry = new THREE.Geometry();
 
     // first vertex (0) at the center
     geometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
 
     // the rest of the vertices (1 to RADIAL_VERTEX_COUNT) are radial
-    for ( var i = 0; i < RADIAL_VERTEX_COUNT; i++ ) {
-      var ratio = i / ( RADIAL_VERTEX_COUNT - 1 ); // from 0 to 1
+    for ( let i = 0; i < RADIAL_VERTEX_COUNT; i++ ) {
+      const ratio = i / ( RADIAL_VERTEX_COUNT - 1 ); // from 0 to 1
       geometry.vertices.push( new THREE.Vector3( ratio, BondAngleView.radius, 0 ) );
     }
 
     // faces (1 less than the number of radial vertices)
-    for ( var j = 0; j < RADIAL_VERTEX_COUNT - 1; j++ ) {
+    for ( let j = 0; j < RADIAL_VERTEX_COUNT - 1; j++ ) {
       // we use a fan approach, first vertex is always the first (center) vertex, the other two are radial
       geometry.faces.push( new THREE.Face3( 0, j + 1, j + 2 ) );
     }
@@ -58,11 +58,11 @@ define( require => {
   }
 
   function createArcGeometry() {
-    var geometry = new THREE.Geometry();
+    const geometry = new THREE.Geometry();
 
     // radial vertices only
-    for ( var i = 0; i < RADIAL_VERTEX_COUNT; i++ ) {
-      var ratio = i / ( RADIAL_VERTEX_COUNT - 1 ); // from 0 to 1
+    for ( let i = 0; i < RADIAL_VERTEX_COUNT; i++ ) {
+      const ratio = i / ( RADIAL_VERTEX_COUNT - 1 ); // from 0 to 1
       geometry.vertices.push( new THREE.Vector3( ratio, BondAngleView.radius, 0 ) );
     }
 
@@ -70,8 +70,8 @@ define( require => {
   }
 
   // handles to get renderer-specific copies of the geometry
-  var localSectorGeometry = new LocalGeometry( createSectorGeometry() );
-  var localArcGeometry = new LocalGeometry( createArcGeometry() );
+  const localSectorGeometry = new LocalGeometry( createSectorGeometry() );
+  const localArcGeometry = new LocalGeometry( createArcGeometry() );
 
   /*---------------------------------------------------------------------------*
    * GLSL Shader for the sector and arc
@@ -85,7 +85,7 @@ define( require => {
    * midpointUnit is a unit vector from the center of the atom to the midpoint of the bond view's arc, and planarUnit
    * is a unit vector perpendicular to midpointUnit such that they both form a basis for the plane of our view.
    */
-  var vertexShader = [
+  const vertexShader = [
     'uniform float angle;',
     'uniform vec3 midpointUnit;',
     'uniform vec3 planarUnit;',
@@ -101,7 +101,7 @@ define( require => {
     '}'
   ].join( '\n' );
 
-  var fragmentShader = [
+  const fragmentShader = [
     'uniform float opacity;',
     'uniform vec3 color;',
 
@@ -112,7 +112,7 @@ define( require => {
 
   // "prototype" uniforms object. Deep copies will be made for each view since they need to change independently.
   // This uses three.js's uniform format and types, see https://github.com/mrdoob/three.js/wiki/Uniforms-types
-  var uniforms = {
+  const uniforms = {
     opacity: {
       type: 'f',
       value: 0.5
@@ -144,7 +144,7 @@ define( require => {
     assert && assert( MoleculeShapesGlobals.useWebGLProperty.get() );
     BondAngleView.call( this );
 
-    var self = this;
+    const self = this;
 
     this.renderer = renderer; // @private {THREE.Renderer}
     this.arcGeometry = localArcGeometry.get( renderer ); // @private {THREE.Geometry}
@@ -241,8 +241,8 @@ define( require => {
       this.arcMaterial.uniforms.angle.value = this.viewAngle;
 
       // vector uniforms in three.js use arrays
-      var midpointUnitArray = [ this.midpointUnit.x, this.midpointUnit.y, this.midpointUnit.z ];
-      var planarUnitArray = [ this.planarUnit.x, this.planarUnit.y, this.planarUnit.z ];
+      const midpointUnitArray = [ this.midpointUnit.x, this.midpointUnit.y, this.midpointUnit.z ];
+      const planarUnitArray = [ this.planarUnit.x, this.planarUnit.y, this.planarUnit.z ];
 
       this.sectorMaterial.uniforms.midpointUnit.value = midpointUnitArray;
       this.arcMaterial.uniforms.midpointUnit.value = midpointUnitArray;

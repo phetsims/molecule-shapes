@@ -36,14 +36,14 @@ define( require => {
      * @returns {THREE.Texture}
      */
     get: function( renderer ) {
-      for ( var i = 0; i < this.renderers.length; i++ ) {
+      for ( let i = 0; i < this.renderers.length; i++ ) {
         if ( this.renderers[ i ] === renderer ) {
           return this.textures[ i ];
         }
       }
 
       this.renderers.push( renderer );
-      var material = this.textureFactory();
+      const material = this.textureFactory();
       this.textures.push( material );
 
       return material;

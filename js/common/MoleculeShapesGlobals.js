@@ -16,7 +16,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Util = require( 'SCENERY/util/Util' );
 
-  var MoleculeShapesGlobals = {
+  const MoleculeShapesGlobals = {
     showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs )
   };
 
@@ -28,7 +28,7 @@ define( require => {
     window.console.log = window.console.log || function() {};
   }
 
-  var hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Util.isWebGLSupported;
+  let hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Util.isWebGLSupported;
 
   // Check for the presence of a webgl/three.js bug present in https://github.com/phetsims/molecule-shapes/issues/161
   if ( navigator.userAgent.indexOf( 'Firefox/' ) >= 0 &&
@@ -36,7 +36,7 @@ define( require => {
     hasBasicWebGLSupport = false;
   }
 
-  var useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
+  const useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
   return _.extend( MoleculeShapesGlobals, {
     // @public {Property.<boolean>} - Whether the basics of WebGL are included
@@ -54,7 +54,7 @@ define( require => {
      * @returns A callback that will unlink
      */
     linkColor: function( material, colorProperty ) {
-      var colorListener = function( color ) {
+      const colorListener = function( color ) {
         material.color.setHex( color.toNumber() );
       };
       colorProperty.link( colorListener );
@@ -72,7 +72,7 @@ define( require => {
      */
     toColorProperty: function( color ) {
       // for now, cast it into place
-      var colorProperty;
+      let colorProperty;
       if ( typeof color === 'string' ) {
         color = new Color( color );
       }

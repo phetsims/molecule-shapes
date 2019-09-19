@@ -16,14 +16,14 @@ define( require => {
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   const Shape = require( 'KITE/Shape' );
 
-  var CROSS_SIZE = 10;
-  var crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( CROSS_SIZE, CROSS_SIZE ).moveTo( 0, CROSS_SIZE ).lineTo( CROSS_SIZE, 0 ), {
+  const CROSS_SIZE = 10;
+  const crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( CROSS_SIZE, CROSS_SIZE ).moveTo( 0, CROSS_SIZE ).lineTo( CROSS_SIZE, 0 ), {
     stroke: '#fff',
     lineWidth: 3
   } );
 
   function RemovePairGroupButton( options ) {
-    var self = this;
+    const self = this;
 
     RectangularPushButton.call( this, _.extend( {
       content: crossNode,

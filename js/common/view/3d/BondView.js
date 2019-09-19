@@ -17,13 +17,13 @@ define( require => {
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   const Vector3 = require( 'DOT/Vector3' );
 
-  var NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 32 : 8;
-  var NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 1 : 8;
-  var globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, NUM_RADIAL_SAMPLES, NUM_AXIAL_SAMPLES, false ); // 1 radius, 1 height, 32 segments, open-ended
+  const NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 32 : 8;
+  const NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 1 : 8;
+  const globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, NUM_RADIAL_SAMPLES, NUM_AXIAL_SAMPLES, false ); // 1 radius, 1 height, 32 segments, open-ended
 
   // renderer-local access
-  var localBondGeometry = new LocalGeometry( globalBondGeometry );
-  var localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
+  const localBondGeometry = new LocalGeometry( globalBondGeometry );
+  const localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
   } ), {
     color: MoleculeShapesColorProfile.bondProperty
@@ -39,7 +39,7 @@ define( require => {
    * @param {number | null} maxLength - in display units
    */
   function BondView( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
-    var self = this;
+    const self = this;
 
     this.aMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
     this.bMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
@@ -55,7 +55,7 @@ define( require => {
     this.aBonds = []; // @private {Array.<THREE.Mesh>}
     this.bBonds = []; // @private {Array.<THREE.Mesh>}
 
-    for ( var i = 0; i < this.bondOrder; i++ ) {
+    for ( let i = 0; i < this.bondOrder; i++ ) {
       // they will have unit height and unit radius. We will scale, rotate and translate them later
       this.aBonds.push( new THREE.Mesh( this.bondGeometry, this.aMaterial ) );
       this.bBonds.push( new THREE.Mesh( this.bondGeometry, this.bMaterial ) );
@@ -80,16 +80,16 @@ define( require => {
      */
     updateView: function( cameraPosition ) {
       // extract our start and end
-      var start = this.aPositionProperty.value;
-      var end = this.bPositionProperty.value;
+      const start = this.aPositionProperty.value;
+      const end = this.bPositionProperty.value;
 
       // unit vector point in the direction of the end from the start
-      var towardsEnd = end.minus( start ).normalized();
+      const towardsEnd = end.minus( start ).normalized();
 
       // calculate the length of the bond. sometimes it can be length-limited, and we push the bond towards B
-      var distance = start.distance( end );
-      var length;
-      var overLength = 0;
+      const distance = start.distance( end );
+      let length;
+      let overLength = 0;
       if ( this.maxLength !== null && distance > this.maxLength ) {
         // our bond would be too long
         length = this.maxLength;
@@ -100,19 +100,19 @@ define( require => {
       }
 
       // find the center of our bond. we add in the "over" length if necessary to offset the bond from between A and B
-      var bondCenter = ( start.times( 0.5 ).plus( end.times( 0.5 ) ) ).plus( towardsEnd.times( overLength / 2 ) );
+      const bondCenter = ( start.times( 0.5 ).plus( end.times( 0.5 ) ) ).plus( towardsEnd.times( overLength / 2 ) );
 
       // get a unit vector perpendicular to the bond direction and camera direction
-      var perpendicular = bondCenter.minus( end ).normalized().cross( bondCenter.minus( cameraPosition ).normalized() ).normalized();
+      const perpendicular = bondCenter.minus( end ).normalized().cross( bondCenter.minus( cameraPosition ).normalized() ).normalized();
 
       /*
        * Compute offsets from the "central" bond position, for showing double and triple bonds.
        * The offsets are basically the relative positions of the 1/2/3 cylinders that are displayed as a bond.
        */
-      var offsets;
+      let offsets;
 
       // how far bonds are apart. constant refined for visual appearance. triple-bonds aren't wider than atoms, most notably
-      var bondSeparation = this.bondRadius * ( 12 / 5 );
+      const bondSeparation = this.bondRadius * ( 12 / 5 );
       switch( this.bondOrder ) {
         case 1:
           offsets = [ new Vector3( 0, 0, 0 ) ];
@@ -128,13 +128,13 @@ define( require => {
       }
 
       // since we need to support two different colors (A-colored and B-colored), we need to compute the offsets from the bond center for each
-      var colorOffset = towardsEnd.times( length / 4 );
-      var threeZUnit = new THREE.Vector3( 0, 1, 0 );
-      var threeTowardsEnd = new THREE.Vector3().copy( towardsEnd );
+      const colorOffset = towardsEnd.times( length / 4 );
+      const threeZUnit = new THREE.Vector3( 0, 1, 0 );
+      const threeTowardsEnd = new THREE.Vector3().copy( towardsEnd );
 
-      for ( var i = 0; i < this.bondOrder; i++ ) {
-        var aTranslation = bondCenter.plus( offsets[ i ] ).minus( colorOffset );
-        var bTranslation = bondCenter.plus( offsets[ i ] ).plus( colorOffset );
+      for ( let i = 0; i < this.bondOrder; i++ ) {
+        const aTranslation = bondCenter.plus( offsets[ i ] ).minus( colorOffset );
+        const bTranslation = bondCenter.plus( offsets[ i ] ).plus( colorOffset );
 
         this.aBonds[ i ].position.set( aTranslation.x, aTranslation.y, aTranslation.z );
         this.bBonds[ i ].position.set( bTranslation.x, bTranslation.y, bTranslation.z );

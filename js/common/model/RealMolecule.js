@@ -22,33 +22,33 @@ define( require => {
    * @param {RealMoleculeShape} realMoleculeShape
    */
   function RealMolecule( realMoleculeShape ) {
-    var i;
-    var group;
+    let i;
+    let group;
 
     Molecule.call( this, true );
 
     this.realMoleculeShape = realMoleculeShape; // @public {RealMoleculeShape} - Our ideal shape
     this.localShapeMap = {}; // @private {number} - Maps atom IDs => {LocalShape}
 
-    var numLonePairs = realMoleculeShape.centralAtom.lonePairCount;
-    var numBonds = realMoleculeShape.bonds.length;
+    const numLonePairs = realMoleculeShape.centralAtom.lonePairCount;
+    const numBonds = realMoleculeShape.bonds.length;
 
-    var idealCentralOrientations = [];
-    var radialGroups = [];
+    const idealCentralOrientations = [];
+    const radialGroups = [];
 
     this.addCentralAtom( new PairGroup( new Vector3( 0, 0, 0 ), false, {
       element: realMoleculeShape.centralAtom.element
     } ) );
 
     // add in bonds
-    var bonds = realMoleculeShape.bonds;
+    const bonds = realMoleculeShape.bonds;
     for ( i = 0; i < bonds.length; i++ ) {
-      var bond = bonds[ i ];
-      var atom = bond.getOtherAtom( realMoleculeShape.centralAtom );
+      const bond = bonds[ i ];
+      const atom = bond.getOtherAtom( realMoleculeShape.centralAtom );
       idealCentralOrientations.push( atom.orientation );
-      var bondLength = atom.position.magnitude;
+      const bondLength = atom.position.magnitude;
 
-      var atomLocation = atom.orientation.times( bondLength );
+      const atomLocation = atom.orientation.times( bondLength );
       group = new PairGroup( atomLocation, false, {
         element: atom.element
       } );
@@ -62,14 +62,14 @@ define( require => {
     }
 
     // all of the ideal vectors (including for lone pairs)
-    var vseprConfiguration = VSEPRConfiguration.getConfiguration( numBonds, numLonePairs );
-    var idealModelVectors = vseprConfiguration.allOrientations;
+    const vseprConfiguration = VSEPRConfiguration.getConfiguration( numBonds, numLonePairs );
+    const idealModelVectors = vseprConfiguration.allOrientations;
 
-    var mapping = vseprConfiguration.getIdealBondRotationToPositions( this.radialAtoms );
+    const mapping = vseprConfiguration.getIdealBondRotationToPositions( this.radialAtoms );
 
     // add in lone pairs in their correct "initial" positions
     for ( i = 0; i < numLonePairs; i++ ) {
-      var orientation = mapping.rotateVector( idealModelVectors[ i ] );
+      const orientation = mapping.rotateVector( idealModelVectors[ i ] );
       idealCentralOrientations.push( orientation );
       group = new PairGroup( orientation.times( PairGroup.LONE_PAIR_DISTANCE ), true );
       this.addGroupAndBond( group, this.centralAtom, 0, PairGroup.LONE_PAIR_DISTANCE );
@@ -79,7 +79,7 @@ define( require => {
     this.localShapeMap[ this.centralAtom.id ] = new LocalShape( LocalShape.realPermutations( radialGroups ), this.centralAtom, radialGroups, idealCentralOrientations );
 
     // basically only use VSEPR model for the attraction on non-central atoms
-    var radialAtoms = this.radialAtoms;
+    const radialAtoms = this.radialAtoms;
     for ( i = 0; i < radialAtoms.length; i++ ) {
       this.localShapeMap[ radialAtoms[ i ].id ] = this.getLocalVSEPRShape( radialAtoms[ i ] );
     }
@@ -99,11 +99,11 @@ define( require => {
       Molecule.prototype.update.call( this, dt );
 
       // angle-based repulsion
-      var numAtoms = this.atoms.length;
-      for ( var i = 0; i < numAtoms; i++ ) {
-        var atom = this.atoms[ i ];
+      const numAtoms = this.atoms.length;
+      for ( let i = 0; i < numAtoms; i++ ) {
+        const atom = this.atoms[ i ];
         if ( this.getNeighborCount( atom ) > 1 ) {
-          var localShape = this.getLocalShape( atom );
+          const localShape = this.getLocalShape( atom );
 
           localShape.applyAngleAttractionRepulsion( dt );
         }

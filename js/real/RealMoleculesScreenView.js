@@ -38,34 +38,34 @@ define( require => {
    */
   function RealMoleculesScreenView( model ) {
     MoleculeShapesScreenView.call( this, model );
-    var self = this;
+    const self = this;
 
     this.model = model; // @private {MoleculeShapesModel}
     this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
     this.addMoleculeView( this.moleculeView );
 
-    var comboBoxListContainer = new Node();
-    var comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
-    var comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
+    const comboBoxListContainer = new Node();
+    const comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
+    const comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
       return new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape );
     } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
       xMargin: 13,
       yMargin: 10,
       cornerRadius: 8
     } );
-    var optionsNode = new OptionsNode( model );
+    const optionsNode = new OptionsNode( model );
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
-    var maxWidth = Math.max( optionsNode.width, comboBox.width );
-    var maxExternalWidth = 350; // How big the panels can get before really interfering
+    const maxWidth = Math.max( optionsNode.width, comboBox.width );
+    const maxExternalWidth = 350; // How big the panels can get before really interfering
 
-    var moleculePanel = new MoleculeShapesPanel( controlMoleculeString, comboBox, {
+    const moleculePanel = new MoleculeShapesPanel( controlMoleculeString, comboBox, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
       xMargin: ( maxWidth - comboBox.width ) / 2 + 15
     } );
-    var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
+    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: moleculePanel.bottom + 10,
@@ -78,29 +78,29 @@ define( require => {
 
     if ( !model.isBasicsVersion ) {
       // we offset the camera, so we don't have an exact constant. this is tuned
-      var approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
+      const approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
 
       // NOTE: these font sizes are scaled!
-      var realViewLabel = new Text( controlRealViewString, {
+      const realViewLabel = new Text( controlRealViewString, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColorProfile.controlPanelTextProperty
       } );
-      var modelViewLabel = new Text( controlModelViewString, {
+      const modelViewLabel = new Text( controlModelViewString, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColorProfile.controlPanelTextProperty
       } );
 
-      var horizontalSpacing = 30;
+      const horizontalSpacing = 30;
 
-      var radioButtonScale = 0.7;
-      var realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
+      const radioButtonScale = 0.7;
+      const realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
         radius: 16,
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,
         right: approximateVisualCenterX - horizontalSpacing / 2,
         maxWidth: 320
       } );
-      var modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
+      const modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
         radius: 16,
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,

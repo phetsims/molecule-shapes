@@ -22,9 +22,9 @@ define( require => {
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function ModelMoleculesModel( isBasicsVersion ) {
-    var self = this;
+    const self = this;
 
-    var initialMolecule = new VSEPRMolecule();
+    const initialMolecule = new VSEPRMolecule();
 
     MoleculeShapesModel.call( this, isBasicsVersion );
     this.moleculeProperty = new Property( initialMolecule );
@@ -48,7 +48,7 @@ define( require => {
      */
     setupInitialMoleculeState: function() {
       // start with two single bonds
-      var centralAtom = this.moleculeProperty.get().centralAtom;
+      const centralAtom = this.moleculeProperty.get().centralAtom;
       this.moleculeProperty.get().addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
       this.moleculeProperty.get().addGroupAndBond( new PairGroup( new Vector3( 2, 8, -5 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
     },

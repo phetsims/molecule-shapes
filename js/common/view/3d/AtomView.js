@@ -20,20 +20,20 @@ define( require => {
   const Sphere3 = require( 'DOT/Sphere3' );
   const Vector3 = require( 'DOT/Vector3' );
 
-  var DISPLAY_RADIUS = 2;
-  var TOUCH_RADIUS = 3;
-  var NUM_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 64 : 12;
-  var OVERDRAW = MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.5; // amount to extend polygons when using Canvas to avoid cracks
+  const DISPLAY_RADIUS = 2;
+  const TOUCH_RADIUS = 3;
+  const NUM_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 64 : 12;
+  const OVERDRAW = MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.5; // amount to extend polygons when using Canvas to avoid cracks
 
   // renderer-local access
-  var localAtomGeometry = new LocalGeometry( new THREE.SphereGeometry( DISPLAY_RADIUS, NUM_SAMPLES, NUM_SAMPLES ) );
+  const localAtomGeometry = new LocalGeometry( new THREE.SphereGeometry( DISPLAY_RADIUS, NUM_SAMPLES, NUM_SAMPLES ) );
 
-  var elementLocalMaterials = {
+  const elementLocalMaterials = {
     // filled in dynamically in getElementLocalMaterial
   };
 
-  var mouseHitTestSphere = new Sphere3( Vector3.ZERO, DISPLAY_RADIUS );
-  var touchHitTestSphere = new Sphere3( Vector3.ZERO, TOUCH_RADIUS );
+  const mouseHitTestSphere = new Sphere3( Vector3.ZERO, DISPLAY_RADIUS );
+  const touchHitTestSphere = new Sphere3( Vector3.ZERO, TOUCH_RADIUS );
 
   /*
    * @param {PairGroup} group
@@ -69,20 +69,20 @@ define( require => {
      * @returns {THREE.Vector3|null} - The first intersection point (in world coordinates) if it exists, otherwise null
      */
     intersect: function( worldRay, isTouch ) {
-      var inverseMatrix = new THREE.Matrix4();
-      var ray = new THREE.Ray();
+      const inverseMatrix = new THREE.Matrix4();
+      const ray = new THREE.Ray();
 
-      var sphere = isTouch ? touchHitTestSphere : mouseHitTestSphere;
+      const sphere = isTouch ? touchHitTestSphere : mouseHitTestSphere;
 
       // transform the ray into local coordinates
       inverseMatrix.getInverse( this.matrixWorld );
       ray.copy( worldRay ).applyMatrix4( inverseMatrix );
 
-      var hitResult = sphere.intersect( new Ray3( new Vector3( 0, 0, 0 ).set( ray.origin ), new Vector3( 0, 0, 0 ).set( ray.direction ) ), 0.00001 );
+      const hitResult = sphere.intersect( new Ray3( new Vector3( 0, 0, 0 ).set( ray.origin ), new Vector3( 0, 0, 0 ).set( ray.direction ) ), 0.00001 );
       if ( hitResult === null ) {
         return null;
       }
-      var localPoint = hitResult.hitPoint;
+      const localPoint = hitResult.hitPoint;
       return new THREE.Vector3().copy( localPoint ).applyMatrix4( this.matrixWorld );
     }
   }, {
@@ -109,7 +109,7 @@ define( require => {
       // We'll want one material for each renderer-element pair, since we can't share across renderers, and we want to
       // share the material with the same element when possible.
 
-      var localMaterial = elementLocalMaterials[ element.symbol ];
+      let localMaterial = elementLocalMaterials[ element.symbol ];
       if ( !localMaterial ) {
         localMaterial = elementLocalMaterials[ element.symbol ] = new LocalMaterial( new THREE.MeshLambertMaterial( {
           color: new Color( element.color ).toNumber(),

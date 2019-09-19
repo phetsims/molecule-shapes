@@ -27,10 +27,10 @@ define( require => {
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function RealMoleculesModel( isBasicsVersion ) {
-    var self = this;
+    const self = this;
 
-    var startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[ 0 ] : RealMoleculeShape.TAB_2_MOLECULES[ 0 ];
-    var startingMolecule = new RealMolecule( startingMoleculeShape );
+    const startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[ 0 ] : RealMoleculeShape.TAB_2_MOLECULES[ 0 ];
+    const startingMolecule = new RealMolecule( startingMoleculeShape );
 
     MoleculeShapesModel.call( this, isBasicsVersion );
     this.moleculeProperty = new Property( startingMolecule ); // @override {Molecule}
@@ -71,14 +71,14 @@ define( require => {
      *                                         do any matching of orientation.
      */
     rebuildMolecule: function( switchedRealMolecule ) {
-      var molecule = this.moleculeProperty.get();
+      const molecule = this.moleculeProperty.get();
 
-      var numRadialAtoms = this.realMoleculeShapeProperty.get().centralAtomCount;
-      var numRadialLonePairs = this.realMoleculeShapeProperty.get().centralAtom.lonePairCount;
-      var vseprConfiguration = VSEPRConfiguration.getConfiguration( numRadialAtoms, numRadialLonePairs );
+      const numRadialAtoms = this.realMoleculeShapeProperty.get().centralAtomCount;
+      const numRadialLonePairs = this.realMoleculeShapeProperty.get().centralAtom.lonePairCount;
+      const vseprConfiguration = VSEPRConfiguration.getConfiguration( numRadialAtoms, numRadialLonePairs );
 
       // get a copy of what might be the "old" molecule into whose space we need to rotate into
-      var mappingMolecule;
+      let mappingMolecule;
       if ( switchedRealMolecule ) {
         // rebuild from scratch
         mappingMolecule = new RealMolecule( this.realMoleculeShapeProperty.get() );
@@ -88,15 +88,15 @@ define( require => {
         mappingMolecule = molecule;
       }
 
-      var newMolecule;
-      var mapping;
+      let newMolecule;
+      let mapping;
       if ( this.showRealViewProperty.get() ) {
         newMolecule = new RealMolecule( this.realMoleculeShapeProperty.get() );
         if ( !switchedRealMolecule ) {
           // NOTE: this might miss a couple improper mappings?
 
           // compute the mapping from our "ideal" to our "old" molecule
-          var groups = new RealMolecule( this.realMoleculeShapeProperty.get() ).radialGroups;
+          const groups = new RealMolecule( this.realMoleculeShapeProperty.get() ).radialGroups;
           mapping = AttractorModel.findClosestMatchingConfiguration(
             AttractorModel.getOrientationsFromOrigin( mappingMolecule.radialGroups ),
             _.map( groups, function( pair ) {
@@ -113,23 +113,23 @@ define( require => {
       }
       else {
         mapping = vseprConfiguration.getIdealGroupRotationToPositions( mappingMolecule.radialGroups );
-        var permutation = mapping.permutation.inverted();
-        var idealUnitVectors = vseprConfiguration.allOrientations;
+        const permutation = mapping.permutation.inverted();
+        const idealUnitVectors = vseprConfiguration.allOrientations;
 
         newMolecule = new VSEPRMolecule();
 
-        var newCentralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false );
+        const newCentralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false );
         newMolecule.addCentralAtom( newCentralAtom );
-        for ( var i = 0; i < numRadialAtoms + numRadialLonePairs; i++ ) {
-          var unitVector = mapping.rotateVector( idealUnitVectors[ i ] );
+        for ( let i = 0; i < numRadialAtoms + numRadialLonePairs; i++ ) {
+          const unitVector = mapping.rotateVector( idealUnitVectors[ i ] );
           if ( i < numRadialLonePairs ) {
             newMolecule.addGroupAndBond( new PairGroup( unitVector.times( PairGroup.LONE_PAIR_DISTANCE ), true ), newCentralAtom, 0 );
           }
           else {
             // we need to dig the bond order out of the mapping molecule, and we need to pick the right one (thus the permutation being applied, at an offset)
-            var oldRadialGroup = mappingMolecule.radialAtoms[ permutation.apply( i ) - numRadialLonePairs ];
-            var bond = mappingMolecule.getParentBond( oldRadialGroup );
-            var group = new PairGroup( unitVector.times( bond.length ), false );
+            const oldRadialGroup = mappingMolecule.radialAtoms[ permutation.apply( i ) - numRadialLonePairs ];
+            const bond = mappingMolecule.getParentBond( oldRadialGroup );
+            const group = new PairGroup( unitVector.times( bond.length ), false );
             newMolecule.addGroupAndBond( group, newCentralAtom, bond.order, bond.length );
 
             newMolecule.addTerminalLonePairs( group, _.filter( mappingMolecule.getNeighbors( oldRadialGroup ), function( group ) { return group.isLonePair; } ).length );

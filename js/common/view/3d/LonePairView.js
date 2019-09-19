@@ -20,13 +20,13 @@ define( require => {
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
 
-  var jsonLoader = new THREE.JSONLoader();
+  const jsonLoader = new THREE.JSONLoader();
 
   // geometry used for display
-  var masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGLProperty.get() ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
+  const masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGLProperty.get() ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
   // renderer-local access
-  var localShellGeometry = new LocalGeometry( masterShellGeometry );
-  var localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
+  const localShellGeometry = new LocalGeometry( masterShellGeometry );
+  const localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
     transparent: true,
     opacity: 0.7,
     depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
@@ -36,15 +36,15 @@ define( require => {
   } );
 
   // geometries used for hit testing (includes a larger touch hit mesh)
-  var mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL ).geometry;
-  var touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL_EXTRUDED ).geometry;
+  const mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL ).geometry;
+  const touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL_EXTRUDED ).geometry;
 
   /*
    * @constructor
    * @param {THREE.Renderer} renderer
    */
   function LonePairView( renderer ) {
-    var self = this;
+    const self = this;
 
     THREE.Object3D.call( this );
 
@@ -55,7 +55,7 @@ define( require => {
     this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial ); // @private {THREE.Mesh}
 
     // scale for the shell geometries (for display and hit testing)
-    var shellScale = 2.5;
+    const shellScale = 2.5;
 
     this.shell.scale.x = this.shell.scale.y = this.shell.scale.z = shellScale;
     this.shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
@@ -71,7 +71,7 @@ define( require => {
     this.electronView1.position.y = this.electronView2.position.y = 5;
 
     if ( phet.chipper.queryParameters.showPointerAreas ) {
-      var touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
+      const touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
         color: 0xff0000,
         transparent: true,
         opacity: 0.4,
@@ -84,10 +84,10 @@ define( require => {
 
     // @private - per-instance listener, so it's easier to link and unlink
     this.positionListener = function( position ) {
-      var offsetFromParentAtom = position.minus( self.parentAtom.positionProperty.get() );
-      var orientation = offsetFromParentAtom.normalized();
+      const offsetFromParentAtom = position.minus( self.parentAtom.positionProperty.get() );
+      const orientation = offsetFromParentAtom.normalized();
 
-      var translation;
+      let translation;
       if ( offsetFromParentAtom.magnitude > PairGroup.LONE_PAIR_DISTANCE ) {
         translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
       }
@@ -152,25 +152,25 @@ define( require => {
      *                                 performance.
      */
     intersect: function( worldRay, isTouch ) {
-      var inverseMatrix = new THREE.Matrix4();
-      var ray = new THREE.Ray();
+      const inverseMatrix = new THREE.Matrix4();
+      const ray = new THREE.Ray();
 
-      var geometry = isTouch ? touchHitTestGeometry : mouseHitTestGeometry;
+      const geometry = isTouch ? touchHitTestGeometry : mouseHitTestGeometry;
 
       // get the ray in our local coordinate frame
       inverseMatrix.getInverse( this.shell.matrixWorld );
       ray.copy( worldRay ).applyMatrix4( inverseMatrix );
 
-      var vertices = geometry.vertices;
-      var faceCount = geometry.faces.length;
+      const vertices = geometry.vertices;
+      const faceCount = geometry.faces.length;
 
       // hit-test all faces, with early exit in case of intersection (the distance doesn't have to be exact)
-      for ( var f = 0; f < faceCount; f++ ) {
-        var face = geometry.faces[ f ];
-        var a = vertices[ face.a ];
-        var b = vertices[ face.b ];
-        var c = vertices[ face.c ];
-        var intersectionPoint = ray.intersectTriangle( a, b, c, false ); // don't cull
+      for ( let f = 0; f < faceCount; f++ ) {
+        const face = geometry.faces[ f ];
+        const a = vertices[ face.a ];
+        const b = vertices[ face.b ];
+        const c = vertices[ face.c ];
+        const intersectionPoint = ray.intersectTriangle( a, b, c, false ); // don't cull
         if ( intersectionPoint !== null ) {
           return intersectionPoint.applyMatrix4( this.matrixWorld );
         }

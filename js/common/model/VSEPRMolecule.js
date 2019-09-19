@@ -40,23 +40,23 @@ define( require => {
     update: function( dt ) {
       Molecule.prototype.update.call( this, dt );
 
-      var radialGroups = this.radialGroups;
+      const radialGroups = this.radialGroups;
 
       // coulomb-style repulsion around the central atom (or angle-based for terminal lone pairs)
-      for ( var i = 0; i < this.atoms.length; i++ ) {
-        var atom = this.atoms[ i ];
+      for ( let i = 0; i < this.atoms.length; i++ ) {
+        const atom = this.atoms[ i ];
         if ( this.getNeighborCount( atom ) > 1 ) {
           if ( atom.isCentralAtom ) {
             // attractive force to the correct position
-            var error = this.getLocalShape( atom ).applyAttraction( dt );
+            const error = this.getLocalShape( atom ).applyAttraction( dt );
 
             // factor that basically states "if we are close to an ideal state, force the coulomb force to ignore differences between bonds and lone pairs based on their distance"
-            var trueLengthsRatioOverride = Math.max( 0, Math.min( 1, Math.log( error + 1 ) - 0.5 ) );
+            const trueLengthsRatioOverride = Math.max( 0, Math.min( 1, Math.log( error + 1 ) - 0.5 ) );
 
-            for ( var j = 0; j < radialGroups.length; j++ ) {
-              var group = radialGroups[ j ];
-              for ( var k = 0; k < radialGroups.length; k++ ) {
-                var otherGroup = radialGroups[ k ];
+            for ( let j = 0; j < radialGroups.length; j++ ) {
+              const group = radialGroups[ j ];
+              for ( let k = 0; k < radialGroups.length; k++ ) {
+                const otherGroup = radialGroups[ k ];
 
                 if ( otherGroup !== group && group !== this.centralAtom ) {
                   group.repulseFrom( otherGroup, dt, trueLengthsRatioOverride );

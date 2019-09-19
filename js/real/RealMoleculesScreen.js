@@ -26,7 +26,7 @@ define( require => {
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
    */
   function RealMoleculesScreen( isBasicsVersion ) {
-    var options = {
+    const options = {
       name: screenRealMoleculesString,
       backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
       homeScreenIcon: new ScreenIconNode( false, isBasicsVersion )

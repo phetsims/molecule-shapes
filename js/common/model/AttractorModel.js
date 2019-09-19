@@ -21,7 +21,7 @@ define( require => {
   const Vector3 = require( 'DOT/Vector3' );
 
   // just static calls, so just create an empty object
-  var AttractorModel = {};
+  const AttractorModel = {};
   moleculeShapes.register( 'AttractorModel', AttractorModel );
 
   /**
@@ -36,26 +36,26 @@ define( require => {
    * @returns {number} A measure of total error (least squares-style)
    */
   AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
-    var currentOrientations = _.map( groups, function( group ) {
+    const currentOrientations = _.map( groups, function( group ) {
       return group.positionProperty.get().minus( center ).normalized();
     } );
-    var mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
+    const mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
 
-    var aroundCenterAtom = center.equals( Vector3.ZERO );
+    const aroundCenterAtom = center.equals( Vector3.ZERO );
 
-    var totalDeltaMagnitude = 0;
-    var i;
+    let totalDeltaMagnitude = 0;
+    let i;
 
     // for each electron pair, push it towards its computed target
     for ( i = 0; i < groups.length; i++ ) {
 
-      var pair = groups[ i ];
+      const pair = groups[ i ];
 
-      var targetOrientation = mapping.target.extractVector3( i );
-      var currentMagnitude = ( pair.positionProperty.get().minus( center ) ).magnitude;
-      var targetLocation = targetOrientation.times( currentMagnitude ).plus( center );
+      const targetOrientation = mapping.target.extractVector3( i );
+      const currentMagnitude = ( pair.positionProperty.get().minus( center ) ).magnitude;
+      const targetLocation = targetOrientation.times( currentMagnitude ).plus( center );
 
-      var delta = targetLocation.minus( pair.positionProperty.get() );
+      const delta = targetLocation.minus( pair.positionProperty.get() );
       totalDeltaMagnitude += delta.magnitude * delta.magnitude;
 
       /*
@@ -64,7 +64,7 @@ define( require => {
        * otherwise-stable position, and less force where our coulomb-like repulsion will settle it into a stable
        * position
        */
-      var strength = timeElapsed * 3 * delta.magnitude;
+      const strength = timeElapsed * 3 * delta.magnitude;
 
       // change the velocity of all of the pairs, unless it is an atom at the origin!
       if ( pair.isLonePair || !pair.isCentralAtom ) {
@@ -84,35 +84,35 @@ define( require => {
       }
     }
 
-    var error = Math.sqrt( totalDeltaMagnitude );
+    const error = Math.sqrt( totalDeltaMagnitude );
 
     // angle-based repulsion
     if ( angleRepulsion && aroundCenterAtom ) {
-      var pairIndexList = pairs( DotUtil.rangeInclusive( 0, groups.length - 1 ) );
+      const pairIndexList = pairs( DotUtil.rangeInclusive( 0, groups.length - 1 ) );
       for ( i = 0; i < pairIndexList.length; i++ ) {
-        var pairIndices = pairIndexList[ i ];
-        var aIndex = pairIndices[ 0 ];
-        var bIndex = pairIndices[ 1 ];
-        var a = groups[ aIndex ];
-        var b = groups[ bIndex ];
+        const pairIndices = pairIndexList[ i ];
+        const aIndex = pairIndices[ 0 ];
+        const bIndex = pairIndices[ 1 ];
+        const a = groups[ aIndex ];
+        const b = groups[ bIndex ];
 
         // current orientations w.r.t. the center
-        var aOrientation = a.positionProperty.get().minus( center ).normalized();
-        var bOrientation = b.positionProperty.get().minus( center ).normalized();
+        const aOrientation = a.positionProperty.get().minus( center ).normalized();
+        const bOrientation = b.positionProperty.get().minus( center ).normalized();
 
         // desired orientations
-        var aTarget = mapping.target.extractVector3( aIndex ).normalized();
-        var bTarget = mapping.target.extractVector3( bIndex ).normalized();
-        var targetAngle = Math.acos( DotUtil.clamp( aTarget.dot( bTarget ), -1, 1 ) );
-        var currentAngle = Math.acos( DotUtil.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
-        var angleDifference = ( targetAngle - currentAngle );
+        const aTarget = mapping.target.extractVector3( aIndex ).normalized();
+        const bTarget = mapping.target.extractVector3( bIndex ).normalized();
+        const targetAngle = Math.acos( DotUtil.clamp( aTarget.dot( bTarget ), -1, 1 ) );
+        const currentAngle = Math.acos( DotUtil.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
+        const angleDifference = ( targetAngle - currentAngle );
 
-        var dirTowardsA = a.positionProperty.get().minus( b.positionProperty.get() ).normalized();
-        var timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
+        const dirTowardsA = a.positionProperty.get().minus( b.positionProperty.get() ).normalized();
+        const timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
 
-        var extraClosePushFactor = DotUtil.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
+        const extraClosePushFactor = DotUtil.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
 
-        var push = dirTowardsA.times( timeFactor *
+        const push = dirTowardsA.times( timeFactor *
                                       angleDifference *
                                       PairGroup.ANGLE_REPULSION_SCALE *
                                       ( currentAngle < targetAngle ? 2.0 : 0.5 ) *
@@ -126,9 +126,9 @@ define( require => {
   };
 
   // maximum size of most computations is 3x6
-  var scratchXArray = new MatrixOps3.Array( 18 );
-  var scratchYArray = new MatrixOps3.Array( 18 );
-  var scratchIdealsArray = new MatrixOps3.Array( 18 );
+  const scratchXArray = new MatrixOps3.Array( 18 );
+  const scratchYArray = new MatrixOps3.Array( 18 );
+  const scratchIdealsArray = new MatrixOps3.Array( 18 );
 
   /**
    * Find the closest VSEPR configuration for a particular molecule. Conceptually, we iterate through
@@ -153,15 +153,15 @@ define( require => {
    * @returns {ResultMapping} (see docs there)
    */
   AttractorModel.findClosestMatchingConfiguration = function( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) {
-    var n = currentOrientations.length; // number of total pairs
+    const n = currentOrientations.length; // number of total pairs
 
     // y == electron pair positions
-    var y = scratchYArray;
+    const y = scratchYArray;
     MatrixOps3.setVectors3( currentOrientations, y );
 
-    var x = scratchXArray;
+    const x = scratchXArray;
 
-    var ideals = scratchIdealsArray;
+    const ideals = scratchIdealsArray;
     MatrixOps3.setVectors3( idealOrientations, ideals );
 
 
@@ -171,33 +171,33 @@ define( require => {
       MatrixOps3.permuteColumns( 3, n, ideals, permutation, x );
 
       // compute the rotation matrix
-      var rot = new Matrix( 3, 3 );
+      const rot = new Matrix( 3, 3 );
       AttractorModel.computeRotationMatrixWithTranspose( n, x, y, rot.entries );
 
       // target matrix, same shape as our y (current position) matrix
-      var target = new Matrix( 3, n );
+      const target = new Matrix( 3, n );
       MatrixOps3.mult( 3, 3, n, rot.entries, x, target.entries ); // target = rot * x
 
       // calculate the error
-      var error = 0;
-      for ( var i = 0; i < n * 3; i++ ) {
-        var diff = y[ i ] - target.entries[ i ];
+      let error = 0;
+      for ( let i = 0; i < n * 3; i++ ) {
+        const diff = y[ i ] - target.entries[ i ];
         error += diff * diff;
       }
 
       return new AttractorModel.ResultMapping( error, target, permutation, rot );
     }
 
-    var bestResult = lastPermutation !== undefined ? calculateTarget( lastPermutation ) : null;
+    let bestResult = lastPermutation !== undefined ? calculateTarget( lastPermutation ) : null;
 
     // TODO: log how effective the permutation checking is at removing the search space
-    for ( var pIndex = 0; pIndex < allowablePermutations.length; pIndex++ ) {
-      var permutation = allowablePermutations[ pIndex ];
+    for ( let pIndex = 0; pIndex < allowablePermutations.length; pIndex++ ) {
+      const permutation = allowablePermutations[ pIndex ];
 
       if ( n > 2 && bestResult !== null && bestResult.permutation !== permutation ) {
-        var permutedOrientation0 = idealOrientations[ permutation.indices[ 0 ] ];
-        var permutedOrientation1 = idealOrientations[ permutation.indices[ 1 ] ];
-        var errorLowBound = 4 - 4 * Math.cos( Math.abs(
+        const permutedOrientation0 = idealOrientations[ permutation.indices[ 0 ] ];
+        const permutedOrientation1 = idealOrientations[ permutation.indices[ 1 ] ];
+        const errorLowBound = 4 - 4 * Math.cos( Math.abs(
             Math.acos( DotUtil.clamp( permutedOrientation0.dot( currentOrientations[ 0 ] ), -1, 1 ) ) -
             Math.acos( DotUtil.clamp( permutedOrientation1.dot( currentOrientations[ 1 ] ), -1, 1 ) )
           ) );
@@ -208,7 +208,7 @@ define( require => {
         }
       }
 
-      var result = calculateTarget( permutation );
+      const result = calculateTarget( permutation );
 
       if ( bestResult === null || result.error < bestResult.error ) {
         bestResult = result;
@@ -230,10 +230,10 @@ define( require => {
   };
 
   // scratch matrices for the SVD calculations
-  var scratchMatrix = new MatrixOps3.Array( 9 );
-  var scratchU = new MatrixOps3.Array( 9 );
-  var scratchSigma = new MatrixOps3.Array( 9 );
-  var scratchV = new MatrixOps3.Array( 9 );
+  const scratchMatrix = new MatrixOps3.Array( 9 );
+  const scratchU = new MatrixOps3.Array( 9 );
+  const scratchSigma = new MatrixOps3.Array( 9 );
+  const scratchV = new MatrixOps3.Array( 9 );
 
   /**
    * In 3D, Given n points x_i and n points y_i, determine the rotation matrix that can be applied to the x_i such
@@ -247,7 +247,7 @@ define( require => {
    */
   AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) {
     // S = X * Y^T, in our case always 3x3
-    var s = scratchMatrix;
+    const s = scratchMatrix;
     MatrixOps3.multRightTranspose( 3, n, 3, x, y, s );
 
     // this code may loop infinitely on NaN, so we want to double-check
@@ -287,8 +287,8 @@ define( require => {
      * @param {Vector3} v
      */
     rotateVector: function( v ) {
-      var x = Matrix.columnVector3( v );
-      var rotated = this.rotation.times( x );
+      const x = Matrix.columnVector3( v );
+      const rotated = this.rotation.times( x );
       return rotated.extractVector3( 0 );
     }
   } );
@@ -306,16 +306,16 @@ define( require => {
     }
     else {
       // make a copy of 'lists'
-      var remainder = lists.slice( 0 );
-      var first = remainder[ 0 ];
+      const remainder = lists.slice( 0 );
+      const first = remainder[ 0 ];
 
       remainder.splice( 0, 1 );
 
       AttractorModel.forEachPermutation( first, [], function( permutedFirst ) {
         AttractorModel.forEachMultiplePermutations( remainder, function( subLists ) {
-          var arr = new Array( lists.length );
+          const arr = new Array( lists.length );
           arr[ 0 ] = permutedFirst;
-          for ( var i = 0; i < subLists.length; i++ ) {
+          for ( let i = 0; i < subLists.length; i++ ) {
             arr[ i + 1 ] = subLists[ i ];
           }
           callback.call( undefined, arr );
@@ -337,13 +337,13 @@ define( require => {
       callback.call( undefined, prefix );
     }
     else {
-      for ( var i = 0; i < list.length; i++ ) {
-        var element = list[ i ];
+      for ( let i = 0; i < list.length; i++ ) {
+        const element = list[ i ];
 
-        var newList = list.slice();
+        const newList = list.slice();
         newList.splice( newList.indexOf( element ), 1 );
 
-        var newPrefix = prefix.slice();
+        const newPrefix = prefix.slice();
         newPrefix.push( element );
 
         AttractorModel.forEachPermutation( newList, newPrefix, callback );
@@ -358,11 +358,11 @@ define( require => {
    * @param {Array.<Array.<*>>} lists
    */
   AttractorModel.listPrint = function( lists ) {
-    var ret = '';
-    for ( var i = 0; i < lists.length; i++ ) {
-      var list = lists[ i ];
+    let ret = '';
+    for ( let i = 0; i < lists.length; i++ ) {
+      const list = lists[ i ];
       ret += ' ';
-      for ( var j = 0; j < list.length; j++ ) {
+      for ( let j = 0; j < list.length; j++ ) {
         ret += list[ j ].toString();
       }
     }
@@ -390,7 +390,7 @@ define( require => {
      BA C FED
      */
 
-    var arr = [
+    const arr = [
       [ 'A', 'B' ],
       [ 'C' ],
       [ 'D', 'E', 'F' ]

@@ -28,16 +28,16 @@ define( require => {
   /*---------------------------------------------------------------------------*
    * Dynamic generation of the molecules
    *----------------------------------------------------------------------------*/
-  var scene = new THREE.Scene();
+  const scene = new THREE.Scene();
   MoleculeShapesScreenView.addLightsToScene( scene );
 
-  var renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
+  const renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
     antialias: true,
     preserveDrawingBuffer: true, // so we can toDataURL() it
     alpha: true // transparency needs to be enabled, even though we don't need it here. see #98
   } ) : new THREE.CanvasRenderer();
 
-  var camera = new THREE.PerspectiveCamera();
+  const camera = new THREE.PerspectiveCamera();
 
   function render( view, width, height, isBasicsVersion ) {
     scene.add( view );
@@ -85,39 +85,39 @@ define( require => {
   }
 
   function getBondDataURL( isModel, isBasicsVersion ) {
-    var angle = getAngle( isModel, isBasicsVersion );
+    const angle = getAngle( isModel, isBasicsVersion );
     // basics is CO2, non-basics is H2O
-    var centralElement = isModel ? undefined : getCentralElement( isBasicsVersion );
-    var radialElement = isModel ? undefined : getRadialElement( isBasicsVersion );
-    var bondOrder = isBasicsVersion ? 2 : 1;
+    const centralElement = isModel ? undefined : getCentralElement( isBasicsVersion );
+    const radialElement = isModel ? undefined : getRadialElement( isBasicsVersion );
+    const bondOrder = isBasicsVersion ? 2 : 1;
 
-    var molecule = new VSEPRMolecule();
+    const molecule = new VSEPRMolecule();
     if ( !isModel ) {
       molecule.isReal = true;
     }
-    var centralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false, {
+    const centralAtom = new PairGroup( new Vector3( 0, 0, 0 ), false, {
       element: centralElement
     } );
     molecule.addCentralAtom( centralAtom );
     molecule.addGroupAndBond( new PairGroup( new Vector3( Math.sin( angle ), -Math.cos( angle ), 0 ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
     molecule.addGroupAndBond( new PairGroup( new Vector3( -Math.sin( angle ), -Math.cos( angle ), 0 ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
-    var model = new MoleculeShapesModel( false, {
+    const model = new MoleculeShapesModel( false, {
       molecule: molecule
     } );
 
-    var view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
+    const view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
       showLabel: function() {},
       finishedAddingLabels: function() {}
     } );
     view.updateView();
 
     // change how atoms/bonds are scaled, so it can appear nicely
-    var moleculeScale = 4.5 * getRelativeScale( isBasicsVersion );
-    var atomScale = 2;
-    var bondScale = 1;
+    const moleculeScale = 4.5 * getRelativeScale( isBasicsVersion );
+    const atomScale = 2;
+    const bondScale = 1;
     view.tweakViewScales( moleculeScale, atomScale, bondScale );
 
-    var url = render( view, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, isBasicsVersion );
+    const url = render( view, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, isBasicsVersion );
     view.dispose();
     return url;
   }
@@ -134,19 +134,19 @@ define( require => {
     // Firefox doesn't immediately have the correct image bounds, so we set it to be overridden here
     this.localBounds = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.toBounds();
 
-    var url = getBondDataURL( isModel, isBasicsVersion );
+    const url = getBondDataURL( isModel, isBasicsVersion );
     this.addChild( new Image( url, {
       initialWidth: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width,
       initialHeight: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height
     } ) );
 
-    var centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
-    var radialLabel = isModel ? 'X' : getRadialElement( isBasicsVersion ).symbol;
+    const centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
+    const radialLabel = isModel ? 'X' : getRadialElement( isBasicsVersion ).symbol;
 
-    var viewBondDistance = 192 * getRelativeScale( isBasicsVersion );
-    var angle = getAngle( isModel, isBasicsVersion );
-    var centerX = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width * 0.5;
-    var centerY = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height * ( isBasicsVersion ? 0.5 : 0.4 );
+    const viewBondDistance = 192 * getRelativeScale( isBasicsVersion );
+    const angle = getAngle( isModel, isBasicsVersion );
+    const centerX = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width * 0.5;
+    const centerY = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height * ( isBasicsVersion ? 0.5 : 0.4 );
     this.addChild( new Text( centralLabel, {
       fontSize: 80,
       fill: 'black',

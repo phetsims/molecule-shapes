@@ -35,7 +35,7 @@ define( require => {
   const shapeTShapedString = require( 'string!MOLECULE_SHAPES/shape.tShaped' );
 
   // for looking up VSEPRConfiguration instances
-  var configurationMap = {}; // x+','+e => {VSEPRConfiguration}
+  const configurationMap = {}; // x+','+e => {VSEPRConfiguration}
 
   /*
    * @constructor
@@ -52,7 +52,7 @@ define( require => {
     this.lonePairOrientations = []; // @public {Array.<Vector3>}
     this.allOrientations = this.geometry.unitVectors; // @public {Array.<Vector3>}
 
-    for ( var i = 0; i < x + e; i++ ) {
+    for ( let i = 0; i < x + e; i++ ) {
       if ( i < e ) {
         // fill up the lone pair unit vectors first
         this.lonePairOrientations.push( this.geometry.unitVectors[ i ] );
@@ -187,12 +187,12 @@ define( require => {
      * @returns {VSEPRConfiguration} - Cached configuration
      */
     getConfiguration: function( x, e ) {
-      var key = x + ',' + e;
+      const key = x + ',' + e;
       if ( key in configurationMap ) {
         return configurationMap[ key ];
       }
       else {
-        var configuration = new VSEPRConfiguration( x, e );
+        const configuration = new VSEPRConfiguration( x, e );
         configurationMap[ key ] = configuration;
         return configuration;
       }

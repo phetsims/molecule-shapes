@@ -18,12 +18,12 @@ define( require => {
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
 
-  var NUM_VERTICES = 24; // number of radial vertices along the edge
+  const NUM_VERTICES = 24; // number of radial vertices along the edge
 
   function createArcGeometry( vertices ) {
-    var geometry = new THREE.Geometry();
+    const geometry = new THREE.Geometry();
 
-    for ( var i = 0; i < vertices.length; i++ ) {
+    for ( let i = 0; i < vertices.length; i++ ) {
       geometry.vertices.push( vertices[ i ] );
     }
     geometry.dynamic = true; // so we can be updated
@@ -32,16 +32,16 @@ define( require => {
   }
 
   function createSectorGeometry( vertices ) {
-    var geometry = new THREE.Geometry();
+    const geometry = new THREE.Geometry();
 
     // center
     geometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    for ( var i = 0; i < vertices.length; i++ ) {
+    for ( let i = 0; i < vertices.length; i++ ) {
       // unclear whether concat would be supported
       geometry.vertices.push( vertices[ i ] );
     }
     // faces
-    for ( var j = 0; j < vertices.length - 1; j++ ) {
+    for ( let j = 0; j < vertices.length - 1; j++ ) {
       geometry.faces.push( new THREE.Face3( 0, j + 1, j + 2 ) );
     }
     geometry.dynamic = true; // so we can be updated
@@ -61,7 +61,7 @@ define( require => {
 
     // @private {Array.<THREE.Vector3>} shared vertex array between both geometries
     this.arcVertices = [];
-    for ( var i = 0; i < NUM_VERTICES; i++ ) {
+    for ( let i = 0; i < NUM_VERTICES; i++ ) {
       this.arcVertices.push( new THREE.Vector3() );
     }
 
@@ -145,16 +145,16 @@ define( require => {
       this.arcMaterial.opacity = this.viewOpacity * 0.7;
 
       // update the vertices based on our GLSL shader
-      for ( var i = 0; i < NUM_VERTICES; i++ ) {
-        var ratio = i / ( NUM_VERTICES - 1 ); // zero to 1
+      for ( let i = 0; i < NUM_VERTICES; i++ ) {
+        const ratio = i / ( NUM_VERTICES - 1 ); // zero to 1
 
         // map our midpoint to theta=0
-        var theta = ( ratio - 0.5 ) * this.viewAngle;
+        const theta = ( ratio - 0.5 ) * this.viewAngle;
 
         // use our basis vectors to compute the point
-        var position = this.midpointUnit.times( Math.cos( theta ) ).plus( this.planarUnit.times( Math.sin( theta ) ) ).times( BondAngleView.radius );
+        const position = this.midpointUnit.times( Math.cos( theta ) ).plus( this.planarUnit.times( Math.sin( theta ) ) ).times( BondAngleView.radius );
 
-        var vertex = this.arcVertices[ i ];
+        const vertex = this.arcVertices[ i ];
         vertex.x = position.x;
         vertex.y = position.y;
         vertex.z = position.z;

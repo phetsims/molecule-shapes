@@ -24,7 +24,7 @@ define( require => {
   const geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
 
   // Constant for the tetrahedral shape
-  var TETRA_CONST = Math.PI * -19.471220333 / 180;
+  const TETRA_CONST = Math.PI * -19.471220333 / 180;
 
   /*
    * @constructor
@@ -39,7 +39,7 @@ define( require => {
   moleculeShapes.register( 'GeometryConfiguration', GeometryConfiguration );
 
   // maps number of orientations to the {GeometryConfiguration} with that many orientations
-  var geometries = {
+  const geometries = {
     0: new GeometryConfiguration( geometryEmptyString, [] ),
 
     1: new GeometryConfiguration(

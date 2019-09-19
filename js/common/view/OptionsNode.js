@@ -20,25 +20,25 @@ define( require => {
   const controlShowBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
   const controlShowLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
 
-  var optionsFont = new PhetFont( 14 );
+  const optionsFont = new PhetFont( 14 );
 
   function OptionsNode( model, options ) {
-    var showLonePairsLabel = new Text( controlShowLonePairsString, {
+    const showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont,
       fill: MoleculeShapesColorProfile.controlPanelTextProperty
     } );
 
-    var showBondAnglesLabel = new Text( controlShowBondAnglesString, {
+    const showBondAnglesLabel = new Text( controlShowBondAnglesString, {
       font: optionsFont,
       fill: MoleculeShapesColorProfile.controlPanelTextProperty
     } );
 
-    var showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {} );
-    var showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
+    const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {} );
+    const showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
 
     // touch areas
-    var lonePairTouchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
-    var bondAngleTouchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
+    const lonePairTouchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
+    const bondAngleTouchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
     // extend both out as far as needed
     lonePairTouchArea.maxX = bondAngleTouchArea.maxX = Math.max( lonePairTouchArea.maxX, bondAngleTouchArea.maxX );
     // extend the bottom touch area below

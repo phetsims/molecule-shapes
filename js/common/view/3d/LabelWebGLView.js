@@ -28,32 +28,32 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // grab our font data from the global namespace
-  var liberationSansRegularSubset = phet.liberationSansRegularSubsetNumericDegrees;
+  const liberationSansRegularSubset = phet.liberationSansRegularSubsetNumericDegrees;
   assert && assert( liberationSansRegularSubset );
 
   /*---------------------------------------------------------------------------*
    * Glyph texture setup
    *----------------------------------------------------------------------------*/
 
-  var glyphs = {};
-  var maxWidth;
-  var maxHeight;
-  var canvas;
+  const glyphs = {};
+  let maxWidth;
+  let maxHeight;
+  let canvas;
   // initializes the above variables with a texture image and data to reference where glyphs are in that texture
   (function setupTexture() {
-    var padding = 4; // padding between glyphs in the texture, and between glyphs and the outside
-    var numGlyphs = 0; // auto-detect number of glyphs, so we can space the glyphs out in the texture
-    var glyphScale = 130; // 65 * powers of 2 seems to fill out the power-of-2 texture wasting less space
-    var scaleMatrix = Matrix3.scaling( glyphScale );
-    var key;
+    const padding = 4; // padding between glyphs in the texture, and between glyphs and the outside
+    let numGlyphs = 0; // auto-detect number of glyphs, so we can space the glyphs out in the texture
+    const glyphScale = 130; // 65 * powers of 2 seems to fill out the power-of-2 texture wasting less space
+    const scaleMatrix = Matrix3.scaling( glyphScale );
+    let key;
 
     // compute maxBounds, set glyphs[key].{shape,advance}
-    var maxBounds = Bounds2.NOTHING.copy();
+    const maxBounds = Bounds2.NOTHING.copy();
     for ( key in liberationSansRegularSubset ) {
       numGlyphs++;
 
-      var fontGlyph = liberationSansRegularSubset[ key ];
-      var shape = new Shape( fontGlyph.path ).transformed( scaleMatrix );
+      const fontGlyph = liberationSansRegularSubset[ key ];
+      const shape = new Shape( fontGlyph.path ).transformed( scaleMatrix );
       maxBounds.includeBounds( shape.bounds );
 
       glyphs[ key ] = {
@@ -68,18 +68,18 @@ define( require => {
 
     // set up Canvas and dimensions (padding between all glyphs and around the outside, rounded out to powers of 2)
     canvas = document.createElement( 'canvas' );
-    var context = canvas.getContext( '2d' );
-    var canvasWidth = Util.toPowerOf2( ( numGlyphs + 1 ) * padding + numGlyphs * maxWidth );
-    var canvasHeight = Util.toPowerOf2( 2 * padding + maxHeight );
+    const context = canvas.getContext( '2d' );
+    const canvasWidth = Util.toPowerOf2( ( numGlyphs + 1 ) * padding + numGlyphs * maxWidth );
+    const canvasHeight = Util.toPowerOf2( 2 * padding + maxHeight );
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
     // draw the glyphs into the texture, while recording their coordinate bounds in UV space (0 to 1)
-    var n = 0;
+    let n = 0;
     for ( key in liberationSansRegularSubset ) {
       // X,Y offset of the glyph's 0,0 registration point
-      var xOffset = ( n + 1 ) * padding + n * maxWidth - maxBounds.minX;
-      var yOffset = padding + maxHeight - maxBounds.maxY;
+      const xOffset = ( n + 1 ) * padding + n * maxWidth - maxBounds.minX;
+      const yOffset = padding + maxHeight - maxBounds.maxY;
       context.setTransform( 1, 0, 0, 1, xOffset, yOffset );
       // Bounds in the texture are offset from the X,Y. We scale to [0,1] since that's how texture coordinates are handled
       glyphs[ key ].bounds = new Bounds2( ( xOffset + maxBounds.minX ) / canvasWidth,
@@ -99,8 +99,8 @@ define( require => {
   })();
 
   // renderer-local access
-  var localTexture = new LocalTexture( function() {
-    var texture = new THREE.Texture( canvas );
+  const localTexture = new LocalTexture( function() {
+    const texture = new THREE.Texture( canvas );
     texture.needsUpdate = true;
 
     texture.minFilter = THREE.LinearMipMapLinearFilter; // ensure we have the best-quality mip-mapping
@@ -108,16 +108,16 @@ define( require => {
   } );
 
   // metrics data for proper centering and layout
-  var FORMAT_STRING = '000.0°';
-  var shortXOffset = glyphs[ '0' ].advance;
-  var shortWidth = 3 * glyphs[ '0' ].advance + glyphs[ '.' ].advance + glyphs[ '°' ].advance;
-  var longWidth = glyphs[ '0' ].advance + shortWidth;
+  const FORMAT_STRING = '000.0°';
+  const shortXOffset = glyphs[ '0' ].advance;
+  const shortWidth = 3 * glyphs[ '0' ].advance + glyphs[ '.' ].advance + glyphs[ '°' ].advance;
+  const longWidth = glyphs[ '0' ].advance + shortWidth;
 
   /*---------------------------------------------------------------------------*
    * Text shader
    *----------------------------------------------------------------------------*/
 
-  var vertexShader = [
+  const vertexShader = [
     'varying vec2 vUv;',
 
     'void main() {',
@@ -127,7 +127,7 @@ define( require => {
   ].join( '\n' );
 
   // custom fragment shader that rescales the text to increase contrast, and allows color and opacity controls
-  var fragmentShader = [
+  const fragmentShader = [
     'varying vec2 vUv;',
     'uniform sampler2D map;',
     'uniform float opacity;',
@@ -142,7 +142,7 @@ define( require => {
   ].join( '\n' );
 
   // This uses three.js's uniform format and types, see https://github.com/mrdoob/three.js/wiki/Uniforms-types
-  var materialUniforms = {
+  const materialUniforms = {
     map: {
       type: 't',
       value: null // stub value, will be filled in
@@ -161,16 +161,16 @@ define( require => {
    * @param {THREE.Renderer} renderer
    */
   function LabelWebGLView( renderer ) {
-    var self = this;
+    const self = this;
 
     this.uvs = []; // @private {Array.<THREE.Vector3>} - stores the texture coordinates used for drawing
 
-    var texture = localTexture.get( renderer );
+    const texture = localTexture.get( renderer );
 
-    var geometry = new THREE.Geometry();
-    var x = 0; // accumulated X offset of previous character places
+    const geometry = new THREE.Geometry();
+    let x = 0; // accumulated X offset of previous character places
 
-    for ( var i = 0; i < FORMAT_STRING.length; i++ ) {
+    for ( let i = 0; i < FORMAT_STRING.length; i++ ) {
       // vertices for the bounds of the character
       geometry.vertices.push( new THREE.Vector3( x, 0, 0 ) );
       geometry.vertices.push( new THREE.Vector3( x + maxWidth, 0, 0 ) );
@@ -185,7 +185,7 @@ define( require => {
       this.uvs.push( new THREE.Vector3() );
 
       // two faces to make up the quad for the character
-      var offset = 4 * i;
+      const offset = 4 * i;
       geometry.faces.push( new THREE.Face3( offset, offset + 1, offset + 2 ) );
       geometry.faceVertexUvs[ 0 ].push( [ this.uvs[ offset ], this.uvs[ offset + 1 ], this.uvs[ offset + 2 ] ] );
       geometry.faces.push( new THREE.Face3( offset, offset + 2, offset + 3 ) );
@@ -203,7 +203,7 @@ define( require => {
       self.materialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 
-    var material = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.ShaderMaterial( {
+    const material = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.ShaderMaterial( {
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       side: THREE.DoubleSide,
@@ -238,18 +238,18 @@ define( require => {
       this.setString( string );
       this.materialUniforms.opacity.value = brightness;
 
-      var scale = layoutScale * 0.13; // tuned constant to match the desired "font size" of the label
+      const scale = layoutScale * 0.13; // tuned constant to match the desired "font size" of the label
       this.scale.x = this.scale.y = this.scale.z = scale;
 
-      var xCentering = string.length === 6 ? -longWidth / 2 : -shortXOffset - shortWidth / 2;
-      var yCentering = -maxHeight / 2;
+      const xCentering = string.length === 6 ? -longWidth / 2 : -shortXOffset - shortWidth / 2;
+      const yCentering = -maxHeight / 2;
 
       // we position based on our upper-left origin
-      var offset = midScreenPoint.minus( centerScreenPoint );
+      const offset = midScreenPoint.minus( centerScreenPoint );
       // Mutably construct offset amount. Magic number vector is tuned to correspond well with the extra horizontal
       // and vertical spacing needed (if it wasn't applied, our text would be centered on the actual arc instead of
       // being pushed farther away).
-      var offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.38, 0.2 ) ).magnitude;
+      const offsetAmount = offset.normalized().componentMultiply( new Vector2( 0.38, 0.2 ) ).magnitude;
       this.position.x = midScreenPoint.x + offset.x * offsetAmount + xCentering * scale;
       this.position.y = midScreenPoint.y + offset.y * offsetAmount + yCentering * scale;
     },
@@ -270,7 +270,7 @@ define( require => {
      * @param {string} string
      */
     setString: function( string ) {
-      var idx = 0;
+      let idx = 0;
       if ( string.length === 6 ) {
         this.setGlyph( 0, string[ idx++ ] );
       }
@@ -294,11 +294,11 @@ define( require => {
     setGlyph: function( index, string ) {
       assert && assert( glyphs[ string ] );
 
-      var glyph = glyphs[ string ];
-      var minU = glyph.bounds.minX;
-      var maxU = glyph.bounds.maxX;
-      var minV = 1 - glyph.bounds.maxY;
-      var maxV = 1 - glyph.bounds.minY;
+      const glyph = glyphs[ string ];
+      const minU = glyph.bounds.minX;
+      const maxU = glyph.bounds.maxX;
+      const minV = 1 - glyph.bounds.maxY;
+      const maxV = 1 - glyph.bounds.minY;
 
       this.setUVs( index, minU, minV, maxU, maxV );
     },
@@ -325,7 +325,7 @@ define( require => {
      * @param {number} maxV
      */
     setUVs: function( index, minU, minV, maxU, maxV ) {
-      var offset = index * 4;
+      const offset = index * 4;
 
       this.uvs[ offset ].x = minU;
       this.uvs[ offset ].y = maxV;

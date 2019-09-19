@@ -78,12 +78,12 @@ define( require => {
         // no changes if we can't move more than 1 element (need somewhere to put it)
         return permutations;
       }
-      var result = [];
-      for ( var i = 0; i < permutations.length; i++ ) {
-        var permutation = permutations[ i ];
+      const result = [];
+      for ( let i = 0; i < permutations.length; i++ ) {
+        const permutation = permutations[ i ];
 
-        var resultsToAdd = permutation.withIndicesPermuted( indices );
-        for ( var j = 0; j < resultsToAdd.length; j++ ) {
+        const resultsToAdd = permutation.withIndicesPermuted( indices );
+        for ( let j = 0; j < resultsToAdd.length; j++ ) {
           result.push( resultsToAdd[ j ] );
         }
       }
@@ -101,20 +101,20 @@ define( require => {
      * @param {Array.<Permutation>} permutations
      */
     vseprPermutations: function( neighbors ) {
-      var permutations = [];
+      let permutations = [];
       permutations.push( Permutation.identity( neighbors.length ) );
 
-      var indexOf = function( group ) {
+      const indexOf = function( group ) {
         return neighbors.indexOf( group );
       };
 
       // partition the neighbors into lone pairs and atoms.
-      var partitioned = partition( neighbors, function( group ) {
+      const partitioned = partition( neighbors, function( group ) {
         return group.isLonePair;
       } );
       // this separation looks better in languages where you say "(lonePairs, atoms) = partition(...)"
-      var lonePairs = partitioned[ 0 ];
-      var atoms = partitioned[ 1 ];
+      const lonePairs = partitioned[ 0 ];
+      const atoms = partitioned[ 1 ];
 
       // permute away the lone pairs
       permutations = LocalShape.permuteListWithIndices( permutations, _.map( lonePairs, indexOf ) );
@@ -132,27 +132,27 @@ define( require => {
      * @param {Array.<Permutation>} permutations
      */
     realPermutations: function( neighbors ) {
-      var permutations = [];
+      let permutations = [];
       permutations.push( Permutation.identity( neighbors.length ) );
 
-      var indexOf = function( group ) {
+      const indexOf = function( group ) {
         return neighbors.indexOf( group );
       };
 
       // allow interchanging of lone pairs
-      var lonePairs = _.filter( neighbors, function( group ) { return group.isLonePair; } );
+      const lonePairs = _.filter( neighbors, function( group ) { return group.isLonePair; } );
       permutations = LocalShape.permuteListWithIndices( permutations, _.map( lonePairs, indexOf ) );
 
       // allow interchanging of pair groups when they have the same chemical element
-      var atoms = _.filter( neighbors, function( group ) { return !group.isLonePair; } );
+      const atoms = _.filter( neighbors, function( group ) { return !group.isLonePair; } );
 
-      var usedElements = _.uniq( _.map( atoms, function( group ) { return group.element; } ) );
+      const usedElements = _.uniq( _.map( atoms, function( group ) { return group.element; } ) );
 
-      for ( var i = 0; i < usedElements.length; i++ ) {
+      for ( let i = 0; i < usedElements.length; i++ ) {
         var element = usedElements[ i ];
 
         // since the closure is being executed at this point, the warning in this line can be ignored
-        var atomsWithElement = _.filter( atoms, function( group ) { return group.element === element; } );
+        const atomsWithElement = _.filter( atoms, function( group ) { return group.element === element; } );
         permutations = LocalShape.permuteListWithIndices( permutations, _.map( atomsWithElement, indexOf ) );
       }
 

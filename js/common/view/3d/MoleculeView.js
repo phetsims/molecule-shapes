@@ -73,11 +73,11 @@ define( require => {
      */
     updateView: function() {
       // angle and bond views need to know information about the camera's position
-      var cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
+      const cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
       this.worldToLocal( cameraPosition ); // this mutates cameraPosition
-      var localCameraOrientation = new Vector3( 0, 0, 0 ).set( cameraPosition ).normalized();
+      const localCameraOrientation = new Vector3( 0, 0, 0 ).set( cameraPosition ).normalized();
 
-      for ( var i = 0; i < this.bondViews.length; i++ ) {
+      for ( let i = 0; i < this.bondViews.length; i++ ) {
         this.bondViews[ i ].updateView( cameraPosition );
       }
       this.updateAngles( localCameraOrientation );
@@ -92,14 +92,14 @@ define( require => {
      */
     updateAngles: function( localCameraOrientation ) {
       // we need to handle the 2-atom case separately for proper support of 180-degree bonds
-      var hasTwoBonds = this.molecule.radialAtoms.length === 2;
+      const hasTwoBonds = this.molecule.radialAtoms.length === 2;
       if ( !hasTwoBonds ) {
         // if we don't have two bonds, just ignore the last midpoint
         this.lastMidpoint = null;
       }
 
-      for ( var i = 0; i < this.angleViews.length; i++ ) {
-        var angleView = this.angleViews[ i ];
+      for ( let i = 0; i < this.angleViews.length; i++ ) {
+        const angleView = this.angleViews[ i ];
         angleView.updateView( this.lastMidpoint, localCameraOrientation );
 
         // if we have two bonds, store the last midpoint so we can keep the bond midpoint stable
@@ -114,7 +114,7 @@ define( require => {
      * @public
      */
     dispose: function() {
-      var i;
+      let i;
       for ( i = 0; i < this.angleViews.length; i++ ) {
         this.screenView.returnLabel( this.angleViews[ i ].label );
         this.angleViews[ i ].dispose();
@@ -136,11 +136,11 @@ define( require => {
         return;
       }
 
-      var parentAtom = this.molecule.getParent( group );
-      var centralAtom = this.molecule.centralAtom;
-      var view;
+      const parentAtom = this.molecule.getParent( group );
+      const centralAtom = this.molecule.centralAtom;
+      let view;
       if ( group.isLonePair ) {
-        var visibilityProperty = parentAtom === centralAtom ?
+        const visibilityProperty = parentAtom === centralAtom ?
                                  this.model.showLonePairsProperty :
                                  MoleculeShapesGlobals.showOuterLonePairsProperty;
 
@@ -157,10 +157,10 @@ define( require => {
           view.position.set( position.x, position.y, position.z );
         } );
 
-        for ( var i = 0; i < this.atomViews.length; i++ ) {
-          var otherView = this.atomViews[ i ];
+        for ( let i = 0; i < this.atomViews.length; i++ ) {
+          const otherView = this.atomViews[ i ];
           if ( otherView !== view ) {
-            var bondAngleView = MoleculeShapesGlobals.useWebGLProperty.get() ?
+            const bondAngleView = MoleculeShapesGlobals.useWebGLProperty.get() ?
                                 BondAngleWebGLView.pool.get( this.renderer ) :
                                 BondAngleFallbackView.pool.get( this.renderer );
             bondAngleView.initialize( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );
@@ -183,11 +183,11 @@ define( require => {
      * @param {PairGroup} group
      */
     removeGroup: function( group ) {
-      var i;
+      let i;
       if ( group.isLonePair ) {
         // remove the lone pair view itself
         for ( i = 0; i < this.lonePairViews.length; i++ ) {
-          var lonePairView = this.lonePairViews[ i ];
+          const lonePairView = this.lonePairViews[ i ];
           if ( lonePairView.group === group ) {
             this.remove( lonePairView );
             lonePairView.dispose();
@@ -199,7 +199,7 @@ define( require => {
       else {
         // remove the atom view itself
         for ( i = 0; i < this.atomViews.length; i++ ) {
-          var atomView = this.atomViews[ i ];
+          const atomView = this.atomViews[ i ];
           if ( atomView.group === group ) {
             this.remove( atomView );
             this.atomViews.splice( i, 1 );
@@ -209,7 +209,7 @@ define( require => {
 
         // remove any bond angles involved, reversed for ease of removal (we may need to remove multiple ones)
         for ( i = this.angleViews.length - 1; i >= 0; i-- ) {
-          var bondAngleView = this.angleViews[ i ];
+          const bondAngleView = this.angleViews[ i ];
 
           if ( bondAngleView.aGroup === group || bondAngleView.bGroup === group ) {
             this.remove( bondAngleView );
@@ -236,10 +236,10 @@ define( require => {
      */
     addBond: function( bond ) {
       assert && assert( bond.contains( this.molecule.centralAtom ) );
-      var group = bond.getOtherAtom( this.molecule.centralAtom );
+      const group = bond.getOtherAtom( this.molecule.centralAtom );
 
       if ( !group.isLonePair ) {
-        var bondView = new BondView(
+        const bondView = new BondView(
           this.renderer,
           bond,
           this.molecule.centralAtom.positionProperty, // center position
@@ -258,8 +258,8 @@ define( require => {
      * @param {Bond.<PairGroup>} bond
      */
     removeBond: function( bond ) {
-      for ( var i = this.bondViews.length - 1; i >= 0; i-- ) {
-        var bondView = this.bondViews[ i ];
+      for ( let i = this.bondViews.length - 1; i >= 0; i-- ) {
+        const bondView = this.bondViews[ i ];
         if ( bondView.bond === bond ) {
           this.remove( bondView );
           this.bondViews.splice( i, 1 );

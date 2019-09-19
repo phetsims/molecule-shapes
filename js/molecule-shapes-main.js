@@ -21,9 +21,9 @@ define( require => {
   // strings
   const moleculeShapesTitleString = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
 
-  var isBasicsVersion = false;
+  const isBasicsVersion = false;
 
-  var simOptions = {
+  const simOptions = {
     credits: {
       leadDesign: 'Emily B. Moore',
       softwareDevelopment: 'Jonathan Olson',
@@ -45,7 +45,7 @@ define( require => {
   // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
   SimLauncher.launch( function() {
-    var sim = new Sim( moleculeShapesTitleString, [
+    const sim = new Sim( moleculeShapesTitleString, [
       new ModelMoleculesScreen( isBasicsVersion ),
       new RealMoleculesScreen( isBasicsVersion )
     ], simOptions );

@@ -42,11 +42,11 @@ define( require => {
     this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
     this.addMoleculeView( this.moleculeView );
 
-    var addPairCallback = this.addPairGroup.bind( this );
-    var removePairCallback = this.removePairGroup.bind( this );
+    const addPairCallback = this.addPairGroup.bind( this );
+    const removePairCallback = this.removePairGroup.bind( this );
 
-    var optionsNode = new OptionsNode( model );
-    var bondingNode = new VBox( {
+    const optionsNode = new OptionsNode( model );
+    const bondingNode = new VBox( {
       children: [
         new BondGroupNode( model, 1, addPairCallback, removePairCallback, {} ),
         new BondGroupNode( model, 2, addPairCallback, removePairCallback, {} ),
@@ -55,8 +55,8 @@ define( require => {
       spacing: 10,
       align: 'left'
     } );
-    var lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
-    var removeAllButton = new TextPushButton( controlRemoveAllString, {
+    const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
+    const removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
@@ -77,26 +77,26 @@ define( require => {
     updateButtonEnabled();
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
-    var optionsTempNode = new Node( { children: [ optionsNode ] } );
-    var bondingTempNode = new Node( { children: [ bondingNode ] } );
-    var lonePairTempNode = new Node( { children: [ lonePairNode ] } );
-    var maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
+    const optionsTempNode = new Node( { children: [ optionsNode ] } );
+    const bondingTempNode = new Node( { children: [ bondingNode ] } );
+    const lonePairTempNode = new Node( { children: [ lonePairNode ] } );
+    const maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
       Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
         new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
     optionsTempNode.removeAllChildren();
     bondingTempNode.removeAllChildren();
     lonePairTempNode.removeAllChildren();
 
-    var maxExternalWidth = 350; // How big the panels can get before really interfering
-    var bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
+    const maxExternalWidth = 350; // How big the panels can get before really interfering
+    const bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
       xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15
     } );
-    var bottom = bondingPanel.bottom;
+    let bottom = bondingPanel.bottom;
     if ( !model.isBasicsVersion ) {
-      var lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
+      const lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
         maxWidth: maxExternalWidth,
         right: this.layoutBounds.right - 10,
         top: bondingPanel.bottom + 10,
@@ -107,7 +107,7 @@ define( require => {
     }
     removeAllButton.centerX = bondingPanel.centerX;
     removeAllButton.top = bottom + 15;
-    var optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
+    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: removeAllButton.bottom + 20,
@@ -131,13 +131,13 @@ define( require => {
      *                                 group near the click location (it will animate from that location).
      */
     addPairGroup: function( bondOrder, globalBounds ) {
-      var screenPoint = globalBounds.leftCenter;
-      var threePoint = this.getPlanarMoleculePosition( screenPoint );
+      const screenPoint = globalBounds.leftCenter;
+      const threePoint = this.getPlanarMoleculePosition( screenPoint );
 
       // when adding a pair group in the location of the control panel, it looks better when starting further away
-      var extraFactor = 1.2;
+      const extraFactor = 1.2;
 
-      var pair = new PairGroup( new Vector3( 0, 0, 0 ).set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
+      const pair = new PairGroup( new Vector3( 0, 0, 0 ).set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
       this.model.moleculeProperty.get().addGroupAndBond( pair, this.model.moleculeProperty.get().centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
     },
 
@@ -147,13 +147,13 @@ define( require => {
      * @param {number} bondOrder
      */
     removePairGroup: function( bondOrder ) {
-      var molecule = this.model.moleculeProperty.get();
+      const molecule = this.model.moleculeProperty.get();
 
-      var bonds = molecule.getBondsAround( molecule.centralAtom );
+      const bonds = molecule.getBondsAround( molecule.centralAtom );
 
-      for ( var i = bonds.length - 1; i >= 0; i-- ) {
+      for ( let i = bonds.length - 1; i >= 0; i-- ) {
         if ( bonds[ i ].order === bondOrder ) {
-          var atom = bonds[ i ].getOtherAtom( molecule.centralAtom );
+          const atom = bonds[ i ].getOtherAtom( molecule.centralAtom );
 
           molecule.removeGroup( atom );
           break;
