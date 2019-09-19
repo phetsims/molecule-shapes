@@ -7,18 +7,18 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix = require( 'DOT/Matrix' );
-  var MatrixOps3 = require( 'DOT/MatrixOps3' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var pairs = require( 'PHET_CORE/pairs' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix = require( 'DOT/Matrix' );
+  const MatrixOps3 = require( 'DOT/MatrixOps3' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const pairs = require( 'PHET_CORE/pairs' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // just static calls, so just create an empty object
   var AttractorModel = {};

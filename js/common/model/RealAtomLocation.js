@@ -5,13 +5,13 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Atom = require( 'NITROGLYCERIN/Atom' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const Atom = require( 'NITROGLYCERIN/Atom' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
 
   /**
    * @constructor

@@ -7,15 +7,15 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var partition = require( 'PHET_CORE/partition' );
-  var Permutation = require( 'DOT/Permutation' );
+  const AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const partition = require( 'PHET_CORE/partition' );
+  const Permutation = require( 'DOT/Permutation' );
 
   /*
    * @constructor

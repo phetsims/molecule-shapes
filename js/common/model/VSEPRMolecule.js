@@ -6,14 +6,14 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
 
   /*
    * @constructor

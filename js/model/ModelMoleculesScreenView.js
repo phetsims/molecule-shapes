@@ -5,29 +5,29 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var BondGroupNode = require( 'MOLECULE_SHAPES/model/BondGroupNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const BondGroupNode = require( 'MOLECULE_SHAPES/model/BondGroupNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
+  const MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
+  const MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const TextPushButton = require( 'SUN/buttons/TextPushButton' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const Vector3 = require( 'DOT/Vector3' );
 
-  var controlBondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
-  var controlLonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );
-  var controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
-  var controlRemoveAllString = require( 'string!MOLECULE_SHAPES/control.removeAll' );
+  const controlBondingString = require( 'string!MOLECULE_SHAPES/control.bonding' );
+  const controlLonePairString = require( 'string!MOLECULE_SHAPES/control.lonePair' );
+  const controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
+  const controlRemoveAllString = require( 'string!MOLECULE_SHAPES/control.removeAll' );
 
   /**
    * Constructor for the ModelMoleculesScreenView

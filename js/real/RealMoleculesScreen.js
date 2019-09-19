@@ -5,20 +5,20 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var RealMoleculesModel = require( 'MOLECULE_SHAPES/real/RealMoleculesModel' );
-  var RealMoleculesScreenView = require( 'MOLECULE_SHAPES/real/RealMoleculesScreenView' );
-  var Screen = require( 'JOIST/Screen' );
-  var ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const RealMoleculesModel = require( 'MOLECULE_SHAPES/real/RealMoleculesModel' );
+  const RealMoleculesScreenView = require( 'MOLECULE_SHAPES/real/RealMoleculesScreenView' );
+  const Screen = require( 'JOIST/Screen' );
+  const ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
 
   // strings
-  var screenRealMoleculesString = require( 'string!MOLECULE_SHAPES/screen.realMolecules' );
+  const screenRealMoleculesString = require( 'string!MOLECULE_SHAPES/screen.realMolecules' );
 
   /**
    * Creates the model and view for the RealMoleculesScreen

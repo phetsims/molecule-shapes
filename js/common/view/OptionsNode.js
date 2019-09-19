@@ -5,20 +5,20 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
-  var controlShowBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
-  var controlShowLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
+  const controlShowBondAnglesString = require( 'string!MOLECULE_SHAPES/control.showBondAngles' );
+  const controlShowLonePairsString = require( 'string!MOLECULE_SHAPES/control.showLonePairs' );
 
   var optionsFont = new PhetFont( 14 );
 

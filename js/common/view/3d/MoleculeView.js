@@ -5,20 +5,20 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
-  var BondAngleFallbackView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleFallbackView' );
-  var BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
-  var BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LonePairView = require( 'MOLECULE_SHAPES/common/view/3d/LonePairView' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const AtomView = require( 'MOLECULE_SHAPES/common/view/3d/AtomView' );
+  const BondAngleFallbackView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleFallbackView' );
+  const BondAngleWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/BondAngleWebGLView' );
+  const BondView = require( 'MOLECULE_SHAPES/common/view/3d/BondView' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LonePairView = require( 'MOLECULE_SHAPES/common/view/3d/LonePairView' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   /*
    * @constructor

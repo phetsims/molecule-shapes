@@ -3,11 +3,11 @@
 /**
  * Query parameters supported by this simulation.
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
 
   var MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
 

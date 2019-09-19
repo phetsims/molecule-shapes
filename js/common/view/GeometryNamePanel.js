@@ -5,46 +5,46 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
   // strings
-  var controlElectronGeometryString = require( 'string!MOLECULE_SHAPES/control.electronGeometry' );
-  var controlGeometryNameString = require( 'string!MOLECULE_SHAPES/control.geometryName' );
-  var controlMoleculeGeometryString = require( 'string!MOLECULE_SHAPES/control.moleculeGeometry' );
+  const controlElectronGeometryString = require( 'string!MOLECULE_SHAPES/control.electronGeometry' );
+  const controlGeometryNameString = require( 'string!MOLECULE_SHAPES/control.geometryName' );
+  const controlMoleculeGeometryString = require( 'string!MOLECULE_SHAPES/control.moleculeGeometry' );
 
-  var geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
-  var geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
-  var geometryLinearString = require( 'string!MOLECULE_SHAPES/geometry.linear' );
-  var geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
-  var geometryTetrahedralString = require( 'string!MOLECULE_SHAPES/geometry.tetrahedral' );
-  var geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
-  var geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
+  const geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
+  const geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
+  const geometryLinearString = require( 'string!MOLECULE_SHAPES/geometry.linear' );
+  const geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
+  const geometryTetrahedralString = require( 'string!MOLECULE_SHAPES/geometry.tetrahedral' );
+  const geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
+  const geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
 
-  var shapeBentString = require( 'string!MOLECULE_SHAPES/shape.bent' );
-  var shapeDiatomicString = require( 'string!MOLECULE_SHAPES/shape.diatomic' );
-  var shapeEmptyString = require( 'string!MOLECULE_SHAPES/shape.empty' );
-  var shapeLinearString = require( 'string!MOLECULE_SHAPES/shape.linear' );
-  var shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
-  var shapeSeesawString = require( 'string!MOLECULE_SHAPES/shape.seesaw' );
-  var shapeSquarePlanarString = require( 'string!MOLECULE_SHAPES/shape.squarePlanar' );
-  var shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
-  var shapeTetrahedralString = require( 'string!MOLECULE_SHAPES/shape.tetrahedral' );
-  var shapeTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalBipyramidal' );
-  var shapeTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/shape.trigonalPlanar' );
-  var shapeTrigonalPyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalPyramidal' );
-  var shapeTShapedString = require( 'string!MOLECULE_SHAPES/shape.tShaped' );
+  const shapeBentString = require( 'string!MOLECULE_SHAPES/shape.bent' );
+  const shapeDiatomicString = require( 'string!MOLECULE_SHAPES/shape.diatomic' );
+  const shapeEmptyString = require( 'string!MOLECULE_SHAPES/shape.empty' );
+  const shapeLinearString = require( 'string!MOLECULE_SHAPES/shape.linear' );
+  const shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
+  const shapeSeesawString = require( 'string!MOLECULE_SHAPES/shape.seesaw' );
+  const shapeSquarePlanarString = require( 'string!MOLECULE_SHAPES/shape.squarePlanar' );
+  const shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
+  const shapeTetrahedralString = require( 'string!MOLECULE_SHAPES/shape.tetrahedral' );
+  const shapeTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalBipyramidal' );
+  const shapeTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/shape.trigonalPlanar' );
+  const shapeTrigonalPyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalPyramidal' );
+  const shapeTShapedString = require( 'string!MOLECULE_SHAPES/shape.tShaped' );
 
   // string list needed to compute maximum label bounds
   var geometryStrings = [

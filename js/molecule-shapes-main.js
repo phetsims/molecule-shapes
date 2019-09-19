@@ -5,21 +5,21 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
-  var GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
-  var IE11StencilWarningNode = require( 'SCENERY_PHET/IE11StencilWarningNode' );
-  var ModelMoleculesScreen = require( 'MOLECULE_SHAPES/model/ModelMoleculesScreen' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var RealMoleculesScreen = require( 'MOLECULE_SHAPES/real/RealMoleculesScreen' );
-  var Sim = require( 'JOIST/Sim' );
-  var SimLauncher = require( 'JOIST/SimLauncher' );
+  const CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
+  const GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
+  const IE11StencilWarningNode = require( 'SCENERY_PHET/IE11StencilWarningNode' );
+  const ModelMoleculesScreen = require( 'MOLECULE_SHAPES/model/ModelMoleculesScreen' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const RealMoleculesScreen = require( 'MOLECULE_SHAPES/real/RealMoleculesScreen' );
+  const Sim = require( 'JOIST/Sim' );
+  const SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var moleculeShapesTitleString = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
+  const moleculeShapesTitleString = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
 
   var isBasicsVersion = false;
 

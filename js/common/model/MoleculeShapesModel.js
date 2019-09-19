@@ -5,13 +5,13 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
     'use strict';
 
     // modules
-    var inherit = require( 'PHET_CORE/inherit' );
-    var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-    var Property = require( 'AXON/Property' );
+    const inherit = require( 'PHET_CORE/inherit' );
+    const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+    const Property = require( 'AXON/Property' );
 
     /**
      * @constructor

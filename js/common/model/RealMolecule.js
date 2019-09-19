@@ -5,17 +5,17 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
-  var Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
+  const Molecule = require( 'MOLECULE_SHAPES/common/model/Molecule' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const Vector3 = require( 'DOT/Vector3' );
+  const VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
 
   /*
    * @constructor

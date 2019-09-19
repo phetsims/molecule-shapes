@@ -5,16 +5,16 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
-  var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
+  const LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
 
   // controls resolution for the sphere (number of samples in both directions)
   var NUM_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 10 : 3;

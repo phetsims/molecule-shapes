@@ -5,17 +5,17 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
-  var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
+  const LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   var NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 32 : 8;
   var NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 1 : 8;

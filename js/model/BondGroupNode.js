@@ -5,27 +5,27 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var platform = require( 'PHET_CORE/platform' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var RemovePairGroupButton = require( 'MOLECULE_SHAPES/model/RemovePairGroupButton' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
+  const MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
+  const MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const platform = require( 'PHET_CORE/platform' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const RemovePairGroupButton = require( 'MOLECULE_SHAPES/model/RemovePairGroupButton' );
+  const Vector3 = require( 'DOT/Vector3' );
+  const VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
 
   /*---------------------------------------------------------------------------*
    * Dynamic generation of the bonding/lone-pair panel images, by rendering a three.js scene to an image

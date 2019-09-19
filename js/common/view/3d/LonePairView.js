@@ -5,20 +5,20 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var ElectronView = require( 'MOLECULE_SHAPES/common/view/3d/ElectronView' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
-  var LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
-  var LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
-  var LonePairGeometryData = require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const ElectronView = require( 'MOLECULE_SHAPES/common/view/3d/ElectronView' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LocalGeometry = require( 'MOLECULE_SHAPES/common/view/3d/LocalGeometry' );
+  const LocalMaterial = require( 'MOLECULE_SHAPES/common/view/3d/LocalMaterial' );
+  const LocalPool = require( 'MOLECULE_SHAPES/common/view/3d/LocalPool' );
+  const LonePairGeometryData = require( 'MOLECULE_SHAPES/common/data/LonePairGeometryData' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
 
   var jsonLoader = new THREE.JSONLoader();
 

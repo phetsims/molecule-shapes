@@ -5,31 +5,31 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var ChemUtils = require( 'NITROGLYCERIN/ChemUtils' );
-  var ComboBox = require( 'SUN/ComboBox' );
-  var ComboBoxItem = require( 'SUN/ComboBoxItem' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  const AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  const ChemUtils = require( 'NITROGLYCERIN/ChemUtils' );
+  const ComboBox = require( 'SUN/ComboBox' );
+  const ComboBoxItem = require( 'SUN/ComboBoxItem' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesPanel = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesPanel' );
+  const MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
+  const MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const OptionsNode = require( 'MOLECULE_SHAPES/common/view/OptionsNode' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
+  const RichText = require( 'SCENERY/nodes/RichText' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
-  var controlModelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
-  var controlMoleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
-  var controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
-  var controlRealViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
+  const controlModelViewString = require( 'string!MOLECULE_SHAPES/control.modelView' );
+  const controlMoleculeString = require( 'string!MOLECULE_SHAPES/control.molecule' );
+  const controlOptionsString = require( 'string!MOLECULE_SHAPES/control.options' );
+  const controlRealViewString = require( 'string!MOLECULE_SHAPES/control.realView' );
 
   /**
    * Constructor for the RealMoleculesScreenView

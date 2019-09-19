@@ -5,25 +5,25 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Element = require( 'NITROGLYCERIN/Element' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
-  var MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
-  var MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var Screen = require( 'JOIST/Screen' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
+  const Element = require( 'NITROGLYCERIN/Element' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
+  const MoleculeShapesScreenView = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesScreenView' );
+  const MoleculeView = require( 'MOLECULE_SHAPES/common/view/3d/MoleculeView' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const Screen = require( 'JOIST/Screen' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
+  const Vector3 = require( 'DOT/Vector3' );
+  const VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
 
   /*---------------------------------------------------------------------------*
    * Dynamic generation of the molecules

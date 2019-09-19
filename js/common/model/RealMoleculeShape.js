@@ -6,18 +6,18 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
-  var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
-  var Element = require( 'NITROGLYCERIN/Element' );
-  var GeometryConfiguration = require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var RealAtomLocation = require( 'MOLECULE_SHAPES/common/model/RealAtomLocation' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
+  const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
+  const Element = require( 'NITROGLYCERIN/Element' );
+  const GeometryConfiguration = require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const RealAtomLocation = require( 'MOLECULE_SHAPES/common/model/RealAtomLocation' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // Instead of the absolute positioning, this (for now) sets the bond lengths to be the same, since for our purposes
   // they are all very close.

@@ -5,28 +5,28 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var ContextLossFailureDialog = require( 'SCENERY_PHET/ContextLossFailureDialog' );
-  var DOM = require( 'SCENERY/nodes/DOM' );
-  var GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LabelFallbackNode = require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' );
-  var LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  var Mouse = require( 'SCENERY/input/Mouse' );
-  var Plane3 = require( 'DOT/Plane3' );
-  var Ray3 = require( 'DOT/Ray3' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var Sphere3 = require( 'DOT/Sphere3' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const ContextLossFailureDialog = require( 'SCENERY_PHET/ContextLossFailureDialog' );
+  const DOM = require( 'SCENERY/nodes/DOM' );
+  const GeometryNamePanel = require( 'MOLECULE_SHAPES/common/view/GeometryNamePanel' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LabelFallbackNode = require( 'MOLECULE_SHAPES/common/view/LabelFallbackNode' );
+  const LabelWebGLView = require( 'MOLECULE_SHAPES/common/view/3d/LabelWebGLView' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
+  const Mouse = require( 'SCENERY/input/Mouse' );
+  const Plane3 = require( 'DOT/Plane3' );
+  const Ray3 = require( 'DOT/Ray3' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  const ScreenView = require( 'JOIST/ScreenView' );
+  const Sphere3 = require( 'DOT/Sphere3' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   /**
    * @constructor

@@ -6,10 +6,10 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
 
   return moleculeShapes.register( 'LonePairGeometryData', {
     // @public - high-resolution mesh of the lone pair shape (with normals and UVs)

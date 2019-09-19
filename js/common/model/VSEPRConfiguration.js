@@ -8,31 +8,31 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
-  var GeometryConfiguration = require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var Permutation = require( 'DOT/Permutation' );
+  const AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
+  const GeometryConfiguration = require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const Permutation = require( 'DOT/Permutation' );
 
   // strings
-  var shapeBentString = require( 'string!MOLECULE_SHAPES/shape.bent' );
-  var shapeDiatomicString = require( 'string!MOLECULE_SHAPES/shape.diatomic' );
-  var shapeEmptyString = require( 'string!MOLECULE_SHAPES/shape.empty' );
-  var shapeLinearString = require( 'string!MOLECULE_SHAPES/shape.linear' );
-  var shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
-  var shapeSeesawString = require( 'string!MOLECULE_SHAPES/shape.seesaw' );
-  var shapeSquarePlanarString = require( 'string!MOLECULE_SHAPES/shape.squarePlanar' );
-  var shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
-  var shapeTetrahedralString = require( 'string!MOLECULE_SHAPES/shape.tetrahedral' );
-  var shapeTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalBipyramidal' );
-  var shapeTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/shape.trigonalPlanar' );
-  var shapeTrigonalPyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalPyramidal' );
-  var shapeTShapedString = require( 'string!MOLECULE_SHAPES/shape.tShaped' );
+  const shapeBentString = require( 'string!MOLECULE_SHAPES/shape.bent' );
+  const shapeDiatomicString = require( 'string!MOLECULE_SHAPES/shape.diatomic' );
+  const shapeEmptyString = require( 'string!MOLECULE_SHAPES/shape.empty' );
+  const shapeLinearString = require( 'string!MOLECULE_SHAPES/shape.linear' );
+  const shapeOctahedralString = require( 'string!MOLECULE_SHAPES/shape.octahedral' );
+  const shapeSeesawString = require( 'string!MOLECULE_SHAPES/shape.seesaw' );
+  const shapeSquarePlanarString = require( 'string!MOLECULE_SHAPES/shape.squarePlanar' );
+  const shapeSquarePyramidalString = require( 'string!MOLECULE_SHAPES/shape.squarePyramidal' );
+  const shapeTetrahedralString = require( 'string!MOLECULE_SHAPES/shape.tetrahedral' );
+  const shapeTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalBipyramidal' );
+  const shapeTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/shape.trigonalPlanar' );
+  const shapeTrigonalPyramidalString = require( 'string!MOLECULE_SHAPES/shape.trigonalPyramidal' );
+  const shapeTShapedString = require( 'string!MOLECULE_SHAPES/shape.tShaped' );
 
   // for looking up VSEPRConfiguration instances
   var configurationMap = {}; // x+','+e => {VSEPRConfiguration}

@@ -5,16 +5,16 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Color = require( 'SCENERY/util/Color' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
-  var platform = require( 'PHET_CORE/platform' );
-  var Property = require( 'AXON/Property' );
-  var Util = require( 'SCENERY/util/Util' );
+  const Color = require( 'SCENERY/util/Color' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
+  const platform = require( 'PHET_CORE/platform' );
+  const Property = require( 'AXON/Property' );
+  const Util = require( 'SCENERY/util/Util' );
 
   var MoleculeShapesGlobals = {
     showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs )

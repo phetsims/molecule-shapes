@@ -14,19 +14,19 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var arrayRemove = require( 'PHET_CORE/arrayRemove' );
-  var Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
-  var Events = require( 'AXON/Events' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
+  const arrayRemove = require( 'PHET_CORE/arrayRemove' );
+  const Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
+  const Events = require( 'AXON/Events' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
 
   var MAX_PAIRS = 6;
 

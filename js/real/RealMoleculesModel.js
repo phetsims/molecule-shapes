@@ -5,22 +5,22 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
-  var PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
-  var Property = require( 'AXON/Property' );
-  var RealMolecule = require( 'MOLECULE_SHAPES/common/model/RealMolecule' );
-  var RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
-  var VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
+  const AttractorModel = require( 'MOLECULE_SHAPES/common/model/AttractorModel' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LocalShape = require( 'MOLECULE_SHAPES/common/model/LocalShape' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesModel = require( 'MOLECULE_SHAPES/common/model/MoleculeShapesModel' );
+  const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
+  const Property = require( 'AXON/Property' );
+  const RealMolecule = require( 'MOLECULE_SHAPES/common/model/RealMolecule' );
+  const RealMoleculeShape = require( 'MOLECULE_SHAPES/common/model/RealMoleculeShape' );
+  const Vector3 = require( 'DOT/Vector3' );
+  const VSEPRConfiguration = require( 'MOLECULE_SHAPES/common/model/VSEPRConfiguration' );
+  const VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
 
   /**
    * @constructor

@@ -7,21 +7,21 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   // strings
-  var geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
-  var geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
-  var geometryLinearString = require( 'string!MOLECULE_SHAPES/geometry.linear' );
-  var geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
-  var geometryTetrahedralString = require( 'string!MOLECULE_SHAPES/geometry.tetrahedral' );
-  var geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
-  var geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
+  const geometryDiatomicString = require( 'string!MOLECULE_SHAPES/geometry.diatomic' );
+  const geometryEmptyString = require( 'string!MOLECULE_SHAPES/geometry.empty' );
+  const geometryLinearString = require( 'string!MOLECULE_SHAPES/geometry.linear' );
+  const geometryOctahedralString = require( 'string!MOLECULE_SHAPES/geometry.octahedral' );
+  const geometryTetrahedralString = require( 'string!MOLECULE_SHAPES/geometry.tetrahedral' );
+  const geometryTrigonalBipyramidalString = require( 'string!MOLECULE_SHAPES/geometry.trigonalBipyramidal' );
+  const geometryTrigonalPlanarString = require( 'string!MOLECULE_SHAPES/geometry.trigonalPlanar' );
 
   // Constant for the tetrahedral shape
   var TETRA_CONST = Math.PI * -19.471220333 / 180;

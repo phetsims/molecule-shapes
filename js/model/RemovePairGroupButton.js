@@ -5,16 +5,16 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  var MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var Shape = require( 'KITE/Shape' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const Shape = require( 'KITE/Shape' );
 
   var CROSS_SIZE = 10;
   var crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( CROSS_SIZE, CROSS_SIZE ).moveTo( 0, CROSS_SIZE ).lineTo( CROSS_SIZE, 0 ), {
