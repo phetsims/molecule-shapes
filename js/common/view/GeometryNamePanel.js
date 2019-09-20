@@ -1,4 +1,4 @@
-// Copyright 2014-2018, University of Colorado Boulder
+// Copyright 2014-2019, University of Colorado Boulder
 
 /**
  * Shows the molecular and electron geometry names, and has checkboxes which allow toggling their visibility

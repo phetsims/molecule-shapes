@@ -1,4 +1,4 @@
-// Copyright 2014-2017, University of Colorado Boulder
+// Copyright 2014-2019, University of Colorado Boulder
 
 /**
  * A Panel, but with an added {Node} title centered along the location of the top border. Additionally, the border
