@@ -99,8 +99,6 @@ define( require => {
       pickable: false
     } );
     this.domNode.invalidateDOM();
-    // Scenery 0.1 override for transformation
-    this.domNode.updateCSSTransform = function() {};
 
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
     this.domNode.renderToCanvasSelf = function( wrapper ) {
