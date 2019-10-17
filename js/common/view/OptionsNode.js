@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
@@ -62,7 +63,7 @@ define( require => {
       updateLonePairCheckboxVisibility();
     } );
 
-    VBox.call( this, _.extend( {
+    VBox.call( this, merge( {
       children: model.isBasicsVersion ? [ showBondAnglesCheckbox ] : [ showLonePairsCheckbox, showBondAnglesCheckbox ],
       spacing: 10,
       align: 'left'

@@ -13,6 +13,7 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Image = require( 'SCENERY/nodes/Image' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
@@ -219,7 +220,7 @@ define( require => {
 
     MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
 
-    HBox.call( this, _.extend( {
+    HBox.call( this, merge( {
       children: [ thumbnail, removeButton ],
       spacing: 10,
       align: 'center'

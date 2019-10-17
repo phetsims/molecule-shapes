@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -25,7 +26,7 @@ define( require => {
   function RemovePairGroupButton( options ) {
     const self = this;
 
-    RectangularPushButton.call( this, _.extend( {
+    RectangularPushButton.call( this, merge( {
       content: crossNode,
       xMargin: 5,
       yMargin: 5

@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const Property = require( 'AXON/Property' );
   const Vector3 = require( 'DOT/Vector3' );
@@ -23,7 +24,7 @@ define( require => {
    * @param {Object} [options] - See in the constructor for more information
    */
   function PairGroup( position, isLonePair, options ) {
-    options = _.extend( {
+    options = merge( {
       // {Element | null} - The NITROGLYCERIN element if applicable (e.g. real model), or null if there is no element.
       element: null
     }, options );

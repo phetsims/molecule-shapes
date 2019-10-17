@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -24,7 +25,7 @@ define( require => {
    * @param {Object} [options]
    */
   function MoleculeShapesPanel( titleString, contentNode, options ) {
-    options = _.extend( {
+    options = merge( {
       lineWidth: 1.5,
       xMargin: MoleculeShapesPanel.xMargin,
       yMargin: 15,

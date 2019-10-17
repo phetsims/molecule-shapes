@@ -13,6 +13,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
 
@@ -23,7 +24,7 @@ define( require => {
   function LocalMaterial( masterMaterial, options ) {
     const self = this;
 
-    options = _.extend( {
+    options = merge( {
       // default options?
     }, options );
 

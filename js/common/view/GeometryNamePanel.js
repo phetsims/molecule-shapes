@@ -11,6 +11,7 @@ define( require => {
   // modules
   const Bounds2 = require( 'DOT/Bounds2' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesCheckbox = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesCheckbox' );
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
@@ -159,7 +160,7 @@ define( require => {
       content.addChild( this.electronText );
     }
 
-    MoleculeShapesPanel.call( this, controlGeometryNameString, content, _.extend( {
+    MoleculeShapesPanel.call( this, controlGeometryNameString, content, merge( {
       fill: MoleculeShapesColorProfile.backgroundProperty
     }, options ) );
 

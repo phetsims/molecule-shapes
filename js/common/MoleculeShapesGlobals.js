@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const Color = require( 'SCENERY/util/Color' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
   const platform = require( 'PHET_CORE/platform' );
@@ -38,7 +39,7 @@ define( require => {
 
   const useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
 
-  return _.extend( MoleculeShapesGlobals, {
+  return merge( MoleculeShapesGlobals, {
     // @public {Property.<boolean>} - Whether the basics of WebGL are included
     hasBasicWebGLSupportProperty: new Property( hasBasicWebGLSupport ),
 

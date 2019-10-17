@@ -11,6 +11,7 @@ define( require => {
   // modules
   const Checkbox = require( 'SUN/Checkbox' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
@@ -24,7 +25,7 @@ define( require => {
 
   function GlobalOptionsNode( isBasicsVersion, options ) {
 
-    options = _.extend( {
+    options = merge( {
       defaultColorProfileName: 'default'
     }, options );
 
@@ -42,7 +43,7 @@ define( require => {
       defaultColorProfileName: options.defaultColorProfileName
     } ) );
 
-    VBox.call( this, _.extend( {
+    VBox.call( this, merge( {
       children: children,
       spacing: OptionsDialog.DEFAULT_SPACING,
       align: 'left'
