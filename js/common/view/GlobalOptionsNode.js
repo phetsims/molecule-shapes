@@ -43,11 +43,11 @@ define( require => {
       defaultColorProfileName: options.defaultColorProfileName
     } ) );
 
-    VBox.call( this, merge( {
+    VBox.call( this, {
       children: children,
       spacing: OptionsDialog.DEFAULT_SPACING,
       align: 'left'
-    } ) );
+    } );
   }
 
   moleculeShapes.register( 'GlobalOptionsNode', GlobalOptionsNode );
