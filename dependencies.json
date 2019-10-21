@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.2.8-rc.1 Fri Oct 18 2019 16:38:19 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# molecule-shapes 1.2.8-rc.2 Mon Oct 21 2019 11:48:05 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "d8a2e8992420327ff72a6fc4bb93ec76549ded0e",
     "branch": "HEAD"
@@ -29,7 +29,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "2b70a38e58cb2477dd462b1344f727d748296fa9",
+    "sha": "8c3742fa3cebf3d4f348ca871a88305d8d01fe0f",
     "branch": "1.2"
   },
   "nitroglycerin": {
@@ -78,7 +78,7 @@
   },
   "tambo": {
     "sha": "7cc2d71d90b08b472bd6402a84832c5fc1d58b1e",
-    "branch": "molecule-shapes-1.2"
+    "branch": "HEAD"
   },
   "tandem": {
     "sha": "9159dfc84efcc1d683d48467c73177eae1101d87",
