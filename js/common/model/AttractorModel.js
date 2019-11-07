@@ -302,7 +302,7 @@ define( require => {
    */
   AttractorModel.forEachMultiplePermutations = function( lists, callback ) {
     if ( lists.length === 0 ) {
-      callback.call( undefined, lists );
+      callback( lists );
     }
     else {
       // make a copy of 'lists'
@@ -318,7 +318,7 @@ define( require => {
           for ( let i = 0; i < subLists.length; i++ ) {
             arr[ i + 1 ] = subLists[ i ];
           }
-          callback.call( undefined, arr );
+          callback( arr );
         } );
       } );
     }
@@ -334,7 +334,7 @@ define( require => {
    */
   AttractorModel.forEachPermutation = function( list, prefix, callback ) {
     if ( list.length === 0 ) {
-      callback.call( undefined, prefix );
+      callback( prefix );
     }
     else {
       for ( let i = 0; i < list.length; i++ ) {
