@@ -11,7 +11,7 @@ define( require => {
   'use strict';
 
   // modules
-  const DotUtil = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
+  const DotUtils = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
   const inherit = require( 'PHET_CORE/inherit' );
   const Matrix = require( 'DOT/Matrix' );
   const MatrixOps3 = require( 'DOT/MatrixOps3' );
@@ -88,7 +88,7 @@ define( require => {
 
     // angle-based repulsion
     if ( angleRepulsion && aroundCenterAtom ) {
-      const pairIndexList = pairs( DotUtil.rangeInclusive( 0, groups.length - 1 ) );
+      const pairIndexList = pairs( DotUtils.rangeInclusive( 0, groups.length - 1 ) );
       for ( i = 0; i < pairIndexList.length; i++ ) {
         const pairIndices = pairIndexList[ i ];
         const aIndex = pairIndices[ 0 ];
@@ -103,14 +103,14 @@ define( require => {
         // desired orientations
         const aTarget = mapping.target.extractVector3( aIndex ).normalized();
         const bTarget = mapping.target.extractVector3( bIndex ).normalized();
-        const targetAngle = Math.acos( DotUtil.clamp( aTarget.dot( bTarget ), -1, 1 ) );
-        const currentAngle = Math.acos( DotUtil.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
+        const targetAngle = Math.acos( DotUtils.clamp( aTarget.dot( bTarget ), -1, 1 ) );
+        const currentAngle = Math.acos( DotUtils.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
         const angleDifference = ( targetAngle - currentAngle );
 
         const dirTowardsA = a.positionProperty.get().minus( b.positionProperty.get() ).normalized();
         const timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
 
-        const extraClosePushFactor = DotUtil.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
+        const extraClosePushFactor = DotUtils.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
 
         const push = dirTowardsA.times( timeFactor *
                                       angleDifference *
@@ -198,8 +198,8 @@ define( require => {
         const permutedOrientation0 = idealOrientations[ permutation.indices[ 0 ] ];
         const permutedOrientation1 = idealOrientations[ permutation.indices[ 1 ] ];
         const errorLowBound = 4 - 4 * Math.cos( Math.abs(
-            Math.acos( DotUtil.clamp( permutedOrientation0.dot( currentOrientations[ 0 ] ), -1, 1 ) ) -
-            Math.acos( DotUtil.clamp( permutedOrientation1.dot( currentOrientations[ 1 ] ), -1, 1 ) )
+            Math.acos( DotUtils.clamp( permutedOrientation0.dot( currentOrientations[ 0 ] ), -1, 1 ) ) -
+            Math.acos( DotUtils.clamp( permutedOrientation1.dot( currentOrientations[ 1 ] ), -1, 1 ) )
           ) );
 
         // throw out results where this arbitrarily-chosen lower bound rules out the entire permutation

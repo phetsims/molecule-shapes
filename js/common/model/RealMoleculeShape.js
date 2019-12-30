@@ -11,7 +11,7 @@ define( require => {
 
   // modules
   const Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
-  const DotUtil = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
+  const DotUtils = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
   const Element = require( 'NITROGLYCERIN/Element' );
   const GeometryConfiguration = require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' );
   const inherit = require( 'PHET_CORE/inherit' );
@@ -151,7 +151,7 @@ define( require => {
     shape.addCentralAtom( new RealAtomLocation( Br, new Vector3( 0, 0, 0 ), 1 ) );
     const axialBondLength = 1.689;
     const radialBondLength = 1.774;
-    const angle = DotUtil.toRadians( 84.8 );
+    const angle = DotUtils.toRadians( 84.8 );
     const radialDistance = Math.sin( angle ) * radialBondLength;
     const axialDistance = Math.cos( angle ) * radialBondLength;
     shape.addRadialAtom( new RealAtomLocation( F, new Vector3( 0, -axialBondLength, 0 ), 3 ), 1 );
@@ -175,7 +175,7 @@ define( require => {
   RealMoleculeShape.CHLORINE_TRIFLUORIDE = createMoleculeShape( 'ClF3', 1.698, function( shape ) {
     shape.addCentralAtom( new RealAtomLocation( Cl, new Vector3( 0, 0, 0 ), 2 ) );
     shape.addRadialAtom( new RealAtomLocation( F, new Vector3( 0, -1.598, 0 ), 3 ), 1 );
-    const radialAngle = DotUtil.toRadians( 87.5 );
+    const radialAngle = DotUtils.toRadians( 87.5 );
     const radialBondLength = 1.698;
     const radialDistance = Math.sin( radialAngle ) * radialBondLength;
     const axialDistance = Math.cos( radialAngle ) * radialBondLength;
@@ -194,7 +194,7 @@ define( require => {
   RealMoleculeShape.WATER = createMoleculeShape( 'H2O', 0.957, function( shape ) {
     shape.addCentralAtom( new RealAtomLocation( O, new Vector3( 0, 0, 0 ), 2 ) );
     const radialBondLength = 0.957;
-    const radialAngle = DotUtil.toRadians( 104.5 ) / 2;
+    const radialAngle = DotUtils.toRadians( 104.5 ) / 2;
     shape.addRadialAtom( new RealAtomLocation( H, new Vector3( Math.sin( radialAngle ), -Math.cos( radialAngle ), 0 ).times( radialBondLength ) ), 1 );
     shape.addRadialAtom( new RealAtomLocation( H, new Vector3( -( Math.sin( radialAngle ) ), -Math.cos( radialAngle ), 0 ).times( radialBondLength ) ), 1 );
   } );
@@ -229,8 +229,8 @@ define( require => {
   // @public {RealMoleculeShape}
   RealMoleculeShape.SULFUR_TETRAFLUORIDE = createMoleculeShape( 'SF4', 1.595, function( shape ) {
     shape.addCentralAtom( new RealAtomLocation( S, new Vector3( 0, 0, 0 ), 1 ) );
-    const largeAngle = DotUtil.toRadians( 173.1 ) / 2;
-    const smallAngle = DotUtil.toRadians( 101.6 ) / 2;
+    const largeAngle = DotUtils.toRadians( 173.1 ) / 2;
+    const smallAngle = DotUtils.toRadians( 101.6 ) / 2;
 
     shape.addRadialAtom( new RealAtomLocation( F, new Vector3( Math.sin( largeAngle ), -Math.cos( largeAngle ), 0 ).times( 1.646 ), 3 ), 1 );
     shape.addRadialAtom( new RealAtomLocation( F, new Vector3( -Math.sin( largeAngle ), -Math.cos( largeAngle ), 0 ).times( 1.646 ), 3 ), 1 );
@@ -249,7 +249,7 @@ define( require => {
 
   // @public {RealMoleculeShape}
   RealMoleculeShape.SULFUR_DIOXIDE = createMoleculeShape( 'SO2', 1.431, function( shape ) {
-    const bondAngle = DotUtil.toRadians( 119 ) / 2;
+    const bondAngle = DotUtils.toRadians( 119 ) / 2;
     const bondLength = 1.431;
     shape.addCentralAtom( new RealAtomLocation( S, new Vector3( 0, 0, 0 ), 1 ) );
     shape.addRadialAtom( new RealAtomLocation( O, new Vector3( Math.sin( bondAngle ), -Math.cos( bondAngle ), 0 ).times( bondLength ), 2 ), 2 );
