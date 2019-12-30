@@ -15,7 +15,7 @@ define( require => {
   const MoleculeShapesQueryParameters = require( 'MOLECULE_SHAPES/common/MoleculeShapesQueryParameters' );
   const platform = require( 'PHET_CORE/platform' );
   const Property = require( 'AXON/Property' );
-  const Util = require( 'SCENERY/util/Util' );
+  const Utils = require( 'SCENERY/util/Utils' );
 
   const MoleculeShapesGlobals = {
     showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs )
@@ -29,7 +29,7 @@ define( require => {
     window.console.log = window.console.log || function() {};
   }
 
-  let hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Util.isWebGLSupported;
+  let hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Utils.isWebGLSupported;
 
   // Check for the presence of a webgl/three.js bug present in https://github.com/phetsims/molecule-shapes/issues/161
   if ( navigator.userAgent.indexOf( 'Firefox/' ) >= 0 &&
@@ -37,7 +37,7 @@ define( require => {
     hasBasicWebGLSupport = false;
   }
 
-  const useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Util.checkIE11StencilSupport() );
+  const useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Utils.checkIE11StencilSupport() );
 
   return merge( MoleculeShapesGlobals, {
     // @public {Property.<boolean>} - Whether the basics of WebGL are included

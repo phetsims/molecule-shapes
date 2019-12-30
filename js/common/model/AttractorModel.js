@@ -11,7 +11,7 @@ define( require => {
   'use strict';
 
   // modules
-  const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
+  const DotUtil = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
   const inherit = require( 'PHET_CORE/inherit' );
   const Matrix = require( 'DOT/Matrix' );
   const MatrixOps3 = require( 'DOT/MatrixOps3' );

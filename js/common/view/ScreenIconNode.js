@@ -21,7 +21,7 @@ define( require => {
   const PairGroup = require( 'MOLECULE_SHAPES/common/model/PairGroup' );
   const Screen = require( 'JOIST/Screen' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector3 = require( 'DOT/Vector3' );
   const VSEPRMolecule = require( 'MOLECULE_SHAPES/common/model/VSEPRMolecule' );
 
@@ -63,7 +63,7 @@ define( require => {
   function getAngle( isModel, isBasicsVersion ) {
     if ( !isBasicsVersion ) {
       // H2O
-      return isModel ? Util.toRadians( 120 ) / 2 : Util.toRadians( 104.5 ) / 2;
+      return isModel ? Utils.toRadians( 120 ) / 2 : Utils.toRadians( 104.5 ) / 2;
     }
     else {
       // CO2

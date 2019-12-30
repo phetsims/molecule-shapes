@@ -24,7 +24,7 @@ define( require => {
   const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
   const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'SCENERY/util/Util' );
+  const Utils = require( 'SCENERY/util/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // grab our font data from the global namespace
@@ -69,8 +69,8 @@ define( require => {
     // set up Canvas and dimensions (padding between all glyphs and around the outside, rounded out to powers of 2)
     canvas = document.createElement( 'canvas' );
     const context = canvas.getContext( '2d' );
-    const canvasWidth = Util.toPowerOf2( ( numGlyphs + 1 ) * padding + numGlyphs * maxWidth );
-    const canvasHeight = Util.toPowerOf2( 2 * padding + maxHeight );
+    const canvasWidth = Utils.toPowerOf2( ( numGlyphs + 1 ) * padding + numGlyphs * maxWidth );
+    const canvasHeight = Utils.toPowerOf2( 2 * padding + maxHeight );
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 

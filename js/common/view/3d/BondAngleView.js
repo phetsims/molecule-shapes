@@ -11,7 +11,7 @@ define( require => {
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
   const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector3 = require( 'DOT/Vector3' );
 
@@ -74,7 +74,7 @@ define( require => {
       this.viewOpacity = this.showBondAnglesProperty.value ? BondAngleView.calculateBrightness( aDir, bDir, localCameraOrientation, this.molecule.radialAtoms.length ) : 0;
 
       // angle in radians between the two orientations, clamped to avoid Math.acos of something slightly greater than 1
-      this.viewAngle = Math.acos( Util.clamp( aDir.dot( bDir ), -1, 1 ) );
+      this.viewAngle = Math.acos( Utils.clamp( aDir.dot( bDir ), -1, 1 ) );
 
       // If we have an approximate semicircle, we'll need to use the last midpoint to provide a stable position to
       // display the 180-degree semicircle. Otherwise, it would be unstable and wildly vary.
@@ -136,7 +136,7 @@ define( require => {
           const screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
             ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
 
-          let labelString = Util.toFixed( angle, 1 ) + '°';
+          let labelString = Utils.toFixed( angle, 1 ) + '°';
           while ( labelString.length < 5 ) {
             // handle single-digit labels by padding them
             labelString = '0' + labelString;
@@ -184,7 +184,7 @@ define( require => {
 
       const interpolatedValue = brightness / ( highThreshold - lowThreshold ) - lowThreshold / ( highThreshold - lowThreshold );
 
-      return Util.clamp( interpolatedValue, 0, 1 );
+      return Utils.clamp( interpolatedValue, 0, 1 );
     },
 
     /**
@@ -197,7 +197,7 @@ define( require => {
      * @returns {boolean}
      */
     isApproximateSemicircle: function( startDir, endDir ) {
-      return Math.acos( Util.clamp( startDir.dot( endDir ), -1, 1 ) ) >= 3.12414;
+      return Math.acos( Utils.clamp( startDir.dot( endDir ), -1, 1 ) ) >= 3.12414;
     },
 
     // @public {number} - radius, in view units

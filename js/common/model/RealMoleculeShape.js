@@ -11,7 +11,7 @@ define( require => {
 
   // modules
   const Bond = require( 'MOLECULE_SHAPES/common/model/Bond' );
-  const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
+  const DotUtil = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
   const Element = require( 'NITROGLYCERIN/Element' );
   const GeometryConfiguration = require( 'MOLECULE_SHAPES/common/model/GeometryConfiguration' );
   const inherit = require( 'PHET_CORE/inherit' );
