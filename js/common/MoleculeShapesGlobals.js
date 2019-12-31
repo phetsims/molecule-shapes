@@ -39,7 +39,7 @@ define( require => {
 
   const useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Utils.checkIE11StencilSupport() );
 
-  return merge( MoleculeShapesGlobals, {
+  merge( MoleculeShapesGlobals, {
     // @public {Property.<boolean>} - Whether the basics of WebGL are included
     hasBasicWebGLSupportProperty: new Property( hasBasicWebGLSupport ),
 
@@ -89,4 +89,6 @@ define( require => {
       return colorProperty;
     }
   } );
+
+  return MoleculeShapesGlobals;
 } );
