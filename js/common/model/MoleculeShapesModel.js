@@ -5,52 +5,49 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-    'use strict';
 
-    // modules
-    const inherit = require( 'PHET_CORE/inherit' );
-    const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-    const Property = require( 'AXON/Property' );
 
-    /**
-     * @constructor
-     * @param {boolean} isBasicsVersion
-     * @param {Object} [options]
-     */
-    function MoleculeShapesModel( isBasicsVersion ) {
-      this.isBasicsVersion = isBasicsVersion; // @public {boolean}
+import Property from '../../../../axon/js/Property.js';
+// modules
+import inherit from '../../../../phet-core/js/inherit.js';
+import moleculeShapes from '../../moleculeShapes.js';
 
-      this.moleculeProperty = new Property( null ); // @public {Molecule} - Assumed not to change in the 1st screen (model)
-      this.moleculeQuaternionProperty = new Property( new THREE.Quaternion() ); // @public {THREE.Quaternion} - describes the rotation of the molecule view
-      this.showBondAnglesProperty = new Property( false ); // @public {boolean} - Whether bond angles are shown
-      this.showLonePairsProperty = new Property( !isBasicsVersion ); // @public {boolean} - Whether lone pairs are shown
-      this.showMolecularShapeNameProperty = new Property( false ); // @public {boolean} - Whether molecular shape names are shown
-      this.showElectronShapeNameProperty = new Property( false ); // @public {boolean} - Whether electron shape names are shown
-    }
+/**
+ * @constructor
+ * @param {boolean} isBasicsVersion
+ * @param {Object} [options]
+ */
+function MoleculeShapesModel( isBasicsVersion ) {
+  this.isBasicsVersion = isBasicsVersion; // @public {boolean}
 
-    moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
+  this.moleculeProperty = new Property( null ); // @public {Molecule} - Assumed not to change in the 1st screen (model)
+  this.moleculeQuaternionProperty = new Property( new THREE.Quaternion() ); // @public {THREE.Quaternion} - describes the rotation of the molecule view
+  this.showBondAnglesProperty = new Property( false ); // @public {boolean} - Whether bond angles are shown
+  this.showLonePairsProperty = new Property( !isBasicsVersion ); // @public {boolean} - Whether lone pairs are shown
+  this.showMolecularShapeNameProperty = new Property( false ); // @public {boolean} - Whether molecular shape names are shown
+  this.showElectronShapeNameProperty = new Property( false ); // @public {boolean} - Whether electron shape names are shown
+}
 
-    return inherit( Object, MoleculeShapesModel, {
-      reset: function() {
-        this.moleculeProperty.reset();
-        this.moleculeQuaternionProperty.reset();
-        this.showBondAnglesProperty.reset();
-        this.showLonePairsProperty.reset();
-        this.showMolecularShapeNameProperty.reset();
-        this.showElectronShapeNameProperty.reset();
-      },
-      /**
-       * Steps the model forward.
-       * @public
-       *
-       * @param {number} dt - Elapsed time
-       */
-      step: function( dt ) {
+moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
 
-        // cap at 0.2s, since our model doesn't handle oscillation well above that
-        this.moleculeProperty.get().update( Math.min( dt, 0.2 ) );
-      }
-    } );
+export default inherit( Object, MoleculeShapesModel, {
+  reset: function() {
+    this.moleculeProperty.reset();
+    this.moleculeQuaternionProperty.reset();
+    this.showBondAnglesProperty.reset();
+    this.showLonePairsProperty.reset();
+    this.showMolecularShapeNameProperty.reset();
+    this.showElectronShapeNameProperty.reset();
+  },
+  /**
+   * Steps the model forward.
+   * @public
+   *
+   * @param {number} dt - Elapsed time
+   */
+  step: function( dt ) {
+
+    // cap at 0.2s, since our model doesn't handle oscillation well above that
+    this.moleculeProperty.get().update( Math.min( dt, 0.2 ) );
   }
-);
+} );

@@ -10,79 +10,74 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const merge = require( 'PHET_CORE/merge' );
-  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Panel = require( 'SUN/Panel' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+import inherit from '../../../../phet-core/js/inherit.js';
+import merge from '../../../../phet-core/js/merge.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import Panel from '../../../../sun/js/Panel.js';
+import moleculeShapes from '../../moleculeShapes.js';
 
-  function TitledPanel( titleNode, contentNode, options ) {
-    Node.call( this );
+function TitledPanel( titleNode, contentNode, options ) {
+  Node.call( this );
 
-    options = merge( {}, Panel.DEFAULT_OPTIONS, options );
+  options = merge( {}, Panel.DEFAULT_OPTIONS, options );
 
-    this.titleNode = titleNode; // @private {Node}
-    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } ); // @private {Rectangle}
+  this.titleNode = titleNode; // @private {Node}
+  this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } ); // @private {Rectangle}
 
-    // @private {Node}
-    this.panel = new Panel( contentNode, {
-      lineWidth: options.lineWidth,
-      xMargin: options.xMargin,
-      yMargin: options.yMargin,
-      cornerRadius: options.cornerRadius,
-      resize: options.resize,
-      backgroundPickable: options.backgroundPickable,
-      minWidth: Math.max( options.minWidth || 0, titleNode.width + ( 2 * options.yMargin ) )
-    } );
-    this.setStroke( options.stroke );
-    this.setFill( options.fill );
-
-    this.addChild( this.panel );
-    this.addChild( this.titleBackgroundNode );
-    this.addChild( this.titleNode );
-
-    contentNode.on( 'bounds', this.updateTitleLocation.bind( this ) );
-    this.updateTitleLocation();
-
-    this.mutate( options );
-  }
-
-  moleculeShapes.register( 'TitledPanel', TitledPanel );
-
-  return inherit( Node, TitledPanel, {
-    /**
-     * @private
-     */
-    updateTitleLocation: function() {
-      this.titleNode.centerX = this.panel.centerX;
-      this.titleNode.centerY = this.panel.top;
-      this.titleBackgroundNode.setRectBounds( this.titleNode.bounds.dilatedX( 10 ) );
-    },
-
-    getStroke: function() {
-      return this.panel.stroke;
-    },
-    get stroke() { return this.getStroke(); },
-    setStroke: function( stroke ) {
-      this.panel.stroke = stroke;
-    },
-    set stroke( value ) { this.setStroke( value ); },
-
-    getFill: function() {
-      return this.panel.fill;
-    },
-    get fill() { return this.getFill(); },
-    setFill: function( fill ) {
-      this.panel.fill = fill;
-
-      this.titleBackgroundNode.fill = fill;
-    },
-    set fill( value ) { this.setFill( value ); }
+  // @private {Node}
+  this.panel = new Panel( contentNode, {
+    lineWidth: options.lineWidth,
+    xMargin: options.xMargin,
+    yMargin: options.yMargin,
+    cornerRadius: options.cornerRadius,
+    resize: options.resize,
+    backgroundPickable: options.backgroundPickable,
+    minWidth: Math.max( options.minWidth || 0, titleNode.width + ( 2 * options.yMargin ) )
   } );
-} );
+  this.setStroke( options.stroke );
+  this.setFill( options.fill );
 
+  this.addChild( this.panel );
+  this.addChild( this.titleBackgroundNode );
+  this.addChild( this.titleNode );
+
+  contentNode.on( 'bounds', this.updateTitleLocation.bind( this ) );
+  this.updateTitleLocation();
+
+  this.mutate( options );
+}
+
+moleculeShapes.register( 'TitledPanel', TitledPanel );
+
+export default inherit( Node, TitledPanel, {
+  /**
+   * @private
+   */
+  updateTitleLocation: function() {
+    this.titleNode.centerX = this.panel.centerX;
+    this.titleNode.centerY = this.panel.top;
+    this.titleBackgroundNode.setRectBounds( this.titleNode.bounds.dilatedX( 10 ) );
+  },
+
+  getStroke: function() {
+    return this.panel.stroke;
+  },
+  get stroke() { return this.getStroke(); },
+  setStroke: function( stroke ) {
+    this.panel.stroke = stroke;
+  },
+  set stroke( value ) { this.setStroke( value ); },
+
+  getFill: function() {
+    return this.panel.fill;
+  },
+  get fill() { return this.getFill(); },
+  setFill: function( fill ) {
+    this.panel.fill = fill;
+
+    this.titleBackgroundNode.fill = fill;
+  },
+  set fill( value ) { this.setFill( value ); }
+} );

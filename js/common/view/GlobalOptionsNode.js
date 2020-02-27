@@ -5,52 +5,49 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Checkbox = require( 'SUN/Checkbox' );
-  const inherit = require( 'PHET_CORE/inherit' );
-  const merge = require( 'PHET_CORE/merge' );
-  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  const OptionsDialog = require( 'JOIST/OptionsDialog' );
-  const ProjectorModeCheckbox = require( 'JOIST/ProjectorModeCheckbox' );
-  const Text = require( 'SCENERY/nodes/Text' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
+import OptionsDialog from '../../../../joist/js/OptionsDialog.js';
+import ProjectorModeCheckbox from '../../../../joist/js/ProjectorModeCheckbox.js';
+import inherit from '../../../../phet-core/js/inherit.js';
+import merge from '../../../../phet-core/js/merge.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
+import Checkbox from '../../../../sun/js/Checkbox.js';
+import moleculeShapesStrings from '../../molecule-shapes-strings.js';
+import moleculeShapes from '../../moleculeShapes.js';
+import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
+import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
 
-  // strings
-  const optionsShowOuterLonePairsString = require( 'string!MOLECULE_SHAPES/options.showOuterLonePairs' );
+const optionsShowOuterLonePairsString = moleculeShapesStrings.options.showOuterLonePairs;
 
-  function GlobalOptionsNode( isBasicsVersion, options ) {
+function GlobalOptionsNode( isBasicsVersion, options ) {
 
-    options = merge( {
-      defaultColorProfileName: 'default'
-    }, options );
+  options = merge( {
+    defaultColorProfileName: 'default'
+  }, options );
 
-    const children = [];
+  const children = [];
 
-    if ( !isBasicsVersion ) {
-      children.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
-          font: OptionsDialog.DEFAULT_FONT,
-          maxWidth: 350
-        } ),
-        MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
-    }
-
-    children.push( new ProjectorModeCheckbox( MoleculeShapesColorProfile, {
-      defaultColorProfileName: options.defaultColorProfileName
-    } ) );
-
-    VBox.call( this, {
-      children: children,
-      spacing: OptionsDialog.DEFAULT_SPACING,
-      align: 'left'
-    } );
+  if ( !isBasicsVersion ) {
+    children.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
+        font: OptionsDialog.DEFAULT_FONT,
+        maxWidth: 350
+      } ),
+      MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
   }
 
-  moleculeShapes.register( 'GlobalOptionsNode', GlobalOptionsNode );
+  children.push( new ProjectorModeCheckbox( MoleculeShapesColorProfile, {
+    defaultColorProfileName: options.defaultColorProfileName
+  } ) );
 
-  return inherit( VBox, GlobalOptionsNode );
-} );
+  VBox.call( this, {
+    children: children,
+    spacing: OptionsDialog.DEFAULT_SPACING,
+    align: 'left'
+  } );
+}
+
+moleculeShapes.register( 'GlobalOptionsNode', GlobalOptionsNode );
+
+inherit( VBox, GlobalOptionsNode );
+export default GlobalOptionsNode;

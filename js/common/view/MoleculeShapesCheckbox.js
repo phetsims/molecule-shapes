@@ -5,30 +5,25 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Checkbox = require( 'SUN/Checkbox' );
-  const inherit = require( 'PHET_CORE/inherit' );
-  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
+import inherit from '../../../../phet-core/js/inherit.js';
+import Checkbox from '../../../../sun/js/Checkbox.js';
+import moleculeShapes from '../../moleculeShapes.js';
+import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
 
-  /**
-   * @param {Node} content
-   * @param {Property.<boolean>} property
-   * @constructor
-   * @param {Object} [options]
-   */
-  function MoleculeShapesCheckbox( content, property, options ) {
-    Checkbox.call( this, content, property, options );
+/**
+ * @param {Node} content
+ * @param {Property.<boolean>} property
+ * @constructor
+ * @param {Object} [options]
+ */
+function MoleculeShapesCheckbox( content, property, options ) {
+  Checkbox.call( this, content, property, options );
 
-    MoleculeShapesColorProfile.checkboxProperty.linkAttribute( this, 'checkboxColor' );
-    MoleculeShapesColorProfile.checkboxBackgroundProperty.linkAttribute( this, 'checkboxColorBackground' );
-  }
+  MoleculeShapesColorProfile.checkboxProperty.linkAttribute( this, 'checkboxColor' );
+  MoleculeShapesColorProfile.checkboxBackgroundProperty.linkAttribute( this, 'checkboxColorBackground' );
+}
 
-  moleculeShapes.register( 'MoleculeShapesCheckbox', MoleculeShapesCheckbox );
+moleculeShapes.register( 'MoleculeShapesCheckbox', MoleculeShapesCheckbox );
 
-  return inherit( Checkbox, MoleculeShapesCheckbox, {} );
-} );
-
+export default inherit( Checkbox, MoleculeShapesCheckbox, {} );

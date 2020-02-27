@@ -5,41 +5,38 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
-  const MoleculeShapesColorProfile = require( 'MOLECULE_SHAPES/common/view/MoleculeShapesColorProfile' );
-  const RealMoleculesModel = require( 'MOLECULE_SHAPES/real/RealMoleculesModel' );
-  const RealMoleculesScreenView = require( 'MOLECULE_SHAPES/real/RealMoleculesScreenView' );
-  const Screen = require( 'JOIST/Screen' );
-  const ScreenIconNode = require( 'MOLECULE_SHAPES/common/view/ScreenIconNode' );
+import Screen from '../../../joist/js/Screen.js';
+import inherit from '../../../phet-core/js/inherit.js';
+import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
+import ScreenIconNode from '../common/view/ScreenIconNode.js';
+import moleculeShapesStrings from '../molecule-shapes-strings.js';
+import moleculeShapes from '../moleculeShapes.js';
+import RealMoleculesModel from './RealMoleculesModel.js';
+import RealMoleculesScreenView from './RealMoleculesScreenView.js';
 
-  // strings
-  const screenRealMoleculesString = require( 'string!MOLECULE_SHAPES/screen.realMolecules' );
+const screenRealMoleculesString = moleculeShapesStrings.screen.realMolecules;
 
-  /**
-   * Creates the model and view for the RealMoleculesScreen
-   * @constructor
-   * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
-   */
-  function RealMoleculesScreen( isBasicsVersion ) {
-    const options = {
-      name: screenRealMoleculesString,
-      backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
-      homeScreenIcon: new ScreenIconNode( false, isBasicsVersion )
-    };
+/**
+ * Creates the model and view for the RealMoleculesScreen
+ * @constructor
+ * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
+ */
+function RealMoleculesScreen( isBasicsVersion ) {
+  const options = {
+    name: screenRealMoleculesString,
+    backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
+    homeScreenIcon: new ScreenIconNode( false, isBasicsVersion )
+  };
 
-    Screen.call( this,
-      function() { return new RealMoleculesModel( isBasicsVersion ); },
-      function( model ) { return new RealMoleculesScreenView( model ); },
-      options
-    );
-  }
+  Screen.call( this,
+    function() { return new RealMoleculesModel( isBasicsVersion ); },
+    function( model ) { return new RealMoleculesScreenView( model ); },
+    options
+  );
+}
 
-  moleculeShapes.register( 'RealMoleculesScreen', RealMoleculesScreen );
+moleculeShapes.register( 'RealMoleculesScreen', RealMoleculesScreen );
 
-  return inherit( Screen, RealMoleculesScreen );
-} );
+inherit( Screen, RealMoleculesScreen );
+export default RealMoleculesScreen;

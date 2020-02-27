@@ -5,34 +5,31 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Atom = require( 'NITROGLYCERIN/Atom' );
-  const inherit = require( 'PHET_CORE/inherit' );
-  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+import Atom from '../../../../nitroglycerin/js/Atom.js';
+import inherit from '../../../../phet-core/js/inherit.js';
+import moleculeShapes from '../../moleculeShapes.js';
 
-  /**
-   * @constructor
-   * @param {Element} element
-   * @param {Vector2} position - The initial position for the atom
-   * @param {number} [lonePairCount]
-   */
-  function RealAtomLocation( element, position, lonePairCount ) {
-    Atom.call( this, element );
+/**
+ * @constructor
+ * @param {Element} element
+ * @param {Vector2} position - The initial position for the atom
+ * @param {number} [lonePairCount]
+ */
+function RealAtomLocation( element, position, lonePairCount ) {
+  Atom.call( this, element );
 
-    this.position = position; // @public {Vector3}
-    this.orientation = position.magnitude > 0 ? position.normalized() : position.copy(); // @public {Vector3}
-    this.lonePairCount = lonePairCount || 0; // @public {number} - How many external lone pairs it has.
+  this.position = position; // @public {Vector3}
+  this.orientation = position.magnitude > 0 ? position.normalized() : position.copy(); // @public {Vector3}
+  this.lonePairCount = lonePairCount || 0; // @public {number} - How many external lone pairs it has.
 
-    // we should be immutable
-    if ( assert ) {
-      Object.freeze && Object.freeze( this );
-    }
+  // we should be immutable
+  if ( assert ) {
+    Object.freeze && Object.freeze( this );
   }
+}
 
-  moleculeShapes.register( 'RealAtomLocation', RealAtomLocation );
+moleculeShapes.register( 'RealAtomLocation', RealAtomLocation );
 
-  return inherit( Atom, RealAtomLocation );
-} );
+inherit( Atom, RealAtomLocation );
+export default RealAtomLocation;

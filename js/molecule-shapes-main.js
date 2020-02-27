@@ -5,50 +5,46 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
-  const GlobalOptionsNode = require( 'MOLECULE_SHAPES/common/view/GlobalOptionsNode' );
-  const IE11StencilWarningNode = require( 'SCENERY_PHET/IE11StencilWarningNode' );
-  const ModelMoleculesScreen = require( 'MOLECULE_SHAPES/model/ModelMoleculesScreen' );
-  const MoleculeShapesGlobals = require( 'MOLECULE_SHAPES/common/MoleculeShapesGlobals' );
-  const RealMoleculesScreen = require( 'MOLECULE_SHAPES/real/RealMoleculesScreen' );
-  const Sim = require( 'JOIST/Sim' );
-  const SimLauncher = require( 'JOIST/SimLauncher' );
+import Sim from '../../joist/js/Sim.js';
+import SimLauncher from '../../joist/js/SimLauncher.js';
+import CanvasWarningNode from '../../scenery-phet/js/CanvasWarningNode.js';
+import IE11StencilWarningNode from '../../scenery-phet/js/IE11StencilWarningNode.js';
+import MoleculeShapesGlobals from './common/MoleculeShapesGlobals.js';
+import GlobalOptionsNode from './common/view/GlobalOptionsNode.js';
+import ModelMoleculesScreen from './model/ModelMoleculesScreen.js';
+import moleculeShapesStrings from './molecule-shapes-strings.js';
+import RealMoleculesScreen from './real/RealMoleculesScreen.js';
 
-  // strings
-  const moleculeShapesTitleString = require( 'string!MOLECULE_SHAPES/molecule-shapes.title' );
+const moleculeShapesTitleString = moleculeShapesStrings[ 'molecule-shapes' ].title;
 
-  const isBasicsVersion = false;
+const isBasicsVersion = false;
 
-  const simOptions = {
-    credits: {
-      leadDesign: 'Emily B. Moore',
-      softwareDevelopment: 'Jonathan Olson',
-      team: 'Julia Chamberlain, Kelly Lancaster, Ariel Paul, Kathy Perkins',
-      qualityAssurance: 'Oliver Orejola, Bryan Yoelin'
-    },
-    webgl: true,
+const simOptions = {
+  credits: {
+    leadDesign: 'Emily B. Moore',
+    softwareDevelopment: 'Jonathan Olson',
+    team: 'Julia Chamberlain, Kelly Lancaster, Ariel Paul, Kathy Perkins',
+    qualityAssurance: 'Oliver Orejola, Bryan Yoelin'
+  },
+  webgl: true,
 
-    // Creates content for the Options dialog
-    createOptionsDialogContent: () => new GlobalOptionsNode( isBasicsVersion ),
+  // Creates content for the Options dialog
+  createOptionsDialogContent: () => new GlobalOptionsNode( isBasicsVersion ),
 
-    homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
-                           null :
-                           ( MoleculeShapesGlobals.hasBasicWebGLSupportProperty.get() ?
-                             new IE11StencilWarningNode() : // if we have basic support, we failed due to IE-specific reasons
-                             new CanvasWarningNode() )
-  };
+  homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
+                         null :
+                         ( MoleculeShapesGlobals.hasBasicWebGLSupportProperty.get() ?
+                           new IE11StencilWarningNode() : // if we have basic support, we failed due to IE-specific reasons
+                           new CanvasWarningNode() )
+};
 
-  // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
+// NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
-  SimLauncher.launch( function() {
-    const sim = new Sim( moleculeShapesTitleString, [
-      new ModelMoleculesScreen( isBasicsVersion ),
-      new RealMoleculesScreen( isBasicsVersion )
-    ], simOptions );
-    sim.start();
-  } );
+SimLauncher.launch( function() {
+  const sim = new Sim( moleculeShapesTitleString, [
+    new ModelMoleculesScreen( isBasicsVersion ),
+    new RealMoleculesScreen( isBasicsVersion )
+  ], simOptions );
+  sim.start();
 } );

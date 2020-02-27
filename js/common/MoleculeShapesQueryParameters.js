@@ -3,19 +3,15 @@
 /**
  * Query parameters supported by this simulation.
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const moleculeShapes = require( 'MOLECULE_SHAPES/moleculeShapes' );
+import moleculeShapes from '../moleculeShapes.js';
 
-  const MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
+const MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
 
-    //TODO document
-    showOuterLonePairs: { type: 'flag' }
-  } );
-
-  moleculeShapes.register( 'MoleculeShapesQueryParameters', MoleculeShapesQueryParameters );
-
-  return MoleculeShapesQueryParameters;
+  //TODO document
+  showOuterLonePairs: { type: 'flag' }
 } );
+
+moleculeShapes.register( 'MoleculeShapesQueryParameters', MoleculeShapesQueryParameters );
+
+export default MoleculeShapesQueryParameters;
