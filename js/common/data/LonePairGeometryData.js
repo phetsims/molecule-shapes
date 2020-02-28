@@ -1,4 +1,4 @@
-// Copyright 2014-2019, University of Colorado Boulder
+// Copyright 2014-2020, University of Colorado Boulder
 
 /**
  * 3D data for the 'Lone Pair' cloud, generated from balloon2.obj. See /assets/balloon-README.txt for details. Modeled
