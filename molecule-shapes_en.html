@@ -7,7 +7,7 @@
   <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="phet-sim-level" content="development">
-  
+
   <title>molecule-shapes</title>
 </head>
 
@@ -19,30 +19,68 @@
 
   window.phet = window.phet || {};
   window.phet.chipper = window.phet.chipper || {};
-  window.phet.chipper.packageObject = {
-    "name": "molecule-shapes",
-    "version": "1.3.0-dev.0",
-    "license": "GPL-3.0",
-    "repository": { "type": "git", "url": "https://github.com/phetsims/molecule-shapes.git" },
-    "devDependencies": { "grunt": "~1.0.0" },
-    "phet": {
-      "colorProfile": true,
-      "requirejsNamespace": "MOLECULE_SHAPES",
-      "phetLibs": [ "nitroglycerin" ],
-      "preload": [ "../sherpa/lib/typedarray-44f09cf.js", "../sherpa/lib/three-r71.js", "../sherpa/lib/three-r71-Projector.js", "../sherpa/lib/three-r71-CanvasRenderer.js", "../sherpa/lib/liberation-sans-regular-subset-numeric-degrees.js" ],
-      "runnable": true,
-      "supportedBrands": [ "phet", "adapted-from-phet" ],
-      "simulation": true
-    },
-    "eslintConfig": { "extends": "../chipper/eslint/sim_eslintrc.js", "globals": { "THREE": false } }
-  };
-  window.phet.chipper.stringRepos = [ { "repo": "joist", "requirejsNamespace": "JOIST" }, {
-    "repo": "molecule-shapes",
-    "requirejsNamespace": "MOLECULE_SHAPES"
-  }, { "repo": "scenery-phet", "requirejsNamespace": "SCENERY_PHET" }, {
-    "repo": "sun",
-    "requirejsNamespace": "SUN"
-  }, { "repo": "tambo", "requirejsNamespace": "TAMBO" } ];
+  window.phet.chipper.packageObject =
+    {
+      "name": "molecule-shapes",
+      "version": "1.3.0-dev.0",
+      "license": "GPL-3.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/phetsims/molecule-shapes.git"
+      },
+      "devDependencies": {
+        "grunt": "~1.0.0"
+      },
+      "phet": {
+        "colorProfile": true,
+        "requirejsNamespace": "MOLECULE_SHAPES",
+        "phetLibs": [
+          "nitroglycerin"
+        ],
+        "preload": [
+          "../sherpa/lib/typedarray-44f09cf.js",
+          "../sherpa/lib/three-r71.js",
+          "../sherpa/lib/three-r71-Projector.js",
+          "../sherpa/lib/three-r71-CanvasRenderer.js",
+          "../sherpa/lib/liberation-sans-regular-subset-numeric-degrees.js"
+        ],
+        "runnable": true,
+        "supportedBrands": [
+          "phet",
+          "adapted-from-phet"
+        ],
+        "simulation": true
+      },
+      "eslintConfig": {
+        "extends": "../chipper/eslint/sim_eslintrc.js",
+        "globals": {
+          "THREE": false
+        }
+      }
+    };
+  window.phet.chipper.stringRepos =
+    [
+      {
+        "repo": "joist",
+        "requirejsNamespace": "JOIST"
+      },
+      {
+        "repo": "molecule-shapes",
+        "requirejsNamespace": "MOLECULE_SHAPES"
+      },
+      {
+        "repo": "scenery-phet",
+        "requirejsNamespace": "SCENERY_PHET"
+      },
+      {
+        "repo": "sun",
+        "requirejsNamespace": "SUN"
+      },
+      {
+        "repo": "tambo",
+        "requirejsNamespace": "TAMBO"
+      }
+    ];
 
   // Identify the brand (assume generated brand if not provided with query parameters)
   const brandMatch = location.search.match( /brand=([^&]+)/ );
