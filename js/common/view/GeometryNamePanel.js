@@ -12,7 +12,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import moleculeShapesStrings from '../../molecule-shapes-strings.js';
+import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
 import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';

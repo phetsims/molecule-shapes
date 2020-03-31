@@ -13,7 +13,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
-import moleculeShapesStrings from '../../molecule-shapes-strings.js';
+import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';

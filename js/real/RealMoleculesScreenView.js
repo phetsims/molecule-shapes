@@ -21,7 +21,7 @@ import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfil
 import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
 import OptionsNode from '../common/view/OptionsNode.js';
-import moleculeShapesStrings from '../molecule-shapes-strings.js';
+import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import moleculeShapes from '../moleculeShapes.js';
 
 const controlModelViewString = moleculeShapesStrings.control.modelView;

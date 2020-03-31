@@ -11,7 +11,7 @@
 
 import Permutation from '../../../../dot/js/Permutation.js';
 import inherit from '../../../../phet-core/js/inherit.js';
-import moleculeShapesStrings from '../../molecule-shapes-strings.js';
+import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import AttractorModel from './AttractorModel.js';
 import GeometryConfiguration from './GeometryConfiguration.js';

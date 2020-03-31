@@ -9,7 +9,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import moleculeShapesStrings from '../../molecule-shapes-strings.js';
+import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 const geometryDiatomicString = moleculeShapesStrings.geometry.diatomic;

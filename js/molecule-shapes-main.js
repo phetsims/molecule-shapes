@@ -13,7 +13,7 @@ import IE11StencilWarningNode from '../../scenery-phet/js/IE11StencilWarningNode
 import MoleculeShapesGlobals from './common/MoleculeShapesGlobals.js';
 import GlobalOptionsNode from './common/view/GlobalOptionsNode.js';
 import ModelMoleculesScreen from './model/ModelMoleculesScreen.js';
-import moleculeShapesStrings from './molecule-shapes-strings.js';
+import moleculeShapesStrings from './moleculeShapesStrings.js';
 import RealMoleculesScreen from './real/RealMoleculesScreen.js';
 
 const moleculeShapesTitleString = moleculeShapesStrings[ 'molecule-shapes' ].title;

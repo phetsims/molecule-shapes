@@ -10,7 +10,7 @@ import Screen from '../../../joist/js/Screen.js';
 import inherit from '../../../phet-core/js/inherit.js';
 import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
 import ScreenIconNode from '../common/view/ScreenIconNode.js';
-import moleculeShapesStrings from '../molecule-shapes-strings.js';
+import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import moleculeShapes from '../moleculeShapes.js';
 import ModelMoleculesModel from './ModelMoleculesModel.js';
 import ModelMoleculesScreenView from './ModelMoleculesScreenView.js';
