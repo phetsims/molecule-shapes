@@ -72,7 +72,7 @@ function ModelMoleculesScreenView( model ) {
     removeAllButton.enabled = model.moleculeProperty.get().radialGroups.length > 0;
   }
 
-  model.moleculeProperty.get() && model.moleculeProperty.get().on( 'bondChanged', updateButtonEnabled );
+  model.moleculeProperty.get() && model.moleculeProperty.get().bondChangedEmitter.addListener( updateButtonEnabled );
   updateButtonEnabled();
 
   // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins

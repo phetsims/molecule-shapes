@@ -30,7 +30,7 @@ function ModelMoleculesModel( isBasicsVersion ) {
   this.setupInitialMoleculeState();
 
   // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
-  this.moleculeProperty.get().on( 'bondChanged', function() {
+  this.moleculeProperty.get().bondChangedEmitter.addListener( function() {
     if ( self.moleculeProperty.get().radialLonePairs.length === 0 ) {
       self.showLonePairsProperty.set( true );
     }

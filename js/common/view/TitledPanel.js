@@ -43,7 +43,7 @@ function TitledPanel( titleNode, contentNode, options ) {
   this.addChild( this.titleBackgroundNode );
   this.addChild( this.titleNode );
 
-  contentNode.on( 'bounds', this.updateTitleLocation.bind( this ) );
+  contentNode.boundsProperty.lazyLink( this.updateTitleLocation.bind( this ) );
   this.updateTitleLocation();
 
   this.mutate( options );

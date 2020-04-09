@@ -40,10 +40,10 @@ function MoleculeView( model, screenView, molecule ) {
 
   this.lastMidpoint = null; // @private {Vector3 | null} - The last bond-angle midpoint for a 2-atom system globally
 
-  molecule.on( 'groupAdded', this.addGroup.bind( this ) );
-  molecule.on( 'groupRemoved', this.removeGroup.bind( this ) );
-  molecule.on( 'bondAdded', this.addBond.bind( this ) );
-  molecule.on( 'bondRemoved', this.removeBond.bind( this ) );
+  molecule.groupAddedEmitter.addListener( this.addGroup.bind( this ) );
+  molecule.groupRemovedEmitter.addListener( this.removeGroup.bind( this ) );
+  molecule.bondAddedEmitter.addListener( this.addBond.bind( this ) );
+  molecule.bondRemovedEmitter.addListener( this.removeBond.bind( this ) );
 
   // initial setup
   _.each( molecule.radialGroups, this.addGroup.bind( this ) );

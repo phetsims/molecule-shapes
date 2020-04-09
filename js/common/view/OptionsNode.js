@@ -53,10 +53,10 @@ function OptionsNode( model, options ) {
 
   model.moleculeProperty.link( function( newMolecule, oldMolecule ) {
     if ( oldMolecule ) {
-      oldMolecule.off( 'bondChanged', updateLonePairCheckboxVisibility );
+      oldMolecule.bondChangedEmitter.removeListener( updateLonePairCheckboxVisibility );
     }
     if ( newMolecule ) {
-      newMolecule.on( 'bondChanged', updateLonePairCheckboxVisibility );
+      newMolecule.bondChangedEmitter.addListener( updateLonePairCheckboxVisibility );
     }
     updateLonePairCheckboxVisibility();
   } );

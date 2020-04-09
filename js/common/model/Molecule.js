@@ -4,18 +4,10 @@
  * Base type of model of a single-atom-centered molecule which has a certain number of pair groups
  * surrounding it. Concrete sub-types should implement the methods documented at the start of the prototype.
  *
- * Molecule extends Events, so the following events can be triggered/listened to directly:
- *  bondAdded( bond )
- *  bondRemoved( bond )
- *  bondChanged( bond )
- *  groupAdded( group )
- *  groupRemoved( group )
- *  groupChanged( group )
- *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Events from '../../../../axon/js/Events.js';
+import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import inherit from '../../../../phet-core/js/inherit.js';
@@ -41,11 +33,8 @@ function addToEndOfArray( array, item, addToFront ) {
  * @param {boolean} isReal - Whether the molecule has real angles, or is based on a model.
  */
 function Molecule( isReal ) {
-  Events.call( this );
 
   this.isReal = isReal; // @public {boolean} - Whether this molecule is based on real angles or on a model.
-
-  const self = this;
 
   // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
   this.groups = [];
@@ -64,16 +53,24 @@ function Molecule( isReal ) {
 
   this.centralAtom = null; // @public {PairGroup} - Will be filled in later.
 
+  // @public {TinyEmitter}
+  this.bondAddedEmitter = new TinyEmitter(); // emits with: bond
+  this.bondRemovedEmitter = new TinyEmitter(); // emits with: bond
+  this.bondChangedEmitter = new TinyEmitter(); // emits with: bond
+  this.groupAddedEmitter = new TinyEmitter(); // emits with: group
+  this.groupRemovedEmitter = new TinyEmitter(); // emits with: group
+  this.groupChangedEmitter = new TinyEmitter(); // emits with: group
+
   // composite events
-  this.on( 'bondAdded', function( bond ) { self.trigger1( 'bondChanged', bond ); } );
-  this.on( 'bondRemoved', function( bond ) { self.trigger1( 'bondChanged', bond ); } );
-  this.on( 'groupAdded', function( group ) { self.trigger1( 'groupChanged', group ); } );
-  this.on( 'groupRemoved', function( group ) { self.trigger1( 'groupChanged', group ); } );
+  this.bondAddedEmitter.addListener( bond => this.bondChangedEmitter.emit( bond ) );
+  this.bondRemovedEmitter.addListener( bond => this.bondChangedEmitter.emit( bond ) );
+  this.groupAddedEmitter.addListener( group => this.groupChangedEmitter.emit( group ) );
+  this.groupRemovedEmitter.addListener( group => this.groupChangedEmitter.emit( group ) );
 }
 
 moleculeShapes.register( 'Molecule', Molecule );
 
-export default inherit( Events, Molecule, {
+export default inherit( Object, Molecule, {
   /**
    * Gets the ideal orientations for the bonds around an atom.
    * @public
@@ -238,7 +235,7 @@ export default inherit( Events, Molecule, {
     this.addBond( new Bond( group, parent, bondOrder, bondLength ) );
 
     // notify after bond added, so we don't send notifications in an inconsistent state
-    this.trigger1( 'groupAdded', group );
+    this.groupAddedEmitter.emit( group );
   },
 
   /**
@@ -262,7 +259,7 @@ export default inherit( Events, Molecule, {
 
     // notify
     if ( notify ) {
-      this.trigger1( 'groupAdded', group );
+      this.groupAddedEmitter.emit( group );
     }
   },
 
@@ -288,7 +285,7 @@ export default inherit( Events, Molecule, {
       }
     }
 
-    this.trigger1( 'bondAdded', bond );
+    this.bondAddedEmitter.emit( bond );
   },
 
   /**
@@ -311,7 +308,7 @@ export default inherit( Events, Molecule, {
       }
     }
 
-    this.trigger1( 'bondRemoved', bond );
+    this.bondRemovedEmitter.emit( bond );
   },
 
   /**
@@ -340,10 +337,10 @@ export default inherit( Events, Molecule, {
     }
 
     // notify
-    this.trigger1( 'groupRemoved', group );
+    this.groupRemovedEmitter.emit( group );
     for ( i = 0; i < bondList.length; i++ ) {
       // delayed notification for bond removal
-      this.trigger1( 'bondRemoved', bondList[ i ] );
+      this.bondRemovedEmitter.emit( bondList[ i ] );
     }
   },
 

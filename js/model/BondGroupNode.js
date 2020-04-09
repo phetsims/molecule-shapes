@@ -212,7 +212,7 @@ function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, o
     overlay.fill = MoleculeShapesColorProfile.backgroundProperty.get().withAlpha( alpha );
   }
 
-  model.moleculeProperty.get().on( 'bondChanged', update );
+  model.moleculeProperty.get().bondChangedEmitter.addListener( update );
   model.showLonePairsProperty.link( update );
 
   MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );

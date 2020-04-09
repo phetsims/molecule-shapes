@@ -164,10 +164,10 @@ function GeometryNamePanel( model, options ) {
   const updateNames = this.updateNames.bind( this );
   model.moleculeProperty.link( function( newMolecule, oldMolecule ) {
     if ( oldMolecule ) {
-      oldMolecule.off( 'bondChanged', updateNames );
+      oldMolecule.bondChangedEmitter.removeListener( updateNames );
     }
     if ( newMolecule ) {
-      newMolecule.on( 'bondChanged', updateNames );
+      newMolecule.bondChangedEmitter.addListener( updateNames );
     }
     updateNames();
   } );
