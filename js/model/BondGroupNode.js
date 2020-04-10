@@ -220,7 +220,8 @@ function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, o
   HBox.call( this, merge( {
     children: [ thumbnail, removeButton ],
     spacing: 10,
-    align: 'center'
+    align: 'center',
+    excludeInvisibleChildrenFromBounds: false
   }, options ) );
 }
 
