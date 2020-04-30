@@ -99,7 +99,7 @@ PairGroup.getTimescaleImpulseFactor = function( timeElapsed ) {
   return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
 };
 
-export default inherit( Object, PairGroup, {
+inherit( Object, PairGroup, {
 
   /**
    * Applies a damped spring-like system to move this pair group towards the "ideal" distance from its parent atom.
@@ -278,3 +278,5 @@ export default inherit( Object, PairGroup, {
     this.velocityProperty.set( new Vector3( 0, 0, 0 ) );
   }
 } );
+
+export default PairGroup;

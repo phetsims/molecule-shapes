@@ -62,7 +62,7 @@ function VSEPRConfiguration( x, e ) {
 
 moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
 
-export default inherit( Object, VSEPRConfiguration, {
+inherit( Object, VSEPRConfiguration, {
   /**
    * For finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'.
    * @public
@@ -195,3 +195,5 @@ export default inherit( Object, VSEPRConfiguration, {
     }
   }
 } );
+
+export default VSEPRConfiguration;

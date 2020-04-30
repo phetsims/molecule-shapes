@@ -70,7 +70,7 @@ function Molecule( isReal ) {
 
 moleculeShapes.register( 'Molecule', Molecule );
 
-export default inherit( Object, Molecule, {
+inherit( Object, Molecule, {
   /**
    * Gets the ideal orientations for the bonds around an atom.
    * @public
@@ -451,3 +451,5 @@ export default inherit( Object, Molecule, {
     }
   }
 } );
+
+export default Molecule;

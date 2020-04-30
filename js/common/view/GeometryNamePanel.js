@@ -177,7 +177,7 @@ function GeometryNamePanel( model, options ) {
 
 moleculeShapes.register( 'GeometryNamePanel', GeometryNamePanel );
 
-export default inherit( MoleculeShapesPanel, GeometryNamePanel, {
+inherit( MoleculeShapesPanel, GeometryNamePanel, {
   /**
    * @private
    */
@@ -213,3 +213,5 @@ export default inherit( MoleculeShapesPanel, GeometryNamePanel, {
     }
   }
 } );
+
+export default GeometryNamePanel;

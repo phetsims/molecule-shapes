@@ -30,7 +30,7 @@ function MoleculeShapesModel( isBasicsVersion ) {
 
 moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
 
-export default inherit( Object, MoleculeShapesModel, {
+inherit( Object, MoleculeShapesModel, {
   reset: function() {
     this.moleculeProperty.reset();
     this.moleculeQuaternionProperty.reset();
@@ -51,3 +51,5 @@ export default inherit( Object, MoleculeShapesModel, {
     this.moleculeProperty.get().update( Math.min( dt, 0.2 ) );
   }
 } );
+
+export default MoleculeShapesModel;

@@ -47,7 +47,7 @@ function RealMoleculesModel( isBasicsVersion ) {
 
 moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
 
-export default inherit( MoleculeShapesModel, RealMoleculesModel, {
+inherit( MoleculeShapesModel, RealMoleculesModel, {
   /**
    * @public
    */
@@ -137,3 +137,5 @@ export default inherit( MoleculeShapesModel, RealMoleculesModel, {
     this.moleculeProperty.set( newMolecule );
   }
 } );
+
+export default RealMoleculesModel;

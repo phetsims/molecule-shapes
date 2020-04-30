@@ -21,7 +21,7 @@ function LabelFallbackNode() {
 
 moleculeShapes.register( 'LabelFallbackNode', LabelFallbackNode );
 
-export default inherit( Text, LabelFallbackNode, {
+inherit( Text, LabelFallbackNode, {
   /*
    * Displays and positions the label, and sets its text.
    * Same as API for LabelWebGLView
@@ -53,3 +53,5 @@ export default inherit( Text, LabelFallbackNode, {
     this.visible = false;
   }
 } );
+
+export default LabelFallbackNode;

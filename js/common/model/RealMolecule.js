@@ -84,7 +84,7 @@ function RealMolecule( realMoleculeShape ) {
 
 moleculeShapes.register( 'RealMolecule', RealMolecule );
 
-export default inherit( Molecule, RealMolecule, {
+inherit( Molecule, RealMolecule, {
   /**
    * Step function for the molecule.
    * @override
@@ -126,3 +126,5 @@ export default inherit( Molecule, RealMolecule, {
     return undefined;
   }
 } );
+
+export default RealMolecule;

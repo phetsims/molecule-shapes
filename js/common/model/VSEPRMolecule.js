@@ -26,7 +26,7 @@ function VSEPRMolecule( bondLengthOverride ) {
 
 moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
 
-export default inherit( Molecule, VSEPRMolecule, {
+inherit( Molecule, VSEPRMolecule, {
   /**
    * Steps the model.
    * @override
@@ -96,3 +96,5 @@ export default inherit( Molecule, VSEPRMolecule, {
     }
   }
 } );
+
+export default VSEPRMolecule;

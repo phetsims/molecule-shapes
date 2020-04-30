@@ -51,7 +51,7 @@ function TitledPanel( titleNode, contentNode, options ) {
 
 moleculeShapes.register( 'TitledPanel', TitledPanel );
 
-export default inherit( Node, TitledPanel, {
+inherit( Node, TitledPanel, {
   /**
    * @private
    */
@@ -81,3 +81,5 @@ export default inherit( Node, TitledPanel, {
   },
   set fill( value ) { this.setFill( value ); }
 } );
+
+export default TitledPanel;

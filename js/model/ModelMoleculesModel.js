@@ -39,7 +39,7 @@ function ModelMoleculesModel( isBasicsVersion ) {
 
 moleculeShapes.register( 'ModelMoleculesModel', ModelMoleculesModel );
 
-export default inherit( MoleculeShapesModel, ModelMoleculesModel, {
+inherit( MoleculeShapesModel, ModelMoleculesModel, {
   /**
    * @private
    */
@@ -60,3 +60,5 @@ export default inherit( MoleculeShapesModel, ModelMoleculesModel, {
     this.setupInitialMoleculeState();
   }
 } );
+
+export default ModelMoleculesModel;

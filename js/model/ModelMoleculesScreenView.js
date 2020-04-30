@@ -119,7 +119,7 @@ function ModelMoleculesScreenView( model ) {
 
 moleculeShapes.register( 'ModelMoleculesScreenView', ModelMoleculesScreenView );
 
-export default inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
+inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
   /**
    * Adds a PairGroup to the model from the Bonding panel location.
    * @public
@@ -160,3 +160,5 @@ export default inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
     }
   }
 } );
+
+export default ModelMoleculesScreenView;

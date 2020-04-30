@@ -46,6 +46,8 @@ function MoleculeShapesPanel( titleString, contentNode, options ) {
 
 moleculeShapes.register( 'MoleculeShapesPanel', MoleculeShapesPanel );
 
-export default inherit( TitledPanel, MoleculeShapesPanel, {}, {
+inherit( TitledPanel, MoleculeShapesPanel, {}, {
   xMargin: 15 // need to make this available for outside code to compute widths
 } );
+
+export default MoleculeShapesPanel;

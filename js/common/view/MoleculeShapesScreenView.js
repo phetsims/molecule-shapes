@@ -292,7 +292,7 @@ function MoleculeShapesScreenView( model ) {
 
 moleculeShapes.register( 'MoleculeShapesScreenView', MoleculeShapesScreenView );
 
-export default inherit( ScreenView, MoleculeShapesScreenView, {
+inherit( ScreenView, MoleculeShapesScreenView, {
   /**
    * @private
    */
@@ -639,3 +639,5 @@ export default inherit( ScreenView, MoleculeShapesScreenView, {
     };
   }
 } );
+
+export default MoleculeShapesScreenView;

@@ -28,7 +28,7 @@ function Bond( a, b, order, length ) {
 
 moleculeShapes.register( 'Bond', Bond );
 
-export default inherit( Object, Bond, {
+inherit( Object, Bond, {
   /**
    * For debugging aid.
    * @private
@@ -61,3 +61,5 @@ export default inherit( Object, Bond, {
     return this.a === atom ? this.b : this.a;
   }
 } );
+
+export default Bond;
