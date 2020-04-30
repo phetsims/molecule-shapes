@@ -97,7 +97,7 @@ function BondAngleFallbackView( renderer ) {
 
 moleculeShapes.register( 'BondAngleFallbackView', BondAngleFallbackView );
 
-export default inherit( BondAngleView, BondAngleFallbackView, {
+inherit( BondAngleView, BondAngleFallbackView, {
   /*
    * @public
    * @override
@@ -167,3 +167,5 @@ export default inherit( BondAngleView, BondAngleFallbackView, {
     return new BondAngleFallbackView( renderer );
   } )
 } );
+
+export default BondAngleFallbackView;

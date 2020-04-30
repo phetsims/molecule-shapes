@@ -62,7 +62,7 @@ function MoleculeView( model, screenView, molecule ) {
 
 moleculeShapes.register( 'MoleculeView', MoleculeView );
 
-export default inherit( THREE.Object3D, MoleculeView, {
+inherit( THREE.Object3D, MoleculeView, {
 
   /**
    * Updates the entire view (including bonds and angles)
@@ -296,3 +296,5 @@ export default inherit( THREE.Object3D, MoleculeView, {
     } );
   }
 } );
+
+export default MoleculeView;

@@ -67,7 +67,7 @@ function BondView( renderer, bond, aPositionProperty, bPositionProperty, bondRad
 
 moleculeShapes.register( 'BondView', BondView );
 
-export default inherit( THREE.Object3D, BondView, {
+inherit( THREE.Object3D, BondView, {
 
   /**
    * Updates the BondView's appearance.
@@ -149,3 +149,5 @@ export default inherit( THREE.Object3D, BondView, {
     }
   }
 } );
+
+export default BondView;

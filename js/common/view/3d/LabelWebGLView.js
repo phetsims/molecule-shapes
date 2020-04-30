@@ -217,7 +217,7 @@ function LabelWebGLView( renderer ) {
 
 moleculeShapes.register( 'LabelWebGLView', LabelWebGLView );
 
-export default inherit( THREE.Mesh, LabelWebGLView, {
+inherit( THREE.Mesh, LabelWebGLView, {
   /*
    * Displays and positions the label, and sets its text.
    * Same as API for LabelFallbackNode
@@ -335,3 +335,5 @@ export default inherit( THREE.Mesh, LabelWebGLView, {
     this.geometry.uvsNeedUpdate = true; // will need when we change UVs
   }
 } );
+
+export default LabelWebGLView;

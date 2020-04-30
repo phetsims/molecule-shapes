@@ -46,7 +46,7 @@ function LocalMaterial( masterMaterial, options ) {
 
 moleculeShapes.register( 'LocalMaterial', LocalMaterial );
 
-export default inherit( Object, LocalMaterial, {
+inherit( Object, LocalMaterial, {
   /**
    * Returns the copy of the material corresponding to the provided three.js renderer.
    * @public
@@ -103,3 +103,5 @@ export default inherit( Object, LocalMaterial, {
     this.setUniform( 'color', colorArray );
   }
 } );
+
+export default LocalMaterial;

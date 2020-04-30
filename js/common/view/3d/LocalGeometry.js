@@ -24,7 +24,7 @@ function LocalGeometry( masterGeometry ) {
 
 moleculeShapes.register( 'LocalGeometry', LocalGeometry );
 
-export default inherit( Object, LocalGeometry, {
+inherit( Object, LocalGeometry, {
   /**
    * Returns the copy of the geometry corresponding to the provided three.js renderer.
    * @public
@@ -46,3 +46,5 @@ export default inherit( Object, LocalGeometry, {
     return geometry;
   }
 } );
+
+export default LocalGeometry;

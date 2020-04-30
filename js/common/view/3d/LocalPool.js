@@ -29,7 +29,7 @@ function LocalPool( name, objectFactory ) {
 
 moleculeShapes.register( 'LocalPool', LocalPool );
 
-export default inherit( Object, LocalPool, {
+inherit( Object, LocalPool, {
   /*
    * Returns the copy of the object corresponding to the provided three.js renderer.
    * @public
@@ -84,3 +84,5 @@ export default inherit( Object, LocalPool, {
     console.log( this.name, action, this.quantityInside, this.quantityOutside );
   } : function() {}
 } );
+
+export default LocalPool;

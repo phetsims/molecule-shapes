@@ -190,7 +190,7 @@ function BondAngleWebGLView( renderer ) {
 
 moleculeShapes.register( 'BondAngleWebGLView', BondAngleWebGLView );
 
-export default inherit( BondAngleView, BondAngleWebGLView, {
+inherit( BondAngleView, BondAngleWebGLView, {
   /*
    * @override
    * @public
@@ -253,3 +253,5 @@ export default inherit( BondAngleView, BondAngleWebGLView, {
     return new BondAngleWebGLView( renderer );
   } )
 } );
+
+export default BondAngleWebGLView;

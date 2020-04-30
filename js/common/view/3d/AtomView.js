@@ -56,7 +56,7 @@ function AtomView( group, renderer, localMaterial ) {
 
 moleculeShapes.register( 'AtomView', AtomView );
 
-export default inherit( THREE.Mesh, AtomView, {
+inherit( THREE.Mesh, AtomView, {
   /*
    * Intersection test for whether the mouse/touch is over this.
    * @public
@@ -116,3 +116,5 @@ export default inherit( THREE.Mesh, AtomView, {
     return localMaterial;
   }
 } );
+
+export default AtomView;

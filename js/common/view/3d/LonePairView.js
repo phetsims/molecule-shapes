@@ -100,7 +100,7 @@ function LonePairView( renderer ) {
 
 moleculeShapes.register( 'LonePairView', LonePairView );
 
-export default inherit( THREE.Object3D, LonePairView, {
+inherit( THREE.Object3D, LonePairView, {
   /*
    * Initializes this view. Should be a fresh object, OR should have dispose() called first.
    * @public
@@ -181,3 +181,5 @@ export default inherit( THREE.Object3D, LonePairView, {
     return new LonePairView( renderer );
   } )
 } );
+
+export default LonePairView;

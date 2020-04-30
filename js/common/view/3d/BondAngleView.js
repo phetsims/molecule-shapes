@@ -21,7 +21,7 @@ function BondAngleView() {
 
 moleculeShapes.register( 'BondAngleView', BondAngleView );
 
-export default inherit( THREE.Object3D, BondAngleView, {
+inherit( THREE.Object3D, BondAngleView, {
   /**
    * @param {MoleculeShapesScreenView} screenView - We do various screen-space computations for positioning the labels
    * @param {Property.<boolean>} showBondAnglesProperty
@@ -200,3 +200,4 @@ export default inherit( THREE.Object3D, BondAngleView, {
   // @public {number} - radius, in view units
   radius: 5
 } );
+export default BondAngleView;

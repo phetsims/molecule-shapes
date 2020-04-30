@@ -24,7 +24,7 @@ function LocalTexture( textureFactory ) {
 
 moleculeShapes.register( 'LocalTexture', LocalTexture );
 
-export default inherit( Object, LocalTexture, {
+inherit( Object, LocalTexture, {
   /**
    * Returns the copy of the texture corresponding to the provided three.js renderer.
    * @public
@@ -46,3 +46,5 @@ export default inherit( Object, LocalTexture, {
     return material;
   }
 } );
+
+export default LocalTexture;
