@@ -25,5 +25,5 @@ function MoleculeShapesCheckbox( content, property, options ) {
 }
 
 moleculeShapes.register( 'MoleculeShapesCheckbox', MoleculeShapesCheckbox );
-
-export default inherit( Checkbox, MoleculeShapesCheckbox, {} );
+inherit( Checkbox, MoleculeShapesCheckbox );
+export default MoleculeShapesCheckbox;

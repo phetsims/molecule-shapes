@@ -69,5 +69,5 @@ function OptionsNode( model, options ) {
 }
 
 moleculeShapes.register( 'OptionsNode', OptionsNode );
-
-export default inherit( VBox, OptionsNode, {} );
+inherit( VBox, OptionsNode );
+export default OptionsNode;

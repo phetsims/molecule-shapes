@@ -165,5 +165,5 @@ function ScreenIconNode( isModel, isBasicsVersion ) {
 }
 
 moleculeShapes.register( 'ScreenIconNode', ScreenIconNode );
-
-export default inherit( Node, ScreenIconNode, {} );
+inherit( Node, ScreenIconNode );
+export default ScreenIconNode;
