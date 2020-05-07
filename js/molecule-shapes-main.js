@@ -7,7 +7,7 @@
  */
 
 import Sim from '../../joist/js/Sim.js';
-import SimLauncher from '../../joist/js/SimLauncher.js';
+import simLauncher from '../../joist/js/simLauncher.js';
 import CanvasWarningNode from '../../scenery-phet/js/CanvasWarningNode.js';
 import IE11StencilWarningNode from '../../scenery-phet/js/IE11StencilWarningNode.js';
 import MoleculeShapesGlobals from './common/MoleculeShapesGlobals.js';
@@ -41,7 +41,7 @@ const simOptions = {
 
 // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
-SimLauncher.launch( function() {
+simLauncher.launch( function() {
   const sim = new Sim( moleculeShapesTitleString, [
     new ModelMoleculesScreen( isBasicsVersion ),
     new RealMoleculesScreen( isBasicsVersion )
