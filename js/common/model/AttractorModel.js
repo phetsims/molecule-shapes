@@ -50,9 +50,9 @@ AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrient
 
     const targetOrientation = mapping.target.extractVector3( i );
     const currentMagnitude = ( pair.positionProperty.get().minus( center ) ).magnitude;
-    const targetLocation = targetOrientation.times( currentMagnitude ).plus( center );
+    const targetPosition = targetOrientation.times( currentMagnitude ).plus( center );
 
-    const delta = targetLocation.minus( pair.positionProperty.get() );
+    const delta = targetPosition.minus( pair.positionProperty.get() );
     totalDeltaMagnitude += delta.magnitude * delta.magnitude;
 
     /*
@@ -264,7 +264,7 @@ AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) 
  * @public
  *
  * @param {number} error - Total error of this mapping
- * @param {Matrix} target - The locations of ideal pair groups
+ * @param {Matrix} target - The positions of ideal pair groups
  * @param {Permutation} permutation - The permutation between current pair groups and ideal pair groups
  * @param {Matrix} rotation - The rotation between the current and ideal
  */

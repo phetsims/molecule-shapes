@@ -7,7 +7,7 @@
  * At a high level, we create a texture (image) with the glyphs we will need positioned evenly-spaced on it. We
  * specify constant geometry positions for each character (there are 6 for '123.4°'), since we have no need to change
  * the positions of those due to our format string restrictions (for '12.3°', we simply don't display the first
- * character, e.g. 'X12.3°'). We update the UV coordinates for each character's position to correspond to the location
+ * character, e.g. 'X12.3°'). We update the UV coordinates for each character's position to correspond to the position
  * inside the texture where the desired glyph is.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>

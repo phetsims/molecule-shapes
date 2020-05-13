@@ -45,8 +45,8 @@ function RealMolecule( realMoleculeShape ) {
     idealCentralOrientations.push( atom.orientation );
     const bondLength = atom.position.magnitude;
 
-    const atomLocation = atom.orientation.times( bondLength );
-    group = new PairGroup( atomLocation, false, {
+    const atomPosition = atom.orientation.times( bondLength );
+    group = new PairGroup( atomPosition, false, {
       element: atom.element
     } );
     radialGroups.push( group );

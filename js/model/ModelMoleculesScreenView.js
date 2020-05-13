@@ -121,19 +121,19 @@ moleculeShapes.register( 'ModelMoleculesScreenView', ModelMoleculesScreenView );
 
 inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
   /**
-   * Adds a PairGroup to the model from the Bonding panel location.
+   * Adds a PairGroup to the model from the Bonding panel position.
    * @public
    *
    * @param {number} bondOrder - The order of the bond (0 through 3)
    * @param {Bounds2} globalBounds - The bounds of the clicked-on overlay for the pair group (e.g. the lone pair in
-   *                                 the "Lone Pair" panel), so we can place the inital model location of the pair
-   *                                 group near the click location (it will animate from that location).
+   *                                 the "Lone Pair" panel), so we can place the inital model position of the pair
+   *                                 group near the click position (it will animate from that position).
    */
   addPairGroup: function( bondOrder, globalBounds ) {
     const screenPoint = globalBounds.leftCenter;
     const threePoint = this.getPlanarMoleculePosition( screenPoint );
 
-    // when adding a pair group in the location of the control panel, it looks better when starting further away
+    // when adding a pair group in the control panel, it looks better when starting further away
     const extraFactor = 1.2;
 
     const pair = new PairGroup( new Vector3( 0, 0, 0 ).set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );

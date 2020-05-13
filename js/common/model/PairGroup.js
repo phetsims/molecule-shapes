@@ -77,7 +77,7 @@ PairGroup.ELECTRON_PAIR_REPULSION_SCALE = 30000;
 // @public {number} - Tuned control of fake force to push angles between pair groups to their ideal.
 PairGroup.ANGLE_REPULSION_SCALE = 3;
 
-// @public {number} - Tuned control for force to jitter locations of atoms (planar cases otherwise stable)
+// @public {number} - Tuned control for force to jitter positions of atoms (planar cases otherwise stable)
 PairGroup.JITTER_SCALE = 0.001;
 
 // @public {number} - Tuned control to reduce velocity, in order to ensure stability.

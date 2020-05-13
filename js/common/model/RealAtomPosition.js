@@ -1,7 +1,7 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * The location of an atom in 3 dimensions, used for RealMoleculeShape.
+ * The position of an atom in 3 dimensions, used for RealMoleculeShape.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -16,7 +16,7 @@ import moleculeShapes from '../../moleculeShapes.js';
  * @param {Vector2} position - The initial position for the atom
  * @param {number} [lonePairCount]
  */
-function RealAtomLocation( element, position, lonePairCount ) {
+function RealAtomPosition(element, position, lonePairCount ) {
   Atom.call( this, element );
 
   this.position = position; // @public {Vector3}
@@ -29,7 +29,7 @@ function RealAtomLocation( element, position, lonePairCount ) {
   }
 }
 
-moleculeShapes.register( 'RealAtomLocation', RealAtomLocation );
+moleculeShapes.register( 'RealAtomPosition', RealAtomPosition );
 
-inherit( Atom, RealAtomLocation );
-export default RealAtomLocation;
+inherit( Atom, RealAtomPosition );
+export default RealAtomPosition;

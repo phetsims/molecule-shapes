@@ -73,7 +73,7 @@ inherit( THREE.Object3D, BondView, {
    * Updates the BondView's appearance.
    * @public
    *
-   * @param {THREE.Vector3} cameraPosition - The location of the camera in the molecule's local coordinate frame.
+   * @param {THREE.Vector3} cameraPosition - The position of the camera in the molecule's local coordinate frame.
    */
   updateView: function( cameraPosition ) {
     // extract our start and end

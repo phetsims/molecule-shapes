@@ -92,9 +92,9 @@ const vertexShader = [
   // an angle of 0.
   '  float theta = ( position.x - 0.5 ) * angle;',
   // Use our basis vectors to compute the point
-  '  vec3 location = position.y * ( cos( theta ) * midpointUnit + sin( theta ) * planarUnit );',
+  '  vec3 point = position.y * ( cos( theta ) * midpointUnit + sin( theta ) * planarUnit );',
   // Standard THREE.js uniforms provided to transform the point into the correct place
-  '  gl_Position = projectionMatrix * modelViewMatrix * vec4( location, 1.0 );',
+  '  gl_Position = projectionMatrix * modelViewMatrix * vec4( point, 1.0 );',
   '}'
 ].join( '\n' );
 
