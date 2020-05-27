@@ -7,11 +7,12 @@
  */
 
 import Screen from '../../../joist/js/Screen.js';
+import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import inherit from '../../../phet-core/js/inherit.js';
 import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
 import ScreenIconNode from '../common/view/ScreenIconNode.js';
-import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import moleculeShapes from '../moleculeShapes.js';
+import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import RealMoleculesModel from './RealMoleculesModel.js';
 import RealMoleculesScreenView from './RealMoleculesScreenView.js';
 
@@ -26,7 +27,10 @@ function RealMoleculesScreen( isBasicsVersion ) {
   const options = {
     name: screenRealMoleculesString,
     backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
-    homeScreenIcon: new ScreenIconNode( false, isBasicsVersion )
+    homeScreenIcon: new ScreenIcon( new ScreenIconNode( false, isBasicsVersion ), {
+      maxIconWidthProportion: 1,
+      maxIconHeightProportion: 1
+    } )
   };
 
   Screen.call( this,
