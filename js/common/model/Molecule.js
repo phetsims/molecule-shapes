@@ -7,7 +7,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
+import Emitter from '../../../../axon/js/Emitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import inherit from '../../../../phet-core/js/inherit.js';
@@ -53,13 +53,25 @@ function Molecule( isReal ) {
 
   this.centralAtom = null; // @public {PairGroup} - Will be filled in later.
 
-  // @public {TinyEmitter}
-  this.bondAddedEmitter = new TinyEmitter(); // emits with: bond
-  this.bondRemovedEmitter = new TinyEmitter(); // emits with: bond
-  this.bondChangedEmitter = new TinyEmitter(); // emits with: bond
-  this.groupAddedEmitter = new TinyEmitter(); // emits with: group
-  this.groupRemovedEmitter = new TinyEmitter(); // emits with: group
-  this.groupChangedEmitter = new TinyEmitter(); // emits with: group
+  // @public {Emitter}
+  this.bondAddedEmitter = new Emitter( {
+    parameters: [ { valueType: Bond } ]
+  } );
+  this.bondRemovedEmitter = new Emitter( {
+    parameters: [ { valueType: Bond } ]
+  } );
+  this.bondChangedEmitter = new Emitter( {
+    parameters: [ { valueType: Bond } ]
+  } );
+  this.groupAddedEmitter = new Emitter( {
+    parameters: [ { valueType: PairGroup } ]
+  } );
+  this.groupRemovedEmitter = new Emitter( {
+    parameters: [ { valueType: PairGroup } ]
+  } );
+  this.groupChangedEmitter = new Emitter( {
+    parameters: [ { valueType: PairGroup } ]
+  } );
 
   // composite events
   this.bondAddedEmitter.addListener( bond => this.bondChangedEmitter.emit( bond ) );
