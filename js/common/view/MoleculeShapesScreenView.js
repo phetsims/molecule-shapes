@@ -31,9 +31,7 @@ import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
  * @param {ModelMoleculesModel} model the model for the entire screen
  */
 function MoleculeShapesScreenView( model ) {
-  ScreenView.call( this, {
-    layoutBounds: new Bounds2( 0, 0, 1024, 618 )
-  } );
+  ScreenView.call( this );
 
   const self = this;
 
