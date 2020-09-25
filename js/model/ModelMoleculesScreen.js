@@ -8,7 +8,6 @@
 
 import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
 import ScreenIconNode from '../common/view/ScreenIconNode.js';
 import moleculeShapes from '../moleculeShapes.js';
@@ -16,31 +15,29 @@ import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import ModelMoleculesModel from './ModelMoleculesModel.js';
 import ModelMoleculesScreenView from './ModelMoleculesScreenView.js';
 
-const screenModelString = moleculeShapesStrings.screen.model;
+class ModelMoleculesScreen extends Screen {
 
-/**
- * Creates the model and view for the ModelMoleculesScreen
- * @constructor
- * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
- */
-function ModelMoleculesScreen( isBasicsVersion ) {
-  const options = {
-    name: screenModelString,
-    backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
-    homeScreenIcon: new ScreenIcon( new ScreenIconNode( true, isBasicsVersion ), {
-      maxIconWidthProportion: 1,
-      maxIconHeightProportion: 1
-    } )
-  };
+  /**
+   * Creates the model and view for the ModelMoleculesScreen
+   * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
+   */
+  constructor( isBasicsVersion ) {
+    const options = {
+      name: moleculeShapesStrings.screen.model,
+      backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
+      homeScreenIcon: new ScreenIcon( new ScreenIconNode( true, isBasicsVersion ), {
+        maxIconWidthProportion: 1,
+        maxIconHeightProportion: 1
+      } )
+    };
 
-  Screen.call( this,
-    function() { return new ModelMoleculesModel( isBasicsVersion ); },
-    function( model ) { return new ModelMoleculesScreenView( model ); },
-    options
-  );
+    super(
+      function() { return new ModelMoleculesModel( isBasicsVersion ); },
+      function( model ) { return new ModelMoleculesScreenView( model ); },
+      options
+    );
+  }
 }
 
 moleculeShapes.register( 'ModelMoleculesScreen', ModelMoleculesScreen );
-
-inherit( Screen, ModelMoleculesScreen );
 export default ModelMoleculesScreen;
