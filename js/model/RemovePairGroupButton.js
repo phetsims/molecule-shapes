@@ -7,7 +7,6 @@
  */
 
 import Shape from '../../../kite/js/Shape.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import RectangularPushButton from '../../../sun/js/buttons/RectangularPushButton.js';
@@ -20,21 +19,20 @@ const crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( CROSS_SIZE, CROSS
   lineWidth: 3
 } );
 
-function RemovePairGroupButton( options ) {
-  const self = this;
+class RemovePairGroupButton extends RectangularPushButton {
+  constructor( options ) {
 
-  RectangularPushButton.call( this, merge( {
-    content: crossNode,
-    xMargin: 5,
-    yMargin: 5
-  }, options ) );
+    super( merge( {
+      content: crossNode,
+      xMargin: 5,
+      yMargin: 5
+    }, options ) );
 
-  MoleculeShapesColorProfile.removePairGroupProperty.link( function( color ) {
-    self.baseColor = color;
-  } );
+    MoleculeShapesColorProfile.removePairGroupProperty.link( color => {
+      this.baseColor = color;
+    } );
+  }
 }
 
 moleculeShapes.register( 'RemovePairGroupButton', RemovePairGroupButton );
-
-inherit( RectangularPushButton, RemovePairGroupButton );
 export default RemovePairGroupButton;
