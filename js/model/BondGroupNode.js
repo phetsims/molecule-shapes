@@ -13,12 +13,13 @@ import merge from '../../../phet-core/js/merge.js';
 import platform from '../../../phet-core/js/platform.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Image from '../../../scenery/js/nodes/Image.js';
+import Imageable from '../../../scenery/js/nodes/Imageable.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import MoleculeShapesGlobals from '../common/MoleculeShapesGlobals.js';
 import MoleculeShapesModel from '../common/model/MoleculeShapesModel.js';
 import PairGroup from '../common/model/PairGroup.js';
 import VSEPRMolecule from '../common/model/VSEPRMolecule.js';
-import MoleculeShapesGlobals from '../common/MoleculeShapesGlobals.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
 import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
@@ -101,7 +102,7 @@ function getBondDataURL( bondOrder ) {
     contextCopy.drawImage( baseCanvas, 0, 0 );
 
     // Create a mipmap for firefox, see https://github.com/phetsims/molecule-shapes/issues/129
-    url = Image.createFastMipmapFromCanvas( canvasCopy );
+    url = Imageable.createFastMipmapFromCanvas( canvasCopy );
   }
   return url;
 }
