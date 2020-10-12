@@ -12,7 +12,6 @@ import Ray3 from '../../../../dot/js/Ray3.js';
 import Sphere3 from '../../../../dot/js/Sphere3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import inherit from '../../../../phet-core/js/inherit.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFailureDialog.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
@@ -25,301 +24,335 @@ import GeometryNamePanel from './GeometryNamePanel.js';
 import LabelFallbackNode from './LabelFallbackNode.js';
 import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
 
-/**
- * @constructor
- *
- * @param {ModelMoleculesModel} model the model for the entire screen
- */
-function MoleculeShapesScreenView( model ) {
-  ScreenView.call( this );
+class MoleculeShapesScreenView extends ScreenView {
 
-  const self = this;
+  /**
+   * @param {ModelMoleculesModel} model the model for the entire screen
+   */
+  constructor( model ) {
+    super();
 
-  this.model = model; // @private {ModelMoleculesModel}
+    const self = this;
 
-  // our target for drags that don't hit other UI components
-  this.backgroundEventTarget = Rectangle.bounds( this.layoutBounds, {} ); // @private
-  this.addChild( this.backgroundEventTarget );
+    this.model = model; // @private {ModelMoleculesModel}
 
-  // updated in layout
-  this.activeScale = 1; // @private scale applied to interaction that isn't directly tied to screen coordinates (rotation)
-  this.screenWidth = null; // @public
-  this.screenHeight = null; // @public
+    // our target for drags that don't hit other UI components
+    this.backgroundEventTarget = Rectangle.bounds( this.layoutBounds, {} ); // @private
+    this.addChild( this.backgroundEventTarget );
 
-  // main three.js Scene setup
-  this.threeScene = new THREE.Scene(); // @private
-  this.threeCamera = new THREE.PerspectiveCamera(); // @private will set the projection parameters on layout
+    // updated in layout
+    this.activeScale = 1; // @private scale applied to interaction that isn't directly tied to screen coordinates (rotation)
+    this.screenWidth = null; // @public
+    this.screenHeight = null; // @public
 
-  // @public {THREE.Renderer}
-  this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
-    antialias: true,
-    preserveDrawingBuffer: phet.chipper.queryParameters.preserveDrawingBuffer
-  } ) : new THREE.CanvasRenderer( {
-    devicePixelRatio: 1 // hopefully helps performance a bit
-  } );
+    // main three.js Scene setup
+    this.threeScene = new THREE.Scene(); // @private
+    this.threeCamera = new THREE.PerspectiveCamera(); // @private will set the projection parameters on layout
 
-  this.threeRenderer.setPixelRatio( window.devicePixelRatio || 1 );
-
-  // @private {ContextLossFailureDialog|null} - dialog shown on context loss, constructed
-  // lazily because Dialog requires sim bounds during construction
-  this.contextLossDialog = null;
-
-  // In the event of a context loss, we'll just show a dialog. See https://github.com/phetsims/molecule-shapes/issues/100
-  if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
-    this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
-      event.preventDefault();
-
-      self.showContextLossDialog();
-
-      if ( document.domain === 'phet.colorado.edu' ) {
-        window._gaq && window._gaq.push( [ '_trackEvent', 'WebGL Context Loss', 'molecule-shapes ' + phet.joist.sim.version, document.URL ] );
-      }
+    // @public {THREE.Renderer}
+    this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
+      antialias: true,
+      preserveDrawingBuffer: phet.chipper.queryParameters.preserveDrawingBuffer
+    } ) : new THREE.CanvasRenderer( {
+      devicePixelRatio: 1 // hopefully helps performance a bit
     } );
-  }
 
-  MoleculeShapesColorProfile.backgroundProperty.link( function( color ) {
-    self.threeRenderer.setClearColor( color.toNumber(), 1 );
-  } );
+    this.threeRenderer.setPixelRatio( window.devicePixelRatio || 1 );
 
-  MoleculeShapesScreenView.addLightsToScene( this.threeScene );
+    // @private {ContextLossFailureDialog|null} - dialog shown on context loss, constructed
+    // lazily because Dialog requires sim bounds during construction
+    this.contextLossDialog = null;
 
-  this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition ); // sets the camera's position
-
-  // @private add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
-  this.domNode = new DOM( this.threeRenderer.domElement, {
-    preventTransform: true, // Scenery 0.2 override for transformation
-    invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
-      this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
-    },
-    pickable: false
-  } );
-  this.domNode.invalidateDOM();
-
-  // support Scenery/Joist 0.2 screenshot (takes extra work to output)
-  this.domNode.renderToCanvasSelf = function( wrapper ) {
-    let canvas = null;
-
-    const effectiveWidth = Math.ceil( self.screenWidth );
-    const effectiveHeight = Math.ceil( self.screenHeight );
-
-    // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
-    // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
-    // share the view (three.js constraint).
+    // In the event of a context loss, we'll just show a dialog. See https://github.com/phetsims/molecule-shapes/issues/100
     if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+      this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
+        event.preventDefault();
 
-      // set up a framebuffer (target is three.js terminology) to render into
-      const target = new THREE.WebGLRenderTarget( effectiveWidth, effectiveHeight, {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.NearestFilter,
-        format: THREE.RGBAFormat
-      } );
-      // render our screen content into the framebuffer
-      self.render( target );
+        self.showContextLossDialog();
 
-      // set up a buffer for pixel data, in the exact typed formats we will need
-      const buffer = new window.ArrayBuffer( effectiveWidth * effectiveHeight * 4 );
-      const imageDataBuffer = new window.Uint8ClampedArray( buffer );
-      const pixels = new window.Uint8Array( buffer );
-
-      // read the pixel data into the buffer
-      const gl = self.threeRenderer.getContext();
-      gl.readPixels( 0, 0, effectiveWidth, effectiveHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
-
-      // create a Canvas with the correct size, and fill it with the pixel data
-      canvas = document.createElement( 'canvas' );
-      canvas.width = effectiveWidth;
-      canvas.height = effectiveHeight;
-      const tmpContext = canvas.getContext( '2d' );
-      const imageData = tmpContext.createImageData( effectiveWidth, effectiveHeight );
-      imageData.data.set( imageDataBuffer );
-      tmpContext.putImageData( imageData, 0, 0 );
-    }
-    else {
-      // If just falling back to Canvas, we can directly render out!
-      canvas = self.threeRenderer.domElement;
-    }
-
-    const context = wrapper.context;
-    context.save();
-
-    // Take the pixel ratio into account, see https://github.com/phetsims/molecule-shapes/issues/149
-    const inverse = 1 / ( window.devicePixelRatio || 1 );
-
-    if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
-      context.setTransform( 1, 0, 0, -1, 0, effectiveHeight ); // no need to take pixel scaling into account
-    }
-    else {
-      context.setTransform( inverse, 0, 0, inverse, 0, 0 );
-    }
-    context.drawImage( canvas, 0, 0 );
-    context.restore();
-  };
-
-  this.addChild( this.domNode );
-
-  // overlay Scene for bond-angle labels (if WebGL)
-  this.overlayScene = new THREE.Scene(); // @private
-  this.overlayCamera = new THREE.OrthographicCamera(); // @private
-  this.overlayCamera.position.z = 50; // @private
-
-  this.addChild( new ResetAllButton( {
-    right: this.layoutBounds.maxX - 10,
-    bottom: this.layoutBounds.maxY - 10,
-    listener: function() {
-      model.reset();
-    }
-  } ) );
-
-  this.addChild( new GeometryNamePanel( model, {
-    left: this.layoutBounds.minX + 10,
-    bottom: this.layoutBounds.maxY - 10
-  } ) );
-
-  // we only want to support dragging particles OR rotating the molecule (not both) at the same time
-  let draggedParticleCount = 0;
-  let isRotating = false;
-
-  const multiDragListener = {
-    down: function( event, trail ) {
-      if ( !event.canStartPress() ) { return; }
-
-      // if we are already rotating the entire molecule, no more drags can be handled
-      if ( isRotating ) {
-        return;
-      }
-
-      let dragMode = null;
-      let draggedParticle = null;
-
-      const pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
-      if ( pair && !pair.userControlledProperty.get() ) {
-        // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
-        dragMode = 'pairExistingSpherical';
-        draggedParticle = pair;
-        pair.userControlledProperty.set( true );
-        draggedParticleCount++;
-      }
-      else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
-        // we rotate the entire molecule with this pointer
-        dragMode = 'modelRotate';
-        isRotating = true;
-      }
-      else {
-        // can't drag the pair OR rotate the molecule
-        return;
-      }
-
-      const lastGlobalPoint = event.pointer.point.copy();
-
-      event.pointer.cursor = 'pointer';
-      event.pointer.addInputListener( {
-        // end drag on either up or cancel (not supporting full cancel behavior)
-        up: function( event, trail ) {
-          this.endDrag( event, trail );
-        },
-        cancel: function( event, trail ) {
-          this.endDrag( event, trail );
-        },
-
-        move: function( event, trail ) {
-          if ( dragMode === 'modelRotate' ) {
-            const delta = event.pointer.point.minus( lastGlobalPoint );
-            lastGlobalPoint.set( event.pointer.point );
-
-            const scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
-            const newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
-            newQuaternion.multiply( model.moleculeQuaternionProperty.get() );
-            model.moleculeQuaternionProperty.value = newQuaternion;
-          }
-          else if ( dragMode === 'pairExistingSpherical' ) {
-            if ( _.includes( model.moleculeProperty.get().groups, draggedParticle ) ) {
-              draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
-            }
-          }
-        },
-
-        // not a Scenery event
-        endDrag: function( event, trail ) {
-          if ( dragMode === 'pairExistingSpherical' ) {
-            draggedParticle.userControlledProperty.set( false );
-            draggedParticleCount--;
-          }
-          else if ( dragMode === 'modelRotate' ) {
-            isRotating = false;
-          }
-          event.pointer.removeInputListener( this );
-          event.pointer.cursor = null;
+        if ( document.domain === 'phet.colorado.edu' ) {
+          window._gaq && window._gaq.push( [ '_trackEvent', 'WebGL Context Loss', 'molecule-shapes ' + phet.joist.sim.version, document.URL ] );
         }
       } );
     }
-  };
-  this.backgroundEventTarget.addInputListener( multiDragListener );
 
-  // Consider updating the cursor even if we don't move? (only if we have mouse movement)? Current development
-  // decision is to ignore this edge case in favor of performance.
-  this.backgroundEventTarget.addInputListener( {
-    mousemove: function( event ) {
-      self.backgroundEventTarget.cursor = self.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
-    }
-  } );
+    MoleculeShapesColorProfile.backgroundProperty.link( function( color ) {
+      self.threeRenderer.setClearColor( color.toNumber(), 1 );
+    } );
 
-  // update the molecule view's rotation when the model's rotation changes
-  model.moleculeQuaternionProperty.link( function( quaternion ) {
-    // moleculeView is created in the subtype (not yet). will handle initial rotation in addMoleculeView
-    if ( self.moleculeView ) {
-      self.moleculeView.quaternion.copy( quaternion );
-      self.moleculeView.updateMatrix();
-      self.moleculeView.updateMatrixWorld();
-    }
-  } );
+    MoleculeShapesScreenView.addLightsToScene( this.threeScene );
 
-  // @private - create a pool of angle labels of the desired type
-  this.angleLabels = [];
-  for ( let i = 0; i < 15; i++ ) {
-    if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
-      this.angleLabels[ i ] = new LabelWebGLView( this.threeRenderer );
-      this.overlayScene.add( this.angleLabels[ i ] );
-      this.angleLabels[ i ].unsetLabel();
-    }
-    else {
-      this.angleLabels[ i ] = new LabelFallbackNode();
-      this.addChild( this.angleLabels[ i ] );
+    this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition ); // sets the camera's position
+
+    // @private add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
+    this.domNode = new DOM( this.threeRenderer.domElement, {
+      preventTransform: true, // Scenery 0.2 override for transformation
+      invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
+        this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
+      },
+      pickable: false
+    } );
+    this.domNode.invalidateDOM();
+
+    // support Scenery/Joist 0.2 screenshot (takes extra work to output)
+    this.domNode.renderToCanvasSelf = function( wrapper ) {
+      let canvas = null;
+
+      const effectiveWidth = Math.ceil( self.screenWidth );
+      const effectiveHeight = Math.ceil( self.screenHeight );
+
+      // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
+      // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
+      // share the view (three.js constraint).
+      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+
+        // set up a framebuffer (target is three.js terminology) to render into
+        const target = new THREE.WebGLRenderTarget( effectiveWidth, effectiveHeight, {
+          minFilter: THREE.LinearFilter,
+          magFilter: THREE.NearestFilter,
+          format: THREE.RGBAFormat
+        } );
+        // render our screen content into the framebuffer
+        self.render( target );
+
+        // set up a buffer for pixel data, in the exact typed formats we will need
+        const buffer = new window.ArrayBuffer( effectiveWidth * effectiveHeight * 4 );
+        const imageDataBuffer = new window.Uint8ClampedArray( buffer );
+        const pixels = new window.Uint8Array( buffer );
+
+        // read the pixel data into the buffer
+        const gl = self.threeRenderer.getContext();
+        gl.readPixels( 0, 0, effectiveWidth, effectiveHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
+
+        // create a Canvas with the correct size, and fill it with the pixel data
+        canvas = document.createElement( 'canvas' );
+        canvas.width = effectiveWidth;
+        canvas.height = effectiveHeight;
+        const tmpContext = canvas.getContext( '2d' );
+        const imageData = tmpContext.createImageData( effectiveWidth, effectiveHeight );
+        imageData.data.set( imageDataBuffer );
+        tmpContext.putImageData( imageData, 0, 0 );
+      }
+      else {
+        // If just falling back to Canvas, we can directly render out!
+        canvas = self.threeRenderer.domElement;
+      }
+
+      const context = wrapper.context;
+      context.save();
+
+      // Take the pixel ratio into account, see https://github.com/phetsims/molecule-shapes/issues/149
+      const inverse = 1 / ( window.devicePixelRatio || 1 );
+
+      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+        context.setTransform( 1, 0, 0, -1, 0, effectiveHeight ); // no need to take pixel scaling into account
+      }
+      else {
+        context.setTransform( inverse, 0, 0, inverse, 0, 0 );
+      }
+      context.drawImage( canvas, 0, 0 );
+      context.restore();
+    };
+
+    this.addChild( this.domNode );
+
+    // overlay Scene for bond-angle labels (if WebGL)
+    this.overlayScene = new THREE.Scene(); // @private
+    this.overlayCamera = new THREE.OrthographicCamera(); // @private
+    this.overlayCamera.position.z = 50; // @private
+
+    this.addChild( new ResetAllButton( {
+      right: this.layoutBounds.maxX - 10,
+      bottom: this.layoutBounds.maxY - 10,
+      listener: function() {
+        model.reset();
+      }
+    } ) );
+
+    this.addChild( new GeometryNamePanel( model, {
+      left: this.layoutBounds.minX + 10,
+      bottom: this.layoutBounds.maxY - 10
+    } ) );
+
+    // we only want to support dragging particles OR rotating the molecule (not both) at the same time
+    let draggedParticleCount = 0;
+    let isRotating = false;
+
+    const multiDragListener = {
+      down: function( event, trail ) {
+        if ( !event.canStartPress() ) { return; }
+
+        // if we are already rotating the entire molecule, no more drags can be handled
+        if ( isRotating ) {
+          return;
+        }
+
+        let dragMode = null;
+        let draggedParticle = null;
+
+        const pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
+        if ( pair && !pair.userControlledProperty.get() ) {
+          // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
+          dragMode = 'pairExistingSpherical';
+          draggedParticle = pair;
+          pair.userControlledProperty.set( true );
+          draggedParticleCount++;
+        }
+        else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
+          // we rotate the entire molecule with this pointer
+          dragMode = 'modelRotate';
+          isRotating = true;
+        }
+        else {
+          // can't drag the pair OR rotate the molecule
+          return;
+        }
+
+        const lastGlobalPoint = event.pointer.point.copy();
+
+        event.pointer.cursor = 'pointer';
+        event.pointer.addInputListener( {
+          // end drag on either up or cancel (not supporting full cancel behavior)
+          up: function( event, trail ) {
+            this.endDrag( event, trail );
+          },
+          cancel: function( event, trail ) {
+            this.endDrag( event, trail );
+          },
+
+          move: function( event, trail ) {
+            if ( dragMode === 'modelRotate' ) {
+              const delta = event.pointer.point.minus( lastGlobalPoint );
+              lastGlobalPoint.set( event.pointer.point );
+
+              const scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
+              const newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
+              newQuaternion.multiply( model.moleculeQuaternionProperty.get() );
+              model.moleculeQuaternionProperty.value = newQuaternion;
+            }
+            else if ( dragMode === 'pairExistingSpherical' ) {
+              if ( _.includes( model.moleculeProperty.get().groups, draggedParticle ) ) {
+                draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
+              }
+            }
+          },
+
+          // not a Scenery event
+          endDrag: function( event, trail ) {
+            if ( dragMode === 'pairExistingSpherical' ) {
+              draggedParticle.userControlledProperty.set( false );
+              draggedParticleCount--;
+            }
+            else if ( dragMode === 'modelRotate' ) {
+              isRotating = false;
+            }
+            event.pointer.removeInputListener( this );
+            event.pointer.cursor = null;
+          }
+        } );
+      }
+    };
+    this.backgroundEventTarget.addInputListener( multiDragListener );
+
+    // Consider updating the cursor even if we don't move? (only if we have mouse movement)? Current development
+    // decision is to ignore this edge case in favor of performance.
+    this.backgroundEventTarget.addInputListener( {
+      mousemove: function( event ) {
+        self.backgroundEventTarget.cursor = self.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
+      }
+    } );
+
+    // update the molecule view's rotation when the model's rotation changes
+    model.moleculeQuaternionProperty.link( function( quaternion ) {
+      // moleculeView is created in the subtype (not yet). will handle initial rotation in addMoleculeView
+      if ( self.moleculeView ) {
+        self.moleculeView.quaternion.copy( quaternion );
+        self.moleculeView.updateMatrix();
+        self.moleculeView.updateMatrixWorld();
+      }
+    } );
+
+    // @private - create a pool of angle labels of the desired type
+    this.angleLabels = [];
+    for ( let i = 0; i < 15; i++ ) {
+      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+        this.angleLabels[ i ] = new LabelWebGLView( this.threeRenderer );
+        this.overlayScene.add( this.angleLabels[ i ] );
+        this.angleLabels[ i ].unsetLabel();
+      }
+      else {
+        this.angleLabels[ i ] = new LabelFallbackNode();
+        this.addChild( this.angleLabels[ i ] );
+      }
     }
   }
-}
 
-moleculeShapes.register( 'MoleculeShapesScreenView', MoleculeShapesScreenView );
+  /**
+   * @public
+   *
+   * @param {THREE.Scene} threeScene
+   */
+  static addLightsToScene( threeScene ) {
+    const ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
+    threeScene.add( ambientLight );
 
-inherit( ScreenView, MoleculeShapesScreenView, {
+    const sunLight = new THREE.DirectionalLight( 0xffffff, 0.8 * 0.9 );
+    sunLight.position.set( -1.0, 0.5, 2.0 );
+    threeScene.add( sunLight );
+
+    const moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
+    moonLight.position.set( 2.0, -1.0, 1.0 );
+    threeScene.add( moonLight );
+  }
+
+  /**
+   * Duck-typed to have the same API as needed by views
+   * @public
+   *
+   * @returns {Object}
+   */
+  static createAPIStub( renderer ) {
+    return {
+      threeRenderer: renderer,
+      checkOutLabel: function() {
+        return {
+          setLabel: function() {},
+          unsetLabel: function() {}
+        };
+      },
+      returnLabel: function() {}
+    };
+  }
+
   /**
    * @private
    */
-  showContextLossDialog: function() {
+  showContextLossDialog() {
     if ( !this.contextLossDialog ) {
       this.contextLossDialog = new ContextLossFailureDialog();
     }
     this.contextLossDialog.show();
-  },
+  }
 
   /**
    * Removes a bond-angle label from the pool to be controlled
    * @public
    */
-  checkOutLabel: function() {
+  checkOutLabel() {
     const label = this.angleLabels.pop();
     assert && assert( label );
     return label;
-  },
+  }
 
   /**
    * Returns a bond-angle label to the pool
    * @public
    */
-  returnLabel: function( label ) {
+  returnLabel( label ) {
     assert && assert( !_.includes( this.angleLabels, label ) );
     this.angleLabels.push( label );
     label.unsetLabel();
-  },
+  }
 
   /**
    * Adds a molcule view.
@@ -327,13 +360,13 @@ inherit( ScreenView, MoleculeShapesScreenView, {
    *
    * @param {MoleculeView} moleculeView
    */
-  addMoleculeView: function( moleculeView ) {
+  addMoleculeView( moleculeView ) {
     this.threeScene.add( moleculeView );
 
     this.moleculeView.quaternion.copy( this.model.moleculeQuaternionProperty.get() );
     this.moleculeView.updateMatrix();
     this.moleculeView.updateMatrixWorld();
-  },
+  }
 
   /**
    * Removes a molcule view.
@@ -341,16 +374,17 @@ inherit( ScreenView, MoleculeShapesScreenView, {
    *
    * @param {MoleculeView} moleculeView
    */
-  removeMoleculeView: function( moleculeView ) {
+  removeMoleculeView( moleculeView ) {
     this.threeScene.remove( moleculeView );
-  },
+  }
 
   /*
    * @private
    * @param {Vector3} screenPoint
    * @returns {THREE.Raycaster}
    */
-  getRaycasterFromScreenPoint: function( screenPoint ) {
+  getRaycasterFromScreenPoint( screenPoint ) {
+
     // normalized device coordinates
     const ndcX = 2 * screenPoint.x / this.screenWidth - 1;
     const ndcY = 2 * ( 1 - ( screenPoint.y / this.screenHeight ) ) - 1;
@@ -359,7 +393,7 @@ inherit( ScreenView, MoleculeShapesScreenView, {
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera( mousePoint, this.threeCamera );
     return raycaster;
-  },
+  }
 
   /*
    * Global => NDC
@@ -368,9 +402,9 @@ inherit( ScreenView, MoleculeShapesScreenView, {
    * @param {THREE.Vector3} globalPoint
    * @returns {THREE.Vector3}
    */
-  convertScreenPointFromGlobalPoint: function( globalPoint ) {
+  convertScreenPointFromGlobalPoint( globalPoint ) {
     globalPoint.project( this.threeCamera );
-  },
+  }
 
   /*
    * @private
@@ -378,11 +412,11 @@ inherit( ScreenView, MoleculeShapesScreenView, {
    * @param {Vector3} screenPoint
    * @returns {Ray3}
    */
-  getRayFromScreenPoint: function( screenPoint ) {
+  getRayFromScreenPoint( screenPoint ) {
     const threeRay = this.getRaycasterFromScreenPoint( screenPoint ).ray;
     return new Ray3( new Vector3( 0, 0, 0 ).set( threeRay.origin ),
       new Vector3( 0, 0, 0 ).set( threeRay.direction ).normalize() );
-  },
+  }
 
   /*
    * @private
@@ -391,7 +425,7 @@ inherit( ScreenView, MoleculeShapesScreenView, {
    * @param {boolean} isTouch - Whether we should use touch regions
    * @returns {PairGroup | null} - The closest pair group, or null
    */
-  getElectronPairUnderPointer: function( pointer, isTouch ) {
+  getElectronPairUnderPointer( pointer, isTouch ) {
     const raycaster = this.getRaycasterFromScreenPoint( pointer.point );
     const worldRay = raycaster.ray;
     const cameraOrigin = worldRay.origin; // THREE.Vector3
@@ -414,7 +448,7 @@ inherit( ScreenView, MoleculeShapesScreenView, {
     }
 
     return closestGroup;
-  },
+  }
 
   /*
    * The position in the moleculeView's coordinate system (where z=0 in the view coordinate system) for a
@@ -424,7 +458,7 @@ inherit( ScreenView, MoleculeShapesScreenView, {
    * @param {Vector2} screenPoint
    * @returns {THREE.Vector3} in the moleculeView's local coordinate system
    */
-  getPlanarMoleculePosition: function( screenPoint ) {
+  getPlanarMoleculePosition( screenPoint ) {
     const cameraRay = this.getRayFromScreenPoint( screenPoint );
     const intersection = Plane3.XY.intersectWithRay( cameraRay );
     const position = new THREE.Vector3( intersection.x, intersection.y, 0 );
@@ -432,7 +466,7 @@ inherit( ScreenView, MoleculeShapesScreenView, {
     this.moleculeView.worldToLocal( position );
 
     return position;
-  },
+  }
 
   /*
    * Returns the closest molecule model-space point on the sphere whose radius is the bond's radius.
@@ -442,7 +476,8 @@ inherit( ScreenView, MoleculeShapesScreenView, {
    * @param {PairGroup} draggedParticle
    * @returns {Vector3}
    */
-  getSphericalMoleculePosition: function( screenPoint, draggedParticle ) {
+  getSphericalMoleculePosition( screenPoint, draggedParticle ) {
+
     // our main transform matrix and inverse
     const threeMatrix = this.moleculeView.matrix.clone();
     const threeInverseMatrix = new THREE.Matrix4();
@@ -506,14 +541,14 @@ inherit( ScreenView, MoleculeShapesScreenView, {
              intersections[ 0 ].hitPoint :
              intersections[ 1 ].hitPoint;
     }
-  },
+  }
 
   /**
    * @override
    * @protected
    */
-  layout: function( width, height ) {
-    ScreenView.prototype.layout.call( this, width, height );
+  layout( width, height ) {
+    super.layout( width, height );
 
     this.backgroundEventTarget.setRectBounds( this.globalToLocalBounds( new Bounds2( 0, 0, width, height ) ) );
 
@@ -568,27 +603,26 @@ inherit( ScreenView, MoleculeShapesScreenView, {
     this.threeRenderer.setSize( Math.ceil( width ), Math.ceil( height ) );
 
     this.domNode.invalidateDOM();
-  },
+  }
 
   /**
-   * @override
    * @public
    *
    * @param {number} dt - Amount of time elapsed
    */
-  step: function( dt ) {
+  step( dt ) {
     this.moleculeView.updateView();
 
     this.render( undefined );
-  },
+  }
 
   /**
    * Renders the simulation to a specific rendering target
    * @public
    *
-   * @param {THREE.WebGLRenderTarget | undefined} - undefined for the default target
+   * @param {THREE.WebGLRenderTarget | undefined} target - undefined for the default target
    */
-  render: function( target ) {
+  render( target ) {
     // render the 3D scene first
     this.threeRenderer.render( this.threeScene, this.threeCamera, target );
     this.threeRenderer.autoClear = false;
@@ -596,46 +630,10 @@ inherit( ScreenView, MoleculeShapesScreenView, {
     this.threeRenderer.render( this.overlayScene, this.overlayCamera, target );
     this.threeRenderer.autoClear = true;
   }
-}, {
-  // @public - where our camera is positioned in world coordinates (manually tuned)
-  cameraPosition: new THREE.Vector3( 0.12 * 50, -0.025 * 50, 40 ),
+}
 
-  /**
-   * @public
-   *
-   * @param {THREE.Scene} threeScene
-   */
-  addLightsToScene: function( threeScene ) {
-    const ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader
-    threeScene.add( ambientLight );
+// @public - where our camera is positioned in world coordinates (manually tuned)
+MoleculeShapesScreenView.cameraPosition = new THREE.Vector3( 0.12 * 50, -0.025 * 50, 40 );
 
-    const sunLight = new THREE.DirectionalLight( 0xffffff, 0.8 * 0.9 );
-    sunLight.position.set( -1.0, 0.5, 2.0 );
-    threeScene.add( sunLight );
-
-    const moonLight = new THREE.DirectionalLight( 0xffffff, 0.6 * 0.9 );
-    moonLight.position.set( 2.0, -1.0, 1.0 );
-    threeScene.add( moonLight );
-  },
-
-  /**
-   * Duck-typed to have the same API as needed by views
-   * @public
-   *
-   * @returns {Object}
-   */
-  createAPIStub: function( renderer ) {
-    return {
-      threeRenderer: renderer,
-      checkOutLabel: function() {
-        return {
-          setLabel: function() {},
-          unsetLabel: function() {}
-        };
-      },
-      returnLabel: function() {}
-    };
-  }
-} );
-
+moleculeShapes.register( 'MoleculeShapesScreenView', MoleculeShapesScreenView );
 export default MoleculeShapesScreenView;

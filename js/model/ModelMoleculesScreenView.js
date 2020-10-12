@@ -7,7 +7,6 @@
  */
 
 import Vector3 from '../../../dot/js/Vector3.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
@@ -18,8 +17,8 @@ import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfil
 import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
 import OptionsNode from '../common/view/OptionsNode.js';
-import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import moleculeShapes from '../moleculeShapes.js';
+import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import BondGroupNode from './BondGroupNode.js';
 
 const controlBondingString = moleculeShapesStrings.control.bonding;
@@ -27,99 +26,97 @@ const controlLonePairString = moleculeShapesStrings.control.lonePair;
 const controlOptionsString = moleculeShapesStrings.control.options;
 const controlRemoveAllString = moleculeShapesStrings.control.removeAll;
 
-/**
- * Constructor for the ModelMoleculesScreenView
- * @param {ModelMoleculesModel} model the model for the entire screen
- * @constructor
- */
-function ModelMoleculesScreenView( model ) {
-  MoleculeShapesScreenView.call( this, model );
+class ModelMoleculesScreenView extends MoleculeShapesScreenView {
 
-  this.model = model; // @private {MoleculeShapesModel}
+  /**
+   * Constructor for the ModelMoleculesScreenView
+   * @param {ModelMoleculesModel} model the model for the entire screen
+   */
+  constructor( model ) {
+    super( model );
 
-  this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
-  this.addMoleculeView( this.moleculeView );
+    this.model = model; // @private {MoleculeShapesModel}
 
-  const addPairCallback = this.addPairGroup.bind( this );
-  const removePairCallback = this.removePairGroup.bind( this );
+    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
+    this.addMoleculeView( this.moleculeView );
 
-  const optionsNode = new OptionsNode( model );
-  const bondingNode = new VBox( {
-    children: [
-      new BondGroupNode( model, 1, addPairCallback, removePairCallback, {} ),
-      new BondGroupNode( model, 2, addPairCallback, removePairCallback, {} ),
-      new BondGroupNode( model, 3, addPairCallback, removePairCallback, {} )
-    ],
-    spacing: 10,
-    align: 'left'
-  } );
-  const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
-  const removeAllButton = new TextPushButton( controlRemoveAllString, {
-    font: new PhetFont( 16 ),
-    textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
-    maxWidth: 320,
-    listener: function() {
-      model.moleculeProperty.get().removeAllGroups();
+    const addPairCallback = this.addPairGroup.bind( this );
+    const removePairCallback = this.removePairGroup.bind( this );
+
+    const optionsNode = new OptionsNode( model );
+    const bondingNode = new VBox( {
+      children: [
+        new BondGroupNode( model, 1, addPairCallback, removePairCallback, {} ),
+        new BondGroupNode( model, 2, addPairCallback, removePairCallback, {} ),
+        new BondGroupNode( model, 3, addPairCallback, removePairCallback, {} )
+      ],
+      spacing: 10,
+      align: 'left'
+    } );
+    const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
+    const removeAllButton = new TextPushButton( controlRemoveAllString, {
+      font: new PhetFont( 16 ),
+      textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
+      maxWidth: 320,
+      listener: function() {
+        model.moleculeProperty.get().removeAllGroups();
+      }
+    } );
+
+    MoleculeShapesColorProfile.removeButtonBackgroundProperty.link( function( color ) {
+      removeAllButton.baseColor = color;
+    } );
+    removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
+
+    function updateButtonEnabled() {
+      removeAllButton.enabled = model.moleculeProperty.get().radialGroups.length > 0;
     }
-  } );
 
-  MoleculeShapesColorProfile.removeButtonBackgroundProperty.link( function( color ) {
-    removeAllButton.baseColor = color;
-  } );
-  removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
+    model.moleculeProperty.get() && model.moleculeProperty.get().bondChangedEmitter.addListener( updateButtonEnabled );
+    updateButtonEnabled();
 
-  function updateButtonEnabled() {
-    removeAllButton.enabled = model.moleculeProperty.get().radialGroups.length > 0;
-  }
+    // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
+    const optionsTempNode = new Node( { children: [ optionsNode ] } );
+    const bondingTempNode = new Node( { children: [ bondingNode ] } );
+    const lonePairTempNode = new Node( { children: [ lonePairNode ] } );
+    const maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
+      Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
+        new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
+    optionsTempNode.removeAllChildren();
+    bondingTempNode.removeAllChildren();
+    lonePairTempNode.removeAllChildren();
 
-  model.moleculeProperty.get() && model.moleculeProperty.get().bondChangedEmitter.addListener( updateButtonEnabled );
-  updateButtonEnabled();
-
-  // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
-  const optionsTempNode = new Node( { children: [ optionsNode ] } );
-  const bondingTempNode = new Node( { children: [ bondingNode ] } );
-  const lonePairTempNode = new Node( { children: [ lonePairNode ] } );
-  const maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
-    Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
-      new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
-  optionsTempNode.removeAllChildren();
-  bondingTempNode.removeAllChildren();
-  lonePairTempNode.removeAllChildren();
-
-  const maxExternalWidth = 350; // How big the panels can get before really interfering
-  const bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
-    maxWidth: maxExternalWidth,
-    right: this.layoutBounds.right - 10,
-    top: this.layoutBounds.top + 10,
-    xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15
-  } );
-  let bottom = bondingPanel.bottom;
-  if ( !model.isBasicsVersion ) {
-    const lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
+    const maxExternalWidth = 350; // How big the panels can get before really interfering
+    const bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
-      top: bondingPanel.bottom + 10,
-      xMargin: ( maxInternalWidth - lonePairNode.width ) / 2 + 15
+      top: this.layoutBounds.top + 10,
+      xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15
     } );
-    this.addChild( lonePairPanel );
-    bottom = lonePairPanel.bottom;
+    let bottom = bondingPanel.bottom;
+    if ( !model.isBasicsVersion ) {
+      const lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
+        maxWidth: maxExternalWidth,
+        right: this.layoutBounds.right - 10,
+        top: bondingPanel.bottom + 10,
+        xMargin: ( maxInternalWidth - lonePairNode.width ) / 2 + 15
+      } );
+      this.addChild( lonePairPanel );
+      bottom = lonePairPanel.bottom;
+    }
+    removeAllButton.centerX = bondingPanel.centerX;
+    removeAllButton.top = bottom + 15;
+    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
+      maxWidth: maxExternalWidth,
+      right: this.layoutBounds.right - 10,
+      top: removeAllButton.bottom + 20,
+      xMargin: ( maxInternalWidth - optionsNode.width ) / 2 + 15
+    } );
+    this.addChild( bondingPanel );
+    this.addChild( removeAllButton );
+    this.addChild( optionsPanel );
   }
-  removeAllButton.centerX = bondingPanel.centerX;
-  removeAllButton.top = bottom + 15;
-  const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
-    maxWidth: maxExternalWidth,
-    right: this.layoutBounds.right - 10,
-    top: removeAllButton.bottom + 20,
-    xMargin: ( maxInternalWidth - optionsNode.width ) / 2 + 15
-  } );
-  this.addChild( bondingPanel );
-  this.addChild( removeAllButton );
-  this.addChild( optionsPanel );
-}
 
-moleculeShapes.register( 'ModelMoleculesScreenView', ModelMoleculesScreenView );
-
-inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
   /**
    * Adds a PairGroup to the model from the Bonding panel position.
    * @public
@@ -129,7 +126,7 @@ inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
    *                                 the "Lone Pair" panel), so we can place the inital model position of the pair
    *                                 group near the click position (it will animate from that position).
    */
-  addPairGroup: function( bondOrder, globalBounds ) {
+  addPairGroup( bondOrder, globalBounds ) {
     const screenPoint = globalBounds.leftCenter;
     const threePoint = this.getPlanarMoleculePosition( screenPoint );
 
@@ -138,14 +135,14 @@ inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
 
     const pair = new PairGroup( new Vector3( 0, 0, 0 ).set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
     this.model.moleculeProperty.get().addGroupAndBond( pair, this.model.moleculeProperty.get().centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
-  },
+  }
 
   /**
    * Removes a PairGroup from the model.
    * @public
    * @param {number} bondOrder
    */
-  removePairGroup: function( bondOrder ) {
+  removePairGroup( bondOrder ) {
     const molecule = this.model.moleculeProperty.get();
 
     const bonds = molecule.getBondsAround( molecule.centralAtom );
@@ -159,6 +156,7 @@ inherit( MoleculeShapesScreenView, ModelMoleculesScreenView, {
       }
     }
   }
-} );
+}
 
+moleculeShapes.register( 'ModelMoleculesScreenView', ModelMoleculesScreenView );
 export default ModelMoleculesScreenView;
