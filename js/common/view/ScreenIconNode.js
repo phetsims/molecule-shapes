@@ -10,15 +10,14 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Screen from '../../../../joist/js/Screen.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
-import inherit from '../../../../phet-core/js/inherit.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import MoleculeShapesModel from '../model/MoleculeShapesModel.js';
 import PairGroup from '../model/PairGroup.js';
 import VSEPRMolecule from '../model/VSEPRMolecule.js';
-import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import MoleculeView from './3d/MoleculeView.js';
 import MoleculeShapesScreenView from './MoleculeShapesScreenView.js';
 
@@ -103,8 +102,8 @@ function getBondDataURL( isModel, isBasicsVersion ) {
   } );
 
   const view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
-    showLabel: function() {},
-    finishedAddingLabels: function() {}
+    showLabel: () => {},
+    finishedAddingLabels: () => {}
   } );
   view.updateView();
 
@@ -119,51 +118,50 @@ function getBondDataURL( isModel, isBasicsVersion ) {
   return url;
 }
 
-/**
- * @constructor
- *
- * @param {boolean} isModel
- * @param {boolean} isBasicsVersion
- */
-function ScreenIconNode( isModel, isBasicsVersion ) {
-  Node.call( this );
+class ScreenIconNode extends Node {
+  /**
+   * @param {boolean} isModel
+   * @param {boolean} isBasicsVersion
+   */
+  constructor( isModel, isBasicsVersion ) {
+    super();
 
-  // Firefox doesn't immediately have the correct image bounds, so we set it to be overridden here
-  this.localBounds = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.toBounds();
+    // Firefox doesn't immediately have the correct image bounds, so we set it to be overridden here
+    this.localBounds = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.toBounds();
 
-  const url = getBondDataURL( isModel, isBasicsVersion );
-  this.addChild( new Image( url, {
-    initialWidth: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width,
-    initialHeight: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height
-  } ) );
+    const url = getBondDataURL( isModel, isBasicsVersion );
+    this.addChild( new Image( url, {
+      initialWidth: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width,
+      initialHeight: Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height
+    } ) );
 
-  const centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
-  const radialLabel = isModel ? 'X' : getRadialElement( isBasicsVersion ).symbol;
+    const centralLabel = isModel ? 'A' : getCentralElement( isBasicsVersion ).symbol;
+    const radialLabel = isModel ? 'X' : getRadialElement( isBasicsVersion ).symbol;
 
-  const viewBondDistance = 192 * getRelativeScale( isBasicsVersion );
-  const angle = getAngle( isModel, isBasicsVersion );
-  const centerX = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width * 0.5;
-  const centerY = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height * ( isBasicsVersion ? 0.5 : 0.4 );
-  this.addChild( new Text( centralLabel, {
-    fontSize: 80,
-    fill: 'black',
-    centerX: centerX,
-    centerY: centerY
-  } ) );
-  this.addChild( new Text( radialLabel, {
-    fontSize: 80,
-    fill: 'black',
-    centerX: centerX + Math.sin( angle ) * viewBondDistance,
-    centerY: centerY + Math.cos( angle ) * viewBondDistance
-  } ) );
-  this.addChild( new Text( radialLabel, {
-    fontSize: 80,
-    fill: 'black',
-    centerX: centerX - Math.sin( angle ) * viewBondDistance,
-    centerY: centerY + Math.cos( angle ) * viewBondDistance
-  } ) );
+    const viewBondDistance = 192 * getRelativeScale( isBasicsVersion );
+    const angle = getAngle( isModel, isBasicsVersion );
+    const centerX = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width * 0.5;
+    const centerY = Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height * ( isBasicsVersion ? 0.5 : 0.4 );
+    this.addChild( new Text( centralLabel, {
+      fontSize: 80,
+      fill: 'black',
+      centerX: centerX,
+      centerY: centerY
+    } ) );
+    this.addChild( new Text( radialLabel, {
+      fontSize: 80,
+      fill: 'black',
+      centerX: centerX + Math.sin( angle ) * viewBondDistance,
+      centerY: centerY + Math.cos( angle ) * viewBondDistance
+    } ) );
+    this.addChild( new Text( radialLabel, {
+      fontSize: 80,
+      fill: 'black',
+      centerX: centerX - Math.sin( angle ) * viewBondDistance,
+      centerY: centerY + Math.cos( angle ) * viewBondDistance
+    } ) );
+  }
 }
 
 moleculeShapes.register( 'ScreenIconNode', ScreenIconNode );
-inherit( Node, ScreenIconNode );
 export default ScreenIconNode;

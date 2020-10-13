@@ -9,7 +9,6 @@
 import Ray3 from '../../../../../dot/js/Ray3.js';
 import Sphere3 from '../../../../../dot/js/Sphere3.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import inherit from '../../../../../phet-core/js/inherit.js';
 import Color from '../../../../../scenery/js/util/Color.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
@@ -32,31 +31,29 @@ const elementLocalMaterials = {
 const mouseHitTestSphere = new Sphere3( Vector3.ZERO, DISPLAY_RADIUS );
 const touchHitTestSphere = new Sphere3( Vector3.ZERO, TOUCH_RADIUS );
 
-/*
- * @param {PairGroup} group
- * @param {THREE.Renderer} renderer - To know which geometries/materials to use for which renderer (can't share)
- * @param {LocalMaterial} localMaterial - preferably from one of AtomView's static methods/properties
- */
-function AtomView( group, renderer, localMaterial ) {
-  THREE.Mesh.call( this, localAtomGeometry.get( renderer ), localMaterial.get( renderer ) );
+class AtomView extends THREE.Mesh {
+  /*
+   * @param {PairGroup} group
+   * @param {THREE.Renderer} renderer - To know which geometries/materials to use for which renderer (can't share)
+   * @param {LocalMaterial} localMaterial - preferably from one of AtomView's static methods/properties
+   */
+  constructor( group, renderer, localMaterial ) {
+    super( localAtomGeometry.get( renderer ), localMaterial.get( renderer ) );
 
-  this.group = group; // @private {PairGroup}
+    this.group = group; // @private {PairGroup}
 
-  if ( phet.chipper.queryParameters.showPointerAreas ) {
-    if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
-      this.add( new THREE.Mesh( new THREE.SphereGeometry( TOUCH_RADIUS, NUM_SAMPLES, NUM_SAMPLES ), new THREE.MeshBasicMaterial( {
-        color: 0xff0000,
-        transparent: true,
-        opacity: 0.4,
-        depthWrite: false
-      } ) ) );
+    if ( phet.chipper.queryParameters.showPointerAreas ) {
+      if ( localMaterial !== AtomView.centralAtomLocalMaterial ) {
+        this.add( new THREE.Mesh( new THREE.SphereGeometry( TOUCH_RADIUS, NUM_SAMPLES, NUM_SAMPLES ), new THREE.MeshBasicMaterial( {
+          color: 0xff0000,
+          transparent: true,
+          opacity: 0.4,
+          depthWrite: false
+        } ) ) );
+      }
     }
   }
-}
 
-moleculeShapes.register( 'AtomView', AtomView );
-
-inherit( THREE.Mesh, AtomView, {
   /*
    * Intersection test for whether the mouse/touch is over this.
    * @public
@@ -65,7 +62,7 @@ inherit( THREE.Mesh, AtomView, {
    * @param {boolean} isTouch - Whether expanded touch regions should be included
    * @returns {THREE.Vector3|null} - The first intersection point (in world coordinates) if it exists, otherwise null
    */
-  intersect: function( worldRay, isTouch ) {
+  intersect( worldRay, isTouch ) {
     const inverseMatrix = new THREE.Matrix4();
     const ray = new THREE.Ray();
 
@@ -82,16 +79,6 @@ inherit( THREE.Mesh, AtomView, {
     const localPoint = hitResult.hitPoint;
     return new THREE.Vector3().copy( localPoint ).applyMatrix4( this.matrixWorld );
   }
-}, {
-  // @public {LocalMaterial} - renderer-local access
-  centralAtomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-    color: MoleculeShapesColorProfile.centralAtomProperty
-  } ),
-
-  // @public {LocalMaterial} - renderer-local access
-  atomLocalMaterial: new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-    color: MoleculeShapesColorProfile.atomProperty
-  } ),
 
   /**
    * Returns the shared LocalMaterial for a specific Element (we don't want to have multiple LocalMaterials for the
@@ -101,7 +88,7 @@ inherit( THREE.Mesh, AtomView, {
    * @param {NITROGLYCERIN.Element} element
    * @returns {LocalMaterial}
    */
-  getElementLocalMaterial: function( element ) {
+  static getElementLocalMaterial( element ) {
     // Lazily create LocalMaterials for each element.
     // We'll want one material for each renderer-element pair, since we can't share across renderers, and we want to
     // share the material with the same element when possible.
@@ -115,6 +102,18 @@ inherit( THREE.Mesh, AtomView, {
     }
     return localMaterial;
   }
+}
+
+// @public {LocalMaterial} - renderer-local access
+AtomView.centralAtomLocalMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
+  color: MoleculeShapesColorProfile.centralAtomProperty
 } );
+
+// @public {LocalMaterial} - renderer-local access
+AtomView.atomLocalMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
+  color: MoleculeShapesColorProfile.atomProperty
+} );
+
+moleculeShapes.register( 'AtomView', AtomView );
 
 export default AtomView;

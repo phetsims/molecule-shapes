@@ -7,26 +7,22 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Molecule from './Molecule.js';
 import PairGroup from './PairGroup.js';
 
-/*
- * @constructor
- * @param {number} bondLengthOverride - Override the length of the displayed bond (the bond will not stretch between
- *                                      both atoms, but will be able to detach from the central atom to stay the same
- *                                      length)
- */
-function VSEPRMolecule( bondLengthOverride ) {
-  Molecule.call( this, false );
+class VSEPRMolecule extends Molecule {
+  /*
+   * @param {number} bondLengthOverride - Override the length of the displayed bond (the bond will not stretch between
+   *                                      both atoms, but will be able to detach from the central atom to stay the same
+   *                                      length)
+   */
+  constructor( bondLengthOverride ) {
+    super( false );
 
-  this.bondLengthOverride = bondLengthOverride; // @public {number}
-}
+    this.bondLengthOverride = bondLengthOverride; // @public {number}
+  }
 
-moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
-
-inherit( Molecule, VSEPRMolecule, {
   /**
    * Steps the model.
    * @override
@@ -34,8 +30,8 @@ inherit( Molecule, VSEPRMolecule, {
    *
    * @param {number} dt - Amount of time elapsed
    */
-  update: function( dt ) {
-    Molecule.prototype.update.call( this, dt );
+  update( dt ) {
+    super.update( dt );
 
     const radialGroups = this.radialGroups;
 
@@ -67,7 +63,7 @@ inherit( Molecule, VSEPRMolecule, {
         }
       }
     }
-  },
+  }
 
   /**
    * Returns the LocalShape around a specific atom.
@@ -76,9 +72,9 @@ inherit( Molecule, VSEPRMolecule, {
    * @param {PairGroup} atom
    * @returns {LocalShape}
    */
-  getLocalShape: function( atom ) {
+  getLocalShape( atom ) {
     return this.getLocalVSEPRShape( atom );
-  },
+  }
 
   /**
    * Returns the maximum bond length (either overridden, or the normal bonded pair distance).
@@ -87,7 +83,7 @@ inherit( Molecule, VSEPRMolecule, {
    *
    * @returns {number}
    */
-  getMaximumBondLength: function() {
+  getMaximumBondLength() {
     if ( this.bondLengthOverride !== undefined ) {
       return this.bondLengthOverride;
     }
@@ -95,6 +91,8 @@ inherit( Molecule, VSEPRMolecule, {
       return PairGroup.BONDED_PAIR_DISTANCE;
     }
   }
-} );
+}
+
+moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
 
 export default VSEPRMolecule;

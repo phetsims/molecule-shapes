@@ -10,7 +10,6 @@
 import Emitter from '../../../../axon/js/Emitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import inherit from '../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import LocalShape from './LocalShape.js';
@@ -28,61 +27,58 @@ function addToEndOfArray( array, item, addToFront ) {
   }
 }
 
-/*
- * @constructor
- * @param {boolean} isReal - Whether the molecule has real angles, or is based on a model.
- */
-function Molecule( isReal ) {
+class Molecule {
+  /*
+   * @param {boolean} isReal - Whether the molecule has real angles, or is based on a model.
+   */
+  constructor( isReal ) {
 
-  this.isReal = isReal; // @public {boolean} - Whether this molecule is based on real angles or on a model.
+    this.isReal = isReal; // @public {boolean} - Whether this molecule is based on real angles or on a model.
 
-  // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
-  this.groups = [];
+    // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
+    this.groups = [];
 
-  // @public {Array.<Bond>} - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
-  // so we just have order 0. Lone-pair 'bonds' are listed first.
-  this.bonds = [];
+    // @public {Array.<Bond>} - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
+    // so we just have order 0. Lone-pair 'bonds' are listed first.
+    this.bonds = [];
 
-  // Cched subsets of groups (changed on modifications) that we need to iterate through without GC
-  // with lone pairs first
-  this.atoms = []; // @public {Array.<PairGroup>} - !isLonePair
-  this.lonePairs = []; // @public {Array.<PairGroup>} - isLonePair
-  this.radialGroups = []; // @public {Array.<PairGroup>} - bonded with centralAtom
-  this.radialAtoms = []; // @public {Array.<PairGroup>} - !isLonePair, bonded with centralAtom
-  this.radialLonePairs = []; // @public {Array.<PairGroup>} - isLonePair, bonded with centralAtom
+    // Cched subsets of groups (changed on modifications) that we need to iterate through without GC
+    // with lone pairs first
+    this.atoms = []; // @public {Array.<PairGroup>} - !isLonePair
+    this.lonePairs = []; // @public {Array.<PairGroup>} - isLonePair
+    this.radialGroups = []; // @public {Array.<PairGroup>} - bonded with centralAtom
+    this.radialAtoms = []; // @public {Array.<PairGroup>} - !isLonePair, bonded with centralAtom
+    this.radialLonePairs = []; // @public {Array.<PairGroup>} - isLonePair, bonded with centralAtom
 
-  this.centralAtom = null; // @public {PairGroup} - Will be filled in later.
+    this.centralAtom = null; // @public {PairGroup} - Will be filled in later.
 
-  // @public {Emitter}
-  this.bondAddedEmitter = new Emitter( {
-    parameters: [ { valueType: Bond } ]
-  } );
-  this.bondRemovedEmitter = new Emitter( {
-    parameters: [ { valueType: Bond } ]
-  } );
-  this.bondChangedEmitter = new Emitter( {
-    parameters: [ { valueType: Bond } ]
-  } );
-  this.groupAddedEmitter = new Emitter( {
-    parameters: [ { valueType: PairGroup } ]
-  } );
-  this.groupRemovedEmitter = new Emitter( {
-    parameters: [ { valueType: PairGroup } ]
-  } );
-  this.groupChangedEmitter = new Emitter( {
-    parameters: [ { valueType: PairGroup } ]
-  } );
+    // @public {Emitter}
+    this.bondAddedEmitter = new Emitter( {
+      parameters: [ { valueType: Bond } ]
+    } );
+    this.bondRemovedEmitter = new Emitter( {
+      parameters: [ { valueType: Bond } ]
+    } );
+    this.bondChangedEmitter = new Emitter( {
+      parameters: [ { valueType: Bond } ]
+    } );
+    this.groupAddedEmitter = new Emitter( {
+      parameters: [ { valueType: PairGroup } ]
+    } );
+    this.groupRemovedEmitter = new Emitter( {
+      parameters: [ { valueType: PairGroup } ]
+    } );
+    this.groupChangedEmitter = new Emitter( {
+      parameters: [ { valueType: PairGroup } ]
+    } );
 
-  // composite events
-  this.bondAddedEmitter.addListener( bond => this.bondChangedEmitter.emit( bond ) );
-  this.bondRemovedEmitter.addListener( bond => this.bondChangedEmitter.emit( bond ) );
-  this.groupAddedEmitter.addListener( group => this.groupChangedEmitter.emit( group ) );
-  this.groupRemovedEmitter.addListener( group => this.groupChangedEmitter.emit( group ) );
-}
+    // composite events
+    this.bondAddedEmitter.addListener( bond => this.bondChangedEmitter.emit( bond ) );
+    this.bondRemovedEmitter.addListener( bond => this.bondChangedEmitter.emit( bond ) );
+    this.groupAddedEmitter.addListener( group => this.groupChangedEmitter.emit( group ) );
+    this.groupRemovedEmitter.addListener( group => this.groupChangedEmitter.emit( group ) );
+  }
 
-moleculeShapes.register( 'Molecule', Molecule );
-
-inherit( Object, Molecule, {
   /**
    * Gets the ideal orientations for the bonds around an atom.
    * @public
@@ -91,21 +87,18 @@ inherit( Object, Molecule, {
    * @param {PairGroup} atom
    * @returns {LocalShape}
    */
-  getLocalShape: function( atom ) {
+  getLocalShape( atom ) {
     throw new Error( 'abstract method' );
-  },
+  }
 
   /**
    * @public
    * @abstract
    * @returns {number | undefined} if applicable
    */
-  getMaximumBondLength: function() {
+  getMaximumBondLength() {
     throw new Error( 'abstract method' );
-  },
-
-  // @abstract {boolean} - Whether the Molecule is considered 'real', or is just a 'model'.
-  isReal: false,
+  }
 
   /**
    * Step function for the physics
@@ -113,7 +106,7 @@ inherit( Object, Molecule, {
    *
    * @param {number} dt
    */
-  update: function( dt ) {
+  update( dt ) {
     const numGroups = this.groups.length;
     for ( let i = 0; i < numGroups; i++ ) {
       const group = this.groups[ i ];
@@ -132,7 +125,7 @@ inherit( Object, Molecule, {
       group.stepForward( dt );
       group.attractToIdealDistance( dt, oldDistance, parentBond );
     }
-  },
+  }
 
   /**
    * Given a pair group, return an array of all bonds connected to that pair group.
@@ -141,10 +134,10 @@ inherit( Object, Molecule, {
    * @param {PairGroup} group
    * @returns {Array.<Bond.<PairGroup>>}
    */
-  getBondsAround: function( group ) {
+  getBondsAround( group ) {
     // all bonds to the pair group, if specified
-    return _.filter( this.bonds, function( bond ) { return bond.contains( group ); } );
-  },
+    return _.filter( this.bonds, bond => bond.contains( group ) );
+  }
 
   /**
    * Given a pair group, return an array of all pair groups connected to it by a bond.
@@ -153,9 +146,9 @@ inherit( Object, Molecule, {
    * @param {PairGroup} group
    * @returns {Array.<PairGroup>}
    */
-  getNeighbors: function( group ) {
-    return _.map( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ); } );
-  },
+  getNeighbors( group ) {
+    return _.map( this.getBondsAround( group ), bond => bond.getOtherAtom( group ) );
+  }
 
   /**
    * Return the number of neighbors returned by getNeighbors(), but more efficiently.
@@ -164,7 +157,7 @@ inherit( Object, Molecule, {
    * @param {PairGroup} group
    * @returns {number}
    */
-  getNeighborCount: function( group ) {
+  getNeighborCount( group ) {
     let count = 0;
     for ( let i = 0; i < this.bonds.length; i++ ) {
       if ( this.bonds[ i ].contains( group ) ) {
@@ -172,7 +165,7 @@ inherit( Object, Molecule, {
       }
     }
     return count;
-  },
+  }
 
   /**
    * Configuration for the center of the molecule.
@@ -180,9 +173,9 @@ inherit( Object, Molecule, {
    *
    * @returns {VSEPRConfiguration}
    */
-  getCentralVSEPRConfiguration: function() {
+  getCentralVSEPRConfiguration() {
     return VSEPRConfiguration.getConfiguration( this.radialAtoms.length, this.radialLonePairs.length );
-  },
+  }
 
   /**
    * Given a pair group, return the bond (if it exists) from it to the central atom (or an atom bonded to the central
@@ -192,17 +185,17 @@ inherit( Object, Molecule, {
    * @param {PairGroup} group
    * @returns {Bond.<PairGroup> | null}
    */
-  getParentBond: function( group ) {
+  getParentBond( group ) {
     // assumes we have simple atoms (star-shaped) with terminal lone pairs
     if ( group.isLonePair ) {
       return this.getBondsAround( group )[ 0 ];
     }
     else {
       const centralAtom = this.centralAtom;
-      const result = _.filter( this.getBondsAround( group ), function( bond ) { return bond.getOtherAtom( group ) === centralAtom; } )[ 0 ];
+      const result = _.filter( this.getBondsAround( group ), bond => bond.getOtherAtom( group ) === centralAtom )[ 0 ];
       return result || null;
     }
-  },
+  }
 
   /**
    * Given a pair group, return the pair group closer to the center of the molecule,
@@ -212,9 +205,9 @@ inherit( Object, Molecule, {
    * @param {PairGroup} group
    * @returns {PairGroup}
    */
-  getParent: function( group ) {
+  getParent( group ) {
     return this.getParentBond( group ).getOtherAtom( group );
-  },
+  }
 
   /**
    * Adds in the central atom.
@@ -222,11 +215,11 @@ inherit( Object, Molecule, {
    *
    * @param {PairGroup} group
    */
-  addCentralAtom: function( group ) {
+  addCentralAtom( group ) {
     this.centralAtom = group;
     this.addGroup( group, true );
     group.isCentralAtom = true;
-  },
+  }
 
   /**
    * Adds a "child" pair group to the molecule, along with a bond between it and a parent pair group.
@@ -237,7 +230,7 @@ inherit( Object, Molecule, {
    * @param {number} bondOrder - 0 for lone pairs.
    * @param {number} [bondLength] - Length of the bond.
    */
-  addGroupAndBond: function( group, parent, bondOrder, bondLength ) {
+  addGroupAndBond( group, parent, bondOrder, bondLength ) {
     // add the group, but delay notifications (inconsistent state)
     this.addGroup( group, false );
 
@@ -248,7 +241,7 @@ inherit( Object, Molecule, {
 
     // notify after bond added, so we don't send notifications in an inconsistent state
     this.groupAddedEmitter.emit( group );
-  },
+  }
 
   /**
    * Adds a pair group to the molecule, with an option of whether to modify or not.
@@ -257,7 +250,7 @@ inherit( Object, Molecule, {
    * @param {PairGroup} group
    * @param {boolean} notify - Whether notifications should be sent out for the corresponding event.
    */
-  addGroup: function( group, notify ) {
+  addGroup( group, notify ) {
     // always add the central group first
     assert && assert( this.centralAtom !== null );
 
@@ -273,7 +266,7 @@ inherit( Object, Molecule, {
     if ( notify ) {
       this.groupAddedEmitter.emit( group );
     }
-  },
+  }
 
   /**
    * Adds a bond to the molecule.
@@ -281,7 +274,7 @@ inherit( Object, Molecule, {
    *
    * @param {Bond.<PairGroup>}
    */
-  addBond: function( bond ) {
+  addBond( bond ) {
     const isLonePairBond = bond.order === 0;
 
     addToEndOfArray( this.bonds, bond, isLonePairBond );
@@ -298,7 +291,7 @@ inherit( Object, Molecule, {
     }
 
     this.bondAddedEmitter.emit( bond );
-  },
+  }
 
   /**
    * Removes a bond to the molecule.
@@ -306,7 +299,7 @@ inherit( Object, Molecule, {
    *
    * @param {Bond.<PairGroup>}
    */
-  removeBond: function( bond ) {
+  removeBond( bond ) {
     arrayRemove( this.bonds, bond );
 
     if ( bond.contains( this.centralAtom ) ) {
@@ -321,7 +314,7 @@ inherit( Object, Molecule, {
     }
 
     this.bondRemovedEmitter.emit( bond );
-  },
+  }
 
   /**
    * Removes a pair group from the molecule (and any attached bonds)
@@ -329,7 +322,7 @@ inherit( Object, Molecule, {
    *
    * @param {PairGroup}
    */
-  removeGroup: function( group ) {
+  removeGroup( group ) {
     let i;
 
     assert && assert( this.centralAtom !== group );
@@ -354,20 +347,20 @@ inherit( Object, Molecule, {
       // delayed notification for bond removal
       this.bondRemovedEmitter.emit( bondList[ i ] );
     }
-  },
+  }
 
   /**
    * Removes all pair groups (and thus bonds) from the molecule.
    * @public
    */
-  removeAllGroups: function() {
+  removeAllGroups() {
     const groupsCopy = this.groups.slice();
     for ( let i = 0; i < groupsCopy.length; i++ ) {
       if ( groupsCopy[ i ] !== this.centralAtom ) {
         this.removeGroup( groupsCopy[ i ] );
       }
     }
-  },
+  }
 
   /**
    * Returns an array of unit vectors (orientations) corresponding to the ideal geometry for the shape of our
@@ -376,9 +369,9 @@ inherit( Object, Molecule, {
    *
    * returns {Array.<Vector3>}
    */
-  getCorrespondingIdealGeometryVectors: function() {
+  getCorrespondingIdealGeometryVectors() {
     return this.getCentralVSEPRConfiguration().geometry.unitVectors;
-  },
+  }
 
   /**
    * Whether a pair group of the specified bond order can be added, or whether this molecule would go over its pair
@@ -388,9 +381,9 @@ inherit( Object, Molecule, {
    * @param {number> bondOrder - Bond order of potential pair group to add (0 for lone pair)
    * @returns {boolean}
    */
-  wouldAllowBondOrder: function( bondOrder ) {
+  wouldAllowBondOrder( bondOrder ) {
     return this.radialGroups.length < MAX_PAIRS;
-  },
+  }
 
   /**
    * Returns an array of all lone pairs that are not directly connected to our central atom.
@@ -398,10 +391,10 @@ inherit( Object, Molecule, {
    *
    * @param {Array.<PairGroup>}
    */
-  getDistantLonePairs: function() {
+  getDistantLonePairs() {
     const closeLonePairs = this.radialLonePairs;
-    return _.filter( this.lonePairs, function( lonePair ) { return !_.includes( closeLonePairs, lonePair ); } );
-  },
+    return _.filter( this.lonePairs, lonePair => !_.includes( closeLonePairs, lonePair ) );
+  }
 
   /**
    * Returns a LocalShape object that represents the ideal shape (layout) of bonds around a specific atom, and that
@@ -411,7 +404,7 @@ inherit( Object, Molecule, {
    * @param {PairGroup} atom
    * @returns {LocalShape}
    */
-  getLocalVSEPRShape: function( atom ) {
+  getLocalVSEPRShape( atom ) {
     const groups = this.getNeighbors( atom );
 
     // count lone pairs
@@ -424,7 +417,7 @@ inherit( Object, Molecule, {
 
     const numAtoms = groups.length - numLonePairs;
     return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VSEPRConfiguration.getConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
-  },
+  }
 
   /**
    * Given a pair group attached to the central atom, return its ideal distance from the central atom.
@@ -433,13 +426,13 @@ inherit( Object, Molecule, {
    * @param {PairGroup} group
    * @returns {number}
    */
-  getIdealDistanceFromCenter: function( group ) {
+  getIdealDistanceFromCenter( group ) {
     // this only works on pair groups adjacent to the central atom
     const bond = this.getParentBond( group );
     assert && assert( bond.contains( this.centralAtom ) );
 
     return group.isLonePair ? PairGroup.LONE_PAIR_DISTANCE : bond.length;
-  },
+  }
 
   /**
    * Given an atom attached to the central atom, add a certain quantity of lone pairs (and bonds) around it, in proper
@@ -449,7 +442,7 @@ inherit( Object, Molecule, {
    * @param {PairGroup} atom
    * @param {number} quantity
    */
-  addTerminalLonePairs: function( atom, quantity ) {
+  addTerminalLonePairs( atom, quantity ) {
     const pairConfig = VSEPRConfiguration.getConfiguration( 1, quantity );
     const lonePairOrientations = pairConfig.geometry.unitVectors;
 
@@ -462,6 +455,11 @@ inherit( Object, Molecule, {
       this.addGroupAndBond( new PairGroup( atom.positionProperty.get().plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
     }
   }
-} );
+}
+
+// @abstract {boolean} - Whether the Molecule is considered 'real', or is just a 'model'.
+Molecule.prototype.isReal = false;
+
+moleculeShapes.register( 'Molecule', Molecule );
 
 export default Molecule;

@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
@@ -24,15 +23,15 @@ const localElectronMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( 
   color: MoleculeShapesColorProfile.lonePairElectronProperty
 } );
 
-/*
- * @constructor
- * @param {THREE.Renderer} renderer
- */
-function ElectronView( renderer ) {
-  THREE.Mesh.call( this, localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
+class ElectronView extends THREE.Mesh {
+  /*
+   * @param {THREE.Renderer} renderer
+   */
+  constructor( renderer ) {
+    super( localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
+  }
 }
 
 moleculeShapes.register( 'ElectronView', ElectronView );
 
-inherit( THREE.Mesh, ElectronView );
 export default ElectronView;

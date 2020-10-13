@@ -7,24 +7,20 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 
-/*
- * @constructor
- * @param {THREE.Geometry} masterGeometry - The geometry to clone for each renderer
- */
-function LocalGeometry( masterGeometry ) {
-  this.masterGeometry = masterGeometry;
+class LocalGeometry {
+  /*
+   * @param {THREE.Geometry} masterGeometry - The geometry to clone for each renderer
+   */
+  constructor( masterGeometry ) {
+    this.masterGeometry = masterGeometry;
 
-  // renderers[i] "owns" geometries[i]
-  this.renderers = []; // @private {Array.<THREE.Renderer>}
-  this.geometries = []; // @private {Array.<THREE.Geometry>}
-}
+    // renderers[i] "owns" geometries[i]
+    this.renderers = []; // @private {Array.<THREE.Renderer>}
+    this.geometries = []; // @private {Array.<THREE.Geometry>}
+  }
 
-moleculeShapes.register( 'LocalGeometry', LocalGeometry );
-
-inherit( Object, LocalGeometry, {
   /**
    * Returns the copy of the geometry corresponding to the provided three.js renderer.
    * @public
@@ -32,7 +28,7 @@ inherit( Object, LocalGeometry, {
    * @param {THREE.Renderer} renderer
    * @returns {THREE.Geometry}
    */
-  get: function( renderer ) {
+  get( renderer ) {
     for ( let i = 0; i < this.renderers.length; i++ ) {
       if ( this.renderers[ i ] === renderer ) {
         return this.geometries[ i ];
@@ -45,6 +41,8 @@ inherit( Object, LocalGeometry, {
 
     return geometry;
   }
-} );
+}
+
+moleculeShapes.register( 'LocalGeometry', LocalGeometry );
 
 export default LocalGeometry;

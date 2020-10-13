@@ -6,22 +6,19 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../phet-core/js/inherit.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
 
-function LabelFallbackNode() {
-  Text.call( this, '', {
-    font: new PhetFont( 16 ),
-    visible: false
-  } );
-}
+class LabelFallbackNode extends Text {
+  constructor() {
+    super( '', {
+      font: new PhetFont( 16 ),
+      visible: false
+    } );
+  }
 
-moleculeShapes.register( 'LabelFallbackNode', LabelFallbackNode );
-
-inherit( Text, LabelFallbackNode, {
   /*
    * Displays and positions the label, and sets its text.
    * Same as API for LabelWebGLView
@@ -33,7 +30,7 @@ inherit( Text, LabelFallbackNode, {
    * @param {Vector2} midScreenPoint - The midpoint of the bond-angle arc in screen coordinates
    * @param {number} layoutScale - The ScreenView's layout scale
    */
-  setLabel: function( string, brightness, centerScreenPoint, midScreenPoint, layoutScale ) {
+  setLabel( string, brightness, centerScreenPoint, midScreenPoint, layoutScale ) {
     this.text = string;
     this.visible = true;
 
@@ -42,16 +39,18 @@ inherit( Text, LabelFallbackNode, {
 
     this.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
     this.fill = MoleculeShapesColorProfile.bondAngleReadoutProperty.get().withAlpha( brightness );
-  },
+  }
 
   /*
    * Makes the label invisible.
    * Same as API for LabelWebGLView
    * @public
    */
-  unsetLabel: function() {
+  unsetLabel() {
     this.visible = false;
   }
-} );
+}
+
+moleculeShapes.register( 'LabelFallbackNode', LabelFallbackNode );
 
 export default LabelFallbackNode;

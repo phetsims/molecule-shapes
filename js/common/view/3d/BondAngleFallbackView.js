@@ -8,7 +8,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
@@ -46,58 +45,54 @@ function createSectorGeometry( vertices ) {
   return geometry;
 }
 
-/*
- * @constructor
- *
- * @param {THREE.Renderer} renderer
- */
-function BondAngleFallbackView( renderer ) {
-  BondAngleView.call( this );
+class BondAngleFallbackView extends BondAngleView {
+  /**
+   * @param {THREE.Renderer} renderer
+   */
+  constructor( renderer ) {
+    super();
 
-  this.renderer = renderer; // @public {THREE.Renderer}
+    this.renderer = renderer; // @public {THREE.Renderer}
 
-  // @private {Array.<THREE.Vector3>} shared vertex array between both geometries
-  this.arcVertices = [];
-  for ( let i = 0; i < NUM_VERTICES; i++ ) {
-    this.arcVertices.push( new THREE.Vector3() );
+    // @private {Array.<THREE.Vector3>} shared vertex array between both geometries
+    this.arcVertices = [];
+    for ( let i = 0; i < NUM_VERTICES; i++ ) {
+      this.arcVertices.push( new THREE.Vector3() );
+    }
+
+    // geometries on each instance, since we need to modify them directly
+    this.arcGeometry = createArcGeometry( this.arcVertices ); // @private {THREE.Geometry}
+    this.sectorGeometry = createSectorGeometry( this.arcVertices ); // @private {THREE.Geometry}
+
+    // @private {THREE.MeshBasicMaterial}
+    this.sectorMaterial = new THREE.MeshBasicMaterial( {
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.5,
+      depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
+      overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
+    } );
+    MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColorProfile.bondAngleSweepProperty );
+
+    // @private {THREE.MeshBasicMaterial}
+    this.arcMaterial = new THREE.LineBasicMaterial( {
+      transparent: true,
+      opacity: 0.7,
+      depthWrite: false // don't write depth values, so we don't cause other transparent objects to render
+    } );
+    MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColorProfile.bondAngleArcProperty );
+
+    this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
+    this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
+
+    // render the bond angle views on top of everything (but still depth-testing), with arcs on top
+    this.sectorView.renderDepth = 10;
+    this.arcView.renderDepth = 11;
+
+    this.add( this.sectorView );
+    this.add( this.arcView );
   }
 
-  // geometries on each instance, since we need to modify them directly
-  this.arcGeometry = createArcGeometry( this.arcVertices ); // @private {THREE.Geometry}
-  this.sectorGeometry = createSectorGeometry( this.arcVertices ); // @private {THREE.Geometry}
-
-  // @private {THREE.MeshBasicMaterial}
-  this.sectorMaterial = new THREE.MeshBasicMaterial( {
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.5,
-    depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-    overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
-  } );
-  MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColorProfile.bondAngleSweepProperty );
-
-  // @private {THREE.MeshBasicMaterial}
-  this.arcMaterial = new THREE.LineBasicMaterial( {
-    transparent: true,
-    opacity: 0.7,
-    depthWrite: false // don't write depth values, so we don't cause other transparent objects to render
-  } );
-  MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColorProfile.bondAngleArcProperty );
-
-  this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
-  this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
-
-  // render the bond angle views on top of everything (but still depth-testing), with arcs on top
-  this.sectorView.renderDepth = 10;
-  this.arcView.renderDepth = 11;
-
-  this.add( this.sectorView );
-  this.add( this.arcView );
-}
-
-moleculeShapes.register( 'BondAngleFallbackView', BondAngleFallbackView );
-
-inherit( BondAngleView, BondAngleFallbackView, {
   /*
    * @public
    * @override
@@ -109,22 +104,22 @@ inherit( BondAngleView, BondAngleFallbackView, {
    * @param {PairGroup} bGroup
    * @param {LabelWebGLView | LabelFallbackNode} label
    */
-  initialize: function( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
-    BondAngleView.prototype.initialize.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
+  initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+    super.initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
 
     return this;
-  },
+  }
 
   /**
    * Disposes so that it can be initialized later. Puts it in the pool.
    * @override
    * @public
    */
-  dispose: function() {
-    BondAngleView.prototype.dispose.call( this );
+  dispose() {
+    super.dispose();
 
     BondAngleFallbackView.pool.put( this, this.renderer );
-  },
+  }
 
   /**
    * @override
@@ -135,8 +130,8 @@ inherit( BondAngleView, BondAngleFallbackView, {
    * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
    *                                           to the camera.
    */
-  updateView: function( lastMidpoint, localCameraOrientation ) {
-    BondAngleView.prototype.updateView.call( this, lastMidpoint, localCameraOrientation );
+  updateView( lastMidpoint, localCameraOrientation ) {
+    super.updateView( lastMidpoint, localCameraOrientation );
 
     this.sectorMaterial.opacity = this.viewOpacity / 2;
     this.arcMaterial.opacity = this.viewOpacity * 0.7;
@@ -161,11 +156,12 @@ inherit( BondAngleView, BondAngleFallbackView, {
     this.arcGeometry.verticesNeedUpdate = true;
     this.sectorGeometry.verticesNeedUpdate = true;
   }
-}, {
-  // @private {LocalPool}
-  pool: new LocalPool( 'BondAngleFallbackView', function( renderer ) {
-    return new BondAngleFallbackView( renderer );
-  } )
-} );
+
+}
+
+// @private {LocalPool}
+BondAngleFallbackView.pool = new LocalPool( 'BondAngleFallbackView', renderer => new BondAngleFallbackView( renderer ) );
+
+moleculeShapes.register( 'BondAngleFallbackView', BondAngleFallbackView );
 
 export default BondAngleFallbackView;

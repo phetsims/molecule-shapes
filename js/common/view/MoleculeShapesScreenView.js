@@ -12,8 +12,8 @@ import Ray3 from '../../../../dot/js/Ray3.js';
 import Sphere3 from '../../../../dot/js/Sphere3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFailureDialog.js';
+import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
 import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
@@ -65,10 +65,10 @@ class MoleculeShapesScreenView extends ScreenView {
 
     // In the event of a context loss, we'll just show a dialog. See https://github.com/phetsims/molecule-shapes/issues/100
     if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
-      this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', function( event ) {
+      this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', event => {
         event.preventDefault();
 
-        self.showContextLossDialog();
+        this.showContextLossDialog();
 
         if ( document.domain === 'phet.colorado.edu' ) {
           window._gaq && window._gaq.push( [ '_trackEvent', 'WebGL Context Loss', 'molecule-shapes ' + phet.joist.sim.version, document.URL ] );
@@ -76,8 +76,8 @@ class MoleculeShapesScreenView extends ScreenView {
       } );
     }
 
-    MoleculeShapesColorProfile.backgroundProperty.link( function( color ) {
-      self.threeRenderer.setClearColor( color.toNumber(), 1 );
+    MoleculeShapesColorProfile.backgroundProperty.link( color => {
+      this.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 
     MoleculeShapesScreenView.addLightsToScene( this.threeScene );
@@ -95,11 +95,11 @@ class MoleculeShapesScreenView extends ScreenView {
     this.domNode.invalidateDOM();
 
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
-    this.domNode.renderToCanvasSelf = function( wrapper ) {
+    this.domNode.renderToCanvasSelf = wrapper => {
       let canvas = null;
 
-      const effectiveWidth = Math.ceil( self.screenWidth );
-      const effectiveHeight = Math.ceil( self.screenHeight );
+      const effectiveWidth = Math.ceil( this.screenWidth );
+      const effectiveHeight = Math.ceil( this.screenHeight );
 
       // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
       // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
@@ -113,7 +113,7 @@ class MoleculeShapesScreenView extends ScreenView {
           format: THREE.RGBAFormat
         } );
         // render our screen content into the framebuffer
-        self.render( target );
+        this.render( target );
 
         // set up a buffer for pixel data, in the exact typed formats we will need
         const buffer = new window.ArrayBuffer( effectiveWidth * effectiveHeight * 4 );
@@ -121,7 +121,7 @@ class MoleculeShapesScreenView extends ScreenView {
         const pixels = new window.Uint8Array( buffer );
 
         // read the pixel data into the buffer
-        const gl = self.threeRenderer.getContext();
+        const gl = this.threeRenderer.getContext();
         gl.readPixels( 0, 0, effectiveWidth, effectiveHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels );
 
         // create a Canvas with the correct size, and fill it with the pixel data
@@ -135,7 +135,7 @@ class MoleculeShapesScreenView extends ScreenView {
       }
       else {
         // If just falling back to Canvas, we can directly render out!
-        canvas = self.threeRenderer.domElement;
+        canvas = this.threeRenderer.domElement;
       }
 
       const context = wrapper.context;
@@ -164,7 +164,7 @@ class MoleculeShapesScreenView extends ScreenView {
     this.addChild( new ResetAllButton( {
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10,
-      listener: function() {
+      listener: () => {
         model.reset();
       }
     } ) );
@@ -220,7 +220,7 @@ class MoleculeShapesScreenView extends ScreenView {
             this.endDrag( event, trail );
           },
 
-          move: function( event, trail ) {
+          move: ( event, trail ) => {
             if ( dragMode === 'modelRotate' ) {
               const delta = event.pointer.point.minus( lastGlobalPoint );
               lastGlobalPoint.set( event.pointer.point );
@@ -257,18 +257,18 @@ class MoleculeShapesScreenView extends ScreenView {
     // Consider updating the cursor even if we don't move? (only if we have mouse movement)? Current development
     // decision is to ignore this edge case in favor of performance.
     this.backgroundEventTarget.addInputListener( {
-      mousemove: function( event ) {
-        self.backgroundEventTarget.cursor = self.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
+      mousemove: event => {
+        this.backgroundEventTarget.cursor = this.getElectronPairUnderPointer( event.pointer, false ) ? 'pointer' : null;
       }
     } );
 
     // update the molecule view's rotation when the model's rotation changes
-    model.moleculeQuaternionProperty.link( function( quaternion ) {
+    model.moleculeQuaternionProperty.link( quaternion => {
       // moleculeView is created in the subtype (not yet). will handle initial rotation in addMoleculeView
-      if ( self.moleculeView ) {
-        self.moleculeView.quaternion.copy( quaternion );
-        self.moleculeView.updateMatrix();
-        self.moleculeView.updateMatrixWorld();
+      if ( this.moleculeView ) {
+        this.moleculeView.quaternion.copy( quaternion );
+        this.moleculeView.updateMatrix();
+        this.moleculeView.updateMatrixWorld();
       }
     } );
 
@@ -314,13 +314,11 @@ class MoleculeShapesScreenView extends ScreenView {
   static createAPIStub( renderer ) {
     return {
       threeRenderer: renderer,
-      checkOutLabel: function() {
-        return {
-          setLabel: function() {},
-          unsetLabel: function() {}
-        };
-      },
-      returnLabel: function() {}
+      checkOutLabel: () => ( {
+          setLabel: () => {},
+          unsetLabel: () => {}
+        } ),
+      returnLabel: () => {}
     };
   }
 

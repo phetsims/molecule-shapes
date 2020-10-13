@@ -10,7 +10,6 @@ import Atom from '../../../../nitroglycerin/js/Atom.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 class RealAtomPosition extends Atom {
-
   /**
    * @param {Element} element
    * @param {Vector2} position - The initial position for the atom

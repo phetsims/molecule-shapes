@@ -6,11 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
+import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import LonePairGeometryData from '../../data/LonePairGeometryData.js';
 import PairGroup from '../../model/PairGroup.js';
-import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
 import ElectronView from './ElectronView.js';
 import LocalGeometry from './LocalGeometry.js';
@@ -36,71 +35,67 @@ const localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
 const mouseHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL ).geometry;
 const touchHitTestGeometry = jsonLoader.parse( LonePairGeometryData.LOW_DETAIL_EXTRUDED ).geometry;
 
-/*
- * @constructor
- * @param {THREE.Renderer} renderer
- */
-function LonePairView( renderer ) {
-  const self = this;
+class LonePairView extends THREE.Object3D {
+  /*
+   * @param {THREE.Renderer} renderer
+   */
+  constructor( renderer ) {
 
-  THREE.Object3D.call( this );
+    super();
 
-  this.renderer = renderer; // @private {THREE.Renderer}
-  this.shellGeometry = localShellGeometry.get( renderer ); // @private {THREE.Geometry}
-  this.shellMaterial = localShellMaterial.get( renderer ); // @private {THREE.Material}
+    this.renderer = renderer; // @private {THREE.Renderer}
+    this.shellGeometry = localShellGeometry.get( renderer ); // @private {THREE.Geometry}
+    this.shellMaterial = localShellMaterial.get( renderer ); // @private {THREE.Material}
 
-  this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial ); // @private {THREE.Mesh}
+    this.shell = new THREE.Mesh( this.shellGeometry, this.shellMaterial ); // @private {THREE.Mesh}
 
-  // scale for the shell geometries (for display and hit testing)
-  const shellScale = 2.5;
+    // scale for the shell geometries (for display and hit testing)
+    const shellScale = 2.5;
 
-  this.shell.scale.x = this.shell.scale.y = this.shell.scale.z = shellScale;
-  this.shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
-  this.add( this.shell );
+    this.shell.scale.x = this.shell.scale.y = this.shell.scale.z = shellScale;
+    this.shell.position.y = 0.001; // slight offset so three.js will z-sort the shells correctly for the transparency pass
+    this.add( this.shell );
 
-  this.electronView1 = new ElectronView( renderer ); // @private
-  this.electronView2 = new ElectronView( renderer ); // @private
-  this.add( this.electronView1 );
-  this.add( this.electronView2 );
+    this.electronView1 = new ElectronView( renderer ); // @private
+    this.electronView2 = new ElectronView( renderer ); // @private
+    this.add( this.electronView1 );
+    this.add( this.electronView2 );
 
-  this.electronView1.position.x = 0.75;
-  this.electronView2.position.x = -0.75;
-  this.electronView1.position.y = this.electronView2.position.y = 5;
+    this.electronView1.position.x = 0.75;
+    this.electronView2.position.x = -0.75;
+    this.electronView1.position.y = this.electronView2.position.y = 5;
 
-  if ( phet.chipper.queryParameters.showPointerAreas ) {
-    const touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
-      color: 0xff0000,
-      transparent: true,
-      opacity: 0.4,
-      depthWrite: false
-    } ) );
-    touchShell.scale.x = touchShell.scale.y = touchShell.scale.z = shellScale;
-    touchShell.renderDepth = 11;
-    this.add( touchShell );
+    if ( phet.chipper.queryParameters.showPointerAreas ) {
+      const touchShell = new THREE.Mesh( touchHitTestGeometry.clone(), new THREE.MeshBasicMaterial( {
+        color: 0xff0000,
+        transparent: true,
+        opacity: 0.4,
+        depthWrite: false
+      } ) );
+      touchShell.scale.x = touchShell.scale.y = touchShell.scale.z = shellScale;
+      touchShell.renderDepth = 11;
+      this.add( touchShell );
+    }
+
+    // @private - per-instance listener, so it's easier to link and unlink
+    this.positionListener = position => {
+      const offsetFromParentAtom = position.minus( this.parentAtom.positionProperty.get() );
+      const orientation = offsetFromParentAtom.normalized();
+
+      let translation;
+      if ( offsetFromParentAtom.magnitude > PairGroup.LONE_PAIR_DISTANCE ) {
+        translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
+      }
+      else {
+        translation = this.parentAtom.positionProperty.get();
+      }
+
+      this.position.set( translation.x, translation.y, translation.z );
+      this.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
+        new THREE.Vector3().copy( orientation ) );
+    };
   }
 
-  // @private - per-instance listener, so it's easier to link and unlink
-  this.positionListener = function( position ) {
-    const offsetFromParentAtom = position.minus( self.parentAtom.positionProperty.get() );
-    const orientation = offsetFromParentAtom.normalized();
-
-    let translation;
-    if ( offsetFromParentAtom.magnitude > PairGroup.LONE_PAIR_DISTANCE ) {
-      translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
-    }
-    else {
-      translation = self.parentAtom.positionProperty.get();
-    }
-
-    self.position.set( translation.x, translation.y, translation.z );
-    self.quaternion.setFromUnitVectors( new THREE.Vector3( 0, 1, 0 ), // rotate from Y_UNIT to the desired orientation
-      new THREE.Vector3().copy( orientation ) );
-  };
-}
-
-moleculeShapes.register( 'LonePairView', LonePairView );
-
-inherit( THREE.Object3D, LonePairView, {
   /*
    * Initializes this view. Should be a fresh object, OR should have dispose() called first.
    * @public
@@ -110,7 +105,7 @@ inherit( THREE.Object3D, LonePairView, {
    * @param {Property.<boolean>} visibilityProperty
    * @returns {LonePairView} this
    */
-  initialize: function( group, parentAtom, visibilityProperty ) {
+  initialize( group, parentAtom, visibilityProperty ) {
     this.group = group;
     this.parentAtom = parentAtom;
     this.visibilityProperty = visibilityProperty;
@@ -118,13 +113,13 @@ inherit( THREE.Object3D, LonePairView, {
 
     group.positionProperty.link( this.positionListener );
     return this;
-  },
+  }
 
   /**
    * Disposes this view, so that it can be re-initialized later. Also adds it to the object pool.
    * @public
    */
-  dispose: function() {
+  dispose() {
     this.visibilityProperty.unlink( this.visibilityListener );
     this.group.positionProperty.unlink( this.positionListener );
 
@@ -135,7 +130,7 @@ inherit( THREE.Object3D, LonePairView, {
     this.visibilityListener = null;
 
     LonePairView.pool.put( this, this.renderer );
-  },
+  }
 
   /*
    * Intersection hit-test to determine if a pointer is over the lone pair view.
@@ -148,7 +143,7 @@ inherit( THREE.Object3D, LonePairView, {
    *                                 point on the opposite side - for now that's deemed an acceptable trade-off for
    *                                 performance.
    */
-  intersect: function( worldRay, isTouch ) {
+  intersect( worldRay, isTouch ) {
     const inverseMatrix = new THREE.Matrix4();
     const ray = new THREE.Ray();
 
@@ -175,11 +170,12 @@ inherit( THREE.Object3D, LonePairView, {
 
     return null;
   }
-}, {
-  // @private {LocalPool}
-  pool: new LocalPool( 'LonePairView', function( renderer ) {
-    return new LonePairView( renderer );
-  } )
-} );
+
+}
+
+// @private {LocalPool}
+LonePairView.pool = new LocalPool( 'LonePairView', renderer => new LonePairView( renderer ) );
+
+moleculeShapes.register( 'LonePairView', LonePairView );
 
 export default LonePairView;

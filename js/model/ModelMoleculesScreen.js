@@ -32,8 +32,8 @@ class ModelMoleculesScreen extends Screen {
     };
 
     super(
-      function() { return new ModelMoleculesModel( isBasicsVersion ); },
-      function( model ) { return new ModelMoleculesScreenView( model ); },
+      () => new ModelMoleculesModel( isBasicsVersion ),
+      model => new ModelMoleculesScreenView( model ),
       options
     );
   }

@@ -10,9 +10,8 @@
  */
 
 import Permutation from '../../../../dot/js/Permutation.js';
-import inherit from '../../../../phet-core/js/inherit.js';
-import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import AttractorModel from './AttractorModel.js';
 import GeometryConfiguration from './GeometryConfiguration.js';
 import LocalShape from './LocalShape.js';
@@ -34,35 +33,32 @@ const shapeTShapedString = moleculeShapesStrings.shape.tShaped;
 // for looking up VSEPRConfiguration instances
 const configurationMap = {}; // x+','+e => {VSEPRConfiguration}
 
-/*
- * @constructor
- * @param {number} x - Number of radial atoms connected to the central atom
- * @param {number} e - Number of radial lone pairs connected to the central atom
- */
-function VSEPRConfiguration( x, e ) {
-  this.x = x; // @public {number} - Number of radial atoms connected to the central atom
-  this.e = e; // @public {number} - Number of radial lone pairs connected to the central atom
-  this.name = VSEPRConfiguration.getName( x, e ); // @public {string}
+class VSEPRConfiguration {
+  /*
+   * @param {number} x - Number of radial atoms connected to the central atom
+   * @param {number} e - Number of radial lone pairs connected to the central atom
+   */
+  constructor( x, e ) {
+    this.x = x; // @public {number} - Number of radial atoms connected to the central atom
+    this.e = e; // @public {number} - Number of radial lone pairs connected to the central atom
+    this.name = VSEPRConfiguration.getName( x, e ); // @public {string}
 
-  this.geometry = GeometryConfiguration.getConfiguration( x + e ); // @public {GeometryConfiguration}
-  this.bondOrientations = []; // @public {Array.<Vector3>}
-  this.lonePairOrientations = []; // @public {Array.<Vector3>}
-  this.allOrientations = this.geometry.unitVectors; // @public {Array.<Vector3>}
+    this.geometry = GeometryConfiguration.getConfiguration( x + e ); // @public {GeometryConfiguration}
+    this.bondOrientations = []; // @public {Array.<Vector3>}
+    this.lonePairOrientations = []; // @public {Array.<Vector3>}
+    this.allOrientations = this.geometry.unitVectors; // @public {Array.<Vector3>}
 
-  for ( let i = 0; i < x + e; i++ ) {
-    if ( i < e ) {
-      // fill up the lone pair unit vectors first
-      this.lonePairOrientations.push( this.geometry.unitVectors[ i ] );
-    }
-    else {
-      this.bondOrientations.push( this.geometry.unitVectors[ i ] );
+    for ( let i = 0; i < x + e; i++ ) {
+      if ( i < e ) {
+        // fill up the lone pair unit vectors first
+        this.lonePairOrientations.push( this.geometry.unitVectors[ i ] );
+      }
+      else {
+        this.bondOrientations.push( this.geometry.unitVectors[ i ] );
+      }
     }
   }
-}
 
-moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
-
-inherit( Object, VSEPRConfiguration, {
   /**
    * For finding ideal rotations including matching for 'bond-vs-bond' and 'lone pair-vs-lone pair'.
    * @public
@@ -70,14 +66,14 @@ inherit( Object, VSEPRConfiguration, {
    * @param {Array.<PairGroup>} groups
    * @returns {AttractorModel.ResultMapping}
    */
-  getIdealGroupRotationToPositions: function( groups ) {
+  getIdealGroupRotationToPositions( groups ) {
     assert && assert( ( this.x + this.e ) === groups.length );
 
     // done currently only when the molecule is rebuilt, so we don't try to pass a lastPermutation in (not helpful)
     return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
       this.geometry.unitVectors,
       LocalShape.vseprPermutations( groups ) );
-  },
+  }
 
   /**
    * For finding ideal rotations exclusively using the 'bonded' portions.
@@ -86,7 +82,7 @@ inherit( Object, VSEPRConfiguration, {
    * @param {Array.<PairGroup>} groups
    * @returns {AttractorModel.ResultMapping}
    */
-  getIdealBondRotationToPositions: function( groups ) {
+  getIdealBondRotationToPositions( groups ) {
     // ideal vectors excluding lone pairs (just for the bonds)
     assert && assert( ( this.x ) === groups.length );
 
@@ -95,7 +91,7 @@ inherit( Object, VSEPRConfiguration, {
       this.bondOrientations,
       Permutation.permutations( this.bondOrientations.length ) );
   }
-}, {
+
   /**
    * Returns the "geometry" name.
    * @public
@@ -104,7 +100,7 @@ inherit( Object, VSEPRConfiguration, {
    * @param {number} e - Number of radial lone pairs connected to the central atom
    * @returns {string}
    */
-  getName: function( x, e ) {
+  static getName( x, e ) {
     // figure out what the name is
     if ( x === 0 ) {
       return shapeEmptyString;
@@ -173,7 +169,7 @@ inherit( Object, VSEPRConfiguration, {
     else {
       throw new Error( 'unknown VSEPR configuration x: ' + x + ', e: ' + e );
     }
-  },
+  }
 
   /*
    * Returns cached VSEPRConfigurations based on radial atom/lone-pair counts.
@@ -183,7 +179,7 @@ inherit( Object, VSEPRConfiguration, {
    * @param {number} e - Number of radial lone pairs connected to the central atom
    * @returns {VSEPRConfiguration} - Cached configuration
    */
-  getConfiguration: function( x, e ) {
+  static getConfiguration( x, e ) {
     const key = x + ',' + e;
     if ( key in configurationMap ) {
       return configurationMap[ key ];
@@ -194,6 +190,8 @@ inherit( Object, VSEPRConfiguration, {
       return configuration;
     }
   }
-} );
+}
+
+moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
 
 export default VSEPRConfiguration;

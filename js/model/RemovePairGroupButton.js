@@ -20,6 +20,9 @@ const crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( CROSS_SIZE, CROSS
 } );
 
 class RemovePairGroupButton extends RectangularPushButton {
+  /**
+   * @param {Object} [options]
+   */
   constructor( options ) {
 
     super( merge( {

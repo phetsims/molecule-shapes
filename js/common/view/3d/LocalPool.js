@@ -7,29 +7,25 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 
-/*
- * @constructor
- * @param {string} name - for debugging purposes
- * @param {(THREE.Renderer) => {*}} objectFactory - Creates an object when needed for the pool
- */
-function LocalPool( name, objectFactory ) {
-  this.name = name; // @private {string}
-  this.objectFactory = objectFactory; // @private {(THREE.Renderer) => {*}}
+class LocalPool {
+  /*
+   * @param {string} name - for debugging purposes
+   * @param {(THREE.Renderer) => {*}} objectFactory - Creates an object when needed for the pool
+   */
+  constructor( name, objectFactory ) {
+    this.name = name; // @private {string}
+    this.objectFactory = objectFactory; // @private {(THREE.Renderer) => {*}}
 
-  // renderers[i] "owns" objects[i]
-  this.renderers = []; // @private {Array.<THREE.Renderer>}
-  this.objects = []; // @private {Array.<*>}
+    // renderers[i] "owns" objects[i]
+    this.renderers = []; // @private {Array.<THREE.Renderer>}
+    this.objects = []; // @private {Array.<*>}
 
-  this.quantityOutside = 0; // @private
-  this.quantityInside = 0; // @private
-}
+    this.quantityOutside = 0; // @private
+    this.quantityInside = 0; // @private
+  }
 
-moleculeShapes.register( 'LocalPool', LocalPool );
-
-inherit( Object, LocalPool, {
   /*
    * Returns the copy of the object corresponding to the provided three.js renderer.
    * @public
@@ -37,7 +33,7 @@ inherit( Object, LocalPool, {
    * @param {THREE.Renderer} renderer
    * @returns {*} - Either a fresh object, or one from the pool
    */
-  get: function( renderer ) {
+  get( renderer ) {
     assert && assert( renderer );
 
     for ( let i = 0; i < this.renderers.length; i++ ) {
@@ -57,7 +53,7 @@ inherit( Object, LocalPool, {
     this.quantityOutside++;
     this.debug( 'fresh' );
     return this.objectFactory( renderer );
-  },
+  }
 
   /*
    * Returns an object to the pool
@@ -66,7 +62,7 @@ inherit( Object, LocalPool, {
    * @param {*} object
    * @param {THREE.Renderer} renderer
    */
-  put: function( object, renderer ) {
+  put( object, renderer ) {
     assert && assert( object && renderer );
 
     this.renderers.push( renderer );
@@ -74,15 +70,18 @@ inherit( Object, LocalPool, {
     this.quantityOutside--;
     this.quantityInside++;
     this.debug( 'return' );
-  },
+  }
+}
 
-  /**
-   * Enable printing out pool counts (type,action,inPool,outOfPool) with ?dev
-   * @private
-   */
-  debug: ( phet.chipper.queryParameters.dev ) ? function( action ) {
-    console.log( this.name, action, this.quantityInside, this.quantityOutside );
-  } : function() {}
-} );
+
+/**
+ * Enable printing out pool counts (type,action,inPool,outOfPool) with ?dev
+ * @private
+ */
+LocalPool.prototype.debug = ( phet.chipper.queryParameters.dev ) ? function( action ) {
+  console.log( this.name, action, this.quantityInside, this.quantityOutside );
+} : () => {};
+
+moleculeShapes.register( 'LocalPool', LocalPool );
 
 export default LocalPool;

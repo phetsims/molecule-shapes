@@ -11,7 +11,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
@@ -132,65 +131,59 @@ const uniforms = {
   }
 };
 
-/*
- * @constructor
- *
- * @param {THREE.Renderer} renderer
- */
-function BondAngleWebGLView( renderer ) {
-  assert && assert( MoleculeShapesGlobals.useWebGLProperty.get() );
-  BondAngleView.call( this );
+class BondAngleWebGLView extends BondAngleView {
+  /**
+   * @param {THREE.Renderer} renderer
+   */
+  constructor( renderer ) {
+    assert && assert( MoleculeShapesGlobals.useWebGLProperty.get() );
+    super();
 
-  const self = this;
+    this.renderer = renderer; // @private {THREE.Renderer}
+    this.arcGeometry = localArcGeometry.get( renderer ); // @private {THREE.Geometry}
+    this.sectorGeometry = localSectorGeometry.get( renderer ); // @private {THREE.Geometry}
 
-  this.renderer = renderer; // @private {THREE.Renderer}
-  this.arcGeometry = localArcGeometry.get( renderer ); // @private {THREE.Geometry}
-  this.sectorGeometry = localSectorGeometry.get( renderer ); // @private {THREE.Geometry}
+    // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently.
+    this.sectorMaterial = new THREE.ShaderMaterial( {
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      side: THREE.DoubleSide,
+      transparent: true, // render in three.js' transparency pass
+      depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
+      uniforms: JSON.parse( JSON.stringify( uniforms ) ) // cheap deep copy
+    } );
+    // set and update our color
+    this.sweepColorListener = color => {
+      this.sectorMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
+    };
+    MoleculeShapesColorProfile.bondAngleSweepProperty.link( this.sweepColorListener );
 
-  // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently.
-  this.sectorMaterial = new THREE.ShaderMaterial( {
-    vertexShader: vertexShader,
-    fragmentShader: fragmentShader,
-    side: THREE.DoubleSide,
-    transparent: true, // render in three.js' transparency pass
-    depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-    uniforms: JSON.parse( JSON.stringify( uniforms ) ) // cheap deep copy
-  } );
-  // set and update our color
-  this.sweepColorListener = function( color ) {
-    self.sectorMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
-  };
-  MoleculeShapesColorProfile.bondAngleSweepProperty.link( this.sweepColorListener );
+    // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently
+    // NOTE: we don't seem to be able to use the same material for rendering both the sector and arc
+    this.arcMaterial = new THREE.ShaderMaterial( {
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      transparent: true, // render in three.js' transparency pass
+      depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
+      uniforms: JSON.parse( JSON.stringify( uniforms ) ) // cheap deep copy
+    } );
+    // set and update our color
+    this.arcColorListener = color => {
+      this.arcMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
+    };
+    MoleculeShapesColorProfile.bondAngleArcProperty.link( this.arcColorListener );
 
-  // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently
-  // NOTE: we don't seem to be able to use the same material for rendering both the sector and arc
-  this.arcMaterial = new THREE.ShaderMaterial( {
-    vertexShader: vertexShader,
-    fragmentShader: fragmentShader,
-    transparent: true, // render in three.js' transparency pass
-    depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-    uniforms: JSON.parse( JSON.stringify( uniforms ) ) // cheap deep copy
-  } );
-  // set and update our color
-  this.arcColorListener = function( color ) {
-    self.arcMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
-  };
-  MoleculeShapesColorProfile.bondAngleArcProperty.link( this.arcColorListener );
+    this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
+    this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
 
-  this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
-  this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
+    // render the bond angle views on top of everything (but still depth-testing), with arcs on top
+    this.sectorView.renderDepth = 10;
+    this.arcView.renderDepth = 11;
 
-  // render the bond angle views on top of everything (but still depth-testing), with arcs on top
-  this.sectorView.renderDepth = 10;
-  this.arcView.renderDepth = 11;
+    this.add( this.sectorView );
+    this.add( this.arcView );
+  }
 
-  this.add( this.sectorView );
-  this.add( this.arcView );
-}
-
-moleculeShapes.register( 'BondAngleWebGLView', BondAngleWebGLView );
-
-inherit( BondAngleView, BondAngleWebGLView, {
   /*
    * @override
    * @public
@@ -202,22 +195,22 @@ inherit( BondAngleView, BondAngleWebGLView, {
    * @param {PairGroup} bGroup
    * @param {LabelWebGLView | LabelFallbackNode} label
    */
-  initialize: function( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
-    BondAngleView.prototype.initialize.call( this, screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
+  initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+    super.initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
 
     return this;
-  },
+  }
 
   /**
    * Disposes this, so it goes to the pool and can be re-initialized.
    * @override
    * @public
    */
-  dispose: function() {
-    BondAngleView.prototype.dispose.call( this );
+  dispose() {
+    super.dispose();
 
     BondAngleWebGLView.pool.put( this, this.renderer );
-  },
+  }
 
   /**
    * @override
@@ -228,8 +221,8 @@ inherit( BondAngleView, BondAngleWebGLView, {
    * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
    *                                           to the camera.
    */
-  updateView: function( lastMidpoint, localCameraOrientation ) {
-    BondAngleView.prototype.updateView.call( this, lastMidpoint, localCameraOrientation );
+  updateView( lastMidpoint, localCameraOrientation ) {
+    super.updateView( lastMidpoint, localCameraOrientation );
 
     this.sectorMaterial.uniforms.opacity.value = this.viewOpacity * 0.5;
     this.arcMaterial.uniforms.opacity.value = this.viewOpacity * 0.7;
@@ -247,11 +240,11 @@ inherit( BondAngleView, BondAngleWebGLView, {
     this.sectorMaterial.uniforms.planarUnit.value = planarUnitArray;
     this.arcMaterial.uniforms.planarUnit.value = planarUnitArray;
   }
-}, {
-  // @private {LocalPool}
-  pool: new LocalPool( 'BondAngleWebGLView', function( renderer ) {
-    return new BondAngleWebGLView( renderer );
-  } )
-} );
+}
+
+// @private {LocalPool}
+BondAngleWebGLView.pool = new LocalPool( 'BondAngleWebGLView', renderer => new BondAngleWebGLView( renderer ) );
+
+moleculeShapes.register( 'BondAngleWebGLView', BondAngleWebGLView );
 
 export default BondAngleWebGLView;

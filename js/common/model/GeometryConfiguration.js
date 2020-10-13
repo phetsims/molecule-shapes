@@ -9,8 +9,8 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 
 const geometryDiatomicString = moleculeShapesStrings.geometry.diatomic;
 const geometryEmptyString = moleculeShapesStrings.geometry.empty;
@@ -23,14 +23,26 @@ const geometryTrigonalPlanarString = moleculeShapesStrings.geometry.trigonalPlan
 // Constant for the tetrahedral shape
 const TETRA_CONST = Math.PI * -19.471220333 / 180;
 
-/*
- * @constructor
- * @param {string} name
- * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
- */
-function GeometryConfiguration( name, unitVectors ) {
-  this.name = name; // @public {string}
-  this.unitVectors = unitVectors; // @public {Array.<Vector3>}
+class GeometryConfiguration {
+  /*
+   * @param {string} name
+   * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
+   */
+  constructor( name, unitVectors ) {
+    this.name = name; // @public {string}
+    this.unitVectors = unitVectors; // @public {Array.<Vector3>}
+  }
+
+  /*
+   * Lookup for the configuration, based on the number of pair groups it contains.
+   * @public
+   *
+   * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
+   * @returns {GeometryConfiguration}
+   */
+  static getConfiguration( numberOfGroups ) {
+    return geometries[ numberOfGroups ];
+  }
 }
 
 moleculeShapes.register( 'GeometryConfiguration', GeometryConfiguration );
@@ -94,17 +106,6 @@ const geometries = {
       new Vector3( -1, 0, 0 )
     ]
   )
-};
-
-/*
- * Lookup for the configuration, based on the number of pair groups it contains.
- * @public
- *
- * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
- * @returns {GeometryConfiguration}
- */
-GeometryConfiguration.getConfiguration = function( numberOfGroups ) {
-  return geometries[ numberOfGroups ];
 };
 
 export default GeometryConfiguration;

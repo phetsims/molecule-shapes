@@ -29,24 +29,18 @@ const controlOptionsString = moleculeShapesStrings.control.options;
 const controlRealViewString = moleculeShapesStrings.control.realView;
 
 class RealMoleculesScreenView extends MoleculeShapesScreenView {
-
   /**
-   * Constructor for the RealMoleculesScreenView
    * @param {ModelMoleculesModel} model the model for the entire screen
    */
   constructor( model ) {
     super( model );
-    const self = this;
-
     this.model = model; // @private {MoleculeShapesModel}
     this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
     this.addMoleculeView( this.moleculeView );
 
     const comboBoxListContainer = new Node();
     const comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
-    const comboBox = new ComboBox( _.map( comboBoxMolecules, function( realMoleculeShape ) {
-      return new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape );
-    } ), model.realMoleculeShapeProperty, comboBoxListContainer, {
+    const comboBox = new ComboBox( _.map( comboBoxMolecules, realMoleculeShape => new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape ) ), model.realMoleculeShapeProperty, comboBoxListContainer, {
       xMargin: 13,
       yMargin: 10,
       cornerRadius: 8
@@ -112,14 +106,14 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     }
 
     // rebuild our view when we switch molecules
-    model.moleculeProperty.lazyLink( function( newMolecule, oldMolecule ) {
+    model.moleculeProperty.lazyLink( ( newMolecule, oldMolecule ) => {
       // tear down the old view
-      self.removeMoleculeView( self.moleculeView );
-      self.moleculeView.dispose();
+      this.removeMoleculeView( this.moleculeView );
+      this.moleculeView.dispose();
 
       // create the new view
-      self.moleculeView = new MoleculeView( model, self, newMolecule );
-      self.addMoleculeView( self.moleculeView );
+      this.moleculeView = new MoleculeView( model, this, newMolecule );
+      this.addMoleculeView( this.moleculeView );
     } );
   }
 }

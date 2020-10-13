@@ -9,44 +9,39 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../../phet-core/js/inherit.js';
 import merge from '../../../../../phet-core/js/merge.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 
-/*
- * @constructor
- * @param {THREE.Material} masterMaterial - The material to clone for each renderer
- */
-function LocalMaterial( masterMaterial, options ) {
-  const self = this;
+class LocalMaterial {
+  /*
+   * @param {THREE.Material} masterMaterial - The material to clone for each renderer
+   */
+  constructor( masterMaterial, options ) {
 
-  options = merge( {
-    // default options?
-  }, options );
+    options = merge( {
+      // default options?
+    }, options );
 
-  this.masterMaterial = masterMaterial; // @private {THREE.Material}
+    this.masterMaterial = masterMaterial; // @private {THREE.Material}
 
-  // renderers[i] "owns" materials[i]
-  this.renderers = []; // @private {Array.<THREE.Renderer>}
-  this.materials = []; // @private {Array.<THREE.Material>}
+    // renderers[i] "owns" materials[i]
+    this.renderers = []; // @private {Array.<THREE.Renderer>}
+    this.materials = []; // @private {Array.<THREE.Material>}
 
-  if ( options.color ) {
-    MoleculeShapesGlobals.toColorProperty( options.color ).link( function( color ) {
-      self.setColor( color );
-    } );
+    if ( options.color ) {
+      MoleculeShapesGlobals.toColorProperty( options.color ).link( color => {
+        this.setColor( color );
+      } );
+    }
+    // assumes RGB
+    if ( options.uniformColor ) {
+      MoleculeShapesGlobals.toColorProperty( options.uniformColor ).link( color => {
+        this.setUniformColor( color );
+      } );
+    }
   }
-  // assumes RGB
-  if ( options.uniformColor ) {
-    MoleculeShapesGlobals.toColorProperty( options.uniformColor ).link( function( color ) {
-      self.setUniformColor( color );
-    } );
-  }
-}
 
-moleculeShapes.register( 'LocalMaterial', LocalMaterial );
-
-inherit( Object, LocalMaterial, {
   /**
    * Returns the copy of the material corresponding to the provided three.js renderer.
    * @public
@@ -54,7 +49,7 @@ inherit( Object, LocalMaterial, {
    * @param {THREE.Renderer} renderer
    * @returns {THREE.Material}
    */
-  get: function( renderer ) {
+  get( renderer ) {
     for ( let i = 0; i < this.renderers.length; i++ ) {
       if ( this.renderers[ i ] === renderer ) {
         return this.materials[ i ];
@@ -66,7 +61,7 @@ inherit( Object, LocalMaterial, {
     this.materials.push( material );
 
     return material;
-  },
+  }
 
   /**
    * Sets the uniform value for the WebGL shader based on THREE.js's support for uniform values.
@@ -75,10 +70,10 @@ inherit( Object, LocalMaterial, {
    * @param {string} name
    * @param {*} value
    */
-  setUniform: function( name, value ) {
+  setUniform( name, value ) {
     this.masterMaterial.uniforms[ name ].value = value;
-    _.each( this.materials, function( material ) { material.uniforms[ name ].value = value; } );
-  },
+    _.each( this.materials, material => { material.uniforms[ name ].value = value; } );
+  }
 
   /**
    * Sets the color for the materials (master material and the copies).
@@ -86,11 +81,11 @@ inherit( Object, LocalMaterial, {
    *
    * @param {Color} color
    */
-  setColor: function( color ) {
+  setColor( color ) {
     const hex = color.toNumber();
     this.masterMaterial.color.setHex( hex );
-    _.each( this.materials, function( material ) { material.color.setHex( hex ); } );
-  },
+    _.each( this.materials, material => { material.color.setHex( hex ); } );
+  }
 
   /**
    * Sets the uniform color for all materials.
@@ -98,10 +93,12 @@ inherit( Object, LocalMaterial, {
    *
    * @param {Color} color
    */
-  setUniformColor: function( color ) {
+  setUniformColor( color ) {
     const colorArray = [ color.r / 255, color.g / 255, color.b / 255 ];
     this.setUniform( 'color', colorArray );
   }
-} );
+}
+
+moleculeShapes.register( 'LocalMaterial', LocalMaterial );
 
 export default LocalMaterial;

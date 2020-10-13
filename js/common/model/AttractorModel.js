@@ -10,12 +10,11 @@
 
 import Matrix from '../../../../dot/js/Matrix.js';
 import MatrixOps3 from '../../../../dot/js/MatrixOps3.js';
-import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
 import Vector3 from '../../../../dot/js/Vector3.js';
-import inherit from '../../../../phet-core/js/inherit.js';
 import pairs from '../../../../phet-core/js/pairs.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import PairGroup from './PairGroup.js';
+import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
 
 // just static calls, so just create an empty object
 const AttractorModel = {};
@@ -32,10 +31,8 @@ moleculeShapes.register( 'AttractorModel', AttractorModel );
  * @param {Vector3} center - The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
  * @returns {number} A measure of total error (least squares-style)
  */
-AttractorModel.applyAttractorForces = function( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) {
-  const currentOrientations = _.map( groups, function( group ) {
-    return group.positionProperty.get().minus( center ).normalized();
-  } );
+AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) => {
+  const currentOrientations = _.map( groups, group => group.positionProperty.get().minus( center ).normalized() );
   const mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
 
   const aroundCenterAtom = center.equals( Vector3.ZERO );
@@ -149,7 +146,7 @@ const scratchIdealsArray = new MatrixOps3.Array( 18 );
  * @param {Array.<Permutation>} allowablePermutations - A list of permutations that map stable positions to pair groups in order.
  * @returns {ResultMapping} (see docs there)
  */
-AttractorModel.findClosestMatchingConfiguration = function( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) {
+AttractorModel.findClosestMatchingConfiguration = ( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) => {
   const n = currentOrientations.length; // number of total pairs
 
   // y == electron pair positions
@@ -220,11 +217,7 @@ AttractorModel.findClosestMatchingConfiguration = function( currentOrientations,
  *
  * @param {Array.<PairGroup>} groups
  */
-AttractorModel.getOrientationsFromOrigin = function( groups ) {
-  return _.map( groups, function( group ) {
-    return group.orientation;
-  } );
-};
+AttractorModel.getOrientationsFromOrigin = groups => _.map( groups, group => group.orientation );
 
 // scratch matrices for the SVD calculations
 const scratchMatrix = new MatrixOps3.Array( 9 );
@@ -242,7 +235,7 @@ const scratchV = new MatrixOps3.Array( 9 );
  * @param {MatrixOps3.Array} y - A 3xN MatrixOps3 matrix where each column represents a point y_i
  * @param {MatrixOps3.Array} result - A 3x3 MatrixOps3 matrix where the rotation matrix result will be stored (there is no return value).
  */
-AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) {
+AttractorModel.computeRotationMatrixWithTranspose = ( n, x, y, result ) => {
   // S = X * Y^T, in our case always 3x3
   const s = scratchMatrix;
   MatrixOps3.multRightTranspose( 3, n, 3, x, y, s );
@@ -259,23 +252,23 @@ AttractorModel.computeRotationMatrixWithTranspose = function( n, x, y, result ) 
   MatrixOps3.mult3RightTranspose( scratchV, scratchU, result );
 };
 
-/**
- * Result mapping between the current positions and ideal positions. Returned as a data object.
- * @public
- *
- * @param {number} error - Total error of this mapping
- * @param {Matrix} target - The positions of ideal pair groups
- * @param {Permutation} permutation - The permutation between current pair groups and ideal pair groups
- * @param {Matrix} rotation - The rotation between the current and ideal
- */
-AttractorModel.ResultMapping = function( error, target, permutation, rotation ) {
-  this.error = error;
-  this.target = target;
-  this.permutation = permutation;
-  this.rotation = rotation;
-};
+class ResultMapping {
+  /**
+   * Result mapping between the current positions and ideal positions. Returned as a data object.
+   * @public
+   *
+   * @param {number} error - Total error of this mapping
+   * @param {Matrix} target - The positions of ideal pair groups
+   * @param {Permutation} permutation - The permutation between current pair groups and ideal pair groups
+   * @param {Matrix} rotation - The rotation between the current and ideal
+   */
+  constructor( error, target, permutation, rotation ) {
+    this.error = error;
+    this.target = target;
+    this.permutation = permutation;
+    this.rotation = rotation;
+  }
 
-inherit( Object, AttractorModel.ResultMapping, {
   /**
    * Returns a copy of the input vector, rotated from the "current" frame of reference to the "ideal" frame of
    * reference.
@@ -283,12 +276,13 @@ inherit( Object, AttractorModel.ResultMapping, {
    *
    * @param {Vector3} v
    */
-  rotateVector: function( v ) {
+  rotateVector( v ) {
     const x = Matrix.columnVector3( v );
     const rotated = this.rotation.times( x );
     return rotated.extractVector3( 0 );
   }
-} );
+}
+AttractorModel.ResultMapping = ResultMapping;
 
 /**
  * Call the function with each individual permutation of the list elements of "lists"
@@ -297,7 +291,7 @@ inherit( Object, AttractorModel.ResultMapping, {
  * @param lists  List of lists. Order of lists will not change, however each possible permutation involving sub-lists will be used
  * @param callback Function to call
  */
-AttractorModel.forEachMultiplePermutations = function( lists, callback ) {
+AttractorModel.forEachMultiplePermutations = ( lists, callback ) => {
   if ( lists.length === 0 ) {
     callback( lists );
   }
@@ -308,8 +302,8 @@ AttractorModel.forEachMultiplePermutations = function( lists, callback ) {
 
     remainder.splice( 0, 1 );
 
-    AttractorModel.forEachPermutation( first, [], function( permutedFirst ) {
-      AttractorModel.forEachMultiplePermutations( remainder, function( subLists ) {
+    AttractorModel.forEachPermutation( first, [], permutedFirst => {
+      AttractorModel.forEachMultiplePermutations( remainder, subLists => {
         const arr = new Array( lists.length );
         arr[ 0 ] = permutedFirst;
         for ( let i = 0; i < subLists.length; i++ ) {
@@ -329,7 +323,7 @@ AttractorModel.forEachMultiplePermutations = function( lists, callback ) {
  * @param prefix   Elements that should be inserted at the front of each list before each call
  * @param callback Function to call
  */
-AttractorModel.forEachPermutation = function( list, prefix, callback ) {
+AttractorModel.forEachPermutation = ( list, prefix, callback ) => {
   if ( list.length === 0 ) {
     callback( prefix );
   }
@@ -354,7 +348,7 @@ AttractorModel.forEachPermutation = function( list, prefix, callback ) {
  *
  * @param {Array.<Array.<*>>} lists
  */
-AttractorModel.listPrint = function( lists ) {
+AttractorModel.listPrint = lists => {
   let ret = '';
   for ( let i = 0; i < lists.length; i++ ) {
     const list = lists[ i ];
@@ -370,7 +364,7 @@ AttractorModel.listPrint = function( lists ) {
  * Testing function for permutations
  * @private
  */
-AttractorModel.testMe = function() {
+AttractorModel.testMe = () => {
   /*
    Testing of permuting each individual list. Output:
    AB C DEF
@@ -393,7 +387,7 @@ AttractorModel.testMe = function() {
     [ 'D', 'E', 'F' ]
   ];
 
-  AttractorModel.forEachMultiplePermutations( arr, function( lists ) {
+  AttractorModel.forEachMultiplePermutations( arr, lists => {
     console.log( AttractorModel.listPrint( lists ) );
   } );
 };

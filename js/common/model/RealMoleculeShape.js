@@ -10,7 +10,6 @@
 import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
-import inherit from '../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import GeometryConfiguration from './GeometryConfiguration.js';
@@ -20,37 +19,34 @@ import RealAtomPosition from './RealAtomPosition.js';
 // they are all very close.
 const USE_SIMPLIFIED_BOND_LENGTH = true;
 
-/*
- * @constructor
- * @param {string} displayName - The displayed chemical name. Digits will be turned into subscripts, so use "H20", etc.
- * @param {number | null} bondLengthOverride - If USE_SIMPLIFIED_BOND_LENGTH, this will be used as the bond length for
- *                                             all atoms.
- */
-function RealMoleculeShape( displayName, bondLengthOverride ) {
-  this.displayName = displayName; // @public {string}
-  this.bondLengthOverride = bondLengthOverride * 5.5; // @public {number} upscale the true size to our model units
+class RealMoleculeShape {
+  /*
+   * @param {string} displayName - The displayed chemical name. Digits will be turned into subscripts, so use "H20", etc.
+   * @param {number | null} bondLengthOverride - If USE_SIMPLIFIED_BOND_LENGTH, this will be used as the bond length for
+   *                                             all atoms.
+   */
+  constructor( displayName, bondLengthOverride ) {
+    this.displayName = displayName; // @public {string}
+    this.bondLengthOverride = bondLengthOverride * 5.5; // @public {number} upscale the true size to our model units
 
-  this.atoms = []; // @public {Array.<RealAtomPosition>}
-  this.bonds = []; // @public {Array.<Bond>}
-  this.centralAtom = null; // @public {RealAtomPosition | null} - Will be filled in later before use.
+    this.atoms = []; // @public {Array.<RealAtomPosition>}
+    this.bonds = []; // @public {Array.<Bond>}
+    this.centralAtom = null; // @public {RealAtomPosition | null} - Will be filled in later before use.
 
-  this.centralAtomCount = 0; // @public {number}
-}
+    this.centralAtomCount = 0; // @public {number}
+  }
 
-moleculeShapes.register( 'RealMoleculeShape', RealMoleculeShape );
-
-inherit( Object, RealMoleculeShape, {
   /**
    * Adds an atom position.
    * @public
    *
    * @param {RealAtomPosition} atom
    */
-  addAtom: function( atom ) {
+  addAtom( atom ) {
     assert && assert( this.atoms.indexOf( atom ) === -1 );
 
     this.atoms.push( atom );
-  },
+  }
 
   /**
    * Adds a bond between two atom positions
@@ -61,13 +57,13 @@ inherit( Object, RealMoleculeShape, {
    * @param {number} order - Order of the bond, 0 for lone pair.
    * @param {number} bondLength
    */
-  addBond: function( a, b, order, bondLength ) {
+  addBond( a, b, order, bondLength ) {
     this.bonds.push( new Bond( a, b, order, bondLength ) );
 
     if ( a === this.centralAtom || b === this.centralAtom ) {
       this.centralAtomCount++;
     }
-  },
+  }
 
   /**
    * Adds the central atom for the shape.
@@ -75,10 +71,10 @@ inherit( Object, RealMoleculeShape, {
    *
    * @param {RealAtomPosition} atom
    */
-  addCentralAtom: function( atom ) {
+  addCentralAtom( atom ) {
     this.addAtom( atom );
     this.centralAtom = atom;
-  },
+  }
 
   /**
    * Adds a radial atom and its bond.
@@ -87,14 +83,14 @@ inherit( Object, RealMoleculeShape, {
    * @param {RealAtomPosition} atom
    * @param {number} bondOrder - 0 for lone pair
    */
-  addRadialAtom: function( atom, bondOrder ) {
+  addRadialAtom( atom, bondOrder ) {
     if ( USE_SIMPLIFIED_BOND_LENGTH ) {
       // adjust the position's magnitude to the proper scale
       atom.position.normalize().multiplyScalar( this.bondLengthOverride );
     }
     this.addAtom( atom );
     this.addBond( atom, this.centralAtom, bondOrder, USE_SIMPLIFIED_BOND_LENGTH ? this.bondLengthOverride : atom.position.magnitude );
-  },
+  }
 
   /**
    * Debugging string.
@@ -102,12 +98,14 @@ inherit( Object, RealMoleculeShape, {
    *
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     return this.displayName;
   }
-} );
+}
 
-const createMoleculeShape = function( name, length, callback ) {
+moleculeShapes.register( 'RealMoleculeShape', RealMoleculeShape );
+
+const createMoleculeShape = ( name, length, callback ) => {
   const shape = new RealMoleculeShape( name, length );
   callback( shape );
   return shape;
@@ -127,14 +125,14 @@ const S = Element.S;
 const Xe = Element.Xe;
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.BERYLLIUM_CHLORIDE = createMoleculeShape( 'BeCl2', 1.8, function( shape ) {
+RealMoleculeShape.BERYLLIUM_CHLORIDE = createMoleculeShape( 'BeCl2', 1.8, shape => {
   shape.addCentralAtom( new RealAtomPosition( Be, new Vector3( 0, 0, 0 ) ) );
   shape.addRadialAtom( new RealAtomPosition( Cl, new Vector3( 1.8, 0, 0 ), 3 ), 1 );
   shape.addRadialAtom( new RealAtomPosition( Cl, new Vector3( -1.8, 0, 0 ), 3 ), 1 );
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.BORON_TRIFLUORIDE = createMoleculeShape( 'BF3', 1.313, function( shape ) {
+RealMoleculeShape.BORON_TRIFLUORIDE = createMoleculeShape( 'BF3', 1.313, shape => {
   shape.addCentralAtom( new RealAtomPosition( B, new Vector3( 0, 0, 0 ) ) );
   const angle = 2 * Math.PI / 3;
   const bondLength = 1.313;
@@ -144,7 +142,7 @@ RealMoleculeShape.BORON_TRIFLUORIDE = createMoleculeShape( 'BF3', 1.313, functio
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.BROMINE_PENTAFLUORIDE = createMoleculeShape( 'BrF5', 1.774, function( shape ) {
+RealMoleculeShape.BROMINE_PENTAFLUORIDE = createMoleculeShape( 'BrF5', 1.774, shape => {
   shape.addCentralAtom( new RealAtomPosition( Br, new Vector3( 0, 0, 0 ), 1 ) );
   const axialBondLength = 1.689;
   const radialBondLength = 1.774;
@@ -159,7 +157,7 @@ RealMoleculeShape.BROMINE_PENTAFLUORIDE = createMoleculeShape( 'BrF5', 1.774, fu
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.METHANE = createMoleculeShape( 'CH4', 1.087, function( shape ) {
+RealMoleculeShape.METHANE = createMoleculeShape( 'CH4', 1.087, shape => {
   shape.addCentralAtom( new RealAtomPosition( C, new Vector3( 0, 0, 0 ) ) );
   const bondLength = 1.087;
   const vectors = GeometryConfiguration.getConfiguration( 4 ).unitVectors;
@@ -169,7 +167,7 @@ RealMoleculeShape.METHANE = createMoleculeShape( 'CH4', 1.087, function( shape )
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.CHLORINE_TRIFLUORIDE = createMoleculeShape( 'ClF3', 1.698, function( shape ) {
+RealMoleculeShape.CHLORINE_TRIFLUORIDE = createMoleculeShape( 'ClF3', 1.698, shape => {
   shape.addCentralAtom( new RealAtomPosition( Cl, new Vector3( 0, 0, 0 ), 2 ) );
   shape.addRadialAtom( new RealAtomPosition( F, new Vector3( 0, -1.598, 0 ), 3 ), 1 );
   const radialAngle = DotUtils.toRadians( 87.5 );
@@ -181,14 +179,14 @@ RealMoleculeShape.CHLORINE_TRIFLUORIDE = createMoleculeShape( 'ClF3', 1.698, fun
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.CARBON_DIOXIDE = createMoleculeShape( 'CO2', 1.163, function( shape ) {
+RealMoleculeShape.CARBON_DIOXIDE = createMoleculeShape( 'CO2', 1.163, shape => {
   shape.addCentralAtom( new RealAtomPosition( C, new Vector3( 0, 0, 0 ) ) );
   shape.addRadialAtom( new RealAtomPosition( O, new Vector3( -1.163, 0, 0 ), 2 ), 2 );
   shape.addRadialAtom( new RealAtomPosition( O, new Vector3( 1.163, 0, 0 ), 2 ), 2 );
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.WATER = createMoleculeShape( 'H2O', 0.957, function( shape ) {
+RealMoleculeShape.WATER = createMoleculeShape( 'H2O', 0.957, shape => {
   shape.addCentralAtom( new RealAtomPosition( O, new Vector3( 0, 0, 0 ), 2 ) );
   const radialBondLength = 0.957;
   const radialAngle = DotUtils.toRadians( 104.5 ) / 2;
@@ -197,7 +195,7 @@ RealMoleculeShape.WATER = createMoleculeShape( 'H2O', 0.957, function( shape ) {
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.AMMONIA = createMoleculeShape( 'NH3', 1.017, function( shape ) {
+RealMoleculeShape.AMMONIA = createMoleculeShape( 'NH3', 1.017, shape => {
   shape.addCentralAtom( new RealAtomPosition( N, new Vector3( 0, 0, 0 ), 1 ) );
   const radialBondLength = 1.017;
 
@@ -212,7 +210,7 @@ RealMoleculeShape.AMMONIA = createMoleculeShape( 'NH3', 1.017, function( shape )
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE = createMoleculeShape( 'PCl5', 2.02, function( shape ) {
+RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE = createMoleculeShape( 'PCl5', 2.02, shape => {
   shape.addCentralAtom( new RealAtomPosition( P, new Vector3( 0, 0, 0 ) ) );
   shape.addRadialAtom( new RealAtomPosition( Cl, new Vector3( 2.14, 0, 0 ), 3 ), 1 );
   shape.addRadialAtom( new RealAtomPosition( Cl, new Vector3( -2.14, 0, 0 ), 3 ), 1 );
@@ -224,7 +222,7 @@ RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE = createMoleculeShape( 'PCl5', 2.02, 
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.SULFUR_TETRAFLUORIDE = createMoleculeShape( 'SF4', 1.595, function( shape ) {
+RealMoleculeShape.SULFUR_TETRAFLUORIDE = createMoleculeShape( 'SF4', 1.595, shape => {
   shape.addCentralAtom( new RealAtomPosition( S, new Vector3( 0, 0, 0 ), 1 ) );
   const largeAngle = DotUtils.toRadians( 173.1 ) / 2;
   const smallAngle = DotUtils.toRadians( 101.6 ) / 2;
@@ -236,7 +234,7 @@ RealMoleculeShape.SULFUR_TETRAFLUORIDE = createMoleculeShape( 'SF4', 1.595, func
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.SULFUR_HEXAFLUORIDE = createMoleculeShape( 'SF6', 1.564, function( shape ) {
+RealMoleculeShape.SULFUR_HEXAFLUORIDE = createMoleculeShape( 'SF6', 1.564, shape => {
   shape.addCentralAtom( new RealAtomPosition( S, new Vector3( 0, 0, 0 ) ) );
   const vectors = GeometryConfiguration.getConfiguration( 6 ).unitVectors;
   for ( let i = 0; i < vectors.length; i++ ) {
@@ -245,7 +243,7 @@ RealMoleculeShape.SULFUR_HEXAFLUORIDE = createMoleculeShape( 'SF6', 1.564, funct
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.SULFUR_DIOXIDE = createMoleculeShape( 'SO2', 1.431, function( shape ) {
+RealMoleculeShape.SULFUR_DIOXIDE = createMoleculeShape( 'SO2', 1.431, shape => {
   const bondAngle = DotUtils.toRadians( 119 ) / 2;
   const bondLength = 1.431;
   shape.addCentralAtom( new RealAtomPosition( S, new Vector3( 0, 0, 0 ), 1 ) );
@@ -254,14 +252,14 @@ RealMoleculeShape.SULFUR_DIOXIDE = createMoleculeShape( 'SO2', 1.431, function( 
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.XENON_DIFLUORIDE = createMoleculeShape( 'XeF2', 1.977, function( shape ) {
+RealMoleculeShape.XENON_DIFLUORIDE = createMoleculeShape( 'XeF2', 1.977, shape => {
   shape.addCentralAtom( new RealAtomPosition( Xe, new Vector3( 0, 0, 0 ), 3 ) );
   shape.addRadialAtom( new RealAtomPosition( F, new Vector3( 1.977, 0, 0 ), 3 ), 1 );
   shape.addRadialAtom( new RealAtomPosition( F, new Vector3( -1.977, 0, 0 ), 3 ), 1 );
 } );
 
 // @public {RealMoleculeShape}
-RealMoleculeShape.XENON_TETRAFLUORIDE = createMoleculeShape( 'XeF4', 1.953, function( shape ) {
+RealMoleculeShape.XENON_TETRAFLUORIDE = createMoleculeShape( 'XeF4', 1.953, shape => {
   const bondLength = 1.953;
   shape.addCentralAtom( new RealAtomPosition( Xe, new Vector3( 0, 0, 0 ), 2 ) );
   shape.addRadialAtom( new RealAtomPosition( F, new Vector3( bondLength, 0, 0 ), 3 ), 1 );

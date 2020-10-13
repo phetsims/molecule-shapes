@@ -8,7 +8,6 @@
 
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector3 from '../../../dot/js/Vector3.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import platform from '../../../phet-core/js/platform.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
@@ -78,8 +77,8 @@ function getBondDataURL( bondOrder ) {
   } );
 
   const view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
-    showLabel: function() {},
-    finishedAddingLabels: function() {}
+    showLabel: () => {},
+    finishedAddingLabels: () => {}
   } );
   view.updateView();
   view.hideCentralAtom();
@@ -107,126 +106,125 @@ function getBondDataURL( bondOrder ) {
   return url;
 }
 
-/**
- * @constructor
- *
- * @param {MoleculeShapesModel} model
- * @param {number} bondOrder
- * @param {Function} addPairCallback - Will be called when the user clicks on the main part (add) of this component.
- * @param {Function} removePairCallback - Will be called when the user clicks on the remove button in this.
- * @param {Object} [options]
- */
-function BondGroupNode( model, bondOrder, addPairCallback, removePairCallback, options ) {
-  this.model = model; // @private {MoleculeShapesModel}
-  this.bondOrder = bondOrder; // @private {number}
+class BondGroupNode extends HBox {
+  /**
+   * @param {MoleculeShapesModel} model
+   * @param {number} bondOrder
+   * @param {Function} addPairCallback - Will be called when the user clicks on the main part (add) of this component.
+   * @param {Function} removePairCallback - Will be called when the user clicks on the remove button in this.
+   * @param {Object} [options]
+   */
+  constructor( model, bondOrder, addPairCallback, removePairCallback, options ) {
+    super();
 
-  // whether our "button" is enabled
-  let enabled = true;
+    this.model = model; // @private {MoleculeShapesModel}
+    this.bondOrder = bondOrder; // @private {number}
 
-  // how many pointers are over our node, used for changing the highlighting for the "button over"
-  let overCount = 0;
+    // whether our "button" is enabled
+    let enabled = true;
 
-  // A semi-transparent overlay with the same color as the background (and variable alpha). Used to adjust the visual
-  // "opacity" of the underlying image (by toggling our alpha), and as a hit-area for events.
-  const overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? ATOM_HEIGHT : LONE_PAIR_HEIGHT, 0, 0, options );
-  overlay.addInputListener( {
-    down: function() {
-      if ( enabled ) {
-        addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) );
+    // how many pointers are over our node, used for changing the highlighting for the "button over"
+    let overCount = 0;
+
+    // A semi-transparent overlay with the same color as the background (and variable alpha). Used to adjust the visual
+    // "opacity" of the underlying image (by toggling our alpha), and as a hit-area for events.
+    const overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? ATOM_HEIGHT : LONE_PAIR_HEIGHT, 0, 0, options );
+    overlay.addInputListener( {
+      down: () => {
+        if ( enabled ) {
+          addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) );
+        }
+      },
+      enter: () => {
+        overCount++;
+        updateOverlayOpacity();
+      },
+      exit: () => {
+        overCount--;
+        updateOverlayOpacity();
       }
-    },
-    enter: function() {
-      overCount++;
-      updateOverlayOpacity();
-    },
-    exit: function() {
-      overCount--;
-      updateOverlayOpacity();
+    } );
+    overlay.touchArea = overlay.localBounds.dilatedY( 4 ).withMinX( -10 );
+
+    // our image of the lone pair / bond, under the overlay.
+    const image = new Image( getBondDataURL( bondOrder ), {
+      scale: 1 / IMAGE_SCALE // retina devices create large images, so for now we normalize the image scale
+    } );
+    // override local bounds because the correct bounds may not be loaded yet (loading from a data URL, not an HTMLImageElement)
+    image.localBounds = bondOrder === 0 ?
+                        new Bounds2( 0, 0, LONE_PAIR_WIDTH * IMAGE_SCALE, LONE_PAIR_HEIGHT * IMAGE_SCALE ) :
+                        new Bounds2( 0, 0, ATOM_WIDTH * IMAGE_SCALE, ATOM_HEIGHT * IMAGE_SCALE );
+    image.center = overlay.center;
+
+    // handle updates to our color scheme by recreating the images needed
+    function updateImage() {
+      image.image = getBondDataURL( bondOrder );
     }
-  } );
-  overlay.touchArea = overlay.localBounds.dilatedY( 4 ).withMinX( -10 );
 
-  // our image of the lone pair / bond, under the overlay.
-  const image = new Image( getBondDataURL( bondOrder ), {
-    scale: 1 / IMAGE_SCALE // retina devices create large images, so for now we normalize the image scale
-  } );
-  // override local bounds because the correct bounds may not be loaded yet (loading from a data URL, not an HTMLImageElement)
-  image.localBounds = bondOrder === 0 ?
-                      new Bounds2( 0, 0, LONE_PAIR_WIDTH * IMAGE_SCALE, LONE_PAIR_HEIGHT * IMAGE_SCALE ) :
-                      new Bounds2( 0, 0, ATOM_WIDTH * IMAGE_SCALE, ATOM_HEIGHT * IMAGE_SCALE );
-  image.center = overlay.center;
-
-  // handle updates to our color scheme by recreating the images needed
-  function updateImage() {
-    image.image = getBondDataURL( bondOrder );
-  }
-
-  if ( bondOrder === 0 ) {
-    MoleculeShapesColorProfile.lonePairShellProperty.lazyLink( updateImage );
-    MoleculeShapesColorProfile.lonePairElectronProperty.lazyLink( updateImage );
-  }
-  else {
-    MoleculeShapesColorProfile.atomProperty.lazyLink( updateImage );
-    MoleculeShapesColorProfile.bondProperty.lazyLink( updateImage );
-  }
-  MoleculeShapesColorProfile.backgroundProperty.lazyLink( updateImage );
-
-  // move the lone pair over to the right more, so that it looks more centered
-  if ( bondOrder === 0 ) {
-    image.right = overlay.right - 10;
-  }
-
-  const thumbnail = new Node( { children: [ image, overlay ] } );
-
-  // button to remove a copy of the bond / lone pair
-  const removeButton = new RemovePairGroupButton( {
-    listener: function() {
-      removePairCallback( bondOrder );
-    }
-  } );
-  removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
-
-  // updates the visual state of the thumbnail (image/overlay) and removal button
-  function update() {
-    enabled = model.moleculeProperty.get().wouldAllowBondOrder( bondOrder );
     if ( bondOrder === 0 ) {
-      enabled = enabled && model.showLonePairsProperty.get();
-    }
-    overlay.cursor = enabled ? 'pointer' : null;
-
-    removeButton.visible = _.filter( model.moleculeProperty.get().getBondsAround( model.moleculeProperty.get().centralAtom ), function( bond ) {
-      return bond.order === bondOrder;
-    } ).length > 0;
-
-    updateOverlayOpacity();
-  }
-
-  function updateOverlayOpacity() {
-    let alpha;
-    if ( enabled ) {
-      // when "button over" the overlay will show through more of the image
-      alpha = overCount > 0 ? 0 : 0.1;
+      MoleculeShapesColorProfile.lonePairShellProperty.lazyLink( updateImage );
+      MoleculeShapesColorProfile.lonePairElectronProperty.lazyLink( updateImage );
     }
     else {
-      alpha = 0.4;
+      MoleculeShapesColorProfile.atomProperty.lazyLink( updateImage );
+      MoleculeShapesColorProfile.bondProperty.lazyLink( updateImage );
     }
-    overlay.fill = MoleculeShapesColorProfile.backgroundProperty.get().withAlpha( alpha );
+    MoleculeShapesColorProfile.backgroundProperty.lazyLink( updateImage );
+
+    // move the lone pair over to the right more, so that it looks more centered
+    if ( bondOrder === 0 ) {
+      image.right = overlay.right - 10;
+    }
+
+    const thumbnail = new Node( { children: [ image, overlay ] } );
+
+    // button to remove a copy of the bond / lone pair
+    const removeButton = new RemovePairGroupButton( {
+      listener: () => {
+        removePairCallback( bondOrder );
+      }
+    } );
+    removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
+
+    // updates the visual state of the thumbnail (image/overlay) and removal button
+    function update() {
+      enabled = model.moleculeProperty.get().wouldAllowBondOrder( bondOrder );
+      if ( bondOrder === 0 ) {
+        enabled = enabled && model.showLonePairsProperty.get();
+      }
+      overlay.cursor = enabled ? 'pointer' : null;
+
+      removeButton.visible = _.filter( model.moleculeProperty.get().getBondsAround( model.moleculeProperty.get().centralAtom ), bond => bond.order === bondOrder ).length > 0;
+
+      updateOverlayOpacity();
+    }
+
+    function updateOverlayOpacity() {
+      let alpha;
+      if ( enabled ) {
+        // when "button over" the overlay will show through more of the image
+        alpha = overCount > 0 ? 0 : 0.1;
+      }
+      else {
+        alpha = 0.4;
+      }
+      overlay.fill = MoleculeShapesColorProfile.backgroundProperty.get().withAlpha( alpha );
+    }
+
+    model.moleculeProperty.get().bondChangedEmitter.addListener( update );
+    model.showLonePairsProperty.link( update );
+
+    MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
+
+    this.mutate( merge( {
+      children: [ thumbnail, removeButton ],
+      spacing: 10,
+      align: 'center',
+      excludeInvisibleChildrenFromBounds: false
+    }, options ) );
   }
-
-  model.moleculeProperty.get().bondChangedEmitter.addListener( update );
-  model.showLonePairsProperty.link( update );
-
-  MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
-
-  HBox.call( this, merge( {
-    children: [ thumbnail, removeButton ],
-    spacing: 10,
-    align: 'center',
-    excludeInvisibleChildrenFromBounds: false
-  }, options ) );
 }
 
 moleculeShapes.register( 'BondGroupNode', BondGroupNode );
 
-inherit( HBox, BondGroupNode );
 export default BondGroupNode;

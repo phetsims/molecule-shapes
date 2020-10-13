@@ -32,8 +32,8 @@ class RealMoleculesScreen extends Screen {
     };
 
     super(
-      function() { return new RealMoleculesModel( isBasicsVersion ); },
-      function( model ) { return new RealMoleculesScreenView( model ); },
+      () => new RealMoleculesModel( isBasicsVersion ),
+      model => new RealMoleculesScreenView( model ),
       options
     );
   }

@@ -58,12 +58,12 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
-      listener: function() {
+      listener: () => {
         model.moleculeProperty.get().removeAllGroups();
       }
     } );
 
-    MoleculeShapesColorProfile.removeButtonBackgroundProperty.link( function( color ) {
+    MoleculeShapesColorProfile.removeButtonBackgroundProperty.link( color => {
       removeAllButton.baseColor = color;
     } );
     removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );

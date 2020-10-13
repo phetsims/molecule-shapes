@@ -9,20 +9,12 @@
 import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 
-/*
- * @constructor
- */
-function BondAngleView() {
-  THREE.Object3D.call( this );
-}
-
-moleculeShapes.register( 'BondAngleView', BondAngleView );
-
-inherit( THREE.Object3D, BondAngleView, {
+class BondAngleView extends THREE.Object3D {
   /**
+   * @public
+   *
    * @param {MoleculeShapesScreenView} screenView - We do various screen-space computations for positioning the labels
    * @param {Property.<boolean>} showBondAnglesProperty
    * @param {Molecule} molecule
@@ -30,7 +22,7 @@ inherit( THREE.Object3D, BondAngleView, {
    * @param {PairGroup} bGroup - The atom on the other end of the bond angle
    * @param {LabelWebGLView | LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
    */
-  initialize: function( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
+  initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     this.aGroup = aGroup; // @public {PairGroup} - Atom on one end of the bond angle
     this.bGroup = bGroup; // @public {PairGroup} - Atom on the other end of the bond angle
     this.label = label; // @public {LabelWebGLView | LabelFallbackNode}
@@ -45,15 +37,15 @@ inherit( THREE.Object3D, BondAngleView, {
     this.viewAngle = 0; // @protected {number} - Updated in updateView super call
     this.midpointUnit = null; // @protected {Vector3} - Updated in updateView super call
     this.planarUnit = null; // @protected {Vector3} - Updated in updateView super call
-  },
+  }
 
   /**
    * Disposes the view, so that it can be reinitialized (pooling).
    * @public
    */
-  dispose: function() {
+  dispose() {
     // overridden in sub-types
-  },
+  }
 
   /**
    * Updates the bond-angle view based on previous information.
@@ -64,7 +56,7 @@ inherit( THREE.Object3D, BondAngleView, {
    * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
    *                                           to the camera.
    */
-  updateView: function( lastMidpoint, localCameraOrientation ) {
+  updateView( lastMidpoint, localCameraOrientation ) {
     const aDir = this.aGroup.orientation;
     const bDir = this.bGroup.orientation;
 
@@ -150,11 +142,7 @@ inherit( THREE.Object3D, BondAngleView, {
       this.label.unsetLabel();
     }
   }
-}, {
-  // dot product between the camera direction and bond angle normal is below LOW_THRESHOLDS[bondOrder] => alpha = 0
-  // dot product between the camera direction and bond angle normal is above LOW_THRESHOLDS[HIGH_THRESHOLDS] => alpha = 1
-  LOW_THRESHOLDS: [ 0, 0, 0, 0, 0.35, 0.45, 0.5 ], // @public
-  HIGH_THRESHOLDS: [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ], // @public
+ // @public
 
   /**
    * Determines the brightness (alpha) of a bond angle based on the orientations of the two radial atoms, the camera,
@@ -167,7 +155,7 @@ inherit( THREE.Object3D, BondAngleView, {
    *                                           to the camera.
    * @param {number} bondQuantity - The total number of bonds around the central atom
    */
-  calculateBrightness: function( aDir, bDir, localCameraOrientation, bondQuantity ) {
+  static calculateBrightness( aDir, bDir, localCameraOrientation, bondQuantity ) {
     // if there are less than 3 bonds, always show the bond angle.
     if ( bondQuantity <= 2 ) {
       return 1;
@@ -182,7 +170,7 @@ inherit( THREE.Object3D, BondAngleView, {
     const interpolatedValue = brightness / ( highThreshold - lowThreshold ) - lowThreshold / ( highThreshold - lowThreshold );
 
     return Utils.clamp( interpolatedValue, 0, 1 );
-  },
+  }
 
   /**
    * Whether our condition for semicircle (almost 180-degree bond angle) is met, as we need to stabilize the
@@ -193,11 +181,19 @@ inherit( THREE.Object3D, BondAngleView, {
    * @param {Vector3} endDir
    * @returns {boolean}
    */
-  isApproximateSemicircle: function( startDir, endDir ) {
+  static isApproximateSemicircle( startDir, endDir ) {
     return Math.acos( Utils.clamp( startDir.dot( endDir ), -1, 1 ) ) >= 3.12414;
-  },
+  }
+}
 
-  // @public {number} - radius, in view units
-  radius: 5
-} );
+// dot product between the camera direction and bond angle normal is below LOW_THRESHOLDS[bondOrder] => alpha = 0
+// dot product between the camera direction and bond angle normal is above LOW_THRESHOLDS[HIGH_THRESHOLDS] => alpha = 1
+BondAngleView.LOW_THRESHOLDS = [ 0, 0, 0, 0, 0.35, 0.45, 0.5 ]; // @public
+BondAngleView.HIGH_THRESHOLDS = [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ];
+
+// @public {number} - radius, in view units
+BondAngleView.radius = 5;
+
+moleculeShapes.register( 'BondAngleView', BondAngleView );
+
 export default BondAngleView;

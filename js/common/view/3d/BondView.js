@@ -7,7 +7,6 @@
  */
 
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import inherit from '../../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
@@ -26,48 +25,43 @@ const localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
   color: MoleculeShapesColorProfile.bondProperty
 } );
 
-/*
- * @constructor
- * @param {THREE.Renderer} renderer
- * @param {Bond.<PairGroup>} bond
- * @param {Property.<Vector3>} aPositionProperty - position of one end of the bond
- * @param {Property.<Vector3>} bPositionProperty - position of the other end of the bond
- * @param {number} bondRadius - in display units
- * @param {number | null} maxLength - in display units
- */
-function BondView( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
-  const self = this;
+class BondView extends THREE.Object3D {
+  /*
+   * @param {THREE.Renderer} renderer
+   * @param {Bond.<PairGroup>} bond
+   * @param {Property.<Vector3>} aPositionProperty - position of one end of the bond
+   * @param {Property.<Vector3>} bPositionProperty - position of the other end of the bond
+   * @param {number} bondRadius - in display units
+   * @param {number | null} maxLength - in display units
+   */
+  constructor( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
 
-  this.aMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
-  this.bMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
-  this.bondGeometry = localBondGeometry.get( renderer ); // @private {THREE.Geometry}
+    super();
 
-  this.bond = bond; // @public {Bond.<PairGroup>}
-  this.aPositionProperty = aPositionProperty; // @private {Property.<Vector3>}
-  this.bPositionProperty = bPositionProperty; // @private {Property.<Vector3>}
-  this.bondOrder = bond.order; // @public {number}
-  this.bondRadius = bondRadius; // @public {number}
-  this.maxLength = maxLength; // @private {number}
+    this.aMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
+    this.bMaterial = localBondMaterial.get( renderer ); // @private {THREE.Material}
+    this.bondGeometry = localBondGeometry.get( renderer ); // @private {THREE.Geometry}
 
-  this.aBonds = []; // @private {Array.<THREE.Mesh>}
-  this.bBonds = []; // @private {Array.<THREE.Mesh>}
+    this.bond = bond; // @public {Bond.<PairGroup>}
+    this.aPositionProperty = aPositionProperty; // @private {Property.<Vector3>}
+    this.bPositionProperty = bPositionProperty; // @private {Property.<Vector3>}
+    this.bondOrder = bond.order; // @public {number}
+    this.bondRadius = bondRadius; // @public {number}
+    this.maxLength = maxLength; // @private {number}
 
-  for ( let i = 0; i < this.bondOrder; i++ ) {
-    // they will have unit height and unit radius. We will scale, rotate and translate them later
-    this.aBonds.push( new THREE.Mesh( this.bondGeometry, this.aMaterial ) );
-    this.bBonds.push( new THREE.Mesh( this.bondGeometry, this.bMaterial ) );
+    this.aBonds = []; // @private {Array.<THREE.Mesh>}
+    this.bBonds = []; // @private {Array.<THREE.Mesh>}
+
+    for ( let i = 0; i < this.bondOrder; i++ ) {
+      // they will have unit height and unit radius. We will scale, rotate and translate them later
+      this.aBonds.push( new THREE.Mesh( this.bondGeometry, this.aMaterial ) );
+      this.bBonds.push( new THREE.Mesh( this.bondGeometry, this.bMaterial ) );
+    }
+
+    // bind won't work
+    _.each( this.aBonds, bond => { this.add( bond ); } );
+    _.each( this.bBonds, bond => { this.add( bond ); } );
   }
-
-  THREE.Object3D.call( this );
-
-  // bind won't work
-  _.each( this.aBonds, function( bond ) { self.add( bond ); } );
-  _.each( this.bBonds, function( bond ) { self.add( bond ); } );
-}
-
-moleculeShapes.register( 'BondView', BondView );
-
-inherit( THREE.Object3D, BondView, {
 
   /**
    * Updates the BondView's appearance.
@@ -75,7 +69,7 @@ inherit( THREE.Object3D, BondView, {
    *
    * @param {THREE.Vector3} cameraPosition - The position of the camera in the molecule's local coordinate frame.
    */
-  updateView: function( cameraPosition ) {
+  updateView( cameraPosition ) {
     // extract our start and end
     const start = this.aPositionProperty.value;
     const end = this.bPositionProperty.value;
@@ -148,6 +142,8 @@ inherit( THREE.Object3D, BondView, {
       this.bBonds[ i ].updateMatrix();
     }
   }
-} );
+}
+
+moleculeShapes.register( 'BondView', BondView );
 
 export default BondView;

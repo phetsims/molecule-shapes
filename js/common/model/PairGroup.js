@@ -8,98 +8,54 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
-import inherit from '../../../../phet-core/js/inherit.js';
 import merge from '../../../../phet-core/js/merge.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 let nextId = 0;
 
-/**
- * @constructor
- * @param {Vector3} position - Initial position
- * @param {boolean} isLonePair - True for a lone pair, false for an atom
- * @param {Object} [options] - See in the constructor for more information
- */
-function PairGroup( position, isLonePair, options ) {
-  options = merge( {
-    // {Element | null} - The NITROGLYCERIN element if applicable (e.g. real model), or null if there is no element.
-    element: null
-  }, options );
+class PairGroup {
+  /**
+   * @param {Vector3} position - Initial position
+   * @param {boolean} isLonePair - True for a lone pair, false for an atom
+   * @param {Object} [options] - See in the constructor for more information
+   */
+  constructor( position, isLonePair, options ) {
+    options = merge( {
+      // {Element | null} - The NITROGLYCERIN element if applicable (e.g. real model), or null if there is no element.
+      element: null
+    }, options );
 
-  const self = this;
+    // @public {number - Unique identifier.
+    this.id = nextId++;
 
-  // @public {number - Unique identifier.
-  this.id = nextId++;
+    this.positionProperty = new Property( position ); // @public {Vector3}
+    this.velocityProperty = new Property( Vector3.ZERO ); // @public {Vector3}
+    this.userControlledProperty = new Property( false ); // @public {boolean} - Whether the user is directly manipulating the position currently.
 
-  this.positionProperty = new Property( position ); // @public {Vector3}
-  this.velocityProperty = new Property( Vector3.ZERO ); // @public {Vector3}
-  this.userControlledProperty = new Property( false ); // @public {boolean} - Whether the user is directly manipulating the position currently.
+    this.orientation = new Vector3( 0, 0, 0 ); // @public (read-only) {Vector3} - Normalized position (unit vector).
+    this.positionProperty.link( position => {
+      this.orientation.set( position );
 
-  this.orientation = new Vector3( 0, 0, 0 ); // @public (read-only) {Vector3} - Normalized position (unit vector).
-  this.positionProperty.link( function( position ) {
-    self.orientation.set( position );
+      if ( position.magnitude > 0 ) {
+        this.orientation.normalize();
+      }
+    } );
 
-    if ( position.magnitude > 0 ) {
-      self.orientation.normalize();
+    this.isLonePair = isLonePair; // @public {boolean}
+    this.isCentralAtom = false; // @public {boolean - Might be overridden to true by Molecule.addCentralAtom().
+
+    this.element = options.element; // @public {Element | undefined} - undefined for VSEPR pair group
+
+    if ( assert ) {
+      this.positionProperty.lazyLink( ( newValue, oldValue ) => {
+        assert && assert( !isNaN( newValue.x ), 'NaN detected in position!' );
+      } );
+      this.velocityProperty.lazyLink( ( newValue, oldValue ) => {
+        assert && assert( !isNaN( newValue.x ), 'NaN detected in velocity!' );
+      } );
     }
-  } );
-
-  this.isLonePair = isLonePair; // @public {boolean}
-  this.isCentralAtom = false; // @public {boolean - Might be overridden to true by Molecule.addCentralAtom().
-
-  this.element = options.element; // @public {Element | undefined} - undefined for VSEPR pair group
-
-  if ( assert ) {
-    this.positionProperty.lazyLink( function( newValue, oldValue ) {
-      assert && assert( !isNaN( newValue.x ), 'NaN detected in position!' );
-    } );
-    this.velocityProperty.lazyLink( function( newValue, oldValue ) {
-      assert && assert( !isNaN( newValue.x ), 'NaN detected in velocity!' );
-    } );
   }
-}
 
-moleculeShapes.register( 'PairGroup', PairGroup );
-
-/*---------------------------------------------------------------------------*
- * constants
- *----------------------------------------------------------------------------*/
-
-// @public {number} - Ideal distance from atom to atom (model screen).
-PairGroup.BONDED_PAIR_DISTANCE = 10.0;
-
-// @public {number} - Ideal distance from atom to lone pair (both screens).
-PairGroup.LONE_PAIR_DISTANCE = 7.0;
-
-// @public {number} - Control on Coulomb effect. Tuned for stability and aesthetic.
-PairGroup.ELECTRON_PAIR_REPULSION_SCALE = 30000;
-
-// @public {number} - Tuned control of fake force to push angles between pair groups to their ideal.
-PairGroup.ANGLE_REPULSION_SCALE = 3;
-
-// @public {number} - Tuned control for force to jitter positions of atoms (planar cases otherwise stable)
-PairGroup.JITTER_SCALE = 0.001;
-
-// @public {number} - Tuned control to reduce velocity, in order to ensure stability.
-PairGroup.DAMPING_FACTOR = 0.1;
-
-function interpolate( a, b, ratio ) {
-  return a * ( 1 - ratio ) + b * ratio;
-}
-
-/**
- * Returns a multiplicative factor based on the time elapsed, so that we can avoid oscillation when the frame-rate is
- * low, due to how the damping is implemented.
- * @public
- *
- * @param {number} timeElapsed
- * @returns {number}
- */
-PairGroup.getTimescaleImpulseFactor = function( timeElapsed ) {
-  return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
-};
-
-inherit( Object, PairGroup, {
 
   /**
    * Applies a damped spring-like system to move this pair group towards the "ideal" distance from its parent atom.
@@ -109,7 +65,7 @@ inherit( Object, PairGroup, {
    * @param {number} oldDistance - Previous distance from the pair group to its parent atom
    * @param {Bond} bond - Bond to the parent atom
    */
-  attractToIdealDistance: function( timeElapsed, oldDistance, bond ) {
+  attractToIdealDistance( timeElapsed, oldDistance, bond ) {
     if ( this.userControlledProperty.get() ) {
       // don't process if being dragged
       return;
@@ -149,7 +105,7 @@ inherit( Object, PairGroup, {
       }
       this.positionProperty.set( this.positionProperty.get().plus( directionToCenter.times( ratioOfMovement * offset ) ) );
     }
-  },
+  }
 
   /**
    * Returns the repulsion impulse (force * time) for the repulsion applied to this pair from FROM the provided
@@ -162,7 +118,7 @@ inherit( Object, PairGroup, {
    *                                            distance will be taken into account
    * @returns Repulsion force on this pair group, from the other pair group
    */
-  getRepulsionImpulse: function( other, timeElapsed, trueLengthsRatioOverride ) {
+  getRepulsionImpulse( other, timeElapsed, trueLengthsRatioOverride ) {
     // only handle the force on this object for now
 
     // If the positions overlap, just let the attraction take care of things. See https://github.com/phetsims/molecule-shapes/issues/136
@@ -200,7 +156,7 @@ inherit( Object, PairGroup, {
     // apply a nonphysical reduction on coulomb's law when the frame-rate is low, so we can avoid oscillation
     const coulombDowngrade = PairGroup.getTimescaleImpulseFactor( timeElapsed );
     return coulombVelocityDelta.times( coulombDowngrade );
-  },
+  }
 
   /**
    * Applies a repulsive force from another PairGroup to this PairGroup.
@@ -211,9 +167,9 @@ inherit( Object, PairGroup, {
    * @param {number} trueLengthsRatioOverride - From 0 to 1. If 0, lone pairs will behave the same as bonds. If 1, lone pair
    *                                            distance will be taken into account
    */
-  repulseFrom: function( other, timeElapsed, trueLengthsRatioOverride ) {
+  repulseFrom( other, timeElapsed, trueLengthsRatioOverride ) {
     this.addVelocity( this.getRepulsionImpulse( other, timeElapsed, trueLengthsRatioOverride ) );
-  },
+  }
 
   /**
    * Adds a change to our position if this PairGroup can have non-user-controlled changes.
@@ -221,12 +177,12 @@ inherit( Object, PairGroup, {
    *
    * @param {Vector3} positionChange
    */
-  addPosition: function( positionChange ) {
+  addPosition( positionChange ) {
     // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
     if ( !this.userControlledProperty.get() && !this.isCentralAtom ) {
       this.positionProperty.value = this.positionProperty.get().plus( positionChange );
     }
-  },
+  }
 
   /**
    * Adds a change to our velocity if this PairGroup can have non-user-controlled changes.
@@ -234,12 +190,12 @@ inherit( Object, PairGroup, {
    *
    * @param {Vector3} velocityChange
    */
-  addVelocity: function( velocityChange ) {
+  addVelocity( velocityChange ) {
     // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
     if ( !this.userControlledProperty.get() && !this.isCentralAtom ) {
       this.velocityProperty.value = this.velocityProperty.get().plus( velocityChange );
     }
-  },
+  }
 
   /**
    * Steps this pair group forward in time (moving in the direction of its velocity), and slowly damps the velocity.
@@ -247,7 +203,7 @@ inherit( Object, PairGroup, {
    *
    * @param {number} timeElapsed
    */
-  stepForward: function( timeElapsed ) {
+  stepForward( timeElapsed ) {
     if ( this.userControlledProperty.get() ) { return; }
 
     // velocity changes so that it doesn't point at all towards or away from the origin
@@ -263,7 +219,7 @@ inherit( Object, PairGroup, {
     let damping = 1 - PairGroup.DAMPING_FACTOR;
     damping = Math.pow( damping, timeElapsed / 0.017 ); // based so that we have no modification at 0.017
     this.velocityProperty.value = this.velocityProperty.get().times( damping );
-  },
+  }
 
   /**
    * Sets the position and zeros the velocity.
@@ -271,12 +227,52 @@ inherit( Object, PairGroup, {
    *
    * @param {Vector3} vector
    */
-  dragToPosition: function( vector ) {
+  dragToPosition( vector ) {
     this.positionProperty.set( vector );
 
     // stop any velocity that was moving the pair
     this.velocityProperty.set( new Vector3( 0, 0, 0 ) );
   }
-} );
+
+  /**
+   * Returns a multiplicative factor based on the time elapsed, so that we can avoid oscillation when the frame-rate is
+   * low, due to how the damping is implemented.
+   * @public
+   *
+   * @param {number} timeElapsed
+   * @returns {number}
+   */
+  static getTimescaleImpulseFactor( timeElapsed ) {
+    return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
+  }
+}
+
+moleculeShapes.register( 'PairGroup', PairGroup );
+
+/*---------------------------------------------------------------------------*
+ * constants
+ *----------------------------------------------------------------------------*/
+
+// @public {number} - Ideal distance from atom to atom (model screen).
+PairGroup.BONDED_PAIR_DISTANCE = 10.0;
+
+// @public {number} - Ideal distance from atom to lone pair (both screens).
+PairGroup.LONE_PAIR_DISTANCE = 7.0;
+
+// @public {number} - Control on Coulomb effect. Tuned for stability and aesthetic.
+PairGroup.ELECTRON_PAIR_REPULSION_SCALE = 30000;
+
+// @public {number} - Tuned control of fake force to push angles between pair groups to their ideal.
+PairGroup.ANGLE_REPULSION_SCALE = 3;
+
+// @public {number} - Tuned control for force to jitter positions of atoms (planar cases otherwise stable)
+PairGroup.JITTER_SCALE = 0.001;
+
+// @public {number} - Tuned control to reduce velocity, in order to ensure stability.
+PairGroup.DAMPING_FACTOR = 0.1;
+
+function interpolate( a, b, ratio ) {
+  return a * ( 1 - ratio ) + b * ratio;
+}
 
 export default PairGroup;
