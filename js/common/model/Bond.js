@@ -7,35 +7,31 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../../../phet-core/js/inherit.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
-/**
- * The two ends of the bond (a,b) should be of the same (arbitrary) type, noted as {*} in the documentation.
- *
- * @constructor
- * @param {*} a
- * @param {*} b
- * @param {number} order - The order of the bond.
- * @param {number} length - The length of the bond (in angstroms), or 0
- */
-function Bond( a, b, order, length ) {
-  this.a = a; // @public {*}
-  this.b = b; // @public {*}
-  this.order = order; // @public {number}
-  this.length = length; // @public {number}
-}
+class Bond {
+  /**
+   * The two ends of the bond (a,b) should be of the same (arbitrary) type, noted as {*} in the documentation.
+   *
+   * @param {*} a
+   * @param {*} b
+   * @param {number} order - The order of the bond.
+   * @param {number} length - The length of the bond (in angstroms), or 0
+   */
+  constructor( a, b, order, length ) {
+    this.a = a; // @public {*}
+    this.b = b; // @public {*}
+    this.order = order; // @public {number}
+    this.length = length; // @public {number}
+  }
 
-moleculeShapes.register( 'Bond', Bond );
-
-inherit( Object, Bond, {
   /**
    * For debugging aid.
    * @private
    */
-  toString: function() {
+  toString() {
     return '{' + this.a.toString() + ' => ' + this.b.toString() + '}';
-  },
+  }
 
   /**
    * Whether this bond contains the atom-like object as one of its ends.
@@ -44,9 +40,9 @@ inherit( Object, Bond, {
    * @param {*} atom
    * @returns {boolean}
    */
-  contains: function( atom ) {
+  contains( atom ) {
     return this.a === atom || this.b === atom;
-  },
+  }
 
   /**
    * Assuming that this bond contains the atom-like object, return the other end of the bond.
@@ -55,11 +51,13 @@ inherit( Object, Bond, {
    * @param {*} atom
    * @returns {*}
    */
-  getOtherAtom: function( atom ) {
+  getOtherAtom( atom ) {
     assert && assert( this.contains( atom ) );
 
     return this.a === atom ? this.b : this.a;
   }
-} );
+}
+
+moleculeShapes.register( 'Bond', Bond );
 
 export default Bond;
