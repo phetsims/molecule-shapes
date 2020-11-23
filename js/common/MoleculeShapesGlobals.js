@@ -8,7 +8,6 @@
 
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import platform from '../../../phet-core/js/platform.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Utils from '../../../scenery/js/util/Utils.js';
 import moleculeShapes from '../moleculeShapes.js';
@@ -20,12 +19,6 @@ const MoleculeShapesGlobals = {
 
 moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 
-// polyfill for console.log on IE9, see https://github.com/phetsims/molecule-shapes/issues/108
-if ( platform.ie9 ) {
-  window.console = window.console || {};
-  window.console.log = window.console.log || function() {};
-}
-
 let hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Utils.isWebGLSupported;
 
 // Check for the presence of a webgl/three.js bug present in https://github.com/phetsims/molecule-shapes/issues/161
@@ -34,7 +27,7 @@ if ( navigator.userAgent.indexOf( 'Firefox/' ) >= 0 &&
   hasBasicWebGLSupport = false;
 }
 
-const useWebGL = hasBasicWebGLSupport && ( !platform.ie11 || Utils.checkIE11StencilSupport() );
+const useWebGL = hasBasicWebGLSupport && Utils.checkIE11StencilSupport();
 
 merge( MoleculeShapesGlobals, {
   // @public {Property.<boolean>} - Whether the basics of WebGL are included
