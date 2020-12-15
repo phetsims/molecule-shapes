@@ -76,7 +76,7 @@ three.js and overview of usage:
   having everything duplicated for every instance, but still have unique copies of things for every renderer.
   Instances of these types are documented as 'renderer-local access' throughout the code.
 
-  We currently use inherit() with three.js types, making note to not override their variables. It's been lower overhead
+  We currently use class extension with three.js types, making note to not override their variables. It's been lower overhead
   for development (and easier to read), however increases the risk of breaks for future three.js releases.
 
 Coordinate frames:
