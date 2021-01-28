@@ -7,9 +7,8 @@
 import moleculeShapes from '../moleculeShapes.js';
 
 const MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
-
-  //TODO document
-  showOuterLonePairs: { type: 'flag' }
+  // Determines the default for whether outer lone pairs are shown.
+  showOuterLonePairs: { type: 'flag', public: true }
 } );
 
 moleculeShapes.register( 'MoleculeShapesQueryParameters', MoleculeShapesQueryParameters );
