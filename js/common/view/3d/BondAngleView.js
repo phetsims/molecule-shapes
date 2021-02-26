@@ -142,7 +142,8 @@ class BondAngleView extends THREE.Object3D {
       this.label.unsetLabel();
     }
   }
- // @public
+
+  // @public
 
   /**
    * Determines the brightness (alpha) of a bond angle based on the orientations of the two radial atoms, the camera,

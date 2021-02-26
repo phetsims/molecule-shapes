@@ -282,6 +282,7 @@ class ResultMapping {
     return rotated.extractVector3( 0 );
   }
 }
+
 AttractorModel.ResultMapping = ResultMapping;
 
 /**

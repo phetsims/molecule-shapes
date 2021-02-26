@@ -37,6 +37,7 @@ class MoleculeShapesModel {
     this.showMolecularShapeNameProperty.reset();
     this.showElectronShapeNameProperty.reset();
   }
+
   /**
    * Steps the model forward.
    * @public

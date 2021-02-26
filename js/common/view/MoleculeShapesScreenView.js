@@ -315,9 +315,9 @@ class MoleculeShapesScreenView extends ScreenView {
     return {
       threeRenderer: renderer,
       checkOutLabel: () => ( {
-          setLabel: () => {},
-          unsetLabel: () => {}
-        } ),
+        setLabel: () => {},
+        unsetLabel: () => {}
+      } ),
       returnLabel: () => {}
     };
   }

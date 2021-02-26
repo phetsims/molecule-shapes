@@ -68,6 +68,7 @@ class TitledPanel extends Node {
   getStroke() {
     return this.panel.stroke;
   }
+
   get stroke() { return this.getStroke(); }
 
   /**
@@ -78,6 +79,7 @@ class TitledPanel extends Node {
   setStroke( stroke ) {
     this.panel.stroke = stroke;
   }
+
   set stroke( value ) { this.setStroke( value ); }
 
   /**
@@ -88,6 +90,7 @@ class TitledPanel extends Node {
   getFill() {
     return this.panel.fill;
   }
+
   get fill() { return this.getFill(); }
 
   /**
@@ -100,6 +103,7 @@ class TitledPanel extends Node {
 
     this.titleBackgroundNode.fill = fill;
   }
+
   set fill( value ) { this.setFill( value ); }
 }
 
