@@ -47,7 +47,7 @@ class Molecule {
     // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
     this.groups = [];
 
-    // @public {Array.<Bond>} - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
+    // @public {Array.<Bond.<PairGroup>>} - bonds between pair groups. for lone pairs, this doesn't mean an actual molecular bond,
     // so we just have order 0. Lone-pair 'bonds' are listed first.
     this.bonds = [];
 
