@@ -191,7 +191,7 @@ class BondGroupNode extends HBox {
 
     // updates the visual state of the thumbnail (image/overlay) and removal button
     function update() {
-      enabled = model.moleculeProperty.get().wouldAllowBondOrder( bondOrder );
+      enabled = model.moleculeProperty.value.wouldAllowBondOrder( bondOrder );
       if ( bondOrder === 0 ) {
         enabled = enabled && model.showLonePairsProperty.get();
       }

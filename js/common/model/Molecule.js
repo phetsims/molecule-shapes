@@ -8,8 +8,11 @@
  */
 
 import Emitter from '../../../../axon/js/Emitter.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Range from '../../../../dot/js/Range.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
@@ -17,7 +20,12 @@ import LocalShape from './LocalShape.js';
 import PairGroup from './PairGroup.js';
 import VSEPRConfiguration from './VSEPRConfiguration.js';
 
-const MAX_PAIRS = 6;
+// Adding in maximum numbers of pairs, see https://github.com/phetsims/special-ops/issues/190
+const maxPairsProperty = new NumberProperty( 6, {
+  range: new Range( 0, 6 ),
+  tandem: Tandem.GLOBAL_MODEL.createTandem( 'maxPairsProperty' ),
+  numberType: 'Integer'
+} );
 
 function addToEndOfArray( array, item, addToFront ) {
   if ( addToFront ) {
@@ -383,7 +391,7 @@ class Molecule {
    * @returns {boolean}
    */
   wouldAllowBondOrder( bondOrder ) {
-    return this.radialGroups.length < MAX_PAIRS;
+    return this.radialGroups.length < maxPairsProperty.value;
   }
 
   /**
