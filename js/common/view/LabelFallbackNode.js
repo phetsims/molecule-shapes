@@ -38,7 +38,7 @@ class LabelFallbackNode extends Text {
     const localMidpoint = this.globalToParentPoint( midScreenPoint );
 
     this.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
-    this.fill = MoleculeShapesColorProfile.bondAngleReadoutProperty.get().withAlpha( brightness );
+    this.fill = MoleculeShapesColorProfile.bondAngleReadoutProperty.value.withAlpha( brightness );
   }
 
   /*

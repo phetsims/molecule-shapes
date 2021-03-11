@@ -57,7 +57,7 @@ class OptionsNode extends VBox {
     showBondAnglesCheckbox.touchArea = bondAngleTouchArea;
 
     function updateLonePairCheckboxVisibility() {
-      showLonePairsCheckbox.enabled = model.moleculeProperty.get().radialLonePairs.length > 0;
+      showLonePairsCheckbox.enabled = model.moleculeProperty.value.radialLonePairs.length > 0;
     }
 
     model.moleculeProperty.link( ( newMolecule, oldMolecule ) => {

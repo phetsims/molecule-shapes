@@ -197,7 +197,7 @@ class LabelWebGLView extends THREE.Mesh {
       specificMaterialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 
-    const material = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.ShaderMaterial( {
+    const material = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.ShaderMaterial( {
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       side: THREE.DoubleSide,

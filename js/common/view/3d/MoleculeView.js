@@ -36,11 +36,11 @@ class MoleculeView extends THREE.Object3D {
     this.atomViews = []; // @private {Array.<AtomView>}
     this.lonePairViews = []; // @private {Array.<LonePairView>}
     this.bondViews = []; // @private {Array.<BondView>}
-    this.angleViews = []; // @private {BondAngleWebGLView[] | Array.<BondAngleFallbackView>}
+    this.angleViews = []; // @private {BondAngleWebGLView[]|Array.<BondAngleFallbackView>}
 
-    this.radialViews = []; // @private {Array.<AtomView | LonePairView>} all views that we would want to drag
+    this.radialViews = []; // @private {Array.<AtomView|LonePairView>} all views that we would want to drag
 
-    this.lastMidpoint = null; // @private {Vector3 | null} - The last bond-angle midpoint for a 2-atom system globally
+    this.lastMidpoint = null; // @private {Vector3|null} - The last bond-angle midpoint for a 2-atom system globally
 
     molecule.groupAddedEmitter.addListener( this.addGroup.bind( this ) );
     molecule.groupRemovedEmitter.addListener( this.removeGroup.bind( this ) );
@@ -156,7 +156,7 @@ class MoleculeView extends THREE.Object3D {
       for ( let i = 0; i < this.atomViews.length; i++ ) {
         const otherView = this.atomViews[ i ];
         if ( otherView !== view ) {
-          const bondAngleView = MoleculeShapesGlobals.useWebGLProperty.get() ?
+          const bondAngleView = MoleculeShapesGlobals.useWebGLProperty.value ?
                                 BondAngleWebGLView.pool.get( this.renderer ) :
                                 BondAngleFallbackView.pool.get( this.renderer );
           bondAngleView.initialize( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );

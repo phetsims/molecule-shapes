@@ -70,7 +70,7 @@ class BondAngleFallbackView extends BondAngleView {
       transparent: true,
       opacity: 0.5,
       depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-      overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
+      overdraw: MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
     } );
     MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColorProfile.bondAngleSweepProperty );
 
@@ -102,7 +102,7 @@ class BondAngleFallbackView extends BondAngleView {
    * @param {Molecule} molecule
    * @param {PairGroup} aGroup
    * @param {PairGroup} bGroup
-   * @param {LabelWebGLView | LabelFallbackNode} label
+   * @param {LabelWebGLView|LabelFallbackNode} label
    */
   initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     super.initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );

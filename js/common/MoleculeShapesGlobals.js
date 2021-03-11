@@ -58,7 +58,7 @@ merge( MoleculeShapesGlobals, {
    * Creates a color Property from anything that can be provided to Scenery as a constant-color fill/stroke.
    * @public
    *
-   * @param {string | Color | Property.<Color>} color
+   * @param {string|Color|Property.<Color>} color
    * @returns {Property.<Color>}
    */
   toColorProperty: function( color ) {

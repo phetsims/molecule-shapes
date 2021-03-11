@@ -41,9 +41,9 @@ class ModelMoleculesModel extends MoleculeShapesModel {
    */
   setupInitialMoleculeState() {
     // start with two single bonds
-    const centralAtom = this.moleculeProperty.get().centralAtom;
-    this.moleculeProperty.get().addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
-    this.moleculeProperty.get().addGroupAndBond( new PairGroup( new Vector3( 2, 8, -5 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
+    const centralAtom = this.moleculeProperty.value.centralAtom;
+    this.moleculeProperty.value.addGroupAndBond( new PairGroup( new Vector3( 8, 0, 3 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
+    this.moleculeProperty.value.addGroupAndBond( new PairGroup( new Vector3( 2, 8, -5 ).setMagnitude( PairGroup.BONDED_PAIR_DISTANCE ), false ), centralAtom, 1 );
   }
 
   /**
@@ -54,7 +54,7 @@ class ModelMoleculesModel extends MoleculeShapesModel {
   reset() {
     super.reset();
 
-    this.moleculeProperty.get().removeAllGroups();
+    this.moleculeProperty.value.removeAllGroups();
     this.setupInitialMoleculeState();
   }
 }

@@ -13,14 +13,14 @@ import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
 import LocalGeometry from './LocalGeometry.js';
 import LocalMaterial from './LocalMaterial.js';
 
-const NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 32 : 8;
-const NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 1 : 8;
+const NUM_RADIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.value ? 32 : 8;
+const NUM_AXIAL_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.value ? 1 : 8;
 const globalBondGeometry = new THREE.CylinderGeometry( 1, 1, 1, NUM_RADIAL_SAMPLES, NUM_AXIAL_SAMPLES, false ); // 1 radius, 1 height, 32 segments, open-ended
 
 // renderer-local access
 const localBondGeometry = new LocalGeometry( globalBondGeometry );
 const localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
-  overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
+  overdraw: MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
 } ), {
   color: MoleculeShapesColorProfile.bondProperty
 } );
@@ -32,7 +32,7 @@ class BondView extends THREE.Object3D {
    * @param {Property.<Vector3>} aPositionProperty - position of one end of the bond
    * @param {Property.<Vector3>} bPositionProperty - position of the other end of the bond
    * @param {number} bondRadius - in display units
-   * @param {number | null} maxLength - in display units
+   * @param {number|null} maxLength - in display units
    */
   constructor( renderer, bond, aPositionProperty, bPositionProperty, bondRadius, maxLength ) {
 

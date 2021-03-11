@@ -67,7 +67,7 @@ class MoleculeShapesScreenView extends ScreenView {
     this.contextLossDialog = null;
 
     // In the event of a context loss, we'll just show a dialog. See https://github.com/phetsims/molecule-shapes/issues/100
-    if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+    if ( MoleculeShapesGlobals.useWebGLProperty.value ) {
       this.threeRenderer.context.canvas.addEventListener( 'webglcontextlost', event => {
         event.preventDefault();
 
@@ -108,7 +108,7 @@ class MoleculeShapesScreenView extends ScreenView {
       // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
       // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
       // share the view (three.js constraint).
-      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+      if ( MoleculeShapesGlobals.useWebGLProperty.value ) {
 
         // set up a framebuffer (target is three.js terminology) to render into
         const target = new THREE.WebGLRenderTarget( effectiveWidth, effectiveHeight, {
@@ -148,7 +148,7 @@ class MoleculeShapesScreenView extends ScreenView {
       // Take the pixel ratio into account, see https://github.com/phetsims/molecule-shapes/issues/149
       const inverse = 1 / ( window.devicePixelRatio || 1 );
 
-      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+      if ( MoleculeShapesGlobals.useWebGLProperty.value ) {
         context.setTransform( 1, 0, 0, -1, 0, effectiveHeight ); // no need to take pixel scaling into account
       }
       else {
@@ -196,11 +196,11 @@ class MoleculeShapesScreenView extends ScreenView {
         let draggedParticle = null;
 
         const pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
-        if ( pair && !pair.userControlledProperty.get() ) {
+        if ( pair && !pair.userControlledProperty.value ) {
           // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
           dragMode = 'pairExistingSpherical';
           draggedParticle = pair;
-          pair.userControlledProperty.set( true );
+          pair.userControlledProperty.value = true;
           draggedParticleCount++;
         }
         else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
@@ -232,11 +232,11 @@ class MoleculeShapesScreenView extends ScreenView {
 
               const scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
               const newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
-              newQuaternion.multiply( model.moleculeQuaternionProperty.get() );
+              newQuaternion.multiply( model.moleculeQuaternionProperty.value );
               model.moleculeQuaternionProperty.value = newQuaternion;
             }
             else if ( dragMode === 'pairExistingSpherical' ) {
-              if ( _.includes( model.moleculeProperty.get().groups, draggedParticle ) ) {
+              if ( _.includes( model.moleculeProperty.value.groups, draggedParticle ) ) {
                 draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
               }
             }
@@ -245,7 +245,7 @@ class MoleculeShapesScreenView extends ScreenView {
           // not a Scenery event
           endDrag: function( event, trail ) {
             if ( dragMode === 'pairExistingSpherical' ) {
-              draggedParticle.userControlledProperty.set( false );
+              draggedParticle.userControlledProperty.value = false;
               draggedParticleCount--;
             }
             else if ( dragMode === 'modelRotate' ) {
@@ -280,7 +280,7 @@ class MoleculeShapesScreenView extends ScreenView {
     // @private - create a pool of angle labels of the desired type
     this.angleLabels = [];
     for ( let i = 0; i < 15; i++ ) {
-      if ( MoleculeShapesGlobals.useWebGLProperty.get() ) {
+      if ( MoleculeShapesGlobals.useWebGLProperty.value ) {
         this.angleLabels[ i ] = new LabelWebGLView( this.threeRenderer );
         this.overlayScene.add( this.angleLabels[ i ] );
         this.angleLabels[ i ].unsetLabel();
@@ -366,7 +366,7 @@ class MoleculeShapesScreenView extends ScreenView {
   addMoleculeView( moleculeView ) {
     this.threeScene.add( moleculeView );
 
-    this.moleculeView.quaternion.copy( this.model.moleculeQuaternionProperty.get() );
+    this.moleculeView.quaternion.copy( this.model.moleculeQuaternionProperty.value );
     this.moleculeView.updateMatrix();
     this.moleculeView.updateMatrixWorld();
   }
@@ -426,7 +426,7 @@ class MoleculeShapesScreenView extends ScreenView {
    *
    * @param {Pointer} pointer
    * @param {boolean} isTouch - Whether we should use touch regions
-   * @returns {PairGroup | null} - The closest pair group, or null
+   * @returns {PairGroup|null} - The closest pair group, or null
    */
   getElectronPairUnderPointer( pointer, isTouch ) {
     const raycaster = this.getRaycasterFromScreenPoint( pointer.point );
@@ -495,7 +495,7 @@ class MoleculeShapesScreenView extends ScreenView {
     const localCameraDirection = new Vector3( 0, 0, 0 ).set( ray.direction ).normalize();
 
     // how far we will end up from the center atom
-    const finalDistance = this.model.moleculeProperty.get().getIdealDistanceFromCenter( draggedParticle );
+    const finalDistance = this.model.moleculeProperty.value.getIdealDistanceFromCenter( draggedParticle );
 
     // our sphere to cast our ray against
     const sphere = new Sphere3( new Vector3( 0, 0, 0 ), finalDistance );
@@ -540,7 +540,7 @@ class MoleculeShapesScreenView extends ScreenView {
     }
     else {
       // pick the hitPoint closer to our current point (won't flip to the other side of our sphere)
-      return intersections[ 0 ].hitPoint.distance( draggedParticle.positionProperty.get() ) < intersections[ 1 ].hitPoint.distance( draggedParticle.positionProperty.get() ) ?
+      return intersections[ 0 ].hitPoint.distance( draggedParticle.positionProperty.value ) < intersections[ 1 ].hitPoint.distance( draggedParticle.positionProperty.value ) ?
              intersections[ 0 ].hitPoint :
              intersections[ 1 ].hitPoint;
     }
@@ -623,7 +623,7 @@ class MoleculeShapesScreenView extends ScreenView {
    * Renders the simulation to a specific rendering target
    * @public
    *
-   * @param {THREE.WebGLRenderTarget | undefined} target - undefined for the default target
+   * @param {THREE.WebGLRenderTarget|undefined} target - undefined for the default target
    */
   render( target ) {
     // render the 3D scene first

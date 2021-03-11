@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -21,18 +22,25 @@ class PairGroup {
    */
   constructor( position, isLonePair, options ) {
     options = merge( {
-      // {Element | null} - The NITROGLYCERIN element if applicable (e.g. real model), or null if there is no element.
+      // {Element|null} - The NITROGLYCERIN element if applicable (e.g. real model), or null if there is no element.
       element: null
     }, options );
 
-    // @public {number - Unique identifier.
+    // @public {number} - Unique identifier.
     this.id = nextId++;
 
-    this.positionProperty = new Property( position ); // @public {Vector3}
-    this.velocityProperty = new Property( Vector3.ZERO ); // @public {Vector3}
-    this.userControlledProperty = new Property( false ); // @public {boolean} - Whether the user is directly manipulating the position currently.
+    // @public {Property.<Vector3>}
+    this.positionProperty = new Property( position );
 
-    this.orientation = new Vector3( 0, 0, 0 ); // @public (read-only) {Vector3} - Normalized position (unit vector).
+    // @public {Property.<Vector3>}
+    this.velocityProperty = new Property( Vector3.ZERO );
+
+    // @public {Property.<boolean>} - Whether the user is directly manipulating the position currently.
+    this.userControlledProperty = new BooleanProperty( false );
+
+    // @public (read-only) {Vector3} - Normalized position (unit vector).
+    this.orientation = new Vector3( 0, 0, 0 );
+
     this.positionProperty.link( position => {
       this.orientation.set( position );
 
@@ -41,10 +49,14 @@ class PairGroup {
       }
     } );
 
-    this.isLonePair = isLonePair; // @public {boolean}
-    this.isCentralAtom = false; // @public {boolean - Might be overridden to true by Molecule.addCentralAtom().
+    // @public {boolean}
+    this.isLonePair = isLonePair;
 
-    this.element = options.element; // @public {Element | undefined} - undefined for VSEPR pair group
+    // @public {boolean} - Might be overridden to true by Molecule.addCentralAtom().
+    this.isCentralAtom = false;
+
+    // @public {Element|undefined} - undefined for VSEPR pair group
+    this.element = options.element;
 
     if ( assert ) {
       this.positionProperty.lazyLink( ( newValue, oldValue ) => {
@@ -56,7 +68,6 @@ class PairGroup {
     }
   }
 
-
   /**
    * Applies a damped spring-like system to move this pair group towards the "ideal" distance from its parent atom.
    * @public
@@ -66,11 +77,11 @@ class PairGroup {
    * @param {Bond} bond - Bond to the parent atom
    */
   attractToIdealDistance( timeElapsed, oldDistance, bond ) {
-    if ( this.userControlledProperty.get() ) {
+    if ( this.userControlledProperty.value ) {
       // don't process if being dragged
       return;
     }
-    const origin = bond.getOtherAtom( this ).positionProperty.get();
+    const origin = bond.getOtherAtom( this ).positionProperty.value;
 
     const isTerminalLonePair = !origin.equals( Vector3.ZERO );
 
@@ -79,18 +90,18 @@ class PairGroup {
     /*---------------------------------------------------------------------------*
      * prevent movement away from our ideal distance
      *----------------------------------------------------------------------------*/
-    const currentError = Math.abs( ( this.positionProperty.get().minus( origin ) ).magnitude - idealDistanceFromCenter );
+    const currentError = Math.abs( ( this.positionProperty.value.minus( origin ) ).magnitude - idealDistanceFromCenter );
     const oldError = Math.abs( oldDistance - idealDistanceFromCenter );
     if ( currentError > oldError ) {
       // our error is getting worse! for now, don't let us slide AWAY from the ideal distance ever
       // set our distance to the old one, so it is easier to process
-      this.positionProperty.set( this.orientation.times( oldDistance ).plus( origin ) );
+      this.positionProperty.value = this.orientation.times( oldDistance ).plus( origin );
     }
 
     /*---------------------------------------------------------------------------*
      * use damped movement towards our ideal distance
      *----------------------------------------------------------------------------*/
-    const toCenter = this.positionProperty.get().minus( origin );
+    const toCenter = this.positionProperty.value.minus( origin );
 
     const distance = toCenter.magnitude;
     if ( distance !== 0 ) {
@@ -103,7 +114,7 @@ class PairGroup {
       if ( isTerminalLonePair ) {
         ratioOfMovement = 1;
       }
-      this.positionProperty.set( this.positionProperty.get().plus( directionToCenter.times( ratioOfMovement * offset ) ) );
+      this.positionProperty.value = this.positionProperty.value.plus( directionToCenter.times( ratioOfMovement * offset ) );
     }
   }
 
@@ -122,7 +133,7 @@ class PairGroup {
     // only handle the force on this object for now
 
     // If the positions overlap, just let the attraction take care of things. See https://github.com/phetsims/molecule-shapes/issues/136
-    if ( this.positionProperty.get().equalsEpsilon( other.positionProperty.get(), 1e-6 ) ) {
+    if ( this.positionProperty.value.equalsEpsilon( other.positionProperty.value, 1e-6 ) ) {
       return new Vector3( 0, 0, 0 );
     }
 
@@ -136,12 +147,12 @@ class PairGroup {
      *----------------------------------------------------------------------------*/
 
     // adjusted distances from the center atom
-    const adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.positionProperty.get().magnitude, trueLengthsRatioOverride );
-    const adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.positionProperty.get().magnitude, trueLengthsRatioOverride );
+    const adjustedMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, this.positionProperty.value.magnitude, trueLengthsRatioOverride );
+    const adjustedOtherMagnitude = interpolate( PairGroup.BONDED_PAIR_DISTANCE, other.positionProperty.value.magnitude, trueLengthsRatioOverride );
 
     // adjusted positions
     const adjustedPosition = this.orientation.times( adjustedMagnitude );
-    const adjustedOtherPosition = other.positionProperty.get().magnitude === 0 ? new Vector3( 0, 0, 0 ) : other.orientation.times( adjustedOtherMagnitude );
+    const adjustedOtherPosition = other.positionProperty.value.magnitude === 0 ? new Vector3( 0, 0, 0 ) : other.orientation.times( adjustedOtherMagnitude );
 
     // from other => this (adjusted)
     const delta = adjustedPosition.minus( adjustedOtherPosition );
@@ -179,8 +190,8 @@ class PairGroup {
    */
   addPosition( positionChange ) {
     // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
-    if ( !this.userControlledProperty.get() && !this.isCentralAtom ) {
-      this.positionProperty.value = this.positionProperty.get().plus( positionChange );
+    if ( !this.userControlledProperty.value && !this.isCentralAtom ) {
+      this.positionProperty.value = this.positionProperty.value.plus( positionChange );
     }
   }
 
@@ -192,8 +203,8 @@ class PairGroup {
    */
   addVelocity( velocityChange ) {
     // don't allow velocity changes if we are dragging it, OR if it is an atom at the origin
-    if ( !this.userControlledProperty.get() && !this.isCentralAtom ) {
-      this.velocityProperty.value = this.velocityProperty.get().plus( velocityChange );
+    if ( !this.userControlledProperty.value && !this.isCentralAtom ) {
+      this.velocityProperty.value = this.velocityProperty.value.plus( velocityChange );
     }
   }
 
@@ -204,21 +215,21 @@ class PairGroup {
    * @param {number} timeElapsed
    */
   stepForward( timeElapsed ) {
-    if ( this.userControlledProperty.get() ) { return; }
+    if ( this.userControlledProperty.value ) { return; }
 
     // velocity changes so that it doesn't point at all towards or away from the origin
-    const velocityMagnitudeOutwards = this.velocityProperty.get().dot( this.orientation );
-    if ( this.positionProperty.get().magnitude > 0 ) {
-      this.velocityProperty.value = this.velocityProperty.get().minus( this.orientation.times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
+    const velocityMagnitudeOutwards = this.velocityProperty.value.dot( this.orientation );
+    if ( this.positionProperty.value.magnitude > 0 ) {
+      this.velocityProperty.value = this.velocityProperty.value.minus( this.orientation.times( velocityMagnitudeOutwards ) ); // subtract the outwards-component out
     }
 
     // move position forward by scaled velocity
-    this.positionProperty.value = this.positionProperty.get().plus( this.velocityProperty.get().times( timeElapsed ) );
+    this.positionProperty.value = this.positionProperty.value.plus( this.velocityProperty.value.times( timeElapsed ) );
 
     // add in damping so we don't get the kind of oscillation that we are seeing
     let damping = 1 - PairGroup.DAMPING_FACTOR;
     damping = Math.pow( damping, timeElapsed / 0.017 ); // based so that we have no modification at 0.017
-    this.velocityProperty.value = this.velocityProperty.get().times( damping );
+    this.velocityProperty.value = this.velocityProperty.value.times( damping );
   }
 
   /**
@@ -228,10 +239,10 @@ class PairGroup {
    * @param {Vector3} vector
    */
   dragToPosition( vector ) {
-    this.positionProperty.set( vector );
+    this.positionProperty.value = vector;
 
     // stop any velocity that was moving the pair
-    this.velocityProperty.set( new Vector3( 0, 0, 0 ) );
+    this.velocityProperty.value = new Vector3( 0, 0, 0 );
   }
 
   /**

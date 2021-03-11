@@ -59,5 +59,4 @@ class Bond {
 }
 
 moleculeShapes.register( 'Bond', Bond );
-
 export default Bond;

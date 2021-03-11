@@ -32,7 +32,7 @@ import RemovePairGroupButton from './RemovePairGroupButton.js';
 const scene = new THREE.Scene();
 MoleculeShapesScreenView.addLightsToScene( scene );
 
-const renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
+const renderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
   antialias: true,
   preserveDrawingBuffer: true, // so we can toDataURL() it
   alpha: true // so we can render the transparency
@@ -193,11 +193,11 @@ class BondGroupNode extends HBox {
     function update() {
       enabled = model.moleculeProperty.value.wouldAllowBondOrder( bondOrder );
       if ( bondOrder === 0 ) {
-        enabled = enabled && model.showLonePairsProperty.get();
+        enabled = enabled && model.showLonePairsProperty.value;
       }
       overlay.cursor = enabled ? 'pointer' : null;
 
-      removeButton.visible = _.filter( model.moleculeProperty.get().getBondsAround( model.moleculeProperty.get().centralAtom ), bond => bond.order === bondOrder ).length > 0;
+      removeButton.visible = _.filter( model.moleculeProperty.value.getBondsAround( model.moleculeProperty.value.centralAtom ), bond => bond.order === bondOrder ).length > 0;
 
       updateOverlayOpacity();
     }
@@ -211,10 +211,10 @@ class BondGroupNode extends HBox {
       else {
         alpha = 0.4;
       }
-      overlay.fill = MoleculeShapesColorProfile.backgroundProperty.get().withAlpha( alpha );
+      overlay.fill = MoleculeShapesColorProfile.backgroundProperty.value.withAlpha( alpha );
     }
 
-    model.moleculeProperty.get().bondChangedEmitter.addListener( update );
+    model.moleculeProperty.value.bondChangedEmitter.addListener( update );
     model.showLonePairsProperty.link( update );
 
     MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );

@@ -11,6 +11,7 @@ import Property from '../../../../axon/js/Property.js';
 import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Molecule from './Molecule.js';
+import MoleculeIO from './MoleculeIO.js';
 
 class MoleculeShapesModel {
   /**
@@ -27,7 +28,8 @@ class MoleculeShapesModel {
     // @public {Property.<Molecule>} - Assumed not to change in the 1st screen (model)
     this.moleculeProperty = new Property( config.initialMolecule, {
       tandem: tandem.createTandem( 'moleculeProperty' ),
-      phetioType: Property.PropertyIO( Molecule.MoleculeIO )
+      phetioType: Property.PropertyIO( MoleculeIO ),
+      valueType: Molecule
     } );
 
     // TODO: Add type info
@@ -79,7 +81,7 @@ class MoleculeShapesModel {
    */
   step( dt ) {
     // cap at 0.2s, since our model doesn't handle oscillation well above that
-    this.moleculeProperty.get().update( Math.min( dt, 0.2 ) );
+    this.moleculeProperty.value.update( Math.min( dt, 0.2 ) );
   }
 }
 

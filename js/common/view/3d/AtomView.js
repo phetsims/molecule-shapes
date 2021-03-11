@@ -18,8 +18,8 @@ import LocalMaterial from './LocalMaterial.js';
 
 const DISPLAY_RADIUS = 2;
 const TOUCH_RADIUS = 3;
-const NUM_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.get() ? 64 : 12;
-const OVERDRAW = MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.5; // amount to extend polygons when using Canvas to avoid cracks
+const NUM_SAMPLES = MoleculeShapesGlobals.useWebGLProperty.value ? 64 : 12;
+const OVERDRAW = MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.5; // amount to extend polygons when using Canvas to avoid cracks
 
 // renderer-local access
 const localAtomGeometry = new LocalGeometry( new THREE.SphereGeometry( DISPLAY_RADIUS, NUM_SAMPLES, NUM_SAMPLES ) );

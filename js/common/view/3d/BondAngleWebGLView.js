@@ -136,7 +136,7 @@ class BondAngleWebGLView extends BondAngleView {
    * @param {THREE.Renderer} renderer
    */
   constructor( renderer ) {
-    assert && assert( MoleculeShapesGlobals.useWebGLProperty.get() );
+    assert && assert( MoleculeShapesGlobals.useWebGLProperty.value );
     super();
 
     this.renderer = renderer; // @private {THREE.Renderer}
@@ -193,7 +193,7 @@ class BondAngleWebGLView extends BondAngleView {
    * @param {Molecule} molecule
    * @param {PairGroup} aGroup
    * @param {PairGroup} bGroup
-   * @param {LabelWebGLView | LabelFallbackNode} label
+   * @param {LabelWebGLView|LabelFallbackNode} label
    */
   initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     super.initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );

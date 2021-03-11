@@ -32,7 +32,7 @@ class RealMoleculeShape {
 
     this.atoms = []; // @public {Array.<RealAtomPosition>}
     this.bonds = []; // @public {Array.<Bond>}
-    this.centralAtom = null; // @public {RealAtomPosition | null} - Will be filled in later before use.
+    this.centralAtom = null; // @public {RealAtomPosition|null} - Will be filled in later before use.
 
     this.centralAtomCount = 0; // @public {number}
   }

@@ -33,9 +33,9 @@ const simOptions = {
   // Creates content for the Options dialog
   createOptionsDialogContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem ),
 
-  homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
+  homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.value ?
                          null :
-                         ( MoleculeShapesGlobals.hasBasicWebGLSupportProperty.get() ?
+                         ( MoleculeShapesGlobals.hasBasicWebGLSupportProperty.value ?
                            new IE11StencilWarningNode() : // if we have basic support, we failed due to IE-specific reasons
                            new CanvasWarningNode() )
 };

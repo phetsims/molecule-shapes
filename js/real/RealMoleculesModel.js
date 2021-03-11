@@ -72,17 +72,17 @@ class RealMoleculesModel extends MoleculeShapesModel {
    *                                         do any matching of orientation.
    */
   rebuildMolecule( switchedRealMolecule ) {
-    const molecule = this.moleculeProperty.get();
+    const molecule = this.moleculeProperty.value;
 
-    const numRadialAtoms = this.realMoleculeShapeProperty.get().centralAtomCount;
-    const numRadialLonePairs = this.realMoleculeShapeProperty.get().centralAtom.lonePairCount;
+    const numRadialAtoms = this.realMoleculeShapeProperty.value.centralAtomCount;
+    const numRadialLonePairs = this.realMoleculeShapeProperty.value.centralAtom.lonePairCount;
     const vseprConfiguration = VSEPRConfiguration.getConfiguration( numRadialAtoms, numRadialLonePairs );
 
     // get a copy of what might be the "old" molecule into whose space we need to rotate into
     let mappingMolecule;
     if ( switchedRealMolecule ) {
       // rebuild from scratch
-      mappingMolecule = new RealMolecule( this.realMoleculeShapeProperty.get() );
+      mappingMolecule = new RealMolecule( this.realMoleculeShapeProperty.value );
     }
     else {
       // base the rotation on our original
@@ -91,20 +91,20 @@ class RealMoleculesModel extends MoleculeShapesModel {
 
     let newMolecule;
     let mapping;
-    if ( this.showRealViewProperty.get() ) {
-      newMolecule = new RealMolecule( this.realMoleculeShapeProperty.get() );
+    if ( this.showRealViewProperty.value ) {
+      newMolecule = new RealMolecule( this.realMoleculeShapeProperty.value );
       if ( !switchedRealMolecule ) {
         // NOTE: this might miss a couple improper mappings?
 
         // compute the mapping from our "ideal" to our "old" molecule
-        const groups = new RealMolecule( this.realMoleculeShapeProperty.get() ).radialGroups;
+        const groups = new RealMolecule( this.realMoleculeShapeProperty.value ).radialGroups;
         mapping = AttractorModel.findClosestMatchingConfiguration(
           AttractorModel.getOrientationsFromOrigin( mappingMolecule.radialGroups ),
           _.map( groups, pair => pair.orientation ),
           LocalShape.vseprPermutations( mappingMolecule.radialGroups ) );
         _.each( newMolecule.groups, group => {
           if ( group !== newMolecule.centralAtom ) {
-            group.positionProperty.set( mapping.rotateVector( group.positionProperty.get() ) );
+            group.positionProperty.value = mapping.rotateVector( group.positionProperty.value );
           }
         } );
       }
@@ -136,7 +136,7 @@ class RealMoleculesModel extends MoleculeShapesModel {
       }
     }
 
-    this.moleculeProperty.set( newMolecule );
+    this.moleculeProperty.value = newMolecule;
   }
 }
 

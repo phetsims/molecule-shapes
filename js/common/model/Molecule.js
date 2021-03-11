@@ -13,7 +13,6 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import LocalShape from './LocalShape.js';
@@ -42,7 +41,8 @@ class Molecule {
    */
   constructor( isReal ) {
 
-    this.isReal = isReal; // @public {boolean} - Whether this molecule is based on real angles or on a model.
+    // @public {boolean} - Whether this molecule is based on real angles or on a model.
+    this.isReal = isReal;
 
     // @public {Array.<PairGroup>} - all of the pair groups, with lone pairs first
     this.groups = [];
@@ -51,8 +51,8 @@ class Molecule {
     // so we just have order 0. Lone-pair 'bonds' are listed first.
     this.bonds = [];
 
-    // Cched subsets of groups (changed on modifications) that we need to iterate through without GC
-    // with lone pairs first
+    // Cached subsets of groups (changed on modifications) that we need to iterate through without GC with lone pairs
+    // first
     this.atoms = []; // @public {Array.<PairGroup>} - !isLonePair
     this.lonePairs = []; // @public {Array.<PairGroup>} - isLonePair
     this.radialGroups = []; // @public {Array.<PairGroup>} - bonded with centralAtom
@@ -103,7 +103,7 @@ class Molecule {
   /**
    * @public
    * @abstract
-   * @returns {number | undefined} if applicable
+   * @returns {number|undefined} if applicable
    */
   getMaximumBondLength() {
     throw new Error( 'abstract method' );
@@ -129,7 +129,7 @@ class Molecule {
       const parentGroup = parentBond.getOtherAtom( group );
 
       // store the old distance before stepping in time
-      const oldDistance = group.positionProperty.get().distance( parentGroup.positionProperty.get() );
+      const oldDistance = group.positionProperty.value.distance( parentGroup.positionProperty.value );
 
       group.stepForward( dt );
       group.attractToIdealDistance( dt, oldDistance, parentBond );
@@ -243,7 +243,7 @@ class Molecule {
     // add the group, but delay notifications (inconsistent state)
     this.addGroup( group, false );
 
-    bondLength = bondLength || group.positionProperty.get().minus( parent.positionProperty.get() ).magnitude;
+    bondLength = bondLength || group.positionProperty.value.minus( parent.positionProperty.value ).magnitude;
 
     // add the bond after the group so we can reference things properly
     this.addBond( new Bond( group, parent, bondOrder, bondLength ) );
@@ -461,7 +461,7 @@ class Molecule {
     for ( let i = 0; i < quantity; i++ ) {
       // mapped into our coordinates
       const lonePairOrientation = matrix.timesVector3( lonePairOrientations[ i ] );
-      this.addGroupAndBond( new PairGroup( atom.positionProperty.get().plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
+      this.addGroupAndBond( new PairGroup( atom.positionProperty.value.plus( lonePairOrientation.times( PairGroup.LONE_PAIR_DISTANCE ) ), true ), atom, 0 );
     }
   }
 }
@@ -469,11 +469,5 @@ class Molecule {
 // @abstract {boolean} - Whether the Molecule is considered 'real', or is just a 'model'.
 Molecule.prototype.isReal = false;
 
-// TODO
-Molecule.MoleculeIO = new IOType( 'MoleculeIO', {
-  valueType: Molecule
-} );
-
 moleculeShapes.register( 'Molecule', Molecule );
-
 export default Molecule;

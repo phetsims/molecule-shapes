@@ -28,7 +28,7 @@ import MoleculeShapesScreenView from './MoleculeShapesScreenView.js';
 const scene = new THREE.Scene();
 MoleculeShapesScreenView.addLightsToScene( scene );
 
-const renderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
+const renderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
   antialias: true,
   preserveDrawingBuffer: true, // so we can toDataURL() it
   alpha: true // transparency needs to be enabled, even though we don't need it here. see #98

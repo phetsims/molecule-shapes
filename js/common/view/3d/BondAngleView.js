@@ -20,12 +20,12 @@ class BondAngleView extends THREE.Object3D {
    * @param {Molecule} molecule
    * @param {PairGroup} aGroup - The atom on one end of the bond angle
    * @param {PairGroup} bGroup - The atom on the other end of the bond angle
-   * @param {LabelWebGLView | LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
+   * @param {LabelWebGLView|LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
    */
   initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
     this.aGroup = aGroup; // @public {PairGroup} - Atom on one end of the bond angle
     this.bGroup = bGroup; // @public {PairGroup} - Atom on the other end of the bond angle
-    this.label = label; // @public {LabelWebGLView | LabelFallbackNode}
+    this.label = label; // @public {LabelWebGLView|LabelFallbackNode}
     this.midpoint = null; // @public {Vector3} - Updated in updateView
     this.radius = 5; // @public {number}
 

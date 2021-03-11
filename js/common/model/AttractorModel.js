@@ -32,7 +32,7 @@ moleculeShapes.register( 'AttractorModel', AttractorModel );
  * @returns {number} A measure of total error (least squares-style)
  */
 AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) => {
-  const currentOrientations = _.map( groups, group => group.positionProperty.get().minus( center ).normalized() );
+  const currentOrientations = _.map( groups, group => group.positionProperty.value.minus( center ).normalized() );
   const mapping = AttractorModel.findClosestMatchingConfiguration( currentOrientations, idealOrientations, allowablePermutations, lastPermutation );
 
   const aroundCenterAtom = center.equals( Vector3.ZERO );
@@ -46,10 +46,10 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
     const pair = groups[ i ];
 
     const targetOrientation = mapping.target.extractVector3( i );
-    const currentMagnitude = ( pair.positionProperty.get().minus( center ) ).magnitude;
+    const currentMagnitude = ( pair.positionProperty.value.minus( center ) ).magnitude;
     const targetPosition = targetOrientation.times( currentMagnitude ).plus( center );
 
-    const delta = targetPosition.minus( pair.positionProperty.get() );
+    const delta = targetPosition.minus( pair.positionProperty.value );
     totalDeltaMagnitude += delta.magnitude * delta.magnitude;
 
     /*
@@ -91,8 +91,8 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
       const b = groups[ bIndex ];
 
       // current orientations w.r.t. the center
-      const aOrientation = a.positionProperty.get().minus( center ).normalized();
-      const bOrientation = b.positionProperty.get().minus( center ).normalized();
+      const aOrientation = a.positionProperty.value.minus( center ).normalized();
+      const bOrientation = b.positionProperty.value.minus( center ).normalized();
 
       // desired orientations
       const aTarget = mapping.target.extractVector3( aIndex ).normalized();
@@ -101,7 +101,7 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
       const currentAngle = Math.acos( DotUtils.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
       const angleDifference = ( targetAngle - currentAngle );
 
-      const dirTowardsA = a.positionProperty.get().minus( b.positionProperty.get() ).normalized();
+      const dirTowardsA = a.positionProperty.value.minus( b.positionProperty.value ).normalized();
       const timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
 
       const extraClosePushFactor = DotUtils.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );

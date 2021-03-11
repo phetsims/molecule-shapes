@@ -66,7 +66,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
       listener: () => {
-        model.moleculeProperty.get().removeAllGroups();
+        model.moleculeProperty.value.removeAllGroups();
       },
       tandem: tandem.createTandem( 'removeAllButton' )
     } );
@@ -77,10 +77,10 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
 
     function updateButtonEnabled() {
-      removeAllButton.enabled = model.moleculeProperty.get().radialGroups.length > 0;
+      removeAllButton.enabled = model.moleculeProperty.value.radialGroups.length > 0;
     }
 
-    model.moleculeProperty.get() && model.moleculeProperty.get().bondChangedEmitter.addListener( updateButtonEnabled );
+    model.moleculeProperty.value && model.moleculeProperty.value.bondChangedEmitter.addListener( updateButtonEnabled );
     updateButtonEnabled();
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
@@ -145,7 +145,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     const extraFactor = 1.2;
 
     const pair = new PairGroup( new Vector3( 0, 0, 0 ).set( threePoint ).multiplyScalar( extraFactor ), bondOrder === 0 );
-    this.model.moleculeProperty.get().addGroupAndBond( pair, this.model.moleculeProperty.get().centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
+    this.model.moleculeProperty.value.addGroupAndBond( pair, this.model.moleculeProperty.value.centralAtom, bondOrder, ( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ) );
   }
 
   /**
@@ -154,7 +154,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
    * @param {number} bondOrder
    */
   removePairGroup( bondOrder ) {
-    const molecule = this.model.moleculeProperty.get();
+    const molecule = this.model.moleculeProperty.value;
 
     const bonds = molecule.getBondsAround( molecule.centralAtom );
 

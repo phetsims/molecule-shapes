@@ -19,14 +19,14 @@ import LocalPool from './LocalPool.js';
 const jsonLoader = new THREE.JSONLoader();
 
 // geometry used for display
-const masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGLProperty.get() ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
+const masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGLProperty.value ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
 // renderer-local access
 const localShellGeometry = new LocalGeometry( masterShellGeometry );
 const localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
   transparent: true,
   opacity: 0.7,
   depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
-  overdraw: MoleculeShapesGlobals.useWebGLProperty.get() ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
+  overdraw: MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
 } ), {
   color: MoleculeShapesColorProfile.lonePairShellProperty
 } );
@@ -79,7 +79,7 @@ class LonePairView extends THREE.Object3D {
 
     // @private - per-instance listener, so it's easier to link and unlink
     this.positionListener = position => {
-      const offsetFromParentAtom = position.minus( this.parentAtom.positionProperty.get() );
+      const offsetFromParentAtom = position.minus( this.parentAtom.positionProperty.value );
       const orientation = offsetFromParentAtom.normalized();
 
       let translation;
@@ -87,7 +87,7 @@ class LonePairView extends THREE.Object3D {
         translation = position.minus( orientation.times( PairGroup.LONE_PAIR_DISTANCE ) );
       }
       else {
-        translation = this.parentAtom.positionProperty.get();
+        translation = this.parentAtom.positionProperty.value;
       }
 
       this.position.set( translation.x, translation.y, translation.z );
