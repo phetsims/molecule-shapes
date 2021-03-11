@@ -21,9 +21,12 @@ class MoleculeView extends THREE.Object3D {
    * @param {MoleculeShapesModel} model
    * @param {MoleculeShapesScreenView} screenView
    * @param {Molecule} molecule
+   * @param {Tandem} tandem
    */
-  constructor( model, screenView, molecule ) {
+  constructor( model, screenView, molecule, tandem ) {
     super();
+
+    // TODO: add instrumentation to subviews?
 
     this.model = model; // @private {MoleculeShapesModel}
     this.screenView = screenView; // @private {MoleculeShapesScreenView}

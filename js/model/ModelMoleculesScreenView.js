@@ -31,36 +31,44 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
   /**
    * Constructor for the ModelMoleculesScreenView
    * @param {ModelMoleculesModel} model the model for the entire screen
+   * @param {Tandem} tandem
    */
-  constructor( model ) {
-    super( model );
+  constructor( model, tandem ) {
+    super( model, tandem );
 
     this.model = model; // @private {MoleculeShapesModel}
 
-    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
+    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.value, tandem.createTandem( 'moleculeView' ) ); // @public
     this.addMoleculeView( this.moleculeView );
 
     const addPairCallback = this.addPairGroup.bind( this );
     const removePairCallback = this.removePairGroup.bind( this );
 
-    const optionsNode = new OptionsNode( model );
+    // TODO: improved layout handling
+
+    const optionsPanelTandem = tandem.createTandem( 'optionsPanel' );
+    const bondingPanelTandem = tandem.createTandem( 'bondingPanel' );
+    const lonePairPanelTandem = tandem.createTandem( 'lonePairPanel' );
+
+    const optionsNode = new OptionsNode( model, optionsPanelTandem );
     const bondingNode = new VBox( {
       children: [
-        new BondGroupNode( model, 1, addPairCallback, removePairCallback, {} ),
-        new BondGroupNode( model, 2, addPairCallback, removePairCallback, {} ),
-        new BondGroupNode( model, 3, addPairCallback, removePairCallback, {} )
+        new BondGroupNode( model, 1, addPairCallback, removePairCallback, bondingPanelTandem.createTandem( 'singleBondNode' ), {} ),
+        new BondGroupNode( model, 2, addPairCallback, removePairCallback, bondingPanelTandem.createTandem( 'doubleBondNode' ), {} ),
+        new BondGroupNode( model, 3, addPairCallback, removePairCallback, bondingPanelTandem.createTandem( 'tripleBondNode' ), {} )
       ],
       spacing: 10,
       align: 'left'
     } );
-    const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, {} );
+    const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, bondingPanelTandem.createTandem( 'lonePairNode' ), {} );
     const removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
       listener: () => {
         model.moleculeProperty.get().removeAllGroups();
-      }
+      },
+      tandem: tandem.createTandem( 'removeAllButton' )
     } );
 
     MoleculeShapesColorProfile.removeButtonBackgroundProperty.link( color => {
@@ -91,7 +99,8 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
-      xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15
+      xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15,
+      tandem: bondingPanelTandem
     } );
     let bottom = bondingPanel.bottom;
     if ( !model.isBasicsVersion ) {
@@ -99,7 +108,8 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
         maxWidth: maxExternalWidth,
         right: this.layoutBounds.right - 10,
         top: bondingPanel.bottom + 10,
-        xMargin: ( maxInternalWidth - lonePairNode.width ) / 2 + 15
+        xMargin: ( maxInternalWidth - lonePairNode.width ) / 2 + 15,
+        tandem: lonePairPanelTandem
       } );
       this.addChild( lonePairPanel );
       bottom = lonePairPanel.bottom;
@@ -110,7 +120,8 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: removeAllButton.bottom + 20,
-      xMargin: ( maxInternalWidth - optionsNode.width ) / 2 + 15
+      xMargin: ( maxInternalWidth - optionsNode.width ) / 2 + 15,
+      tandem: optionsPanelTandem
     } );
     this.addChild( bondingPanel );
     this.addChild( removeAllButton );

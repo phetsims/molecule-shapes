@@ -20,7 +20,12 @@ import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
 const optionsShowOuterLonePairsString = moleculeShapesStrings.options.showOuterLonePairs;
 
 class GlobalOptionsNode extends VBox {
-  constructor( isBasicsVersion, options ) {
+  /**
+   * @param {boolean} isBasicsVersion
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( isBasicsVersion, tandem, options ) {
 
     options = merge( {
       defaultColorProfileName: 'default'
@@ -33,11 +38,14 @@ class GlobalOptionsNode extends VBox {
           font: OptionsDialog.DEFAULT_FONT,
           maxWidth: 350
         } ),
-        MoleculeShapesGlobals.showOuterLonePairsProperty, {} ) );
+        MoleculeShapesGlobals.showOuterLonePairsProperty, {
+          tandem: tandem.createTandem( 'showOuterLonePairsCheckbox' )
+        } ) );
     }
 
     children.push( new ProjectorModeCheckbox( MoleculeShapesColorProfile, {
-      defaultColorProfileName: options.defaultColorProfileName
+      defaultColorProfileName: options.defaultColorProfileName,
+      tandem: tandem.createTandem( 'projectorModeCheckbox' )
     } ) );
 
     super( {

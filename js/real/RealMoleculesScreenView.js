@@ -31,21 +31,32 @@ const controlRealViewString = moleculeShapesStrings.control.realView;
 class RealMoleculesScreenView extends MoleculeShapesScreenView {
   /**
    * @param {ModelMoleculesModel} model the model for the entire screen
+   * @param {Tandem} tandem
    */
-  constructor( model ) {
-    super( model );
+  constructor( model, tandem ) {
+    super( model, tandem );
+
     this.model = model; // @private {MoleculeShapesModel}
-    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.get() ); // @public
+    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.value, tandem.createTandem( 'moleculeView' ) ); // @public
     this.addMoleculeView( this.moleculeView );
+
+    const moleculePanelTandem = tandem.createTandem( 'moleculePanel' );
+    const optionsPanelTandem = tandem.createTandem( 'optionsPanel' );
 
     const comboBoxListContainer = new Node();
     const comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
-    const comboBox = new ComboBox( _.map( comboBoxMolecules, realMoleculeShape => new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape ) ), model.realMoleculeShapeProperty, comboBoxListContainer, {
+    const comboBoxItems = _.map( comboBoxMolecules, realMoleculeShape => {
+      return new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape, {
+        tandemName: `${realMoleculeShape.displayName}Item`
+      } );
+    } );
+    const comboBox = new ComboBox( comboBoxItems, model.realMoleculeShapeProperty, comboBoxListContainer, {
       xMargin: 13,
       yMargin: 10,
-      cornerRadius: 8
+      cornerRadius: 8,
+      tandem: moleculePanelTandem.createTandem( 'comboBox' )
     } );
-    const optionsNode = new OptionsNode( model );
+    const optionsNode = new OptionsNode( model, tandem.createTandem( 'optionsNode' ) );
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
     const maxWidth = Math.max( optionsNode.width, comboBox.width );
@@ -55,13 +66,15 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
-      xMargin: ( maxWidth - comboBox.width ) / 2 + 15
+      xMargin: ( maxWidth - comboBox.width ) / 2 + 15,
+      tandem: moleculePanelTandem
     } );
     const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: moleculePanel.bottom + 10,
-      xMargin: ( maxWidth - optionsNode.width ) / 2 + 15
+      xMargin: ( maxWidth - optionsNode.width ) / 2 + 15,
+      tandem: optionsPanelTandem
     } );
     this.addChild( moleculePanel );
     this.addChild( optionsPanel );
@@ -90,14 +103,16 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,
         right: approximateVisualCenterX - horizontalSpacing / 2,
-        maxWidth: 320
+        maxWidth: 320,
+        tandem: optionsPanelTandem.createTandem( 'realRadioButton' )
       } );
       const modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
         radius: 16,
         scale: radioButtonScale,
         top: this.layoutBounds.top + 20,
         left: approximateVisualCenterX + horizontalSpacing / 2,
-        maxWidth: 320
+        maxWidth: 320,
+        tandem: optionsPanelTandem.createTandem( 'modelRadioButton' )
       } );
       realRadioButton.touchArea = realRadioButton.mouseArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
       modelRadioButton.touchArea = modelRadioButton.mouseArea = modelRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
@@ -112,7 +127,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       this.moleculeView.dispose();
 
       // create the new view
-      this.moleculeView = new MoleculeView( model, this, newMolecule );
+      this.moleculeView = new MoleculeView( model, this, newMolecule, tandem.createTandem( 'moleculeView' ) );
       this.addMoleculeView( this.moleculeView );
     } );
   }

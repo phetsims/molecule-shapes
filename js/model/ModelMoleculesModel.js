@@ -6,7 +6,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Property from '../../../axon/js/Property.js';
 import Vector3 from '../../../dot/js/Vector3.js';
 import MoleculeShapesModel from '../common/model/MoleculeShapesModel.js';
 import PairGroup from '../common/model/PairGroup.js';
@@ -16,21 +15,23 @@ import moleculeShapes from '../moleculeShapes.js';
 class ModelMoleculesModel extends MoleculeShapesModel {
   /**
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
+   * @param {Tandem} tandem
    */
-  constructor( isBasicsVersion ) {
+  constructor( isBasicsVersion, tandem ) {
 
     const initialMolecule = new VSEPRMolecule();
 
-    super( isBasicsVersion );
-    this.moleculeProperty = new Property( initialMolecule );
+    super( isBasicsVersion, {
+      initialMolecule: initialMolecule
+    }, tandem );
 
-    this.moleculeProperty.get().addCentralAtom( new PairGroup( new Vector3( 0, 0, 0 ), false ) );
+    this.moleculeProperty.value.addCentralAtom( new PairGroup( new Vector3( 0, 0, 0 ), false ) );
     this.setupInitialMoleculeState();
 
     // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
-    this.moleculeProperty.get().bondChangedEmitter.addListener( () => {
-      if ( this.moleculeProperty.get().radialLonePairs.length === 0 ) {
-        this.showLonePairsProperty.set( true );
+    this.moleculeProperty.value.bondChangedEmitter.addListener( () => {
+      if ( this.moleculeProperty.value.radialLonePairs.length === 0 ) {
+        this.showLonePairsProperty.value = true;
       }
     } );
   }
@@ -52,8 +53,6 @@ class ModelMoleculesModel extends MoleculeShapesModel {
    */
   reset() {
     super.reset();
-
-    this.moleculeProperty.reset();
 
     this.moleculeProperty.get().removeAllGroups();
     this.setupInitialMoleculeState();

@@ -19,21 +19,24 @@ class ModelMoleculesScreen extends Screen {
 
   /**
    * Creates the model and view for the ModelMoleculesScreen
+   *
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
+   * @param {Tandem} tandem
    */
-  constructor( isBasicsVersion ) {
+  constructor( isBasicsVersion, tandem ) {
     const options = {
       name: moleculeShapesStrings.screen.model,
       backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
       homeScreenIcon: new ScreenIcon( new ScreenIconNode( true, isBasicsVersion ), {
         maxIconWidthProportion: 1,
         maxIconHeightProportion: 1
-      } )
+      } ),
+      tandem: tandem
     };
 
     super(
-      () => new ModelMoleculesModel( isBasicsVersion ),
-      model => new ModelMoleculesScreenView( model ),
+      () => new ModelMoleculesModel( isBasicsVersion, tandem.createTandem( 'model' ) ),
+      model => new ModelMoleculesScreenView( model, tandem.createTandem( 'view' ) ),
       options
     );
   }

@@ -15,6 +15,7 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Imageable from '../../../scenery/js/nodes/Imageable.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import MoleculeShapesGlobals from '../common/MoleculeShapesGlobals.js';
 import MoleculeShapesModel from '../common/model/MoleculeShapesModel.js';
 import PairGroup from '../common/model/PairGroup.js';
@@ -73,13 +74,13 @@ function getBondDataURL( bondOrder ) {
   molecule.addCentralAtom( centralAtom );
   molecule.addGroupAndBond( new PairGroup( Vector3.X_UNIT.times( bondOrder === 0 ? PairGroup.LONE_PAIR_DISTANCE : PairGroup.BONDED_PAIR_DISTANCE ), bondOrder === 0 ), centralAtom, bondOrder );
   const model = new MoleculeShapesModel( false, {
-    molecule: molecule
-  } );
+    initialMolecule: molecule
+  }, Tandem.OPT_OUT );
 
   const view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
     showLabel: () => {},
     finishedAddingLabels: () => {}
-  } );
+  }, Tandem.OPT_OUT );
   view.updateView();
   view.hideCentralAtom();
 
@@ -112,9 +113,10 @@ class BondGroupNode extends HBox {
    * @param {number} bondOrder
    * @param {Function} addPairCallback - Will be called when the user clicks on the main part (add) of this component.
    * @param {Function} removePairCallback - Will be called when the user clicks on the remove button in this.
+   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( model, bondOrder, addPairCallback, removePairCallback, options ) {
+  constructor( model, bondOrder, addPairCallback, removePairCallback, tandem, options ) {
     super();
 
     this.model = model; // @private {MoleculeShapesModel}
@@ -182,7 +184,8 @@ class BondGroupNode extends HBox {
     const removeButton = new RemovePairGroupButton( {
       listener: () => {
         removePairCallback( bondOrder );
-      }
+      },
+      tandem: tandem.createTandem( 'removeButton' )
     } );
     removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
 

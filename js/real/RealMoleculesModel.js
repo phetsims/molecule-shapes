@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector3 from '../../../dot/js/Vector3.js';
 import AttractorModel from '../common/model/AttractorModel.js';
@@ -21,22 +22,29 @@ import moleculeShapes from '../moleculeShapes.js';
 class RealMoleculesModel extends MoleculeShapesModel {
   /**
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
+   * @param {Tandem} tandem
    */
-  constructor( isBasicsVersion ) {
+  constructor( isBasicsVersion, tandem ) {
 
     const startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[ 0 ] : RealMoleculeShape.TAB_2_MOLECULES[ 0 ];
     const startingMolecule = new RealMolecule( startingMoleculeShape );
 
-    super( isBasicsVersion );
+    super( isBasicsVersion, {
+      initialMolecule: startingMolecule
+    }, tandem );
 
-    this.moleculeProperty = new Property( startingMolecule ); // @override {Molecule}
-    this.realMoleculeShapeProperty = new Property( startingMoleculeShape ); // {RealMoleculeShape}
-    this.showRealViewProperty = new Property( true ); // whether the "Real" or "Model" view is shown
-
-
-    this.showRealViewProperty.lazyLink( () => {
-      this.rebuildMolecule( false );
+    // @public {Property.<RealMoleculeShape>}
+    this.realMoleculeShapeProperty = new Property( startingMoleculeShape, {
+      tandem: tandem.createTandem( 'realMoleculeShapeProperty' ),
+      phetioType: Property.PropertyIO( RealMoleculeShape.RealMoleculeShapeIO )
     } );
+
+    // @public {Property.<boolean>} whether the "Real" or "Model" view is shown
+    this.showRealViewProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'showRealViewProperty' )
+    } );
+
+    this.showRealViewProperty.lazyLink( () => this.rebuildMolecule( false ) );
 
     this.realMoleculeShapeProperty.lazyLink( () => {
       this.rebuildMolecule( true );
@@ -49,7 +57,7 @@ class RealMoleculesModel extends MoleculeShapesModel {
    */
   reset() {
     super.reset();
-    this.moleculeProperty.reset();
+
     this.realMoleculeShapeProperty.reset();
     this.showRealViewProperty.reset();
     this.rebuildMolecule( true );

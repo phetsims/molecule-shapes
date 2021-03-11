@@ -28,9 +28,12 @@ class MoleculeShapesScreenView extends ScreenView {
 
   /**
    * @param {ModelMoleculesModel} model the model for the entire screen
+   * @public {Tandem} tandem
    */
-  constructor( model ) {
-    super();
+  constructor( model, tandem ) {
+    super( {
+      tandem: tandem
+    } );
 
     const self = this;
 
@@ -50,7 +53,7 @@ class MoleculeShapesScreenView extends ScreenView {
     this.threeCamera = new THREE.PerspectiveCamera(); // @private will set the projection parameters on layout
 
     // @public {THREE.Renderer}
-    this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.get() ? new THREE.WebGLRenderer( {
+    this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
       antialias: true,
       preserveDrawingBuffer: phet.chipper.queryParameters.preserveDrawingBuffer
     } ) : new THREE.CanvasRenderer( {
@@ -90,7 +93,8 @@ class MoleculeShapesScreenView extends ScreenView {
       invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
         this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
       },
-      pickable: false
+      pickable: false,
+      tandem: tandem.createTandem( 'domNode' )
     } );
     this.domNode.invalidateDOM();
 
@@ -166,10 +170,11 @@ class MoleculeShapesScreenView extends ScreenView {
       bottom: this.layoutBounds.maxY - 10,
       listener: () => {
         model.reset();
-      }
+      },
+      tandem: tandem.createTandem( 'resetAllButton' )
     } ) );
 
-    this.addChild( new GeometryNamePanel( model, {
+    this.addChild( new GeometryNamePanel( model, tandem.createTandem( 'geometryNamePanel' ), {
       left: this.layoutBounds.minX + 10,
       bottom: this.layoutBounds.maxY - 10
     } ) );

@@ -21,7 +21,12 @@ const controlShowLonePairsString = moleculeShapesStrings.control.showLonePairs;
 const optionsFont = new PhetFont( 14 );
 
 class OptionsNode extends VBox {
-  constructor( model, options ) {
+  /**
+   * @param {MoleculeShapesModel} model
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( model, tandem, options ) {
     const showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont,
       fill: MoleculeShapesColorProfile.controlPanelTextProperty
@@ -32,8 +37,12 @@ class OptionsNode extends VBox {
       fill: MoleculeShapesColorProfile.controlPanelTextProperty
     } );
 
-    const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {} );
-    const showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {} );
+    const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {
+      tandem: tandem.createTandem( 'showLonePairsCheckbox' )
+    } );
+    const showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {
+      tandem: tandem.createTandem( 'showBondAnglesCheckbox' )
+    } );
 
     // touch areas
     const lonePairTouchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
@@ -61,6 +70,7 @@ class OptionsNode extends VBox {
       updateLonePairCheckboxVisibility();
     } );
 
+    // TODO: Don't create both on basics?
     super( merge( {
       children: model.isBasicsVersion ? [ showBondAnglesCheckbox ] : [ showLonePairsCheckbox, showBondAnglesCheckbox ],
       spacing: 10,

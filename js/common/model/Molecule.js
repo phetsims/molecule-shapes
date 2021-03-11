@@ -10,6 +10,7 @@
 import Emitter from '../../../../axon/js/Emitter.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import LocalShape from './LocalShape.js';
@@ -459,6 +460,11 @@ class Molecule {
 
 // @abstract {boolean} - Whether the Molecule is considered 'real', or is just a 'model'.
 Molecule.prototype.isReal = false;
+
+// TODO
+Molecule.MoleculeIO = new IOType( 'MoleculeIO', {
+  valueType: Molecule
+} );
 
 moleculeShapes.register( 'Molecule', Molecule );
 

@@ -13,6 +13,7 @@ import Element from '../../../../nitroglycerin/js/Element.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import MoleculeShapesModel from '../model/MoleculeShapesModel.js';
@@ -97,14 +98,14 @@ function getBondDataURL( isModel, isBasicsVersion ) {
   molecule.addCentralAtom( centralAtom );
   molecule.addGroupAndBond( new PairGroup( new Vector3( Math.sin( angle ), -Math.cos( angle ), 0 ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
   molecule.addGroupAndBond( new PairGroup( new Vector3( -Math.sin( angle ), -Math.cos( angle ), 0 ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
-  const model = new MoleculeShapesModel( false, {
-    molecule: molecule
-  } );
+
+  // TODO: This molecule isn't being passed in anymore?
+  const model = new MoleculeShapesModel( false, { initialMolecule: molecule }, Tandem.OPT_OUT );
 
   const view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {
     showLabel: () => {},
     finishedAddingLabels: () => {}
-  } );
+  }, Tandem.OPT_OUT );
   view.updateView();
 
   // change how atoms/bonds are scaled, so it can appear nicely

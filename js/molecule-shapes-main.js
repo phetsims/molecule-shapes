@@ -10,6 +10,7 @@ import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import CanvasWarningNode from '../../scenery-phet/js/CanvasWarningNode.js';
 import IE11StencilWarningNode from '../../scenery-phet/js/IE11StencilWarningNode.js';
+import Tandem from '../../tandem/js/Tandem.js';
 import MoleculeShapesGlobals from './common/MoleculeShapesGlobals.js';
 import GlobalOptionsNode from './common/view/GlobalOptionsNode.js';
 import ModelMoleculesScreen from './model/ModelMoleculesScreen.js';
@@ -30,7 +31,7 @@ const simOptions = {
   webgl: true,
 
   // Creates content for the Options dialog
-  createOptionsDialogContent: () => new GlobalOptionsNode( isBasicsVersion ),
+  createOptionsDialogContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem ),
 
   homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.get() ?
                          null :
@@ -43,8 +44,8 @@ const simOptions = {
 
 simLauncher.launch( function() {
   const sim = new Sim( moleculeShapesTitleString, [
-    new ModelMoleculesScreen( isBasicsVersion ),
-    new RealMoleculesScreen( isBasicsVersion )
+    new ModelMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'modelMoleculesScreen' ) ),
+    new RealMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'realMoleculesScreen' ) )
   ], simOptions );
   sim.start();
 } );

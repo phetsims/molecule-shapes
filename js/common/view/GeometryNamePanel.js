@@ -85,11 +85,17 @@ let maxGeometryWidth = getMaximumTextWidth( geometryStrings );
 let maxShapeWidth = getMaximumTextWidth( shapeStrings );
 
 class GeometryNamePanel extends MoleculeShapesPanel {
-  constructor( model, options ) {
+  /**
+   * @param {MoleculeShapesModel} model
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( model, tandem, options ) {
 
     const content = new Node();
     super( controlGeometryNameString, content, merge( {
-      fill: MoleculeShapesColorProfile.backgroundProperty
+      fill: MoleculeShapesColorProfile.backgroundProperty,
+      tandem: tandem
     }, options ) );
 
     this.model = model; // @private {MoleculeShapesModel}
@@ -98,13 +104,15 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     this.molecularText = new Text( 'X', {
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
+      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty,
+      tandem: tandem.createTandem( 'molecularText' )
     } );
     // @private
     this.electronText = new Text( 'Y', {
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
+      fill: MoleculeShapesColorProfile.electronGeometryNameProperty,
+      tandem: tandem.createTandem( 'electronText' )
     } );
     model.showMolecularShapeNameProperty.linkAttribute( this.molecularText, 'visible' );
     model.showElectronShapeNameProperty.linkAttribute( this.electronText, 'visible' );
@@ -125,8 +133,12 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     } );
 
     // @private
-    this.molecularCheckbox = new MoleculeShapesCheckbox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {} );
-    this.electronCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronShapeNameProperty, {} );
+    this.molecularCheckbox = new MoleculeShapesCheckbox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {
+      tandem: tandem.createTandem( 'molecularCheckbox' )
+    } );
+    this.electronCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronShapeNameProperty, {
+      tandem: tandem.createTandem( 'electronCheckbox' )
+    } );
 
     const pointerAreaXPadding = 10;
     const pointerAreaYPadding = 15;

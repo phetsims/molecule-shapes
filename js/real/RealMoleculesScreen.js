@@ -19,21 +19,24 @@ class RealMoleculesScreen extends Screen {
 
   /**
    * Creates the model and view for the RealMoleculesScreen
+   *
    * @param {boolean} isBasicsVersion - Whether this is the Basics sim or not
+   * @param {Tandem} tandem
    */
-  constructor( isBasicsVersion ) {
+  constructor( isBasicsVersion, tandem ) {
     const options = {
       name: moleculeShapesStrings.screen.realMolecules,
       backgroundColorProperty: MoleculeShapesColorProfile.backgroundProperty,
       homeScreenIcon: new ScreenIcon( new ScreenIconNode( false, isBasicsVersion ), {
         maxIconWidthProportion: 1,
         maxIconHeightProportion: 1
-      } )
+      } ),
+      tandem: tandem
     };
 
     super(
-      () => new RealMoleculesModel( isBasicsVersion ),
-      model => new RealMoleculesScreenView( model ),
+      () => new RealMoleculesModel( isBasicsVersion, tandem.createTandem( 'model' ) ),
+      model => new RealMoleculesScreenView( model, tandem.createTandem( 'view' ) ),
       options
     );
   }

@@ -10,6 +10,7 @@
 import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import GeometryConfiguration from './GeometryConfiguration.js';
@@ -294,5 +295,42 @@ RealMoleculeShape.TAB_2_MOLECULES = [
   RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE,
   RealMoleculeShape.SULFUR_HEXAFLUORIDE
 ];
+
+const displayNameMap = {};
+[
+  RealMoleculeShape.BERYLLIUM_CHLORIDE,
+  RealMoleculeShape.BORON_TRIFLUORIDE,
+  RealMoleculeShape.BROMINE_PENTAFLUORIDE,
+  RealMoleculeShape.METHANE,
+  RealMoleculeShape.CHLORINE_TRIFLUORIDE,
+  RealMoleculeShape.CARBON_DIOXIDE,
+  RealMoleculeShape.WATER,
+  RealMoleculeShape.AMMONIA,
+  RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE,
+  RealMoleculeShape.SULFUR_TETRAFLUORIDE,
+  RealMoleculeShape.SULFUR_HEXAFLUORIDE,
+  RealMoleculeShape.SULFUR_DIOXIDE,
+  RealMoleculeShape.XENON_DIFLUORIDE,
+  RealMoleculeShape.XENON_TETRAFLUORIDE
+].forEach( realMoleculeShape => {
+  displayNameMap[ realMoleculeShape.displayName ] = realMoleculeShape;
+} );
+
+const RealMoleculeShapeIO = new IOType( 'RealMoleculeShapeIO', {
+  valueType: RealMoleculeShape,
+  documentation: 'Represents a real molecule with 3d atom positions',
+  toStateObject( realMoleculeShape ) {
+    // TODO: Should we support creating custom RealMoleculeShapes?
+    return {
+      private: {
+        displayName: realMoleculeShape.displayName
+      }
+    };
+  },
+  fromStateObject( obj ) {
+    return displayNameMap[ obj.private.displayName ];
+  }
+} );
+RealMoleculeShape.RealMoleculeShapeIO = RealMoleculeShapeIO;
 
 export default RealMoleculeShape;

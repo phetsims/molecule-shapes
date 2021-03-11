@@ -6,23 +6,56 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import Molecule from './Molecule.js';
 
 class MoleculeShapesModel {
   /**
    * @param {boolean} isBasicsVersion
-   * @param {Object} [options]
+   * @param {Object} config
+   * @param {Tandem} tandem
    */
-  constructor( isBasicsVersion ) {
+  constructor( isBasicsVersion, config, tandem ) {
+    assert && assert( config.initialMolecule !== undefined );
+
     this.isBasicsVersion = isBasicsVersion; // @public {boolean}
 
-    this.moleculeProperty = new Property( null ); // @public {Molecule} - Assumed not to change in the 1st screen (model)
-    this.moleculeQuaternionProperty = new Property( new THREE.Quaternion() ); // @public {THREE.Quaternion} - describes the rotation of the molecule view
-    this.showBondAnglesProperty = new Property( false ); // @public {boolean} - Whether bond angles are shown
-    this.showLonePairsProperty = new Property( !isBasicsVersion ); // @public {boolean} - Whether lone pairs are shown
-    this.showMolecularShapeNameProperty = new Property( false ); // @public {boolean} - Whether molecular shape names are shown
-    this.showElectronShapeNameProperty = new Property( false ); // @public {boolean} - Whether electron shape names are shown
+    // TODO: Add type info
+    // @public {Property.<Molecule>} - Assumed not to change in the 1st screen (model)
+    this.moleculeProperty = new Property( config.initialMolecule, {
+      tandem: tandem.createTandem( 'moleculeProperty' ),
+      phetioType: Property.PropertyIO( Molecule.MoleculeIO )
+    } );
+
+    // TODO: Add type info
+    // @public {Property.<THREE.Quaternion>} - describes the rotation of the molecule view
+    this.moleculeQuaternionProperty = new Property( new THREE.Quaternion(), {
+      tandem: tandem.createTandem( 'moleculeQuaternionProperty' ),
+      phetioType: Property.PropertyIO( ThreeQuaternionIO )
+    } );
+
+    // @public {Property.<boolean>} - Whether bond angles are shown
+    this.showBondAnglesProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showBondAnglesProperty' )
+    } );
+
+    // @public {Property.<boolean>} - Whether lone pairs are shown
+    this.showLonePairsProperty = new BooleanProperty( !isBasicsVersion, {
+      tandem: tandem.createTandem( 'showLonePairsProperty' )
+    } );
+
+    // @public {Property.<boolean>} - Whether molecular shape names are shown
+    this.showMolecularShapeNameProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showMolecularShapeNameProperty' )
+    } );
+
+    // @public {Property.<boolean>} - Whether electron shape names are shown
+    this.showElectronShapeNameProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showElectronShapeNameProperty' )
+    } );
   }
 
   /**
@@ -45,7 +78,6 @@ class MoleculeShapesModel {
    * @param {number} dt - Elapsed time
    */
   step( dt ) {
-
     // cap at 0.2s, since our model doesn't handle oscillation well above that
     this.moleculeProperty.get().update( Math.min( dt, 0.2 ) );
   }
