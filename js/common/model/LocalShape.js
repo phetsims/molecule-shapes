@@ -136,7 +136,7 @@ class LocalShape {
     const usedElements = _.uniq( _.map( atoms, group => group.element ) );
 
     for ( let i = 0; i < usedElements.length; i++ ) {
-      var element = usedElements[ i ];
+      const element = usedElements[ i ];
 
       // since the closure is being executed at this point, the warning in this line can be ignored
       const atomsWithElement = _.filter( atoms, group => group.element === element );
