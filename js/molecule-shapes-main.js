@@ -42,7 +42,7 @@ const simOptions = {
 
 // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
-simLauncher.launch( function() {
+simLauncher.launch( () => {
   const sim = new Sim( moleculeShapesTitleString, [
     new ModelMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'modelMoleculesScreen' ) ),
     new RealMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'realMoleculesScreen' ) )
