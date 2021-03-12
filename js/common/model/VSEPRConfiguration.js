@@ -116,7 +116,7 @@ class VSEPRConfiguration {
         return shapeBentString;
       }
       else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        throw new Error( `invalid x: ${x}, e: ${e}` );
       }
     }
     else if ( x === 3 ) {
@@ -130,7 +130,7 @@ class VSEPRConfiguration {
         return shapeTShapedString;
       }
       else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        throw new Error( `invalid x: ${x}, e: ${e}` );
       }
     }
     else if ( x === 4 ) {
@@ -144,7 +144,7 @@ class VSEPRConfiguration {
         return shapeSquarePlanarString;
       }
       else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        throw new Error( `invalid x: ${x}, e: ${e}` );
       }
     }
     else if ( x === 5 ) {
@@ -155,7 +155,7 @@ class VSEPRConfiguration {
         return shapeSquarePyramidalString;
       }
       else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        throw new Error( `invalid x: ${x}, e: ${e}` );
       }
     }
     else if ( x === 6 ) {
@@ -163,11 +163,11 @@ class VSEPRConfiguration {
         return shapeOctahedralString;
       }
       else {
-        throw new Error( 'invalid x: ' + x + ', e: ' + e );
+        throw new Error( `invalid x: ${x}, e: ${e}` );
       }
     }
     else {
-      throw new Error( 'unknown VSEPR configuration x: ' + x + ', e: ' + e );
+      throw new Error( `unknown VSEPR configuration x: ${x}, e: ${e}` );
     }
   }
 
@@ -180,7 +180,7 @@ class VSEPRConfiguration {
    * @returns {VSEPRConfiguration} - Cached configuration
    */
   static getConfiguration( x, e ) {
-    const key = x + ',' + e;
+    const key = `${x},${e}`;
     if ( key in configurationMap ) {
       return configurationMap[ key ];
     }

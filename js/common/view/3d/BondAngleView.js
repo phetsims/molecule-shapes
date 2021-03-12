@@ -125,10 +125,10 @@ class BondAngleView extends THREE.Object3D {
         const screenMidPoint = new Vector2( ( midDevicePoint.x + 1 ) * this.screenView.screenWidth / 2,
           ( -midDevicePoint.y + 1 ) * this.screenView.screenHeight / 2 );
 
-        let labelString = Utils.toFixed( angle, 1 ) + '°';
+        let labelString = `${Utils.toFixed( angle, 1 )}°`;
         while ( labelString.length < 5 ) {
           // handle single-digit labels by padding them
-          labelString = '0' + labelString;
+          labelString = `0${labelString}`;
         }
 
         this.label.setLabel( labelString, this.viewOpacity, screenCenterPoint, screenMidPoint, layoutScale );

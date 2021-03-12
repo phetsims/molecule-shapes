@@ -74,7 +74,7 @@ class MoleculeShapesScreenView extends ScreenView {
         this.showContextLossDialog();
 
         if ( document.domain === 'phet.colorado.edu' ) {
-          window._gaq && window._gaq.push( [ '_trackEvent', 'WebGL Context Loss', 'molecule-shapes ' + phet.joist.sim.version, document.URL ] );
+          window._gaq && window._gaq.push( [ '_trackEvent', 'WebGL Context Loss', `molecule-shapes ${phet.joist.sim.version}`, document.URL ] );
         }
       } );
     }

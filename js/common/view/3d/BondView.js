@@ -115,7 +115,7 @@ class BondView extends THREE.Object3D {
         offsets = [ Vector3.ZERO, perpendicular.times( bondSeparation ), perpendicular.times( -bondSeparation ) ];
         break;
       default:
-        throw new Error( 'bad bond order: ' + this.bondOrder );
+        throw new Error( `bad bond order: ${this.bondOrder}` );
     }
 
     // since we need to support two different colors (A-colored and B-colored), we need to compute the offsets from the bond center for each

@@ -30,7 +30,7 @@ class Bond {
    * @private
    */
   toString() {
-    return '{' + this.a.toString() + ' => ' + this.b.toString() + '}';
+    return `{${this.a.toString()} => ${this.b.toString()}}`;
   }
 
   /**
