@@ -13,6 +13,7 @@
     "colorProfile": true,
     "requirejsNamespace": "MOLECULE_SHAPES",
     "phetLibs": [
+      "mobius",
       "nitroglycerin"
     ],
     "preload": [
