@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector3 from '../../../dot/js/Vector3.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import AttractorModel from '../common/model/AttractorModel.js';
 import LocalShape from '../common/model/LocalShape.js';
 import MoleculeShapesModel from '../common/model/MoleculeShapesModel.js';
@@ -30,18 +31,21 @@ class RealMoleculesModel extends MoleculeShapesModel {
     const startingMolecule = new RealMolecule( startingMoleculeShape );
 
     super( isBasicsVersion, {
-      initialMolecule: startingMolecule
+      initialMolecule: startingMolecule,
+      phetioType: RealMoleculesModelIO
     }, tandem );
 
     // @public {Property.<RealMoleculeShape>}
     this.realMoleculeShapeProperty = new Property( startingMoleculeShape, {
       tandem: tandem.createTandem( 'realMoleculeShapeProperty' ),
-      phetioType: Property.PropertyIO( RealMoleculeShape.RealMoleculeShapeIO )
+      phetioType: Property.PropertyIO( RealMoleculeShape.RealMoleculeShapeIO ),
+      phetioState: false
     } );
 
     // @public {Property.<boolean>} whether the "Real" or "Model" view is shown
     this.showRealViewProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'showRealViewProperty' )
+      tandem: tandem.createTandem( 'showRealViewProperty' ),
+      phetioState: false
     } );
 
     this.showRealViewProperty.lazyLink( () => this.rebuildMolecule( false ) );
@@ -108,7 +112,6 @@ class RealMoleculesModel extends MoleculeShapesModel {
           }
         } );
       }
-
     }
     else {
       mapping = vseprConfiguration.getIdealGroupRotationToPositions( mappingMolecule.radialGroups );
@@ -140,6 +143,26 @@ class RealMoleculesModel extends MoleculeShapesModel {
   }
 }
 
-moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
+// Suptype IO-type so we can set the state of realMoleculeShape/showRealView BEFORE we set the rest of the molecule data
+// state.
+const RealMoleculesModelIO = new IOType( 'RealMoleculesModelIO', {
+  supertype: MoleculeShapesModel.MoleculeShapesModelIO,
+  valueType: RealMoleculesModel,
+  toStateObject: model => {
+    const result = MoleculeShapesModel.MoleculeShapesModelIO.toStateObject( model );
 
+    result.realMoleculeShape = RealMoleculeShape.RealMoleculeShapeIO.toStateObject( model.realMoleculeShapeProperty.value );
+    result.showRealView = model.showRealViewProperty.value;
+
+    return result;
+  },
+  applyState: ( model, obj ) => {
+    model.realMoleculeShapeProperty.value = RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( obj.realMoleculeShape );
+    model.showRealViewProperty.value = obj.showRealView;
+
+    MoleculeShapesModel.MoleculeShapesModelIO.applyState( model, obj );
+  }
+} );
+
+moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
 export default RealMoleculesModel;

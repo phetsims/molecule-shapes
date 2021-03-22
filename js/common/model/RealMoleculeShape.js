@@ -322,13 +322,11 @@ const RealMoleculeShapeIO = new IOType( 'RealMoleculeShapeIO', {
   toStateObject( realMoleculeShape ) {
     // TODO: Should we support creating custom RealMoleculeShapes?
     return {
-      private: {
-        displayName: realMoleculeShape.displayName
-      }
+      displayName: realMoleculeShape.displayName
     };
   },
   fromStateObject( obj ) {
-    return displayNameMap[ obj.private.displayName ];
+    return displayNameMap[ obj.displayName ];
   }
 } );
 RealMoleculeShape.RealMoleculeShapeIO = RealMoleculeShapeIO;

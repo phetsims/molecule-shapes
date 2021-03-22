@@ -9,11 +9,14 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
+import merge from '../../../../phet-core/js/merge.js';
+import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Molecule from './Molecule.js';
-import MoleculeIO from './MoleculeIO.js';
 
-class MoleculeShapesModel {
+class MoleculeShapesModel extends PhetioObject {
   /**
    * @param {boolean} isBasicsVersion
    * @param {Object} config
@@ -22,17 +25,22 @@ class MoleculeShapesModel {
   constructor( isBasicsVersion, config, tandem ) {
     assert && assert( config.initialMolecule !== undefined );
 
+    config = merge( {
+      tandem: tandem,
+      phetioType: MoleculeShapesModel.MoleculeShapesModelIO,
+      phetioDocumentation: 'The main model for the Molecule Shapes screen'
+    }, config );
+
+    super( config );
+
     this.isBasicsVersion = isBasicsVersion; // @public {boolean}
 
-    // TODO: Add type info
     // @public {Property.<Molecule>} - Assumed not to change in the 1st screen (model)
     this.moleculeProperty = new Property( config.initialMolecule, {
-      tandem: tandem.createTandem( 'moleculeProperty' ),
-      phetioType: Property.PropertyIO( MoleculeIO ),
+      tandem: Tandem.OPT_OUT,
       valueType: Molecule
     } );
 
-    // TODO: Add type info
     // @public {Property.<THREE.Quaternion>} - describes the rotation of the molecule view
     this.moleculeQuaternionProperty = new Property( new THREE.Quaternion(), {
       tandem: tandem.createTandem( 'moleculeQuaternionProperty' ),
@@ -85,6 +93,52 @@ class MoleculeShapesModel {
   }
 }
 
-moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
+// @public {IOType}
+MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO', {
+  valueType: MoleculeShapesModel,
+  toStateObject: model => {
+    const result = {
+      private: {}
 
+      // isReal: false,
+      // groups: [
+      //   {
+      //     position: { ... },
+      //     element: 'C',
+      //     private: {
+      //       veloctiy: { ... }
+      //     }
+      //   }
+      // ]
+      // bonds: [
+      //   [ 0, 1 ]
+      // ]
+
+    };
+    const data = result.private;
+    const molecule = model.moleculeProperty.value;
+
+    data.isReal = molecule.isReal;
+
+    // if ( molecule.isReal ) {
+    //   data.realMoleculeShape = RealMoleculeShape.RealMoleculeShapeIO.toStateObject( molecule.realMoleculeShape );
+    // }
+    // else {
+    //   data.bondLengthOverride = molecule.bondLengthOverride;
+    // }
+    return result;
+  },
+  applyState: ( model, obj ) => {
+    console.log( obj );
+
+    // if ( obj.private.isReal ) {
+    //   return new RealMolecule( RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( obj.private.realMoleculeShape ) );
+    // }
+    // else {
+    //   return new VSEPRMolecule();
+    // }
+  }
+} );
+
+moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
 export default MoleculeShapesModel;
