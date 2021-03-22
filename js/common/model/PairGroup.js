@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
+import Element from '../../../../nitroglycerin/js/Element.js';
 import merge from '../../../../phet-core/js/merge.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
@@ -243,6 +244,42 @@ class PairGroup {
 
     // stop any velocity that was moving the pair
     this.velocityProperty.value = new Vector3( 0, 0, 0 );
+  }
+
+  /**
+   * @public
+   *
+   * @param {PairGroup} centralAtom
+   * @returns {Object}
+   */
+  toStateObject( centralAtom ) {
+    return {
+      position: this.positionProperty.value.toStateObject(),
+      velocity: this.velocityProperty.value.toStateObject(),
+      isLonePair: this.isLonePair,
+      element: this.element === null ? null : this.element.symbol,
+      isCentralAtom: this === centralAtom
+    };
+  }
+
+  /**
+   * @public
+   *
+   * @param {Object} obj
+   * @returns {PairGroup}
+   */
+  static fromStateObject( obj ) {
+    const position = Vector3.fromStateObject( obj.position );
+    const velocity = Vector3.fromStateObject( obj.velocity );
+    const isLonePair = obj.isLonePair;
+    const element = obj.element === null ? null : Element.getElementBySymbol( obj.element );
+
+    const pairGroup = new PairGroup( position, isLonePair, {
+      element: element
+    } );
+    pairGroup.isCentralAtom = obj.isCentralAtom;
+    pairGroup.velocityProperty.value = velocity;
+    return pairGroup;
   }
 
   /**

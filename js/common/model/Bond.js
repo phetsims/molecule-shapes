@@ -56,6 +56,32 @@ class Bond {
 
     return this.a === atom ? this.b : this.a;
   }
+
+  /**
+   * @public
+   *
+   * @param {Array.<*>} atoms
+   * @returns {Object}
+   */
+  toStateObject( atoms ) {
+    return {
+      a: atoms.indexOf( this.a ),
+      b: atoms.indexOf( this.b ),
+      order: this.order,
+      length: this.length
+    };
+  }
+
+  /**
+   * @public
+   *
+   * @param {Object} obj
+   * @param {Array.<*>} atoms
+   * @returns {Bond}
+   */
+  static fromStateObject( obj, atoms ) {
+    return new Bond( atoms[ obj.a ], atoms[ obj.b ], obj.order, obj.length );
+  }
 }
 
 moleculeShapes.register( 'Bond', Bond );

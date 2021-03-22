@@ -126,6 +126,17 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     this.addChild( bondingPanel );
     this.addChild( removeAllButton );
     this.addChild( optionsPanel );
+
+    // rebuild our view when we switch molecules
+    model.moleculeProperty.lazyLink( ( newMolecule, oldMolecule ) => {
+      // tear down the old view
+      this.removeMoleculeView( this.moleculeView );
+      this.moleculeView.dispose();
+
+      // create the new view
+      this.moleculeView = new MoleculeView( model, this, newMolecule, tandem.createTandem( 'moleculeView' ) );
+      this.addMoleculeView( this.moleculeView );
+    } );
   }
 
   /**

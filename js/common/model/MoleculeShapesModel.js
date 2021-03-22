@@ -14,7 +14,12 @@ import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import Bond from './Bond.js';
 import Molecule from './Molecule.js';
+import PairGroup from './PairGroup.js';
+import RealMolecule from './RealMolecule.js';
+import RealMoleculeShape from './RealMoleculeShape.js';
+import VSEPRMolecule from './VSEPRMolecule.js';
 
 class MoleculeShapesModel extends PhetioObject {
   /**
@@ -97,46 +102,59 @@ class MoleculeShapesModel extends PhetioObject {
 MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO', {
   valueType: MoleculeShapesModel,
   toStateObject: model => {
-    const result = {
-      private: {}
-
-      // isReal: false,
-      // groups: [
-      //   {
-      //     position: { ... },
-      //     element: 'C',
-      //     private: {
-      //       veloctiy: { ... }
-      //     }
-      //   }
-      // ]
-      // bonds: [
-      //   [ 0, 1 ]
-      // ]
-
-    };
-    const data = result.private;
     const molecule = model.moleculeProperty.value;
 
-    data.isReal = molecule.isReal;
+    const result = {
+      private: {
+        isReal: molecule.isReal,
+        groups: molecule.groups.map( group => group.toStateObject( molecule.centralAtom ) ),
+        bonds: molecule.bonds.map( bond => bond.toStateObject( molecule.groups ) )
+      }
+    };
+    const data = result.private;
 
-    // if ( molecule.isReal ) {
-    //   data.realMoleculeShape = RealMoleculeShape.RealMoleculeShapeIO.toStateObject( molecule.realMoleculeShape );
-    // }
-    // else {
-    //   data.bondLengthOverride = molecule.bondLengthOverride;
-    // }
+    if ( molecule.isReal ) {
+      data.realMoleculeShape = RealMoleculeShape.RealMoleculeShapeIO.toStateObject( molecule.realMoleculeShape );
+    }
+    else {
+      data.bondLengthOverride = molecule.bondLengthOverride;
+    }
     return result;
   },
   applyState: ( model, obj ) => {
     console.log( obj );
 
-    // if ( obj.private.isReal ) {
-    //   return new RealMolecule( RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( obj.private.realMoleculeShape ) );
-    // }
-    // else {
-    //   return new VSEPRMolecule();
-    // }
+    const data = obj.private;
+
+    if ( data.isReal ) {
+      const molecule = new RealMolecule( RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( data.realMoleculeShape ) );
+      const groups = data.groups.map( groupObj => PairGroup.fromStateObject( groupObj ) );
+
+      groups.forEach( ( group, index ) => {
+        molecule.groups[ index ].positionProperty.value = group.positionProperty.value;
+        molecule.groups[ index ].velocityProperty.value = group.velocityProperty.value;
+      } );
+
+      model.moleculeProperty.value = molecule;
+    }
+    else {
+      const molecule = new VSEPRMolecule();
+      molecule.bondLengthOverride = data.bondLengthOverride;
+
+      const groups = data.groups.map( groupObj => PairGroup.fromStateObject( groupObj ) );
+      groups.filter( group => group.isCentralAtom ).forEach( group => {
+        molecule.addCentralAtom( group );
+      } );
+      groups.filter( group => !group.isCentralAtom ).forEach( group => {
+        molecule.addGroup( group, false );
+      } );
+
+      data.bonds.forEach( bondObj => {
+        molecule.addBond( Bond.fromStateObject( bondObj, groups ) );
+      } );
+
+      model.moleculeProperty.value = molecule;
+    }
   }
 } );
 
