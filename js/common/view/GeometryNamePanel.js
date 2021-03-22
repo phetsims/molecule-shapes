@@ -92,11 +92,13 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    */
   constructor( model, tandem, options ) {
 
-    const content = new Node();
-    super( controlGeometryNameString, content, merge( {
+    options = merge( {
       fill: MoleculeShapesColorProfile.backgroundProperty,
       tandem: tandem
-    }, options ) );
+    }, options );
+
+    const content = new Node();
+    super( controlGeometryNameString, content );
 
     this.model = model; // @private {MoleculeShapesModel}
 
@@ -184,6 +186,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       }
       updateNames();
     } );
+
+    this.mutate( options );
 
     this.maxWidth = 900; // See https://github.com/phetsims/molecule-shapes/issues/137
   }
