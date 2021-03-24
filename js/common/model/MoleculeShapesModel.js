@@ -122,8 +122,6 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
     return result;
   },
   applyState: ( model, obj ) => {
-    console.log( obj );
-
     const data = obj.private;
 
     if ( data.isReal ) {

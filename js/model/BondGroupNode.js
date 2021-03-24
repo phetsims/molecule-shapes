@@ -214,7 +214,15 @@ class BondGroupNode extends HBox {
       overlay.fill = MoleculeShapesColorProfile.backgroundProperty.value.withAlpha( alpha );
     }
 
-    model.moleculeProperty.value.bondChangedEmitter.addListener( update );
+    model.moleculeProperty.link( ( newMolecule, oldMolecule ) => {
+      if ( oldMolecule ) {
+        oldMolecule.bondChangedEmitter.removeListener( update );
+      }
+      if ( newMolecule ) {
+        newMolecule.bondChangedEmitter.addListener( update );
+      }
+      update();
+    } );
     model.showLonePairsProperty.link( update );
 
     MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
