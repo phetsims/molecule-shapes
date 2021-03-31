@@ -136,7 +136,7 @@ const scratchIdealsArray = new MatrixOps3.Array( 18 );
  * since we want everything to be rotated around the origin. We also don't weight the individual electron
  * pairs.
  *
- * Of note, the lower-index slots in the VSEPRConfiguration (GeometryConfiguration) are for higher-repulsion
+ * Of note, the lower-index slots in the VSEPRConfiguration (Geometry) are for higher-repulsion
  * pair groups (the order is triple > double > lone pair > single). We need to iterate through all permutations,
  * but with the repulsion-ordering constraint (no single bond will be assigned a lower-index slot than a lone pair)
  * so we end up splitting the potential slots into bins for each repulsion type and iterating over all of the permutations.

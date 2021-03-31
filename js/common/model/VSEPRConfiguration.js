@@ -13,7 +13,7 @@ import Permutation from '../../../../dot/js/Permutation.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import AttractorModel from './AttractorModel.js';
-import GeometryConfiguration from './GeometryConfiguration.js';
+import Geometry from './Geometry.js';
 import LocalShape from './LocalShape.js';
 
 const shapeBentString = moleculeShapesStrings.shape.bent;
@@ -43,7 +43,7 @@ class VSEPRConfiguration {
     this.e = e; // @public {number} - Number of radial lone pairs connected to the central atom
     this.name = VSEPRConfiguration.getName( x, e ); // @public {string}
 
-    this.geometry = GeometryConfiguration.getConfiguration( x + e ); // @public {GeometryConfiguration}
+    this.geometry = Geometry.getConfiguration( x + e ); // @public {Geometry}
     this.bondOrientations = []; // @public {Array.<Vector3>}
     this.lonePairOrientations = []; // @public {Array.<Vector3>}
     this.allOrientations = this.geometry.unitVectors; // @public {Array.<Vector3>}
@@ -193,5 +193,4 @@ class VSEPRConfiguration {
 }
 
 moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
-
 export default VSEPRConfiguration;

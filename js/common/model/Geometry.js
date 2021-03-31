@@ -9,6 +9,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 
@@ -23,48 +24,36 @@ const geometryTrigonalPlanarString = moleculeShapesStrings.geometry.trigonalPlan
 // Constant for the tetrahedral shape
 const TETRA_CONST = Math.PI * -19.471220333 / 180;
 
-class GeometryConfiguration {
+class GeometryValue {
   /*
-   * @param {string} name
+   * @param {string} string
    * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
    */
-  constructor( name, unitVectors ) {
-    this.name = name; // @public {string}
-    this.unitVectors = unitVectors; // @public {Array.<Vector3>}
-  }
+  constructor( string, unitVectors ) {
+    // @public {string}
+    this.string = string;
 
-  /*
-   * Lookup for the configuration, based on the number of pair groups it contains.
-   * @public
-   *
-   * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
-   * @returns {GeometryConfiguration}
-   */
-  static getConfiguration( numberOfGroups ) {
-    return geometries[ numberOfGroups ];
+    // @public {Array.<Vector3>}
+    this.unitVectors = unitVectors;
   }
 }
 
-moleculeShapes.register( 'GeometryConfiguration', GeometryConfiguration );
-
-// maps number of orientations to the {GeometryConfiguration} with that many orientations
-const geometries = {
-  0: new GeometryConfiguration( geometryEmptyString, [] ),
-
-  1: new GeometryConfiguration(
+const Geometry = Enumeration.byMap( {
+  EMPTY: new GeometryValue( geometryEmptyString, [] ),
+  DIATOMIC: new GeometryValue(
     geometryDiatomicString,
     [
       new Vector3( 1, 0, 0 )
     ]
   ),
-  2: new GeometryConfiguration(
+  LINEAR: new GeometryValue(
     geometryLinearString,
     [
       new Vector3( 1, 0, 0 ),
       new Vector3( -1, 0, 0 )
     ]
   ),
-  3: new GeometryConfiguration(
+  TRIGONAL_PLANAR: new GeometryValue(
     geometryTrigonalPlanarString,
     [
       new Vector3( 1, 0, 0 ),
@@ -72,7 +61,7 @@ const geometries = {
       new Vector3( Math.cos( Math.PI * 4 / 3 ), Math.sin( Math.PI * 4 / 3 ), 0 )
     ]
   ),
-  4: new GeometryConfiguration(
+  TETRAHEDRAL: new GeometryValue(
     geometryTetrahedralString,
     [
       new Vector3( 0, 0, 1 ),
@@ -81,7 +70,7 @@ const geometries = {
       new Vector3( Math.cos( Math.PI * 4 / 3 ) * Math.cos( TETRA_CONST ), Math.sin( Math.PI * 4 / 3 ) * Math.cos( TETRA_CONST ), Math.sin( TETRA_CONST ) )
     ]
   ),
-  5: new GeometryConfiguration(
+  TRIGONAL_BIPYRAMIDAL: new GeometryValue(
     geometryTrigonalBipyramidalString,
     [
       // equitorial (fills up with lone pairs first)
@@ -94,7 +83,7 @@ const geometries = {
       new Vector3( -1, 0, 0 )
     ]
   ),
-  6: new GeometryConfiguration(
+  OCTAHEDRAL: new GeometryValue(
     geometryOctahedralString,
     [
       // opposites first
@@ -106,6 +95,31 @@ const geometries = {
       new Vector3( -1, 0, 0 )
     ]
   )
-};
+}, {
+  beforeFreeze: Geometry => {
+    // @public {Object}
+    Geometry.byNumberOfGroupsMap = {
+      0: Geometry.EMPTY,
+      1: Geometry.DIATOMIC,
+      2: Geometry.LINEAR,
+      3: Geometry.TRIGONAL_PLANAR,
+      4: Geometry.TETRAHEDRAL,
+      5: Geometry.TRIGONAL_BIPYRAMIDAL,
+      6: Geometry.OCTAHEDRAL
+    };
 
-export default GeometryConfiguration;
+    /*
+     * Lookup for the configuration, based on the number of pair groups it contains.
+     * @public
+     *
+     * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
+     * @returns {Geometry}
+     */
+    Geometry.getConfiguration = numberOfGroups => {
+      return Geometry.byNumberOfGroupsMap[ numberOfGroups ];
+    };
+  }
+} );
+
+moleculeShapes.register( 'Geometry', Geometry );
+export default Geometry;

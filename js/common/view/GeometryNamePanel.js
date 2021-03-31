@@ -219,7 +219,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   getElectronGeometryName() {
-    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().geometry.name;
+    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().geometry.string;
     if ( name === null ) {
       return geometryEmptyString;
     }
