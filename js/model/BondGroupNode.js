@@ -185,6 +185,7 @@ class BondGroupNode extends HBox {
       listener: () => {
         removePairCallback( bondOrder );
       },
+      visiblePropertyOptions: { phetioReadOnly: true },
       tandem: tandem.createTandem( 'removeButton' )
     } );
     removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
