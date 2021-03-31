@@ -10,6 +10,7 @@ import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import moleculeShapes from '../../../moleculeShapes.js';
+import PairGroup from '../../model/PairGroup.js';
 
 class BondAngleView extends THREE.Object3D {
   /**
@@ -23,8 +24,11 @@ class BondAngleView extends THREE.Object3D {
    * @param {LabelWebGLView|LabelFallbackNode} label - Supports label.setLabel( ... ) and label.unsetLabel(), see docs
    */
   initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
-    this.aGroup = aGroup; // @public {PairGroup} - Atom on one end of the bond angle
-    this.bGroup = bGroup; // @public {PairGroup} - Atom on the other end of the bond angle
+    assert && assert( aGroup instanceof PairGroup );
+    assert && assert( bGroup instanceof PairGroup );
+
+    this.aGroup = aGroup; // @public {PairGroup|null} - Atom on one end of the bond angle
+    this.bGroup = bGroup; // @public {PairGroup|null} - Atom on the other end of the bond angle
     this.label = label; // @public {LabelWebGLView|LabelFallbackNode}
     this.midpoint = null; // @public {Vector3} - Updated in updateView
     this.radius = 5; // @public {number}
@@ -44,6 +48,9 @@ class BondAngleView extends THREE.Object3D {
    * @public
    */
   dispose() {
+    this.aGroup = null;
+    this.bGroup = null;
+
     // overridden in sub-types
   }
 

@@ -281,13 +281,14 @@ class MoleculeShapesScreenView extends ScreenView {
     this.angleLabels = [];
     for ( let i = 0; i < 15; i++ ) {
       if ( MoleculeShapesGlobals.useWebGLProperty.value ) {
-        this.angleLabels[ i ] = new LabelWebGLView( this.threeRenderer );
-        this.overlayScene.add( this.angleLabels[ i ] );
-        this.angleLabels[ i ].unsetLabel();
+        const label = new LabelWebGLView( this.threeRenderer );
+        this.angleLabels.push( label );
+        this.overlayScene.add( label );
       }
       else {
-        this.angleLabels[ i ] = new LabelFallbackNode();
-        this.addChild( this.angleLabels[ i ] );
+        const label = new LabelFallbackNode();
+        this.angleLabels.push( label );
+        this.addChild( label );
       }
     }
   }

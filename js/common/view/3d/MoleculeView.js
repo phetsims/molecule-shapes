@@ -26,7 +26,8 @@ class MoleculeView extends THREE.Object3D {
   constructor( model, screenView, molecule, tandem ) {
     super();
 
-    // TODO: add instrumentation to subviews?
+    // @private {boolean}
+    this.isDisposed = false;
 
     this.model = model; // @private {MoleculeShapesModel}
     this.screenView = screenView; // @private {MoleculeShapesScreenView}
@@ -42,10 +43,16 @@ class MoleculeView extends THREE.Object3D {
 
     this.lastMidpoint = null; // @private {Vector3|null} - The last bond-angle midpoint for a 2-atom system globally
 
-    molecule.groupAddedEmitter.addListener( this.addGroup.bind( this ) );
-    molecule.groupRemovedEmitter.addListener( this.removeGroup.bind( this ) );
-    molecule.bondAddedEmitter.addListener( this.addBond.bind( this ) );
-    molecule.bondRemovedEmitter.addListener( this.removeBond.bind( this ) );
+    // @private {function}
+    this.addGroupListener = this.addGroup.bind( this );
+    this.removeGroupListener = this.removeGroup.bind( this );
+    this.addBondListener = this.addBond.bind( this );
+    this.removeBondListener = this.removeBond.bind( this );
+
+    this.molecule.groupAddedEmitter.addListener( this.addGroupListener );
+    this.molecule.groupRemovedEmitter.addListener( this.removeGroupListener );
+    this.molecule.bondAddedEmitter.addListener( this.addBondListener );
+    this.molecule.bondRemovedEmitter.addListener( this.removeBondListener );
 
     // initial setup
     _.each( molecule.radialGroups, this.addGroup.bind( this ) );
@@ -68,6 +75,8 @@ class MoleculeView extends THREE.Object3D {
    * @public
    */
   updateView() {
+    assert && assert( !this.isDisposed );
+
     // angle and bond views need to know information about the camera's position
     const cameraPosition = new THREE.Vector3().copy( MoleculeShapesScreenView.cameraPosition ); // this SETS cameraPosition
     this.worldToLocal( cameraPosition ); // this mutates cameraPosition
@@ -87,6 +96,8 @@ class MoleculeView extends THREE.Object3D {
    *                                           coordinate frame
    */
   updateAngles( localCameraOrientation ) {
+    assert && assert( !this.isDisposed );
+
     // we need to handle the 2-atom case separately for proper support of 180-degree bonds
     const hasTwoBonds = this.molecule.radialAtoms.length === 2;
     if ( !hasTwoBonds ) {
@@ -110,14 +121,24 @@ class MoleculeView extends THREE.Object3D {
    * @public
    */
   dispose() {
-    let i;
-    for ( i = 0; i < this.angleViews.length; i++ ) {
-      this.screenView.returnLabel( this.angleViews[ i ].label );
-      this.angleViews[ i ].dispose();
+    assert && assert( !this.isDisposed );
+
+    while ( this.angleViews.length ) {
+      const angleView = this.angleViews.pop();
+      this.remove( angleView );
+      this.screenView.returnLabel( angleView.label );
+      angleView.dispose();
     }
-    for ( i = 0; i < this.lonePairViews.length; i++ ) {
-      this.lonePairViews[ i ].dispose();
+    while ( this.lonePairViews.length ) {
+      this.lonePairViews.pop().dispose();
     }
+
+    this.molecule.groupAddedEmitter.removeListener( this.addGroupListener );
+    this.molecule.groupRemovedEmitter.removeListener( this.removeGroupListener );
+    this.molecule.bondAddedEmitter.removeListener( this.addBondListener );
+    this.molecule.bondRemovedEmitter.removeListener( this.removeBondListener );
+
+    this.isDisposed = true;
   }
 
   /**
@@ -127,6 +148,8 @@ class MoleculeView extends THREE.Object3D {
    * @param {PairGroup} group
    */
   addGroup( group ) {
+    assert && assert( !this.isDisposed );
+
     // ignore the central atom, we add it in the constructor by default
     if ( group === this.molecule.centralAtom ) {
       return;
@@ -159,8 +182,11 @@ class MoleculeView extends THREE.Object3D {
           const bondAngleView = MoleculeShapesGlobals.useWebGLProperty.value ?
                                 BondAngleWebGLView.pool.get( this.renderer ) :
                                 BondAngleFallbackView.pool.get( this.renderer );
+          assert && assert( !bondAngleView.isInitialized );
           bondAngleView.initialize( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );
+          assert && assert( bondAngleView.isInitialized );
           this.add( bondAngleView );
+          assert && assert( !this.angleViews.includes( bondAngleView ) );
           this.angleViews.push( bondAngleView );
         }
       }
@@ -179,6 +205,8 @@ class MoleculeView extends THREE.Object3D {
    * @param {PairGroup} group
    */
   removeGroup( group ) {
+    assert && assert( !this.isDisposed );
+
     let i;
     if ( group.isLonePair ) {
       // remove the lone pair view itself
@@ -210,8 +238,10 @@ class MoleculeView extends THREE.Object3D {
         if ( bondAngleView.aGroup === group || bondAngleView.bGroup === group ) {
           this.remove( bondAngleView );
           this.screenView.returnLabel( bondAngleView.label );
-          bondAngleView.dispose();
           this.angleViews.splice( i, 1 );
+          bondAngleView.dispose();
+
+          assert && assert( !this.angleViews.includes( bondAngleView ) );
         }
       }
     }
@@ -231,6 +261,8 @@ class MoleculeView extends THREE.Object3D {
    * @param {Bond.<PairGroup>} bond
    */
   addBond( bond ) {
+    assert && assert( !this.isDisposed );
+
     assert && assert( bond.contains( this.molecule.centralAtom ) );
     const group = bond.getOtherAtom( this.molecule.centralAtom );
 
@@ -254,6 +286,8 @@ class MoleculeView extends THREE.Object3D {
    * @param {Bond.<PairGroup>} bond
    */
   removeBond( bond ) {
+    assert && assert( !this.isDisposed );
+
     for ( let i = this.bondViews.length - 1; i >= 0; i-- ) {
       const bondView = this.bondViews[ i ];
       if ( bondView.bond === bond ) {

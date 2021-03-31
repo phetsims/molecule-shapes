@@ -31,10 +31,10 @@ class GlobalOptionsNode extends VBox {
       defaultColorProfileName: 'default'
     }, options );
 
-    const children = [];
+    const checkboxes = [];
 
     if ( !isBasicsVersion ) {
-      children.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
+      checkboxes.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
           font: OptionsDialog.DEFAULT_FONT,
           maxWidth: 350
         } ),
@@ -43,16 +43,29 @@ class GlobalOptionsNode extends VBox {
         } ) );
     }
 
-    children.push( new ProjectorModeCheckbox( MoleculeShapesColorProfile, {
+    checkboxes.push( new ProjectorModeCheckbox( MoleculeShapesColorProfile, {
       defaultColorProfileName: options.defaultColorProfileName,
       tandem: tandem.createTandem( 'projectorModeCheckbox' )
     } ) );
 
     super( {
-      children: children,
+      children: checkboxes,
       spacing: OptionsDialog.DEFAULT_SPACING,
       align: 'left'
     } );
+
+    // @private {Array.<Node>}
+    this.checkboxes = checkboxes;
+  }
+
+  /**
+   * Releases references
+   * @public
+   */
+  dispose() {
+    this.checkboxes.forEach( checkbox => checkbox.dispose() );
+
+    super.dispose();
   }
 }
 

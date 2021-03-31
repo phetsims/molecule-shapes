@@ -215,6 +215,8 @@ class LabelWebGLView extends THREE.Mesh {
 
     // @private {Object} - cheap deep copy
     this.materialUniforms = specificMaterialUniforms;
+
+    this.unsetLabel();
   }
 
   /*
