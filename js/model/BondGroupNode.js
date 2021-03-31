@@ -10,6 +10,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector3 from '../../../dot/js/Vector3.js';
 import merge from '../../../phet-core/js/merge.js';
 import platform from '../../../phet-core/js/platform.js';
+import FireListener from '../../../scenery/js/listeners/FireListener.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Imageable from '../../../scenery/js/nodes/Imageable.js';
@@ -131,12 +132,8 @@ class BondGroupNode extends HBox {
     // A semi-transparent overlay with the same color as the background (and variable alpha). Used to adjust the visual
     // "opacity" of the underlying image (by toggling our alpha), and as a hit-area for events.
     const overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? ATOM_HEIGHT : LONE_PAIR_HEIGHT, 0, 0, options );
+    // TODO: track this with the FireListener?
     overlay.addInputListener( {
-      down: () => {
-        if ( enabled ) {
-          addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) );
-        }
-      },
       enter: () => {
         overCount++;
         updateOverlayOpacity();
@@ -146,6 +143,12 @@ class BondGroupNode extends HBox {
         updateOverlayOpacity();
       }
     } );
+    overlay.addInputListener( new FireListener( {
+      canStartPress: () => enabled,
+      tandem: tandem.createTandem( 'fireListener' ),
+      fireOnDown: true,
+      fire: () => addPairCallback( bondOrder, overlay.localToGlobalBounds( overlay.localBounds ) )
+    } ) );
     overlay.touchArea = overlay.localBounds.dilatedY( 4 ).withMinX( -10 );
 
     // our image of the lone pair / bond, under the overlay.
