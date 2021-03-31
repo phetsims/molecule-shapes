@@ -60,7 +60,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       spacing: 10,
       align: 'left'
     } );
-    const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, bondingPanelTandem.createTandem( 'lonePairNode' ), {} );
+    const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, lonePairPanelTandem.createTandem( 'lonePairNode' ), {} );
     const removeAllButton = new TextPushButton( controlRemoveAllString, {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,

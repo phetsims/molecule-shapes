@@ -56,7 +56,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       cornerRadius: 8,
       tandem: moleculePanelTandem.createTandem( 'moleculeComboBox' )
     } );
-    const optionsNode = new OptionsNode( model, tandem.createTandem( 'optionsNode' ) );
+    const optionsNode = new OptionsNode( model, optionsPanelTandem.createTandem( 'optionsNode' ) );
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
     const maxWidth = Math.max( optionsNode.width, moleculeComboBox.width );
