@@ -63,13 +63,13 @@ class MoleculeShapesModel extends PhetioObject {
     } );
 
     // @public {Property.<boolean>} - Whether molecular shape names are shown
-    this.showMolecularShapeNameProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'showMolecularShapeNameProperty' )
+    this.showMoleculeGeometryProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showMoleculeGeometryProperty' )
     } );
 
     // @public {Property.<boolean>} - Whether electron shape names are shown
-    this.showElectronShapeNameProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'showElectronShapeNameProperty' )
+    this.showElectronGeometryProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showElectronGeometryProperty' )
     } );
   }
 
@@ -82,8 +82,8 @@ class MoleculeShapesModel extends PhetioObject {
     this.moleculeQuaternionProperty.reset();
     this.showBondAnglesProperty.reset();
     this.showLonePairsProperty.reset();
-    this.showMolecularShapeNameProperty.reset();
-    this.showElectronShapeNameProperty.reset();
+    this.showMoleculeGeometryProperty.reset();
+    this.showElectronGeometryProperty.reset();
   }
 
   /**

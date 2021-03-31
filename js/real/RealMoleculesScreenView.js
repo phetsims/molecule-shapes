@@ -50,23 +50,23 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
         tandemName: `${realMoleculeShape.displayName}Item`
       } );
     } );
-    const comboBox = new ComboBox( comboBoxItems, model.realMoleculeShapeProperty, comboBoxListContainer, {
+    const moleculeComboBox = new ComboBox( comboBoxItems, model.realMoleculeShapeProperty, comboBoxListContainer, {
       xMargin: 13,
       yMargin: 10,
       cornerRadius: 8,
-      tandem: moleculePanelTandem.createTandem( 'comboBox' )
+      tandem: moleculePanelTandem.createTandem( 'moleculeComboBox' )
     } );
     const optionsNode = new OptionsNode( model, tandem.createTandem( 'optionsNode' ) );
 
     // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
-    const maxWidth = Math.max( optionsNode.width, comboBox.width );
+    const maxWidth = Math.max( optionsNode.width, moleculeComboBox.width );
     const maxExternalWidth = 350; // How big the panels can get before really interfering
 
-    const moleculePanel = new MoleculeShapesPanel( controlMoleculeString, comboBox, {
+    const moleculePanel = new MoleculeShapesPanel( controlMoleculeString, moleculeComboBox, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
-      xMargin: ( maxWidth - comboBox.width ) / 2 + 15,
+      xMargin: ( maxWidth - moleculeComboBox.width ) / 2 + 15,
       tandem: moleculePanelTandem
     } );
     const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {

@@ -90,18 +90,18 @@ class MoleculeShapesScreenView extends ScreenView {
     this.threeCamera.position.copy( MoleculeShapesScreenView.cameraPosition ); // sets the camera's position
 
     // @private add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
-    this.domNode = new DOM( this.threeRenderer.domElement, {
+    this.moleculeNode = new DOM( this.threeRenderer.domElement, {
       preventTransform: true, // Scenery 0.2 override for transformation
       invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
         this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
       },
       pickable: false,
-      tandem: tandem.createTandem( 'domNode' )
+      tandem: tandem.createTandem( 'moleculeNode' )
     } );
-    this.domNode.invalidateDOM();
+    this.moleculeNode.invalidateDOM();
 
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
-    this.domNode.renderToCanvasSelf = wrapper => {
+    this.moleculeNode.renderToCanvasSelf = wrapper => {
       let canvas = null;
 
       const effectiveWidth = Math.ceil( this.screenWidth );
@@ -160,7 +160,7 @@ class MoleculeShapesScreenView extends ScreenView {
       context.restore();
     };
 
-    this.addChild( this.domNode );
+    this.addChild( this.moleculeNode );
 
     // overlay Scene for bond-angle labels (if WebGL)
     this.overlayScene = new THREE.Scene(); // @private
@@ -176,7 +176,7 @@ class MoleculeShapesScreenView extends ScreenView {
       tandem: tandem.createTandem( 'resetAllButton' )
     } ) );
 
-    this.addChild( new GeometryNamePanel( model, tandem.createTandem( 'geometryNamePanel' ), {
+    this.addChild( new GeometryNamePanel( model, tandem.createTandem( 'namePanel' ), {
       left: this.layoutBounds.minX + 10,
       bottom: this.layoutBounds.maxY - 10
     } ) );
@@ -630,7 +630,7 @@ class MoleculeShapesScreenView extends ScreenView {
     // update the size of the renderer
     this.threeRenderer.setSize( Math.ceil( width ), Math.ceil( height ) );
 
-    this.domNode.invalidateDOM();
+    this.moleculeNode.invalidateDOM();
   }
 
   /**

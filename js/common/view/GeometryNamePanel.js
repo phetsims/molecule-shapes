@@ -116,8 +116,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       fill: MoleculeShapesColorProfile.electronGeometryNameProperty,
       tandem: tandem.createTandem( 'electronText' )
     } );
-    model.showMolecularShapeNameProperty.linkAttribute( this.molecularText, 'visible' );
-    model.showElectronShapeNameProperty.linkAttribute( this.electronText, 'visible' );
+    model.showMoleculeGeometryProperty.linkAttribute( this.molecularText, 'visible' );
+    model.showElectronGeometryProperty.linkAttribute( this.electronText, 'visible' );
 
     // labels for the types of geometries
     const textLabelFont = new PhetFont( 14 );
@@ -135,44 +135,44 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     } );
 
     // @private
-    this.molecularCheckbox = new MoleculeShapesCheckbox( this.molecularTextLabel, model.showMolecularShapeNameProperty, {
-      tandem: tandem.createTandem( 'molecularCheckbox' )
+    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( this.molecularTextLabel, model.showMoleculeGeometryProperty, {
+      tandem: tandem.createTandem( 'moleculeGeometryCheckbox' )
     } );
-    this.electronCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronShapeNameProperty, {
-      tandem: tandem.createTandem( 'electronCheckbox' )
+    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronGeometryProperty, {
+      tandem: tandem.createTandem( 'electronGeometryCheckbox' )
     } );
 
     const pointerAreaXPadding = 10;
     const pointerAreaYPadding = 15;
     const pointerAreaBottomExtension = 40;
-    const molecularPointerArea = this.molecularCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
-      .withMaxY( this.molecularCheckbox.localBounds.maxY + pointerAreaBottomExtension );
-    this.molecularCheckbox.touchArea = this.molecularCheckbox.mouseArea = molecularPointerArea;
-    const electronPointerArea = this.electronCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
-      .withMaxY( this.electronCheckbox.localBounds.maxY + pointerAreaBottomExtension );
-    this.electronCheckbox.touchArea = this.electronCheckbox.mouseArea = electronPointerArea;
+    const molecularPointerArea = this.moleculeGeometryCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
+      .withMaxY( this.moleculeGeometryCheckbox.localBounds.maxY + pointerAreaBottomExtension );
+    this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = molecularPointerArea;
+    const electronPointerArea = this.electronGeometryCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
+      .withMaxY( this.electronGeometryCheckbox.localBounds.maxY + pointerAreaBottomExtension );
+    this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = electronPointerArea;
 
     // increase our maximums if our checkbox labels are larger than the shape names
-    maxGeometryWidth = Math.max( maxGeometryWidth, this.molecularCheckbox.width );
-    maxShapeWidth = Math.max( maxShapeWidth, this.electronCheckbox.width );
+    maxGeometryWidth = Math.max( maxGeometryWidth, this.moleculeGeometryCheckbox.width );
+    maxShapeWidth = Math.max( maxShapeWidth, this.electronGeometryCheckbox.width );
 
     // layout
     const horizontalPadding = 20;
     const contentWidth = maxGeometryWidth + ( model.isBasicsVersion ? 0 : ( horizontalPadding + maxGeometryWidth ) );
-    const checkboxBottom = Math.max( this.molecularCheckbox.bottom, this.electronCheckbox.bottom );
-    this.molecularCheckbox.centerX = maxGeometryWidth / 2;
-    this.electronCheckbox.centerX = maxGeometryWidth + horizontalPadding + maxShapeWidth / 2;
+    const checkboxBottom = Math.max( this.moleculeGeometryCheckbox.bottom, this.electronGeometryCheckbox.bottom );
+    this.moleculeGeometryCheckbox.centerX = maxGeometryWidth / 2;
+    this.electronGeometryCheckbox.centerX = maxGeometryWidth + horizontalPadding + maxShapeWidth / 2;
     this.molecularText.top = this.electronText.top = checkboxBottom + 10;
 
     // Make sure we include the extra (possibly unused) space so that the panel can contain all of the content,
     // regardless of which string is shown. See https://github.com/phetsims/molecule-shapes/issues/138
-    content.localBounds = new Bounds2( 0, this.molecularCheckbox.top, contentWidth, this.molecularText.bottom );
+    content.localBounds = new Bounds2( 0, this.moleculeGeometryCheckbox.top, contentWidth, this.molecularText.bottom );
 
-    content.addChild( this.molecularCheckbox );
+    content.addChild( this.moleculeGeometryCheckbox );
     content.addChild( this.molecularText );
     if ( !model.isBasicsVersion ) {
       // basics version excludes lone-pair (electron) geometries
-      content.addChild( this.electronCheckbox );
+      content.addChild( this.electronGeometryCheckbox );
       content.addChild( this.electronText );
     }
 
@@ -200,8 +200,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     this.electronText.text = this.getElectronGeometryName();
 
     // layout
-    this.molecularText.centerX = this.molecularCheckbox.centerX;
-    this.electronText.centerX = this.electronCheckbox.centerX;
+    this.molecularText.centerX = this.moleculeGeometryCheckbox.centerX;
+    this.electronText.centerX = this.electronGeometryCheckbox.centerX;
   }
 
   /**
