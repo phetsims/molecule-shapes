@@ -9,6 +9,7 @@
 import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
+import animatedPanZoomSingleton from '../../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import PairGroup from '../../model/PairGroup.js';
 
@@ -118,7 +119,7 @@ class BondAngleView extends THREE.Object3D {
       // inverse projection into normalized device coordinates
       this.screenView.convertScreenPointFromGlobalPoint( centerDevicePoint );
       this.screenView.convertScreenPointFromGlobalPoint( midDevicePoint );
-      const layoutScale = this.screenView.getLayoutScale( this.screenView.screenWidth, this.screenView.screenHeight );
+      const layoutScale = this.screenView.getLayoutScale( this.screenView.screenWidth, this.screenView.screenHeight ) * animatedPanZoomSingleton.listener.matrixProperty.value.getScaleVector().x;
 
       const angle = aDir.angleBetween( bDir ) * 180 / Math.PI;
 

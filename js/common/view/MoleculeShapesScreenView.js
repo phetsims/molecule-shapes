@@ -7,6 +7,7 @@
  */
 
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Plane3 from '../../../../dot/js/Plane3.js';
 import Ray3 from '../../../../dot/js/Ray3.js';
 import Sphere3 from '../../../../dot/js/Sphere3.js';
@@ -15,6 +16,7 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFailureDialog.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
+import animatedPanZoomSingleton from '../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
 import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import moleculeShapes from '../../moleculeShapes.js';
@@ -194,8 +196,9 @@ class MoleculeShapesScreenView extends ScreenView {
 
         let dragMode = null;
         let draggedParticle = null;
+        const pointer = event.pointer;
 
-        const pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
+        const pair = self.getElectronPairUnderPointer( pointer, !( pointer instanceof Mouse ) );
         if ( pair && !pair.userControlledProperty.value ) {
           // we start dragging that pair group with this pointer, moving it along the sphere where it can exist
           dragMode = 'pairExistingSpherical';
@@ -203,7 +206,9 @@ class MoleculeShapesScreenView extends ScreenView {
           pair.userControlledProperty.value = true;
           draggedParticleCount++;
         }
-        else if ( draggedParticleCount === 0 ) { // we don't want to rotate while we are dragging any particles
+        // we don't want to rotate while we are dragging any particles
+        // Additionally, don't rotate if we're zoomed into the sim
+        else if ( draggedParticleCount === 0 && animatedPanZoomSingleton.listener.matrixProperty.value.equalsEpsilon( Matrix3.IDENTITY, 1e-7 ) ) {
           // we rotate the entire molecule with this pointer
           dragMode = 'modelRotate';
           isRotating = true;
@@ -213,10 +218,27 @@ class MoleculeShapesScreenView extends ScreenView {
           return;
         }
 
-        const lastGlobalPoint = event.pointer.point.copy();
+        const lastGlobalPoint = pointer.point.copy();
 
-        event.pointer.cursor = 'pointer';
-        event.pointer.addInputListener( {
+        const attach = dragMode === 'pairExistingSpherical';
+        if ( attach ) {
+          pointer.reserveForDrag();
+        }
+
+        const onEndDrag = function( event, trail ) {
+          if ( dragMode === 'pairExistingSpherical' ) {
+            draggedParticle.userControlledProperty.value = false;
+            draggedParticleCount--;
+          }
+          else if ( dragMode === 'modelRotate' ) {
+            isRotating = false;
+          }
+          pointer.removeInputListener( this );
+          pointer.cursor = null;
+        };
+
+        pointer.cursor = 'pointer';
+        pointer.addInputListener( {
           // end drag on either up or cancel (not supporting full cancel behavior)
           up: function( event, trail ) {
             this.endDrag( event, trail );
@@ -227,8 +249,8 @@ class MoleculeShapesScreenView extends ScreenView {
 
           move: ( event, trail ) => {
             if ( dragMode === 'modelRotate' ) {
-              const delta = event.pointer.point.minus( lastGlobalPoint );
-              lastGlobalPoint.set( event.pointer.point );
+              const delta = pointer.point.minus( lastGlobalPoint );
+              lastGlobalPoint.set( pointer.point );
 
               const scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
               const newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
@@ -237,24 +259,15 @@ class MoleculeShapesScreenView extends ScreenView {
             }
             else if ( dragMode === 'pairExistingSpherical' ) {
               if ( _.includes( model.moleculeProperty.value.groups, draggedParticle ) ) {
-                draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
+                draggedParticle.dragToPosition( self.getSphericalMoleculePosition( pointer.point, draggedParticle ) );
               }
             }
           },
 
           // not a Scenery event
-          endDrag: function( event, trail ) {
-            if ( dragMode === 'pairExistingSpherical' ) {
-              draggedParticle.userControlledProperty.value = false;
-              draggedParticleCount--;
-            }
-            else if ( dragMode === 'modelRotate' ) {
-              isRotating = false;
-            }
-            event.pointer.removeInputListener( this );
-            event.pointer.cursor = null;
-          }
-        } );
+          endDrag: onEndDrag,
+          interrupt: onEndDrag
+        }, attach );
       }
     };
     this.backgroundEventTarget.addInputListener( multiDragListener );
@@ -291,6 +304,17 @@ class MoleculeShapesScreenView extends ScreenView {
         this.addChild( label );
       }
     }
+
+    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( matrix => {
+      if ( this.screenWidth && this.screenHeight ) {
+        const globalBounds = new Bounds2( 0, 0, this.screenWidth, this.screenHeight ).transformed( matrix );
+
+        this.threeCamera.setViewOffset( globalBounds.width, globalBounds.height, -globalBounds.left, -globalBounds.top, this.screenWidth, this.screenHeight );
+
+        // three.js requires this to be called after changing the parameters
+        this.threeCamera.updateProjectionMatrix();
+      }
+    } );
   }
 
   /**
