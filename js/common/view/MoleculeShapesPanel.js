@@ -17,9 +17,10 @@ class MoleculeShapesPanel extends TitledPanel {
   /**
    * @param {string} titleString
    * @param {Node} contentNode
+   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( titleString, contentNode, options ) {
+  constructor( titleString, contentNode, tandem, options ) {
     options = merge( {
       lineWidth: 1.5,
       xMargin: MoleculeShapesPanel.xMargin,
@@ -36,7 +37,8 @@ class MoleculeShapesPanel extends TitledPanel {
 
     const titleNode = new Text( titleString, {
       font: new PhetFont( 18 ),
-      fill: MoleculeShapesColorProfile.controlPanelTitleProperty
+      fill: MoleculeShapesColorProfile.controlPanelTitleProperty,
+      tandem: tandem.createTandem( 'titleNode' )
     } );
 
     super( titleNode, contentNode, options );

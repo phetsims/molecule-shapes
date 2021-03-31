@@ -98,7 +98,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     }, options );
 
     const content = new Node();
-    super( controlGeometryNameString, content );
+    super( controlGeometryNameString, content, tandem );
 
     this.model = model; // @private {MoleculeShapesModel}
 

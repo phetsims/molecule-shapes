@@ -11,6 +11,7 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import PairGroup from '../common/model/PairGroup.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
 import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
@@ -87,15 +88,15 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     const optionsTempNode = new Node( { children: [ optionsNode ] } );
     const bondingTempNode = new Node( { children: [ bondingNode ] } );
     const lonePairTempNode = new Node( { children: [ lonePairNode ] } );
-    const maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode ).width,
-      Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode ).width,
-        new MoleculeShapesPanel( controlLonePairString, lonePairTempNode ).width ) );
+    const maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode, Tandem.OPT_OUT ).width,
+      Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode, Tandem.OPT_OUT ).width,
+        new MoleculeShapesPanel( controlLonePairString, lonePairTempNode, Tandem.OPT_OUT ).width ) );
     optionsTempNode.removeAllChildren();
     bondingTempNode.removeAllChildren();
     lonePairTempNode.removeAllChildren();
 
     const maxExternalWidth = 350; // How big the panels can get before really interfering
-    const bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, {
+    const bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, bondingPanelTandem, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
@@ -104,7 +105,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     } );
     let bottom = bondingPanel.bottom;
     if ( !model.isBasicsVersion ) {
-      const lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, {
+      const lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, lonePairPanelTandem, {
         maxWidth: maxExternalWidth,
         right: this.layoutBounds.right - 10,
         top: bondingPanel.bottom + 10,
@@ -116,7 +117,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     }
     removeAllButton.centerX = bondingPanel.centerX;
     removeAllButton.top = bottom + 15;
-    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
+    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: removeAllButton.bottom + 20,

@@ -62,14 +62,14 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     const maxWidth = Math.max( optionsNode.width, moleculeComboBox.width );
     const maxExternalWidth = 350; // How big the panels can get before really interfering
 
-    const moleculePanel = new MoleculeShapesPanel( controlMoleculeString, moleculeComboBox, {
+    const moleculePanel = new MoleculeShapesPanel( controlMoleculeString, moleculeComboBox, moleculePanelTandem, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: this.layoutBounds.top + 10,
       xMargin: ( maxWidth - moleculeComboBox.width ) / 2 + 15,
       tandem: moleculePanelTandem
     } );
-    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, {
+    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
       maxWidth: maxExternalWidth,
       right: this.layoutBounds.right - 10,
       top: moleculePanel.bottom + 10,
