@@ -66,6 +66,9 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
+      textNodeOptions: {
+        tandem: Tandem.OPT_OUT
+      },
       listener: () => {
         model.moleculeProperty.value.removeAllGroups();
       },
