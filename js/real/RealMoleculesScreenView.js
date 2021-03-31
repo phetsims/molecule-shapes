@@ -11,7 +11,7 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import RichText from '../../../scenery/js/nodes/RichText.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import AquaRadioButton from '../../../sun/js/AquaRadioButton.js';
+import AquaRadioButtonGroup from '../../../sun/js/AquaRadioButtonGroup.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../sun/js/ComboBoxItem.js';
 import RealMoleculeShape from '../common/model/RealMoleculeShape.js';
@@ -98,26 +98,31 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       const horizontalSpacing = 30;
 
       const radioButtonScale = 0.7;
-      const realRadioButton = new AquaRadioButton( model.showRealViewProperty, true, realViewLabel, {
-        radius: 16,
-        scale: radioButtonScale,
+
+      const realModelRadioButtonGroup = new AquaRadioButtonGroup( model.showRealViewProperty, [
+        {
+          node: realViewLabel,
+          value: true,
+          tandemName: 'realRadioButton'
+        },
+        {
+          node: modelViewLabel,
+          value: false,
+          tandemName: 'modelRadioButton'
+        }
+      ], {
+        radioButtonOptions: {
+          radius: 16,
+          scale: radioButtonScale,
+          maxWidth: 320
+        },
         top: this.layoutBounds.top + 20,
-        right: approximateVisualCenterX - horizontalSpacing / 2,
-        maxWidth: 320,
-        tandem: optionsPanelTandem.createTandem( 'realRadioButton' )
+        tandem: tandem.createTandem( 'realModelRadioButtonGroup' ),
+        spacing: horizontalSpacing,
+        centerX: approximateVisualCenterX,
+        orientation: 'horizontal'
       } );
-      const modelRadioButton = new AquaRadioButton( model.showRealViewProperty, false, modelViewLabel, {
-        radius: 16,
-        scale: radioButtonScale,
-        top: this.layoutBounds.top + 20,
-        left: approximateVisualCenterX + horizontalSpacing / 2,
-        maxWidth: 320,
-        tandem: optionsPanelTandem.createTandem( 'modelRadioButton' )
-      } );
-      realRadioButton.touchArea = realRadioButton.mouseArea = realRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
-      modelRadioButton.touchArea = modelRadioButton.mouseArea = modelRadioButton.localBounds.dilated( horizontalSpacing / 2 / radioButtonScale );
-      this.addChild( realRadioButton );
-      this.addChild( modelRadioButton );
+      this.addChild( realModelRadioButtonGroup );
     }
 
     // rebuild our view when we switch molecules
