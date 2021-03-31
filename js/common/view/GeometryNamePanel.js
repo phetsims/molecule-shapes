@@ -106,15 +106,13 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     this.molecularText = new Text( 'X', {
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty,
-      tandem: tandem.createTandem( 'molecularText' )
+      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
     } );
     // @private
     this.electronText = new Text( 'Y', {
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColorProfile.electronGeometryNameProperty,
-      tandem: tandem.createTandem( 'electronText' )
+      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
     } );
     model.showMoleculeGeometryProperty.linkAttribute( this.molecularText, 'visible' );
     model.showElectronGeometryProperty.linkAttribute( this.electronText, 'visible' );
