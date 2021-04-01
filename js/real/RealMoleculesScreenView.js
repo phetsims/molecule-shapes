@@ -118,6 +118,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
         },
         top: this.layoutBounds.top + 20,
         tandem: tandem.createTandem( 'realModelRadioButtonGroup' ),
+        touchAreaYDilation: 10,
         spacing: horizontalSpacing,
         centerX: approximateVisualCenterX,
         orientation: 'horizontal'

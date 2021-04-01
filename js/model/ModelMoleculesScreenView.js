@@ -7,8 +7,11 @@
  */
 
 import Vector3 from '../../../dot/js/Vector3.js';
+import merge from '../../../phet-core/js/merge.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import FlowBox from '../../../scenery/js/layout/FlowBox.js';
+import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
+import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -63,22 +66,21 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     } );
     const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, lonePairPanelTandem.createTandem( 'lonePairNode' ), {} );
     const removeAllButton = new TextPushButton( controlRemoveAllString, {
+      baseColor: MoleculeShapesColorProfile.removeButtonBackgroundProperty,
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColorProfile.removeButtonTextProperty.value,
       maxWidth: 320,
       textNodeOptions: {
         tandem: Tandem.OPT_OUT
       },
+      layoutOptions: { topMargin: 5 },
+      touchAreaXDilation: 30,
+      touchAreaYDilation: 10,
       listener: () => {
         model.moleculeProperty.value.removeAllGroups();
       },
       tandem: tandem.createTandem( 'removeAllButton' )
     } );
-
-    MoleculeShapesColorProfile.removeButtonBackgroundProperty.link( color => {
-      removeAllButton.baseColor = color;
-    } );
-    removeAllButton.touchArea = removeAllButton.localBounds.dilatedXY( 30, 10 );
 
     function updateButtonEnabled() {
       removeAllButton.enabled = model.moleculeProperty.value.radialGroups.length > 0;
@@ -87,49 +89,35 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     model.moleculeProperty.value && model.moleculeProperty.value.bondChangedEmitter.addListener( updateButtonEnabled );
     updateButtonEnabled();
 
-    // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
-    const optionsTempNode = new Node( { children: [ optionsNode ] } );
-    const bondingTempNode = new Node( { children: [ bondingNode ] } );
-    const lonePairTempNode = new Node( { children: [ lonePairNode ] } );
-    const maxInternalWidth = Math.max( new MoleculeShapesPanel( controlOptionsString, optionsTempNode, Tandem.OPT_OUT ).width,
-      Math.max( new MoleculeShapesPanel( controlBondingString, bondingTempNode, Tandem.OPT_OUT ).width,
-        new MoleculeShapesPanel( controlLonePairString, lonePairTempNode, Tandem.OPT_OUT ).width ) );
-    optionsTempNode.removeAllChildren();
-    bondingTempNode.removeAllChildren();
-    lonePairTempNode.removeAllChildren();
+    const rightAlignGroup = new AlignGroup( { matchVertical: false } );
+    const createBox = ( node, options ) => rightAlignGroup.createBox( node, merge( {
+      maxWidth: 330,
+      xMargin: 15
+    }, options ) );
 
-    const maxExternalWidth = 350; // How big the panels can get before really interfering
-    const bondingPanel = new MoleculeShapesPanel( controlBondingString, bondingNode, bondingPanelTandem, {
-      maxWidth: maxExternalWidth,
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 10,
-      xMargin: ( maxInternalWidth - bondingNode.width ) / 2 + 15,
-      tandem: bondingPanelTandem
+    const rightBox = new FlowBox( {
+      spacing: 10,
+      orientation: 'vertical',
+      children: [
+        new MoleculeShapesPanel( controlBondingString, createBox( bondingNode ), bondingPanelTandem, {
+          tandem: bondingPanelTandem
+        } ),
+        ...( !model.isBasicsVersion ? [ new MoleculeShapesPanel( controlLonePairString, createBox( lonePairNode ), lonePairPanelTandem, {
+          tandem: lonePairPanelTandem
+        } ) ] : [] ),
+        removeAllButton,
+        new MoleculeShapesPanel( controlOptionsString, createBox( optionsNode, { xAlign: 'left' } ), optionsPanelTandem, {
+          layoutOptions: { topMargin: 10 },
+          tandem: optionsPanelTandem
+        } )
+      ]
     } );
-    let bottom = bondingPanel.bottom;
-    if ( !model.isBasicsVersion ) {
-      const lonePairPanel = new MoleculeShapesPanel( controlLonePairString, lonePairNode, lonePairPanelTandem, {
-        maxWidth: maxExternalWidth,
-        right: this.layoutBounds.right - 10,
-        top: bondingPanel.bottom + 10,
-        xMargin: ( maxInternalWidth - lonePairNode.width ) / 2 + 15,
-        tandem: lonePairPanelTandem
-      } );
-      this.addChild( lonePairPanel );
-      bottom = lonePairPanel.bottom;
-    }
-    removeAllButton.centerX = bondingPanel.centerX;
-    removeAllButton.top = bottom + 15;
-    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
-      maxWidth: maxExternalWidth,
-      right: this.layoutBounds.right - 10,
-      top: removeAllButton.bottom + 20,
-      xMargin: ( maxInternalWidth - optionsNode.width ) / 2 + 15,
-      tandem: optionsPanelTandem
-    } );
-    this.addChild( bondingPanel );
-    this.addChild( removeAllButton );
-    this.addChild( optionsPanel );
+    this.addChild( new AlignBox( rightBox, {
+      alignBounds: this.layoutBounds,
+      xAlign: 'right',
+      yAlign: 'top',
+      margin: 10
+    } ) );
 
     // rebuild our view when we switch molecules
     model.moleculeProperty.lazyLink( ( newMolecule, oldMolecule ) => {
