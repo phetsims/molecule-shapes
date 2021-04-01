@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -15,7 +16,7 @@ import moleculeShapes from '../moleculeShapes.js';
 import MoleculeShapesQueryParameters from './MoleculeShapesQueryParameters.js';
 
 const MoleculeShapesGlobals = {
-  showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs, {
+  showOuterLonePairsProperty: new BooleanProperty( MoleculeShapesQueryParameters.showOuterLonePairs, {
     tandem: Tandem.GLOBAL_MODEL.createTandem( 'showOuterLonePairsProperty' )
   } )
 };
