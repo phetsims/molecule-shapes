@@ -7,7 +7,11 @@
  */
 
 import ChemUtils from '../../../nitroglycerin/js/ChemUtils.js';
+import merge from '../../../phet-core/js/merge.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
+import FlowBox from '../../../scenery/js/layout/FlowBox.js';
+import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
+import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import RichText from '../../../scenery/js/nodes/RichText.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -58,28 +62,31 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     } );
     const optionsNode = new OptionsNode( model, optionsPanelTandem.createTandem( 'optionsNode' ) );
 
-    // calculate the maximum width, so we can make sure our panels are the same width by matching xMargins
-    const maxWidth = Math.max( optionsNode.width, moleculeComboBox.width );
-    const maxExternalWidth = 350; // How big the panels can get before really interfering
+    const rightAlignGroup = new AlignGroup( { matchVertical: false } );
+    const createBox = ( node, options ) => rightAlignGroup.createBox( node, merge( {
+      maxWidth: 330
+    }, options ) );
 
-    const moleculePanel = new MoleculeShapesPanel( controlMoleculeString, moleculeComboBox, moleculePanelTandem, {
-      maxWidth: maxExternalWidth,
-      right: this.layoutBounds.right - 10,
-      top: this.layoutBounds.top + 10,
-      xMargin: ( maxWidth - moleculeComboBox.width ) / 2 + 15,
-      tandem: moleculePanelTandem
+    const rightBox = new FlowBox( {
+      spacing: 10,
+      orientation: 'vertical',
+      children: [
+        new MoleculeShapesPanel( controlMoleculeString, createBox( moleculeComboBox ), moleculePanelTandem, {
+          tandem: moleculePanelTandem
+        } ),
+        new MoleculeShapesPanel( controlOptionsString, createBox( optionsNode, { xAlign: 'left' } ), optionsPanelTandem, {
+          tandem: optionsPanelTandem
+        } )
+      ]
     } );
-    const optionsPanel = new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
-      maxWidth: maxExternalWidth,
-      right: this.layoutBounds.right - 10,
-      top: moleculePanel.bottom + 10,
-      xMargin: ( maxWidth - optionsNode.width ) / 2 + 15,
-      tandem: optionsPanelTandem
-    } );
-    this.addChild( moleculePanel );
-    this.addChild( optionsPanel );
+    this.addChild( new AlignBox( rightBox, {
+      alignBounds: this.layoutBounds,
+      xAlign: 'right',
+      yAlign: 'top',
+      margin: 10
+    } ) );
+
     this.addChild( comboBoxListContainer );
-
 
     if ( !model.isBasicsVersion ) {
       // we offset the camera, so we don't have an exact constant. this is tuned

@@ -97,8 +97,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
 
     const rightAlignGroup = new AlignGroup( { matchVertical: false } );
     const createBox = ( node, options ) => rightAlignGroup.createBox( node, merge( {
-      maxWidth: 330,
-      xMargin: 15
+      maxWidth: 330
     }, options ) );
 
     const rightBox = new FlowBox( {
