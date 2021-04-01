@@ -10,11 +10,14 @@ import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Utils from '../../../scenery/js/util/Utils.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import moleculeShapes from '../moleculeShapes.js';
 import MoleculeShapesQueryParameters from './MoleculeShapesQueryParameters.js';
 
 const MoleculeShapesGlobals = {
-  showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs )
+  showOuterLonePairsProperty: new Property( MoleculeShapesQueryParameters.showOuterLonePairs, {
+    tandem: Tandem.GLOBAL_MODEL.createTandem( 'showOuterLonePairsProperty' )
+  } )
 };
 
 moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
