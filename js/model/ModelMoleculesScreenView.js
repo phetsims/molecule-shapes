@@ -40,15 +40,15 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
   constructor( model, tandem ) {
     super( model, tandem );
 
-    this.model = model; // @private {MoleculeShapesModel}
+    // @private {MoleculeShapesModel}
+    this.model = model;
 
-    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.value, tandem.createTandem( 'moleculeView' ) ); // @public
+    // @public {MoleculeView}
+    this.moleculeView = new MoleculeView( model, this, model.moleculeProperty.value, tandem.createTandem( 'moleculeView' ) );
     this.addMoleculeView( this.moleculeView );
 
     const addPairCallback = this.addPairGroup.bind( this );
     const removePairCallback = this.removePairGroup.bind( this );
-
-    // TODO: improved layout handling
 
     const optionsPanelTandem = tandem.createTandem( 'optionsPanel' );
     const bondingPanelTandem = tandem.createTandem( 'bondingPanel' );
@@ -85,9 +85,15 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     function updateButtonEnabled() {
       removeAllButton.enabled = model.moleculeProperty.value.radialGroups.length > 0;
     }
-
-    model.moleculeProperty.value && model.moleculeProperty.value.bondChangedEmitter.addListener( updateButtonEnabled );
-    updateButtonEnabled();
+    model.moleculeProperty.link( ( newMolecule, oldMolecule ) => {
+      if ( oldMolecule ) {
+        oldMolecule.bondChangedEmitter.removeListener( updateButtonEnabled );
+      }
+      if ( newMolecule ) {
+        newMolecule.bondChangedEmitter.addListener( updateButtonEnabled );
+      }
+      updateButtonEnabled();
+    } );
 
     const rightAlignGroup = new AlignGroup( { matchVertical: false } );
     const createBox = ( node, options ) => rightAlignGroup.createBox( node, merge( {

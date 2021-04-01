@@ -42,6 +42,7 @@ class ModelMoleculesModel extends MoleculeShapesModel {
       if ( newMolecule ) {
         newMolecule.bondChangedEmitter.addListener( bondChangedListener );
       }
+      bondChangedListener();
     } );
   }
 
