@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -15,7 +16,9 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
+import ElectronGeometry from './ElectronGeometry.js';
 import Molecule from './Molecule.js';
+import MoleculeGeometry from './MoleculeGeometry.js';
 import PairGroup from './PairGroup.js';
 import RealMolecule from './RealMolecule.js';
 import RealMoleculeShape from './RealMoleculeShape.js';
@@ -46,6 +49,18 @@ class MoleculeShapesModel extends PhetioObject {
       valueType: Molecule
     } );
 
+    // @public {Property.<ElectronGeometry>}
+    this.electronGeometryProperty = new EnumerationProperty( ElectronGeometry, this.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry, {
+      tandem: tandem.createTandem( 'electronGeometryProperty' ),
+      phetioReadOnly: true
+    } );
+
+    // @public {Property.<MoleculeGeometry>}
+    this.moleculeGeometryProperty = new EnumerationProperty( MoleculeGeometry, this.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry, {
+      tandem: tandem.createTandem( 'moleculeGeometryProperty' ),
+      phetioReadOnly: true
+    } );
+
     // @public {Property.<THREE.Quaternion>} - describes the rotation of the molecule view
     this.moleculeQuaternionProperty = new Property( new THREE.Quaternion(), {
       tandem: tandem.createTandem( 'moleculeQuaternionProperty' ),
@@ -70,6 +85,22 @@ class MoleculeShapesModel extends PhetioObject {
     // @public {Property.<boolean>} - Whether electron shape names are shown
     this.showElectronGeometryProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'showElectronGeometryProperty' )
+    } );
+
+    const updateMolecularBonds = () => {
+      const vseprConfiguration = this.moleculeProperty.value.getCentralVSEPRConfiguration();
+      this.electronGeometryProperty.value = vseprConfiguration.electronGeometry;
+      this.moleculeGeometryProperty.value = vseprConfiguration.moleculeGeometry;
+    };
+
+    this.moleculeProperty.link( ( newMolecule, oldMolecule ) => {
+      if ( oldMolecule ) {
+        oldMolecule.bondChangedEmitter.removeListener( updateMolecularBonds );
+      }
+      if ( newMolecule ) {
+        newMolecule.bondChangedEmitter.addListener( updateMolecularBonds );
+      }
+      updateMolecularBonds();
     } );
   }
 

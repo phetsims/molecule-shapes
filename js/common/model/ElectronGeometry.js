@@ -24,7 +24,7 @@ const geometryTrigonalPlanarString = moleculeShapesStrings.geometry.trigonalPlan
 // Constant for the tetrahedral shape
 const TETRA_CONST = Math.PI * -19.471220333 / 180;
 
-class GeometryValue {
+class ElectronGeometryValue {
   /*
    * @param {string} string
    * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
@@ -38,22 +38,22 @@ class GeometryValue {
   }
 }
 
-const Geometry = Enumeration.byMap( {
-  EMPTY: new GeometryValue( geometryEmptyString, [] ),
-  DIATOMIC: new GeometryValue(
+const ElectronGeometry = Enumeration.byMap( {
+  EMPTY: new ElectronGeometryValue( geometryEmptyString, [] ),
+  DIATOMIC: new ElectronGeometryValue(
     geometryDiatomicString,
     [
       new Vector3( 1, 0, 0 )
     ]
   ),
-  LINEAR: new GeometryValue(
+  LINEAR: new ElectronGeometryValue(
     geometryLinearString,
     [
       new Vector3( 1, 0, 0 ),
       new Vector3( -1, 0, 0 )
     ]
   ),
-  TRIGONAL_PLANAR: new GeometryValue(
+  TRIGONAL_PLANAR: new ElectronGeometryValue(
     geometryTrigonalPlanarString,
     [
       new Vector3( 1, 0, 0 ),
@@ -61,7 +61,7 @@ const Geometry = Enumeration.byMap( {
       new Vector3( Math.cos( Math.PI * 4 / 3 ), Math.sin( Math.PI * 4 / 3 ), 0 )
     ]
   ),
-  TETRAHEDRAL: new GeometryValue(
+  TETRAHEDRAL: new ElectronGeometryValue(
     geometryTetrahedralString,
     [
       new Vector3( 0, 0, 1 ),
@@ -70,7 +70,7 @@ const Geometry = Enumeration.byMap( {
       new Vector3( Math.cos( Math.PI * 4 / 3 ) * Math.cos( TETRA_CONST ), Math.sin( Math.PI * 4 / 3 ) * Math.cos( TETRA_CONST ), Math.sin( TETRA_CONST ) )
     ]
   ),
-  TRIGONAL_BIPYRAMIDAL: new GeometryValue(
+  TRIGONAL_BIPYRAMIDAL: new ElectronGeometryValue(
     geometryTrigonalBipyramidalString,
     [
       // equitorial (fills up with lone pairs first)
@@ -83,7 +83,7 @@ const Geometry = Enumeration.byMap( {
       new Vector3( -1, 0, 0 )
     ]
   ),
-  OCTAHEDRAL: new GeometryValue(
+  OCTAHEDRAL: new ElectronGeometryValue(
     geometryOctahedralString,
     [
       // opposites first
@@ -96,16 +96,16 @@ const Geometry = Enumeration.byMap( {
     ]
   )
 }, {
-  beforeFreeze: Geometry => {
+  beforeFreeze: ElectronGeometry => {
     // @public {Object}
-    Geometry.byNumberOfGroupsMap = {
-      0: Geometry.EMPTY,
-      1: Geometry.DIATOMIC,
-      2: Geometry.LINEAR,
-      3: Geometry.TRIGONAL_PLANAR,
-      4: Geometry.TETRAHEDRAL,
-      5: Geometry.TRIGONAL_BIPYRAMIDAL,
-      6: Geometry.OCTAHEDRAL
+    ElectronGeometry.byNumberOfGroupsMap = {
+      0: ElectronGeometry.EMPTY,
+      1: ElectronGeometry.DIATOMIC,
+      2: ElectronGeometry.LINEAR,
+      3: ElectronGeometry.TRIGONAL_PLANAR,
+      4: ElectronGeometry.TETRAHEDRAL,
+      5: ElectronGeometry.TRIGONAL_BIPYRAMIDAL,
+      6: ElectronGeometry.OCTAHEDRAL
     };
 
     /*
@@ -113,13 +113,13 @@ const Geometry = Enumeration.byMap( {
      * @public
      *
      * @param {number} numberOfGroups - The steric number, or how many radial groups (atoms and lone pairs) are connected
-     * @returns {Geometry}
+     * @returns {ElectronGeometry}
      */
-    Geometry.getConfiguration = numberOfGroups => {
-      return Geometry.byNumberOfGroupsMap[ numberOfGroups ];
+    ElectronGeometry.getConfiguration = numberOfGroups => {
+      return ElectronGeometry.byNumberOfGroupsMap[ numberOfGroups ];
     };
   }
 } );
 
-moleculeShapes.register( 'Geometry', Geometry );
-export default Geometry;
+moleculeShapes.register( 'ElectronGeometry', ElectronGeometry );
+export default ElectronGeometry;

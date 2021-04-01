@@ -194,7 +194,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   updateNames() {
-    this.molecularText.text = this.getMolecularGeometryName();
+    this.molecularText.text = this.getMoleculeGeometryName();
     this.electronText.text = this.getElectronGeometryName();
 
     // layout
@@ -205,8 +205,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
   /**
    * @private
    */
-  getMolecularGeometryName() {
-    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().name;
+  getMoleculeGeometryName() {
+    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry.string;
     if ( name === null ) {
       return shapeEmptyString;
     }
@@ -219,7 +219,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   getElectronGeometryName() {
-    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().geometry.string;
+    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry.string;
     if ( name === null ) {
       return geometryEmptyString;
     }

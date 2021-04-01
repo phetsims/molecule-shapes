@@ -13,8 +13,9 @@ import Permutation from '../../../../dot/js/Permutation.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import AttractorModel from './AttractorModel.js';
-import Geometry from './Geometry.js';
+import ElectronGeometry from './ElectronGeometry.js';
 import LocalShape from './LocalShape.js';
+import MoleculeGeometry from './MoleculeGeometry.js';
 
 const shapeBentString = moleculeShapesStrings.shape.bent;
 const shapeDiatomicString = moleculeShapesStrings.shape.diatomic;
@@ -41,20 +42,24 @@ class VSEPRConfiguration {
   constructor( x, e ) {
     this.x = x; // @public {number} - Number of radial atoms connected to the central atom
     this.e = e; // @public {number} - Number of radial lone pairs connected to the central atom
-    this.name = VSEPRConfiguration.getName( x, e ); // @public {string}
 
-    this.geometry = Geometry.getConfiguration( x + e ); // @public {Geometry}
+    // @public {MoleculeGeometry}
+    this.moleculeGeometry = MoleculeGeometry.getConfiguration( x, e );
+
+    // @public {ElectronGeometry}
+    this.electronGeometry = ElectronGeometry.getConfiguration( x + e );
+
     this.bondOrientations = []; // @public {Array.<Vector3>}
     this.lonePairOrientations = []; // @public {Array.<Vector3>}
-    this.allOrientations = this.geometry.unitVectors; // @public {Array.<Vector3>}
+    this.allOrientations = this.electronGeometry.unitVectors; // @public {Array.<Vector3>}
 
     for ( let i = 0; i < x + e; i++ ) {
       if ( i < e ) {
         // fill up the lone pair unit vectors first
-        this.lonePairOrientations.push( this.geometry.unitVectors[ i ] );
+        this.lonePairOrientations.push( this.electronGeometry.unitVectors[ i ] );
       }
       else {
-        this.bondOrientations.push( this.geometry.unitVectors[ i ] );
+        this.bondOrientations.push( this.electronGeometry.unitVectors[ i ] );
       }
     }
   }
@@ -71,7 +76,7 @@ class VSEPRConfiguration {
 
     // done currently only when the molecule is rebuilt, so we don't try to pass a lastPermutation in (not helpful)
     return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
-      this.geometry.unitVectors,
+      this.electronGeometry.unitVectors,
       LocalShape.vseprPermutations( groups ) );
   }
 

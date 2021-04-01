@@ -13,7 +13,7 @@ import Element from '../../../../nitroglycerin/js/Element.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
-import Geometry from './Geometry.js';
+import ElectronGeometry from './ElectronGeometry.js';
 import RealAtomPosition from './RealAtomPosition.js';
 
 // Instead of the absolute positioning, this (for now) sets the bond lengths to be the same, since for our purposes
@@ -161,7 +161,7 @@ RealMoleculeShape.BROMINE_PENTAFLUORIDE = createMoleculeShape( 'BrF5', 1.774, sh
 RealMoleculeShape.METHANE = createMoleculeShape( 'CH4', 1.087, shape => {
   shape.addCentralAtom( new RealAtomPosition( C, new Vector3( 0, 0, 0 ) ) );
   const bondLength = 1.087;
-  const vectors = Geometry.getConfiguration( 4 ).unitVectors;
+  const vectors = ElectronGeometry.getConfiguration( 4 ).unitVectors;
   for ( let i = 0; i < vectors.length; i++ ) {
     shape.addRadialAtom( new RealAtomPosition( H, vectors[ i ].times( bondLength ), 0 ), 1 );
   }
@@ -237,7 +237,7 @@ RealMoleculeShape.SULFUR_TETRAFLUORIDE = createMoleculeShape( 'SF4', 1.595, shap
 // @public {RealMoleculeShape}
 RealMoleculeShape.SULFUR_HEXAFLUORIDE = createMoleculeShape( 'SF6', 1.564, shape => {
   shape.addCentralAtom( new RealAtomPosition( S, new Vector3( 0, 0, 0 ) ) );
-  const vectors = Geometry.getConfiguration( 6 ).unitVectors;
+  const vectors = ElectronGeometry.getConfiguration( 6 ).unitVectors;
   for ( let i = 0; i < vectors.length; i++ ) {
     shape.addRadialAtom( new RealAtomPosition( F, vectors[ i ].times( 1.564 ), 3 ), 1 );
   }

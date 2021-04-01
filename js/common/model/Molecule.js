@@ -379,7 +379,7 @@ class Molecule {
    * returns {Array.<Vector3>}
    */
   getCorrespondingIdealGeometryVectors() {
-    return this.getCentralVSEPRConfiguration().geometry.unitVectors;
+    return this.getCentralVSEPRConfiguration().electronGeometry.unitVectors;
   }
 
   /**
@@ -425,7 +425,7 @@ class Molecule {
     }
 
     const numAtoms = groups.length - numLonePairs;
-    return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VSEPRConfiguration.getConfiguration( numAtoms, numLonePairs ) ).geometry.unitVectors );
+    return new LocalShape( LocalShape.vseprPermutations( groups ), atom, groups, ( VSEPRConfiguration.getConfiguration( numAtoms, numLonePairs ) ).electronGeometry.unitVectors );
   }
 
   /**
@@ -453,7 +453,7 @@ class Molecule {
    */
   addTerminalLonePairs( atom, quantity ) {
     const pairConfig = VSEPRConfiguration.getConfiguration( 1, quantity );
-    const lonePairOrientations = pairConfig.geometry.unitVectors;
+    const lonePairOrientations = pairConfig.electronGeometry.unitVectors;
 
     // we want to rotate the ideal configuration of lone pairs to the atom's orientation
     const matrix = Matrix3.rotateAToB( lonePairOrientations[ lonePairOrientations.length - 1 ].negated(), atom.orientation );
