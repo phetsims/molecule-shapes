@@ -139,9 +139,6 @@ class BondAngleWebGLView extends BondAngleView {
     assert && assert( MoleculeShapesGlobals.useWebGLProperty.value );
     super();
 
-    // @private {boolean}
-    this.isInitialized = false;
-
     this.renderer = renderer; // @private {THREE.Renderer}
     this.arcGeometry = localArcGeometry.get( renderer ); // @private {THREE.Geometry}
     this.sectorGeometry = localSectorGeometry.get( renderer ); // @private {THREE.Geometry}
@@ -199,9 +196,6 @@ class BondAngleWebGLView extends BondAngleView {
    * @param {LabelWebGLView|LabelFallbackNode} label
    */
   initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label ) {
-    assert && assert( !this.isInitialized );
-    this.isInitialized = true;
-
     super.initialize( screenView, showBondAnglesProperty, molecule, aGroup, bGroup, label );
 
     return this;
@@ -213,9 +207,6 @@ class BondAngleWebGLView extends BondAngleView {
    * @public
    */
   dispose() {
-    assert && assert( this.isInitialized );
-    this.isInitialized = false;
-
     super.dispose();
 
     BondAngleWebGLView.pool.put( this, this.renderer );

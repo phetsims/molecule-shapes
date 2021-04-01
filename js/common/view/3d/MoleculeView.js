@@ -182,9 +182,7 @@ class MoleculeView extends THREE.Object3D {
           const bondAngleView = MoleculeShapesGlobals.useWebGLProperty.value ?
                                 BondAngleWebGLView.pool.get( this.renderer ) :
                                 BondAngleFallbackView.pool.get( this.renderer );
-          assert && assert( !bondAngleView.isInitialized );
           bondAngleView.initialize( this.screenView, this.model.showBondAnglesProperty, this.molecule, otherView.group, view.group, this.screenView.checkOutLabel() );
-          assert && assert( bondAngleView.isInitialized );
           this.add( bondAngleView );
           assert && assert( !this.angleViews.includes( bondAngleView ) );
           this.angleViews.push( bondAngleView );
