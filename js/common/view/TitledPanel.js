@@ -24,7 +24,7 @@ class TitledPanel extends Node {
     options = merge( {}, Panel.DEFAULT_OPTIONS, options );
 
     this.titleNode = titleNode; // @private {Node}
-    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill } ); // @private {Rectangle}
+    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill, visibleProperty: titleNode.visibleProperty } ); // @private {Rectangle}
 
     // @private {Node}
     this.panel = new Panel( contentNode, {
