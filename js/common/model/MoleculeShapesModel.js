@@ -136,13 +136,11 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
     const molecule = model.moleculeProperty.value;
 
     const result = {
-      private: {
-        isReal: molecule.isReal,
-        groups: molecule.groups.map( group => group.toStateObject( molecule.centralAtom ) ),
-        bonds: molecule.bonds.map( bond => bond.toStateObject( molecule.groups ) )
-      }
+      isReal: molecule.isReal,
+      groups: molecule.groups.map( group => group.toStateObject( molecule.centralAtom ) ),
+      bonds: molecule.bonds.map( bond => bond.toStateObject( molecule.groups ) )
     };
-    const data = result.private;
+    const data = result;
 
     if ( molecule.isReal ) {
       data.realMoleculeShape = RealMoleculeShape.RealMoleculeShapeIO.toStateObject( molecule.realMoleculeShape );
@@ -153,7 +151,7 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
     return result;
   },
   applyState: ( model, obj ) => {
-    const data = obj.private;
+    const data = obj;
 
     if ( data.isReal ) {
       const molecule = new RealMolecule( RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( data.realMoleculeShape ) );
