@@ -38,7 +38,6 @@ class OptionsNode extends VBox {
     } );
 
     const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {
-      visiblePropertyOptions: { phetioReadOnly: true },
       enabledPropertyOptions: { phetioReadOnly: true },
       tandem: tandem.createTandem( 'showLonePairsCheckbox' )
     } );

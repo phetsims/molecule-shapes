@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -102,21 +103,6 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
     this.model = model; // @private {MoleculeShapesModel}
 
-    // @private - text fields that will show the name of the geometry (uses string placeholders for height)
-    this.molecularText = new Text( 'X', {
-      font: geometryNameFont,
-      pickable: false,
-      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
-    } );
-    // @private
-    this.electronText = new Text( 'Y', {
-      font: geometryNameFont,
-      pickable: false,
-      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
-    } );
-    model.showMoleculeGeometryProperty.linkAttribute( this.molecularText, 'visible' );
-    model.showElectronGeometryProperty.linkAttribute( this.electronText, 'visible' );
-
     // labels for the types of geometries
     const textLabelFont = new PhetFont( 14 );
 
@@ -138,6 +124,21 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     } );
     this.electronGeometryCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronGeometryProperty, {
       tandem: tandem.createTandem( 'electronGeometryCheckbox' )
+    } );
+
+    // @private - text fields that will show the name of the geometry (uses string placeholders for height)
+    this.molecularText = new Text( 'X', {
+      visibleProperty: DerivedProperty.and( [ model.showMoleculeGeometryProperty, this.moleculeGeometryCheckbox.visibleProperty ] ),
+      font: geometryNameFont,
+      pickable: false,
+      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
+    } );
+    // @private
+    this.electronText = new Text( 'Y', {
+      visibleProperty: DerivedProperty.and( [ model.showElectronGeometryProperty, this.electronGeometryCheckbox.visibleProperty ] ),
+      font: geometryNameFont,
+      pickable: false,
+      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
     } );
 
     const pointerAreaXPadding = 10;
