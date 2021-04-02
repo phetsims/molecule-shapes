@@ -19,6 +19,7 @@ import AquaRadioButtonGroup from '../../../sun/js/AquaRadioButtonGroup.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../sun/js/ComboBoxItem.js';
 import RealMoleculeShape from '../common/model/RealMoleculeShape.js';
+import MoleculeShapesQueryParameters from '../common/MoleculeShapesQueryParameters.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
 import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
 import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
@@ -48,7 +49,12 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     const optionsPanelTandem = tandem.createTandem( 'optionsPanel' );
 
     const comboBoxListContainer = new Node();
-    const comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
+    const comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES :
+
+      // Added only to the 1.3 branch to support a research study, see https://github.com/phetsims/special-ops/issues/190
+                              MoleculeShapesQueryParameters.research ? RealMoleculeShape.RESEARCH_MOLECULES :
+                              RealMoleculeShape.TAB_2_MOLECULES;
+
     const comboBoxItems = _.map( comboBoxMolecules, realMoleculeShape => {
       return new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape, {
         tandemName: `${realMoleculeShape.displayName}Item`

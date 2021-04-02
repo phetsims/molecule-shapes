@@ -14,13 +14,16 @@ import Range from '../../../../dot/js/Range.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import MoleculeShapesQueryParameters from '../MoleculeShapesQueryParameters.js';
 import Bond from './Bond.js';
 import LocalShape from './LocalShape.js';
 import PairGroup from './PairGroup.js';
 import VSEPRConfiguration from './VSEPRConfiguration.js';
 
 // Adding in maximum numbers of pairs, see https://github.com/phetsims/special-ops/issues/190
-const maxPairsProperty = new NumberProperty( 6, {
+// Added custom initial value only to the 1.3 branch to support a research study, see https://github.com/phetsims/special-ops/issues/190
+// NOTE: must change the initial value instead of mutating it because you cannot create data stream events statically during startup.
+const maxPairsProperty = new NumberProperty( MoleculeShapesQueryParameters.research ? 4 : 6, {
   range: new Range( 0, 6 ),
   tandem: Tandem.GLOBAL_MODEL.createTandem( 'maxPairsProperty' ),
   numberType: 'Integer'

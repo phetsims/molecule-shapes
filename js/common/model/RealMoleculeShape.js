@@ -12,6 +12,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import MoleculeShapesQueryParameters from '../MoleculeShapesQueryParameters.js';
 import Bond from './Bond.js';
 import ElectronGeometry from './ElectronGeometry.js';
 import RealAtomPosition from './RealAtomPosition.js';
@@ -295,6 +296,17 @@ RealMoleculeShape.TAB_2_MOLECULES = [
   RealMoleculeShape.PHOSPHORUS_PENTACHLORIDE,
   RealMoleculeShape.SULFUR_HEXAFLUORIDE
 ];
+
+// Added only to the 1.3 branch to support a research study, see https://github.com/phetsims/special-ops/issues/190
+if ( MoleculeShapesQueryParameters.research ) {
+  RealMoleculeShape.RESEARCH_MOLECULES = [
+    RealMoleculeShape.WATER,
+    RealMoleculeShape.CARBON_DIOXIDE,
+    RealMoleculeShape.AMMONIA,
+    RealMoleculeShape.METHANE,
+    RealMoleculeShape.BORON_TRIFLUORIDE
+  ];
+}
 
 const displayNameMap = {};
 [
