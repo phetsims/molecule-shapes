@@ -206,7 +206,7 @@ class MoleculeShapesScreenView extends ScreenView {
           pair.userControlledProperty.value = true;
           draggedParticleCount++;
         }
-        // we don't want to rotate while we are dragging any particles
+          // we don't want to rotate while we are dragging any particles
         // Additionally, don't rotate if we're zoomed into the sim
         else if ( draggedParticleCount === 0 && animatedPanZoomSingleton.listener.matrixProperty.value.equalsEpsilon( Matrix3.IDENTITY, 1e-7 ) ) {
           // we rotate the entire molecule with this pointer

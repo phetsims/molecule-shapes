@@ -85,6 +85,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     function updateButtonEnabled() {
       removeAllButton.enabled = model.moleculeProperty.value.radialGroups.length > 0;
     }
+
     model.moleculeProperty.link( ( newMolecule, oldMolecule ) => {
       if ( oldMolecule ) {
         oldMolecule.bondChangedEmitter.removeListener( updateButtonEnabled );
