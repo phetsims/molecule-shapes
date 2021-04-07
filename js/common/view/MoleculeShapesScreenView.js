@@ -17,6 +17,7 @@ import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFai
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Mouse from '../../../../scenery/js/input/Mouse.js';
 import animatedPanZoomSingleton from '../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
+import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import moleculeShapes from '../../moleculeShapes.js';
@@ -176,9 +177,11 @@ class MoleculeShapesScreenView extends ScreenView {
       tandem: tandem.createTandem( 'resetAllButton' )
     } ) );
 
-    this.addChild( new GeometryNamePanel( model, tandem.createTandem( 'namePanel' ), {
-      left: this.layoutBounds.minX + 10,
-      bottom: this.layoutBounds.maxY - 10
+    this.addChild( new AlignBox( new GeometryNamePanel( model, tandem.createTandem( 'namePanel' ) ), {
+      alignBounds: this.layoutBounds,
+      xAlign: 'left',
+      yAlign: 'bottom',
+      margin: 10
     } ) );
 
     // we only want to support dragging particles OR rotating the molecule (not both) at the same time

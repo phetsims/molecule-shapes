@@ -6,10 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Property from '../../../../axon/js/Property.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import GridBox from '../../../../scenery/js/layout/GridBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import moleculeShapes from '../../moleculeShapes.js';
@@ -82,8 +82,8 @@ function getMaximumTextWidth( strings ) {
   return maxWidth;
 }
 
-let maxGeometryWidth = getMaximumTextWidth( geometryStrings );
-let maxShapeWidth = getMaximumTextWidth( shapeStrings );
+const maxGeometryWidth = getMaximumTextWidth( geometryStrings );
+const maxShapeWidth = getMaximumTextWidth( shapeStrings );
 
 class GeometryNamePanel extends MoleculeShapesPanel {
   /**
@@ -98,81 +98,92 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       tandem: tandem
     }, options );
 
-    const content = new Node();
+    const content = new GridBox( {
+      xSpacing: 20,
+      ySpacing: 10
+    } );
+
     super( controlGeometryNameString, content, tandem );
 
-    this.model = model; // @private {MoleculeShapesModel}
+    // @private {MoleculeShapesModel}
+    this.model = model;
 
     // labels for the types of geometries
     const textLabelFont = new PhetFont( 14 );
 
-    // @private
-    this.molecularTextLabel = new Text( controlMoleculeGeometryString, {
+    // @private {MoleculeShapesCheckbox}
+    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( new Text( controlMoleculeGeometryString, {
       font: textLabelFont,
       fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
+    } ), model.showMoleculeGeometryProperty, {
+      tandem: tandem.createTandem( 'moleculeGeometryCheckbox' ),
+      layoutOptions: {
+        x: 0,
+        y: 0
+      }
     } );
-
-    // @private
-    this.electronTextLabel = new Text( controlElectronGeometryString, {
+    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( new Text( controlElectronGeometryString, {
       font: textLabelFont,
       fill: MoleculeShapesColorProfile.electronGeometryNameProperty
+    } ), model.showElectronGeometryProperty, {
+      tandem: tandem.createTandem( 'electronGeometryCheckbox' ),
+      layoutOptions: {
+        x: 1,
+        y: 0
+      }
     } );
 
-    // @private
-    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( this.molecularTextLabel, model.showMoleculeGeometryProperty, {
-      tandem: tandem.createTandem( 'moleculeGeometryCheckbox' )
-    } );
-    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( this.electronTextLabel, model.showElectronGeometryProperty, {
-      tandem: tandem.createTandem( 'electronGeometryCheckbox' )
-    } );
-
-    // @private - text fields that will show the name of the geometry (uses string placeholders for height)
-    this.molecularText = new Text( 'X', {
-      visibleProperty: DerivedProperty.and( [ model.showMoleculeGeometryProperty, this.moleculeGeometryCheckbox.visibleProperty ] ),
+    // @private {Text} - text fields that will show the name of the geometry (uses string placeholders for height)
+    this.moleculeText = new Text( 'X', {
+      visibleProperty: model.showMoleculeGeometryProperty,
       font: geometryNameFont,
       pickable: false,
       fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
     } );
-    // @private
+    // @private {Text}
     this.electronText = new Text( 'Y', {
-      visibleProperty: DerivedProperty.and( [ model.showElectronGeometryProperty, this.electronGeometryCheckbox.visibleProperty ] ),
+      visibleProperty: model.showElectronGeometryProperty,
       font: geometryNameFont,
       pickable: false,
       fill: MoleculeShapesColorProfile.electronGeometryNameProperty
     } );
 
-    const pointerAreaXPadding = 10;
-    const pointerAreaYPadding = 15;
-    const pointerAreaBottomExtension = 40;
-    const molecularPointerArea = this.moleculeGeometryCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
-      .withMaxY( this.moleculeGeometryCheckbox.localBounds.maxY + pointerAreaBottomExtension );
-    this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = molecularPointerArea;
-    const electronPointerArea = this.electronGeometryCheckbox.localBounds.dilatedXY( pointerAreaXPadding, pointerAreaYPadding )
-      .withMaxY( this.electronGeometryCheckbox.localBounds.maxY + pointerAreaBottomExtension );
-    this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = electronPointerArea;
-
-    // increase our maximums if our checkbox labels are larger than the shape names
-    maxGeometryWidth = Math.max( maxGeometryWidth, this.moleculeGeometryCheckbox.width );
-    maxShapeWidth = Math.max( maxShapeWidth, this.electronGeometryCheckbox.width );
-
-    // layout
-    const horizontalPadding = 20;
-    const contentWidth = maxGeometryWidth + ( model.isBasicsVersion ? 0 : ( horizontalPadding + maxGeometryWidth ) );
-    const checkboxBottom = Math.max( this.moleculeGeometryCheckbox.bottom, this.electronGeometryCheckbox.bottom );
-    this.moleculeGeometryCheckbox.centerX = maxGeometryWidth / 2;
-    this.electronGeometryCheckbox.centerX = maxGeometryWidth + horizontalPadding + maxShapeWidth / 2;
-    this.molecularText.top = this.electronText.top = checkboxBottom + 10;
-
-    // Make sure we include the extra (possibly unused) space so that the panel can contain all of the content,
-    // regardless of which string is shown. See https://github.com/phetsims/molecule-shapes/issues/138
-    content.localBounds = new Bounds2( 0, this.moleculeGeometryCheckbox.top, contentWidth, this.molecularText.bottom );
+    // TODO: pointer area listeners
 
     content.addChild( this.moleculeGeometryCheckbox );
-    content.addChild( this.molecularText );
+    content.addChild( new Node( {
+      // Hide this container only when the checkbox is hidden
+      visibleProperty: this.moleculeGeometryCheckbox.visibleProperty,
+      children: [ this.moleculeText ],
+      layoutOptions: {
+        x: 0,
+        y: 1,
+        minContentWidth: maxGeometryWidth
+      }
+    } ) );
+    Property.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, this.moleculeText.boundsProperty, content.boundsProperty ], () => {
+      const bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( this.moleculeText ) ).dilated( 10 );
+      this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = bounds;
+    } );
+
     if ( !model.isBasicsVersion ) {
       // basics version excludes lone-pair (electron) geometries
       content.addChild( this.electronGeometryCheckbox );
-      content.addChild( this.electronText );
+      content.addChild( new Node( {
+        // Hide this container only when the checkbox is hidden
+        visibleProperty: this.electronGeometryCheckbox.visibleProperty,
+        children: [ this.electronText ],
+        layoutOptions: {
+          x: 1,
+          y: 1,
+          minContentWidth: maxShapeWidth
+        }
+      } ) );
+
+      Property.multilink( [ this.electronGeometryCheckbox.boundsProperty, this.electronText.boundsProperty, content.boundsProperty ], () => {
+        const bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( this.electronText ) ).dilated( 10 );
+        this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = bounds;
+      } );
     }
 
     const updateNames = this.updateNames.bind( this );
@@ -195,11 +206,11 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   updateNames() {
-    this.molecularText.text = this.getMoleculeGeometryName();
+    this.moleculeText.text = this.getMoleculeGeometryName();
     this.electronText.text = this.getElectronGeometryName();
 
     // layout
-    this.molecularText.centerX = this.moleculeGeometryCheckbox.centerX;
+    this.moleculeText.centerX = this.moleculeGeometryCheckbox.centerX;
     this.electronText.centerX = this.electronGeometryCheckbox.centerX;
   }
 
