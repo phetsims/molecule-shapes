@@ -469,5 +469,8 @@ class Molecule {
 // @abstract {boolean} - Whether the Molecule is considered 'real', or is just a 'model'.
 Molecule.prototype.isReal = false;
 
+// @public {Property.<number>}
+Molecule.maxPairsProperty = maxPairsProperty;
+
 moleculeShapes.register( 'Molecule', Molecule );
 export default Molecule;

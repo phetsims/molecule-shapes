@@ -18,6 +18,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MoleculeShapesGlobals from '../common/MoleculeShapesGlobals.js';
+import Molecule from '../common/model/Molecule.js';
 import MoleculeShapesModel from '../common/model/MoleculeShapesModel.js';
 import PairGroup from '../common/model/PairGroup.js';
 import VSEPRMolecule from '../common/model/VSEPRMolecule.js';
@@ -230,6 +231,7 @@ class BondGroupNode extends HBox {
       update();
     } );
     model.showLonePairsProperty.link( update );
+    Molecule.maxPairsProperty.lazyLink( update );
 
     MoleculeShapesColorProfile.backgroundProperty.lazyLink( update );
 
