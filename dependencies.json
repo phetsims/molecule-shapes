@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.2.9-rc.1 Fri Apr 23 2021 14:39:20 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# molecule-shapes 1.2.9-rc.1 Mon May 10 2021 11:23:49 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "d8a2e8992420327ff72a6fc4bb93ec76549ded0e",
     "branch": "HEAD"
@@ -29,7 +29,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "1a8f4f635e86505269c1dc8967554f732bdc7e14",
+    "sha": "607ede7acbcb5fea714a282b87a211cc25122471",
     "branch": "1.2"
   },
   "nitroglycerin": {
@@ -53,8 +53,8 @@
     "branch": "HEAD"
   },
   "phetmarks": {
-    "sha": "43918c4260c39e833228699800945c14b32e4bb9",
-    "branch": "HEAD"
+    "sha": "c37aec4b3467a6af11c847e14bfbeb4c5330affe",
+    "branch": "molecule-shapes-1.2"
   },
   "query-string-machine": {
     "sha": "e47329ccba50671352daf74eb8de1b7b7d80da48",
