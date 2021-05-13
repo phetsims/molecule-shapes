@@ -197,6 +197,7 @@ define( function( require ) {
 
         var dragMode = null;
         var draggedParticle = null;
+        var pointer = event.pointer;
 
         var pair = self.getElectronPairUnderPointer( event.pointer, !( event.pointer instanceof Mouse ) );
         if ( pair && !pair.userControlledProperty.get() ) {
@@ -218,8 +219,20 @@ define( function( require ) {
 
         var lastGlobalPoint = event.pointer.point.copy();
 
-        event.pointer.cursor = 'pointer';
-        event.pointer.addInputListener( {
+        var endDrag = function( event, trail ) {
+          if ( dragMode === 'pairExistingSpherical' ) {
+            draggedParticle.userControlledProperty.set( false );
+            draggedParticleCount--;
+          }
+          else if ( dragMode === 'modelRotate' ) {
+            isRotating = false;
+          }
+          pointer.removeInputListener( this );
+          pointer.cursor = null;
+        };
+
+        pointer.cursor = 'pointer';
+        pointer.addInputListener( {
           // end drag on either up or cancel (not supporting full cancel behavior)
           up: function( event, trail ) {
             this.endDrag( event, trail );
@@ -230,8 +243,8 @@ define( function( require ) {
 
           move: function( event, trail ) {
             if ( dragMode === 'modelRotate' ) {
-              var delta = event.pointer.point.minus( lastGlobalPoint );
-              lastGlobalPoint.set( event.pointer.point );
+              var delta = pointer.point.minus( lastGlobalPoint );
+              lastGlobalPoint.set( pointer.point );
 
               var scale = 0.007 / self.activeScale; // tuned constant for acceptable drag motion
               var newQuaternion = new THREE.Quaternion().setFromEuler( new THREE.Euler( delta.y * scale, delta.x * scale, 0 ) );
@@ -240,23 +253,14 @@ define( function( require ) {
             }
             else if ( dragMode === 'pairExistingSpherical' ) {
               if ( _.includes( model.moleculeProperty.get().groups, draggedParticle ) ) {
-                draggedParticle.dragToPosition( self.getSphericalMoleculePosition( event.pointer.point, draggedParticle ) );
+                draggedParticle.dragToPosition( self.getSphericalMoleculePosition( pointer.point, draggedParticle ) );
               }
             }
           },
 
           // not a Scenery event
-          endDrag: function( event, trail ) {
-            if ( dragMode === 'pairExistingSpherical' ) {
-              draggedParticle.userControlledProperty.set( false );
-              draggedParticleCount--;
-            }
-            else if ( dragMode === 'modelRotate' ) {
-              isRotating = false;
-            }
-            event.pointer.removeInputListener( this );
-            event.pointer.cursor = null;
-          }
+          endDrag: endDrag,
+          interrupt: endDrag
         } );
       }
     };
