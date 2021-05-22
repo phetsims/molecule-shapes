@@ -144,14 +144,16 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
 
     if ( molecule.isReal ) {
       data.realMoleculeShape = RealMoleculeShape.RealMoleculeShapeIO.toStateObject( molecule.realMoleculeShape );
+      data.bondLengthOverride = null;
     }
     else {
       data.bondLengthOverride = molecule.bondLengthOverride;
+      data.realMoleculeShape = null;
     }
     return result;
   },
-  applyState: ( model, obj ) => {
-    const data = obj;
+  applyState: ( model, stateObject ) => {
+    const data = stateObject;
 
     if ( data.isReal ) {
       const molecule = new RealMolecule( RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( data.realMoleculeShape ) );
