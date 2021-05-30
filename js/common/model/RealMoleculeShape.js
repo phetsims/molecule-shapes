@@ -11,6 +11,7 @@ import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line requi
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
+import StringIO from '../../../../tandem/js/types/StringIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import ElectronGeometry from './ElectronGeometry.js';
@@ -319,6 +320,9 @@ const displayNameMap = {};
 const RealMoleculeShapeIO = new IOType( 'RealMoleculeShapeIO', {
   valueType: RealMoleculeShape,
   documentation: 'Represents a real molecule with 3d atom positions',
+  stateSchema: {
+    displayName: StringIO
+  },
   toStateObject( realMoleculeShape ) {
     // TODO: Should we support creating custom RealMoleculeShapes?
     return {

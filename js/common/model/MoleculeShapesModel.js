@@ -13,7 +13,12 @@ import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import ArrayIO from '../../../../tandem/js/types/ArrayIO.js';
+import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import ObjectLiteralIO from '../../../../tandem/js/types/ObjectLiteralIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import ElectronGeometry from './ElectronGeometry.js';
@@ -184,6 +189,14 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
 
       model.moleculeProperty.value = molecule;
     }
+  },
+
+  stateSchema: {
+    isReal: BooleanIO,
+    groups: ArrayIO( ObjectLiteralIO ), // TODO: Duck typing to get past not having a PairGroupIO, https://github.com/phetsims/phet-io/issues/1774
+    bonds: ArrayIO( ObjectLiteralIO ),
+    realMoleculeShape: NullableIO( RealMoleculeShape.RealMoleculeShapeIO ),
+    bondLengthOverride: NullableIO( NumberIO )
   }
 } );
 

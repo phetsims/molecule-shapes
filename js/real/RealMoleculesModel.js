@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector3 from '../../../dot/js/Vector3.js';
+import BooleanIO from '../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import AttractorModel from '../common/model/AttractorModel.js';
 import LocalShape from '../common/model/LocalShape.js';
@@ -148,6 +149,10 @@ class RealMoleculesModel extends MoleculeShapesModel {
 const RealMoleculesModelIO = new IOType( 'RealMoleculesModelIO', {
   supertype: MoleculeShapesModel.MoleculeShapesModelIO,
   valueType: RealMoleculesModel,
+  stateSchema: {
+    realMoleculeShape: RealMoleculeShape.RealMoleculeShapeIO,
+    showRealView: BooleanIO
+  },
   toStateObject: model => {
     const result = MoleculeShapesModel.MoleculeShapesModelIO.toStateObject( model );
 

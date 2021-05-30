@@ -7,6 +7,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 class Bond {
@@ -69,6 +70,20 @@ class Bond {
       b: atoms.indexOf( this.b ),
       order: this.order,
       length: this.length
+    };
+  }
+
+  /**
+   * @public
+   * TODO: This type should have an IOType instead of all these state methods. https://github.com/phetsims/phet-io/issues/1774
+   * @returns {Object}
+   */
+  static getStateSchema() {
+    return {
+      a: NumberIO,
+      b: NumberIO,
+      order: NumberIO,
+      length: NumberIO
     };
   }
 
