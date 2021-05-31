@@ -11,9 +11,6 @@ import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
 import merge from '../../../../phet-core/js/merge.js';
-import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
-import NullableIO from '../../../../tandem/js/types/NullableIO.js';
-import StringIO from '../../../../tandem/js/types/StringIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 let nextId = 0;
@@ -262,21 +259,6 @@ class PairGroup {
       isLonePair: this.isLonePair,
       element: this.element === null ? null : this.element.symbol,
       isCentralAtom: this === centralAtom
-    };
-  }
-
-  /**
-   * @public
-   * TODO: This type should have an IOType instead of all these state methods. https://github.com/phetsims/phet-io/issues/1774
-   * @returns {Object}
-   */
-  static getStateSchema() {
-    return {
-      position: Vector3.Vector3IO,
-      velocity: Vector3.Vector3IO,
-      isLonePair: BooleanIO,
-      element: NullableIO( StringIO ),
-      isCentralAtom: BooleanIO
     };
   }
 

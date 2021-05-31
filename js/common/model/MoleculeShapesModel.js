@@ -193,7 +193,25 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
 
   stateSchema: {
     isReal: BooleanIO,
-    groups: ArrayIO( ObjectLiteralIO ), // TODO: More specific schema, see https://github.com/phetsims/phet-io/issues/1774
+
+    // TODO: Provide IO Types to specify these schemas instead of ObjectLiteralIO, see https://github.com/phetsims/phet-io/issues/1774
+    // Shaped like this:
+    // {
+    //       position: Vector3.Vector3IO,
+    //       velocity: Vector3.Vector3IO,
+    //       isLonePair: BooleanIO,
+    //       element: NullableIO( StringIO ),
+    //       isCentralAtom: BooleanIO
+    //     }
+    groups: ArrayIO( ObjectLiteralIO ),
+
+    // Shaped like this:
+    //    {
+    //     a: NumberIO,
+    //     b: NumberIO,
+    //     order: NumberIO,
+    //     length: NumberIO
+    //   }
     bonds: ArrayIO( ObjectLiteralIO ),
     realMoleculeShape: NullableIO( RealMoleculeShape.RealMoleculeShapeIO ),
     bondLengthOverride: NullableIO( NumberIO )
