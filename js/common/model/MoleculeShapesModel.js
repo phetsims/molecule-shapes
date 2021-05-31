@@ -194,7 +194,7 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
   stateSchema: {
     isReal: BooleanIO,
 
-    // TODO: Provide IO Types to specify these schemas instead of ObjectLiteralIO, see https://github.com/phetsims/phet-io/issues/1774
+    // TODO: Provide IO Types to specify these schemas instead of ObjectLiteralIO, see https://github.com/phetsims/molecule-shapes/issues/183
     // Shaped like this:
     // {
     //       position: Vector3.Vector3IO,
