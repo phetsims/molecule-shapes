@@ -152,7 +152,7 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
       data.bondLengthOverride = null;
     }
     else {
-      data.bondLengthOverride = molecule.bondLengthOverride;
+      data.bondLengthOverride = molecule.bondLengthOverride || null;
       data.realMoleculeShape = null;
     }
     return result;
