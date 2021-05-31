@@ -193,7 +193,7 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
 
   stateSchema: {
     isReal: BooleanIO,
-    groups: ArrayIO( ObjectLiteralIO ), // TODO: Duck typing to get past not having a PairGroupIO, https://github.com/phetsims/phet-io/issues/1774
+    groups: ArrayIO( ObjectLiteralIO ), // TODO: More specific schema, see https://github.com/phetsims/phet-io/issues/1774
     bonds: ArrayIO( ObjectLiteralIO ),
     realMoleculeShape: NullableIO( RealMoleculeShape.RealMoleculeShapeIO ),
     bondLengthOverride: NullableIO( NumberIO )
