@@ -252,7 +252,7 @@ AttractorModel.computeRotationMatrixWithTranspose = ( n, x, y, result ) => {
   MatrixOps3.mult3RightTranspose( scratchV, scratchU, result );
 };
 
-class ResultMapping {
+AttractorModel.ResultMapping = class ResultMapping {
   /**
    * Result mapping between the current positions and ideal positions. Returned as a data object.
    * @public
@@ -281,9 +281,7 @@ class ResultMapping {
     const rotated = this.rotation.times( x );
     return rotated.extractVector3( 0 );
   }
-}
-
-AttractorModel.ResultMapping = ResultMapping;
+};
 
 /**
  * Call the function with each individual permutation of the list elements of "lists"
