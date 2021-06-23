@@ -578,10 +578,13 @@ class MoleculeShapesScreenView extends ScreenView {
    * @override
    * @protected
    */
-  layout( width, height ) {
-    super.layout( width, height );
+  layout( viewBounds ) {
+    super.layout( viewBounds );
 
-    this.backgroundEventTarget.setRectBounds( this.globalToLocalBounds( new Bounds2( 0, 0, width, height ) ) );
+    const width = viewBounds.width;
+    const height = viewBounds.height;
+
+    this.backgroundEventTarget.setRectBounds( this.globalToLocalBounds( viewBounds ) );
 
     this.screenWidth = width;
     this.screenHeight = height;
