@@ -20,6 +20,7 @@ import animatedPanZoomSingleton from '../../../../scenery/js/listeners/animatedP
 import AlignBox from '../../../../scenery/js/nodes/AlignBox.js';
 import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import Utils from '../../../../scenery/js/util/Utils.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import LabelWebGLView from './3d/LabelWebGLView.js';
@@ -108,8 +109,10 @@ class MoleculeShapesScreenView extends ScreenView {
     this.moleculeNode.renderToCanvasSelf = wrapper => {
       let canvas = null;
 
-      const effectiveWidth = Math.ceil( this.screenWidth );
-      const effectiveHeight = Math.ceil( this.screenHeight );
+      const backingScale = Utils.backingScale( wrapper.context );
+
+      const effectiveWidth = Math.ceil( backingScale * this.screenWidth );
+      const effectiveHeight = Math.ceil( backingScale * this.screenHeight );
 
       // This WebGL workaround is so we can avoid the preserveDrawingBuffer setting that would impact performance.
       // We render to a framebuffer and extract the pixel data directly, since we can't create another renderer and
