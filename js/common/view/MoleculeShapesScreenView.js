@@ -53,7 +53,10 @@ class MoleculeShapesScreenView extends ScreenView {
 
     // main three.js Scene setup
     this.threeScene = new THREE.Scene(); // @private
+
     this.threeCamera = new THREE.PerspectiveCamera(); // @private will set the projection parameters on layout
+    this.threeCamera.near = 1;
+    this.threeCamera.far = 100;
 
     // @public {THREE.Renderer}
     this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
@@ -93,12 +96,12 @@ class MoleculeShapesScreenView extends ScreenView {
     // @private add the Canvas in with a DOM node that prevents Scenery from applying transformations on it
     this.moleculeNode = new DOM( this.threeRenderer.domElement, {
       preventTransform: true, // Scenery 0.2 override for transformation
-      invalidateDOM: function() { // don't do bounds detection, it's too expensive. We're not pickable anyways
-        this.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
-      },
       pickable: false,
       tandem: tandem.createTandem( 'moleculeNode' )
     } );
+    // don't do bounds detection, it's too expensive. We're not pickable anyways
+    this.moleculeNode.invalidateDOM = () => this.moleculeNode.invalidateSelf( new Bounds2( 0, 0, 0, 0 ) );
+    this.moleculeNode.invalidateDOM();
     this.moleculeNode.invalidateDOM();
 
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
@@ -308,16 +311,37 @@ class MoleculeShapesScreenView extends ScreenView {
       }
     }
 
-    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( matrix => {
-      if ( this.screenWidth && this.screenHeight ) {
-        const globalBounds = new Bounds2( 0, 0, this.screenWidth, this.screenHeight ).transformed( matrix );
+    this.layoutListener = () => {
+      const screenWidth = this.screenWidth;
+      const screenHeight = this.screenHeight;
 
-        this.threeCamera.setViewOffset( globalBounds.width, globalBounds.height, -globalBounds.left, -globalBounds.top, this.screenWidth, this.screenHeight );
+      if ( screenWidth && screenHeight ) {
+        assert && assert( screenWidth === window.innerWidth );
+        assert && assert( screenHeight === window.innerHeight );
 
-        // three.js requires this to be called after changing the parameters
+        const cameraBounds = this.localToGlobalBounds( new Bounds2( 0, 0, this.layoutBounds.width, this.layoutBounds.height ) );
+
+        // PLEASE SEE ThreeStage.adjustViewOffset for documentation of all of this (not repeated here)
+        const halfHeight = this.threeCamera.near * Math.tan( ( Math.PI / 360 ) * this.threeCamera.fov ) / this.threeCamera.zoom;
+        const halfWidth = this.threeCamera.aspect * halfHeight;
+        const implicitBounds = new Bounds2( 0, 0, this.screenWidth, this.screenHeight ).shifted( cameraBounds.center.negated() );
+        const adjustedFullWidth = cameraBounds.width;
+        const adjustedFullHeight = cameraBounds.height;
+        const oldLeft = -halfWidth;
+        const oldTop = halfHeight;
+        const newLeft = implicitBounds.left * halfWidth / ( 0.5 * cameraBounds.width );
+        const newTop = -implicitBounds.top * halfHeight / ( 0.5 * cameraBounds.height );
+        const offsetX = ( newLeft - oldLeft ) * adjustedFullWidth / ( 2 * halfWidth );
+        const offsetY = ( oldTop - newTop ) * adjustedFullHeight / ( 2 * halfHeight );
+        this.threeCamera.setViewOffset( adjustedFullWidth, adjustedFullHeight, offsetX, offsetY, this.screenWidth, this.screenHeight );
+        this.threeCamera.aspect = cameraBounds.width / cameraBounds.height;
         this.threeCamera.updateProjectionMatrix();
       }
-    } );
+
+      this.moleculeNode.invalidateDOM();
+    };
+
+    animatedPanZoomSingleton.listener.matrixProperty.lazyLink( this.layoutListener );
   }
 
   /**
@@ -581,47 +605,26 @@ class MoleculeShapesScreenView extends ScreenView {
   layout( viewBounds ) {
     super.layout( viewBounds );
 
-    const width = viewBounds.width;
-    const height = viewBounds.height;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-    this.backgroundEventTarget.setRectBounds( this.globalToLocalBounds( viewBounds ) );
+    this.threeRenderer.setSize( width, height );
+
+    this.backgroundEventTarget.setRectBounds( this.globalToLocalBounds( new Bounds2( 0, 0, width, height ) ) );
 
     this.screenWidth = width;
     this.screenHeight = height;
 
-    const canvasWidth = Math.ceil( width );
-    const canvasHeight = Math.ceil( height );
-
     // field of view (FOV) computation for the isometric view scaling we use
-    const sx = canvasWidth / this.layoutBounds.width;
-    const sy = canvasHeight / this.layoutBounds.height;
+    const sx = width / this.layoutBounds.width;
+    const sy = height / this.layoutBounds.height;
     if ( sx === 0 || sy === 0 ) {
       return 1;
     }
 
-    // It's a bit tricky, since if we are vertically-constrained, we don't need to adjust the camera's FOV (since the
-    // width of the scene will scale proportionally to the scale we display our contents at). It's only when our view
-    // is horizontally-constrained where we have to account for the changed aspect ratio, and adjust the FOV so that
-    // the molecule shows up at a scale of "sy / sx" compared to the normal case. Note that sx === sy is where our
-    // layout bounds fit perfectly in the window, so we don't really have a constraint.
-    // Most of the complexity here is that threeCamera.fov is in degrees, and our ideal vertically-constrained FOV is
-    // 50 (so there's conversion factors in place).
-    const c = Math.tan( 25 * Math.PI / 180 ); // constant that will output the factor to use to maintain our 50 degree FOV
-    const adaptiveScale = Math.atan( c * sy / sx ) * 2 * 180 / Math.PI; // apply correction scales to maintain correct FOV
-    this.threeCamera.fov = sx > sy ? 50 : adaptiveScale;
     this.activeScale = sy > sx ? sx : sy;
 
-    // aspect ratio
-    this.threeCamera.aspect = canvasWidth / canvasHeight;
-
-    // near clipping plane
-    this.threeCamera.near = 1;
-
-    // far clipping plane
-    this.threeCamera.far = 100;
-
-    // three.js requires this to be called after changing the parameters
-    this.threeCamera.updateProjectionMatrix();
+    this.layoutListener();
 
     this.overlayCamera.left = 0;
     this.overlayCamera.right = width;
@@ -632,11 +635,6 @@ class MoleculeShapesScreenView extends ScreenView {
 
     // three.js requires this to be called after changing the parameters
     this.overlayCamera.updateProjectionMatrix();
-
-    // update the size of the renderer
-    this.threeRenderer.setSize( Math.ceil( width ), Math.ceil( height ) );
-
-    this.moleculeNode.invalidateDOM();
   }
 
   /**
