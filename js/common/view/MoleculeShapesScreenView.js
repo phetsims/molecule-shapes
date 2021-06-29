@@ -621,23 +621,21 @@ class MoleculeShapesScreenView extends ScreenView {
     // field of view (FOV) computation for the isometric view scaling we use
     const sx = width / this.layoutBounds.width;
     const sy = height / this.layoutBounds.height;
-    if ( sx === 0 || sy === 0 ) {
-      return 1;
+    if ( sx !== 0 && sy !== 0 ) {
+      this.activeScale = sy > sx ? sx : sy;
+
+      this.layoutListener();
+
+      this.overlayCamera.left = 0;
+      this.overlayCamera.right = width;
+      this.overlayCamera.top = 0; // will this inversion work?
+      this.overlayCamera.bottom = height;
+      this.overlayCamera.near = 1;
+      this.overlayCamera.far = 100;
+
+      // three.js requires this to be called after changing the parameters
+      this.overlayCamera.updateProjectionMatrix();
     }
-
-    this.activeScale = sy > sx ? sx : sy;
-
-    this.layoutListener();
-
-    this.overlayCamera.left = 0;
-    this.overlayCamera.right = width;
-    this.overlayCamera.top = 0; // will this inversion work?
-    this.overlayCamera.bottom = height;
-    this.overlayCamera.near = 1;
-    this.overlayCamera.far = 100;
-
-    // three.js requires this to be called after changing the parameters
-    this.overlayCamera.updateProjectionMatrix();
   }
 
   /**
