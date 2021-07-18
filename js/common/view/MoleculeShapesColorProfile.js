@@ -13,105 +13,105 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import ColorProfile from '../../../../scenery-phet/js/ColorProfile.js';
 import Color from '../../../../scenery/js/util/Color.js';
+import ProfileColorProperty from '../../../../scenery/js/util/ProfileColorProperty.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the
 // 'default' value provided.
-const MoleculeShapesColorProfile = new ColorProfile( [ 'default', 'basics', 'projector' ], {
-  background: {
+const MoleculeShapesColorProfile = {
+  backgroundProperty: new ProfileColorProperty( 'background', {
     default: new Color( 0, 0, 0 ),
     basics: new Color( 198, 226, 246 ),
     projector: new Color( 255, 255, 255 )
-  },
-  centralAtom: {
+  } ),
+  centralAtomProperty: new ProfileColorProperty( 'centralAtom', {
     default: new Color( 159, 102, 218 ),
     basics: new Color( 153, 90, 216 )
-  },
-  atom: {
+  } ),
+  atomProperty: new ProfileColorProperty( 'atom', {
     default: new Color( 255, 255, 255 ),
     projector: new Color( 153, 153, 153 )
-  },
-  bond: {
+  } ),
+  bondProperty: new ProfileColorProperty( 'bond', {
     default: new Color( 255, 255, 255 ),
     basics: new Color( 230, 230, 230 )
-  },
-  controlPanelBorder: {
+  } ),
+  controlPanelBorderProperty: new ProfileColorProperty( 'controlPanelBorder', {
     default: new Color( 210, 210, 210 ),
     basics: new Color( 30, 30, 30 ),
     projector: new Color( 30, 30, 30 )
-  },
-  controlPanelTitle: {
+  } ),
+  controlPanelTitleProperty: new ProfileColorProperty( 'controlPanelTitle', {
     default: new Color( 240, 240, 240 ),
     projector: new Color( 0, 0, 0 ),
     basics: new Color( 0, 0, 0 )
-  },
-  controlPanelText: {
+  } ),
+  controlPanelTextProperty: new ProfileColorProperty( 'controlPanelText', {
     default: new Color( 230, 230, 230 ),
     projector: new Color( 0, 0, 0 ),
     basics: new Color( 0, 0, 0 )
-  },
-  realExampleFormula: {
+  } ),
+  realExampleFormulaProperty: new ProfileColorProperty( 'realExampleFormula', {
     default: new Color( 230, 230, 230 ),
     projector: new Color( 0, 0, 0 )
-  },
-  realExampleBorder: {
+  } ),
+  realExampleBorderProperty: new ProfileColorProperty( 'realExampleBorder', {
     default: new Color( 60, 60, 60 ),
     projector: new Color( 230, 230, 230 )
-  },
-  lonePairShell: {
+  } ),
+  lonePairShellProperty: new ProfileColorProperty( 'lonePairShell', {
     default: new Color( 255, 255, 255, 0.7 ),
     projector: new Color( 178, 178, 178, 0.7 )
-  },
-  lonePairElectron: {
+  } ),
+  lonePairElectronProperty: new ProfileColorProperty( 'lonePairElectron', {
     default: new Color( 255, 255, 0, 0.8 ),
     projector: new Color( 0, 0, 0, 0.8 )
-  },
-  moleculeGeometryName: {
+  } ),
+  moleculeGeometryNameProperty: new ProfileColorProperty( 'moleculeGeometryName', {
     default: new Color( 255, 255, 140 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 102, 0, 204 )
-  },
-  electronGeometryName: {
+  } ),
+  electronGeometryNameProperty: new ProfileColorProperty( 'electronGeometryName', {
     default: new Color( 255, 204, 102 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 0, 102, 102 )
-  },
-  bondAngleReadout: {
+  } ),
+  bondAngleReadoutProperty: new ProfileColorProperty( 'bondAngleReadout', {
     default: new Color( 255, 255, 255 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 0, 0, 0 )
-  },
-  bondAngleSweep: {
+  } ),
+  bondAngleSweepProperty: new ProfileColorProperty( 'bondAngleSweep', {
     default: new Color( 128, 128, 128 ),
     basics: new Color( 84, 122, 165 ),
     projector: new Color( 156, 156, 156 )
-  },
-  bondAngleArc: {
+  } ),
+  bondAngleArcProperty: new ProfileColorProperty( 'bondAngleArc', {
     default: new Color( 255, 0, 0 ),
     basics: new Color( 0, 0, 0 )
-  },
-  removeButtonText: {
+  } ),
+  removeButtonTextProperty: new ProfileColorProperty( 'removeButtonText', {
     default: new Color( 0, 0, 0 )
-  },
-  removeButtonBackground: {
+  } ),
+  removeButtonBackgroundProperty: new ProfileColorProperty( 'removeButtonBackground', {
     default: new Color( 255, 200, 0 )
-  },
-  checkbox: {
+  } ),
+  checkboxProperty: new ProfileColorProperty( 'checkbox', {
     default: new Color( 230, 230, 230 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 0, 0, 0 )
-  },
-  checkboxBackground: {
+  } ),
+  checkboxBackgroundProperty: new ProfileColorProperty( 'checkboxBackground', {
     default: new Color( 30, 30, 30 ),
     basics: new Color( 255, 255, 255 ),
     projector: new Color( 255, 255, 255 )
-  },
-  removePairGroup: {
+  } ),
+  removePairGroupProperty: new ProfileColorProperty( 'removePairGroup', {
     default: new Color( '#d00' )
-  }
-} );
+  } )
+};
 
 moleculeShapes.register( 'MoleculeShapesColorProfile', MoleculeShapesColorProfile );
 
