@@ -96,7 +96,7 @@ Coordinate frames:
                            retina-like devices fit more pixels into one CSS pixel, so it's not a 1-to-1 mapping for pixels.
 
 Colors:
-  This sim handles color properties using ColorProfile, and updates so that we can have the interactive color
+  This sim handles color properties using ProfileColorProperty, and updates so that we can have the interactive color
   editor (molecule-shapes-colors.html), and switch between color schemes.
 
 Canvas fallback:
