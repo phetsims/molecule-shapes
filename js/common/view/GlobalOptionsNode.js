@@ -8,7 +8,6 @@
 
 import OptionsDialog from '../../../../joist/js/OptionsDialog.js';
 import ProjectorModeCheckbox from '../../../../joist/js/ProjectorModeCheckbox.js';
-import merge from '../../../../phet-core/js/merge.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
@@ -26,10 +25,6 @@ class GlobalOptionsNode extends VBox {
    */
   constructor( isBasicsVersion, tandem, options ) {
 
-    options = merge( {
-      defaultColorProfileName: 'default'
-    }, options );
-
     const checkboxes = [];
 
     if ( !isBasicsVersion ) {
@@ -43,7 +38,6 @@ class GlobalOptionsNode extends VBox {
     }
 
     checkboxes.push( new ProjectorModeCheckbox( {
-      defaultColorProfileName: options.defaultColorProfileName,
       tandem: tandem.createTandem( 'projectorModeCheckbox' )
     } ) );
 
