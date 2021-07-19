@@ -15,7 +15,6 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
-import moleculeShapesColorProfile from './moleculeShapesColorProfile.js';
 
 const optionsShowOuterLonePairsString = moleculeShapesStrings.options.showOuterLonePairs;
 
@@ -43,7 +42,7 @@ class GlobalOptionsNode extends VBox {
         } ) );
     }
 
-    checkboxes.push( new ProjectorModeCheckbox( moleculeShapesColorProfile, {
+    checkboxes.push( new ProjectorModeCheckbox( {
       defaultColorProfileName: options.defaultColorProfileName,
       tandem: tandem.createTandem( 'projectorModeCheckbox' )
     } ) );
