@@ -9,7 +9,7 @@
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
-import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
+import moleculeShapesColorProfile from '../moleculeShapesColorProfile.js';
 import LocalGeometry from './LocalGeometry.js';
 import LocalMaterial from './LocalMaterial.js';
 
@@ -22,7 +22,7 @@ const localBondGeometry = new LocalGeometry( globalBondGeometry );
 const localBondMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
   overdraw: MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
 } ), {
-  color: MoleculeShapesColorProfile.bondProperty
+  color: moleculeShapesColorProfile.bondProperty
 } );
 
 class BondView extends THREE.Object3D {

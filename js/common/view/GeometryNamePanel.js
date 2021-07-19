@@ -15,7 +15,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
-import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
+import moleculeShapesColorProfile from './moleculeShapesColorProfile.js';
 import MoleculeShapesPanel from './MoleculeShapesPanel.js';
 
 const controlElectronGeometryString = moleculeShapesStrings.control.electronGeometry;
@@ -94,7 +94,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
   constructor( model, tandem, options ) {
 
     options = merge( {
-      fill: MoleculeShapesColorProfile.backgroundProperty,
+      fill: moleculeShapesColorProfile.backgroundProperty,
       tandem: tandem
     }, options );
 
@@ -114,7 +114,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     // @private {MoleculeShapesCheckbox}
     this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( new Text( controlMoleculeGeometryString, {
       font: textLabelFont,
-      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
+      fill: moleculeShapesColorProfile.moleculeGeometryNameProperty
     } ), model.showMoleculeGeometryProperty, {
       tandem: tandem.createTandem( 'moleculeGeometryCheckbox' ),
       layoutOptions: {
@@ -124,7 +124,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     } );
     this.electronGeometryCheckbox = new MoleculeShapesCheckbox( new Text( controlElectronGeometryString, {
       font: textLabelFont,
-      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
+      fill: moleculeShapesColorProfile.electronGeometryNameProperty
     } ), model.showElectronGeometryProperty, {
       tandem: tandem.createTandem( 'electronGeometryCheckbox' ),
       layoutOptions: {
@@ -138,14 +138,14 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       visibleProperty: model.showMoleculeGeometryProperty,
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColorProfile.moleculeGeometryNameProperty
+      fill: moleculeShapesColorProfile.moleculeGeometryNameProperty
     } );
     // @private {Text}
     this.electronText = new Text( 'Y', {
       visibleProperty: model.showElectronGeometryProperty,
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColorProfile.electronGeometryNameProperty
+      fill: moleculeShapesColorProfile.electronGeometryNameProperty
     } );
 
     // TODO: pointer area listeners

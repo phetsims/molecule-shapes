@@ -26,7 +26,7 @@ import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import LabelWebGLView from './3d/LabelWebGLView.js';
 import GeometryNamePanel from './GeometryNamePanel.js';
 import LabelFallbackNode from './LabelFallbackNode.js';
-import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
+import moleculeShapesColorProfile from './moleculeShapesColorProfile.js';
 
 class MoleculeShapesScreenView extends ScreenView {
 
@@ -86,7 +86,7 @@ class MoleculeShapesScreenView extends ScreenView {
       } );
     }
 
-    MoleculeShapesColorProfile.backgroundProperty.link( color => {
+    moleculeShapesColorProfile.backgroundProperty.link( color => {
       this.threeRenderer.setClearColor( color.toNumber(), 1 );
     } );
 

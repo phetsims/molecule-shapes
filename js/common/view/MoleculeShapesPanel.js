@@ -10,7 +10,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import MoleculeShapesColorProfile from './MoleculeShapesColorProfile.js';
+import moleculeShapesColorProfile from './moleculeShapesColorProfile.js';
 import TitledPanel from './TitledPanel.js';
 
 class MoleculeShapesPanel extends TitledPanel {
@@ -31,13 +31,13 @@ class MoleculeShapesPanel extends TitledPanel {
       // we want everything to absorb events, since things behind the panel are pickable
       backgroundPickable: true,
       pickable: true,
-      fill: MoleculeShapesColorProfile.backgroundProperty,
-      stroke: MoleculeShapesColorProfile.controlPanelBorderProperty
+      fill: moleculeShapesColorProfile.backgroundProperty,
+      stroke: moleculeShapesColorProfile.controlPanelBorderProperty
     }, options );
 
     const titleNode = new Text( titleString, {
       font: new PhetFont( 18 ),
-      fill: MoleculeShapesColorProfile.controlPanelTitleProperty,
+      fill: moleculeShapesColorProfile.controlPanelTitleProperty,
       tandem: tandem.createTandem( 'titleNode' )
     } );
 

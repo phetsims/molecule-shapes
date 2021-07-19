@@ -20,7 +20,7 @@ import ComboBox from '../../../sun/js/ComboBox.js';
 import ComboBoxItem from '../../../sun/js/ComboBoxItem.js';
 import RealMoleculeShape from '../common/model/RealMoleculeShape.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
-import MoleculeShapesColorProfile from '../common/view/MoleculeShapesColorProfile.js';
+import moleculeShapesColorProfile from '../common/view/moleculeShapesColorProfile.js';
 import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
 import OptionsNode from '../common/view/OptionsNode.js';
@@ -95,11 +95,11 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       // NOTE: these font sizes are scaled!
       const realViewLabel = new Text( controlRealViewString, {
         font: new PhetFont( 28 ),
-        fill: MoleculeShapesColorProfile.controlPanelTextProperty
+        fill: moleculeShapesColorProfile.controlPanelTextProperty
       } );
       const modelViewLabel = new Text( controlModelViewString, {
         font: new PhetFont( 28 ),
-        fill: MoleculeShapesColorProfile.controlPanelTextProperty
+        fill: moleculeShapesColorProfile.controlPanelTextProperty
       } );
 
       const horizontalSpacing = 30;

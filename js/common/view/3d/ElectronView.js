@@ -8,7 +8,7 @@
 
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
-import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
+import moleculeShapesColorProfile from '../moleculeShapesColorProfile.js';
 import LocalGeometry from './LocalGeometry.js';
 import LocalMaterial from './LocalMaterial.js';
 
@@ -20,7 +20,7 @@ const localElectronGeometry = new LocalGeometry( new THREE.SphereGeometry( 0.25,
 const localElectronMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
   overdraw: MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.5 // amount to extend polygons when using Canvas to avoid cracks
 } ), {
-  color: MoleculeShapesColorProfile.lonePairElectronProperty
+  color: moleculeShapesColorProfile.lonePairElectronProperty
 } );
 
 class ElectronView extends THREE.Mesh {

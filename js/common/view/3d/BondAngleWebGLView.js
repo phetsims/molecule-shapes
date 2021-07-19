@@ -13,7 +13,7 @@
 
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
-import MoleculeShapesColorProfile from '../MoleculeShapesColorProfile.js';
+import moleculeShapesColorProfile from '../moleculeShapesColorProfile.js';
 import BondAngleView from './BondAngleView.js';
 import LocalGeometry from './LocalGeometry.js';
 import LocalPool from './LocalPool.js';
@@ -156,7 +156,7 @@ class BondAngleWebGLView extends BondAngleView {
     this.sweepColorListener = color => {
       this.sectorMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
-    MoleculeShapesColorProfile.bondAngleSweepProperty.link( this.sweepColorListener );
+    moleculeShapesColorProfile.bondAngleSweepProperty.link( this.sweepColorListener );
 
     // @private {THREE.ShaderMaterial} - We require one material per view so we can change the uniforms independently
     // NOTE: we don't seem to be able to use the same material for rendering both the sector and arc
@@ -171,7 +171,7 @@ class BondAngleWebGLView extends BondAngleView {
     this.arcColorListener = color => {
       this.arcMaterial.uniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ];
     };
-    MoleculeShapesColorProfile.bondAngleArcProperty.link( this.arcColorListener );
+    moleculeShapesColorProfile.bondAngleArcProperty.link( this.arcColorListener );
 
     this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
     this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}
