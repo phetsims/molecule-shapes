@@ -10,6 +10,9 @@ window.phet.preloads.phetio.phetioElementsOverrides =
     "moleculeShapes.global.view.colorProfile.profileNameProperty": {
       "phetioFeatured": true
     },
+    "moleculeShapes.modelScreen.model": {
+      "phetioFeatured": true
+    },
     "moleculeShapes.modelScreen.model.electronGeometryProperty": {
       "phetioFeatured": true
     },
@@ -28,8 +31,20 @@ window.phet.preloads.phetio.phetioElementsOverrides =
     "moleculeShapes.modelScreen.model.showMoleculeGeometryProperty": {
       "phetioFeatured": true
     },
+    "moleculeShapes.modelScreen.view.bondingPanel.doubleBondNode.removeButton.enabledProperty": {
+      "phetioFeatured": false
+    },
+    "moleculeShapes.modelScreen.view.bondingPanel.doubleBondNode.removeButton.visibleProperty": {
+      "phetioFeatured": false
+    },
     "moleculeShapes.modelScreen.view.bondingPanel.doubleBondNode.visibleProperty": {
       "phetioFeatured": true
+    },
+    "moleculeShapes.modelScreen.view.bondingPanel.singleBondNode.removeButton.enabledProperty": {
+      "phetioFeatured": false
+    },
+    "moleculeShapes.modelScreen.view.bondingPanel.singleBondNode.removeButton.visibleProperty": {
+      "phetioFeatured": false
     },
     "moleculeShapes.modelScreen.view.bondingPanel.singleBondNode.visibleProperty": {
       "phetioFeatured": true
@@ -40,11 +55,23 @@ window.phet.preloads.phetio.phetioElementsOverrides =
     "moleculeShapes.modelScreen.view.bondingPanel.titleNode.visibleProperty": {
       "phetioFeatured": true
     },
+    "moleculeShapes.modelScreen.view.bondingPanel.tripleBondNode.removeButton.enabledProperty": {
+      "phetioFeatured": false
+    },
+    "moleculeShapes.modelScreen.view.bondingPanel.tripleBondNode.removeButton.visibleProperty": {
+      "phetioFeatured": false
+    },
     "moleculeShapes.modelScreen.view.bondingPanel.tripleBondNode.visibleProperty": {
       "phetioFeatured": true
     },
     "moleculeShapes.modelScreen.view.bondingPanel.visibleProperty": {
       "phetioFeatured": true
+    },
+    "moleculeShapes.modelScreen.view.lonePairPanel.lonePairNode.removeButton.enabledProperty": {
+      "phetioFeatured": false
+    },
+    "moleculeShapes.modelScreen.view.lonePairPanel.lonePairNode.removeButton.visibleProperty": {
+      "phetioFeatured": false
     },
     "moleculeShapes.modelScreen.view.lonePairPanel.titleNode.textProperty": {
       "phetioFeatured": true
@@ -74,6 +101,9 @@ window.phet.preloads.phetio.phetioElementsOverrides =
       "phetioFeatured": true
     },
     "moleculeShapes.modelScreen.view.optionsPanel.visibleProperty": {
+      "phetioFeatured": true
+    },
+    "moleculeShapes.realMoleculesScreen.model": {
       "phetioFeatured": true
     },
     "moleculeShapes.realMoleculesScreen.model.electronGeometryProperty": {
