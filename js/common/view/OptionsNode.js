@@ -13,7 +13,7 @@ import VBox from '../../../../scenery/js/nodes/VBox.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
-import moleculeShapesColorProfile from './moleculeShapesColorProfile.js';
+import MoleculeShapesColors from './MoleculeShapesColors.js';
 
 const controlShowBondAnglesString = moleculeShapesStrings.control.showBondAngles;
 const controlShowLonePairsString = moleculeShapesStrings.control.showLonePairs;
@@ -29,12 +29,12 @@ class OptionsNode extends VBox {
   constructor( model, tandem, options ) {
     const showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont,
-      fill: moleculeShapesColorProfile.controlPanelTextProperty
+      fill: MoleculeShapesColors.controlPanelTextProperty
     } );
 
     const showBondAnglesLabel = new Text( controlShowBondAnglesString, {
       font: optionsFont,
-      fill: moleculeShapesColorProfile.controlPanelTextProperty
+      fill: MoleculeShapesColors.controlPanelTextProperty
     } );
 
     const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {

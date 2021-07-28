@@ -10,7 +10,7 @@
 
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
-import moleculeShapesColorProfile from '../moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import BondAngleView from './BondAngleView.js';
 import LocalPool from './LocalPool.js';
 
@@ -72,7 +72,7 @@ class BondAngleFallbackView extends BondAngleView {
       depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
       overdraw: MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
     } );
-    MoleculeShapesGlobals.linkColor( this.sectorMaterial, moleculeShapesColorProfile.bondAngleSweepProperty );
+    MoleculeShapesGlobals.linkColor( this.sectorMaterial, MoleculeShapesColors.bondAngleSweepProperty );
 
     // @private {THREE.MeshBasicMaterial}
     this.arcMaterial = new THREE.LineBasicMaterial( {
@@ -80,7 +80,7 @@ class BondAngleFallbackView extends BondAngleView {
       opacity: 0.7,
       depthWrite: false // don't write depth values, so we don't cause other transparent objects to render
     } );
-    MoleculeShapesGlobals.linkColor( this.arcMaterial, moleculeShapesColorProfile.bondAngleArcProperty );
+    MoleculeShapesGlobals.linkColor( this.arcMaterial, MoleculeShapesColors.bondAngleArcProperty );
 
     this.sectorView = new THREE.Mesh( this.sectorGeometry, this.sectorMaterial ); // @private {THREE.Mesh}
     this.arcView = new THREE.Line( this.arcGeometry, this.arcMaterial ); // @private {THREE.Mesh}

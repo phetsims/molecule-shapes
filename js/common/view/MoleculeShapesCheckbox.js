@@ -8,7 +8,7 @@
 
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import moleculeShapesColorProfile from './moleculeShapesColorProfile.js';
+import MoleculeShapesColors from './MoleculeShapesColors.js';
 
 class MoleculeShapesCheckbox extends Checkbox {
 
@@ -20,8 +20,8 @@ class MoleculeShapesCheckbox extends Checkbox {
   constructor( content, property, options ) {
     super( content, property, options );
 
-    moleculeShapesColorProfile.checkboxProperty.linkAttribute( this, 'checkboxColor' );
-    moleculeShapesColorProfile.checkboxBackgroundProperty.linkAttribute( this, 'checkboxColorBackground' );
+    MoleculeShapesColors.checkboxProperty.linkAttribute( this, 'checkboxColor' );
+    MoleculeShapesColors.checkboxBackgroundProperty.linkAttribute( this, 'checkboxColorBackground' );
   }
 }
 

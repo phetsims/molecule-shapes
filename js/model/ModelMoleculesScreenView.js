@@ -17,7 +17,7 @@ import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import PairGroup from '../common/model/PairGroup.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
-import moleculeShapesColorProfile from '../common/view/moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
 import OptionsNode from '../common/view/OptionsNode.js';
@@ -66,9 +66,9 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     } );
     const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, lonePairPanelTandem.createTandem( 'lonePairNode' ), {} );
     const removeAllButton = new TextPushButton( controlRemoveAllString, {
-      baseColor: moleculeShapesColorProfile.removeButtonBackgroundProperty,
+      baseColor: MoleculeShapesColors.removeButtonBackgroundProperty,
       font: new PhetFont( 16 ),
-      textFill: moleculeShapesColorProfile.removeButtonTextProperty.value,
+      textFill: MoleculeShapesColors.removeButtonTextProperty.value,
       maxWidth: 320,
       textNodeOptions: {
         tandem: Tandem.OPT_OUT

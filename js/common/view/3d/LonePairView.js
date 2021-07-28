@@ -10,7 +10,7 @@ import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import LonePairGeometryData from '../../data/LonePairGeometryData.js';
 import PairGroup from '../../model/PairGroup.js';
-import moleculeShapesColorProfile from '../moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import ElectronView from './ElectronView.js';
 import LocalGeometry from './LocalGeometry.js';
 import LocalMaterial from './LocalMaterial.js';
@@ -28,7 +28,7 @@ const localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
   depthWrite: false, // don't write depth values, so we don't cause other transparent objects to render
   overdraw: MoleculeShapesGlobals.useWebGLProperty.value ? 0 : 0.1 // amount to extend polygons when using Canvas to avoid cracks
 } ), {
-  color: moleculeShapesColorProfile.lonePairShellProperty
+  color: MoleculeShapesColors.lonePairShellProperty
 } );
 
 // geometries used for hit testing (includes a larger touch hit mesh)

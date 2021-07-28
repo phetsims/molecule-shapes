@@ -20,7 +20,7 @@ import Shape from '../../../../../kite/js/Shape.js';
 import Utils from '../../../../../scenery/js/util/Utils.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
-import moleculeShapesColorProfile from '../moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import LocalTexture from './LocalTexture.js';
 
 // grab our font data from the global namespace
@@ -193,7 +193,7 @@ class LabelWebGLView extends THREE.Mesh {
     const specificMaterialUniforms = JSON.parse( JSON.stringify( materialUniforms ) );
     specificMaterialUniforms.map.value = texture;
 
-    moleculeShapesColorProfile.bondAngleReadoutProperty.link( color => {
+    MoleculeShapesColors.bondAngleReadoutProperty.link( color => {
       specificMaterialUniforms.color.value = [ color.r / 255, color.g / 255, color.b / 255 ]; // uniforms use number arrays
     } );
 

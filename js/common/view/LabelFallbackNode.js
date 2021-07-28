@@ -9,7 +9,7 @@
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import moleculeShapesColorProfile from './moleculeShapesColorProfile.js';
+import MoleculeShapesColors from './MoleculeShapesColors.js';
 
 class LabelFallbackNode extends Text {
   constructor() {
@@ -38,7 +38,7 @@ class LabelFallbackNode extends Text {
     const localMidpoint = this.globalToParentPoint( midScreenPoint );
 
     this.center = localMidpoint.plus( localMidpoint.minus( localCenter ).times( 0.3 ) );
-    this.fill = moleculeShapesColorProfile.bondAngleReadoutProperty.value.withAlpha( brightness );
+    this.fill = MoleculeShapesColors.bondAngleReadoutProperty.value.withAlpha( brightness );
   }
 
   /*

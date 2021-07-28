@@ -23,7 +23,7 @@ import MoleculeShapesModel from '../common/model/MoleculeShapesModel.js';
 import PairGroup from '../common/model/PairGroup.js';
 import VSEPRMolecule from '../common/model/VSEPRMolecule.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
-import moleculeShapesColorProfile from '../common/view/moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
 import moleculeShapes from '../moleculeShapes.js';
 import RemovePairGroupButton from './RemovePairGroupButton.js';
@@ -39,7 +39,7 @@ const renderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLR
   preserveDrawingBuffer: true, // so we can toDataURL() it
   alpha: true // so we can render the transparency
 } ) : new THREE.CanvasRenderer();
-moleculeShapesColorProfile.backgroundProperty.link( color => renderer.setClearColor( color.toNumber(), 1 ) );
+MoleculeShapesColors.backgroundProperty.link( color => renderer.setClearColor( color.toNumber(), 1 ) );
 
 const camera = new THREE.OrthographicCamera();
 camera.position.set( 0, 0, 40 );
@@ -170,14 +170,14 @@ class BondGroupNode extends HBox {
     }
 
     if ( bondOrder === 0 ) {
-      moleculeShapesColorProfile.lonePairShellProperty.lazyLink( updateImage );
-      moleculeShapesColorProfile.lonePairElectronProperty.lazyLink( updateImage );
+      MoleculeShapesColors.lonePairShellProperty.lazyLink( updateImage );
+      MoleculeShapesColors.lonePairElectronProperty.lazyLink( updateImage );
     }
     else {
-      moleculeShapesColorProfile.atomProperty.lazyLink( updateImage );
-      moleculeShapesColorProfile.bondProperty.lazyLink( updateImage );
+      MoleculeShapesColors.atomProperty.lazyLink( updateImage );
+      MoleculeShapesColors.bondProperty.lazyLink( updateImage );
     }
-    moleculeShapesColorProfile.backgroundProperty.lazyLink( updateImage );
+    MoleculeShapesColors.backgroundProperty.lazyLink( updateImage );
 
     // move the lone pair over to the right more, so that it looks more centered
     if ( bondOrder === 0 ) {
@@ -218,7 +218,7 @@ class BondGroupNode extends HBox {
       else {
         alpha = 0.4;
       }
-      overlay.fill = moleculeShapesColorProfile.backgroundProperty.value.withAlpha( alpha );
+      overlay.fill = MoleculeShapesColors.backgroundProperty.value.withAlpha( alpha );
     }
 
     model.moleculeProperty.link( ( newMolecule, oldMolecule ) => {
@@ -233,7 +233,7 @@ class BondGroupNode extends HBox {
     model.showLonePairsProperty.link( update );
     Molecule.maxPairsProperty.lazyLink( update );
 
-    moleculeShapesColorProfile.backgroundProperty.lazyLink( update );
+    MoleculeShapesColors.backgroundProperty.lazyLink( update );
 
     this.mutate( merge( {
       children: [ thumbnail, removeButton ],

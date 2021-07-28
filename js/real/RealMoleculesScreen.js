@@ -8,7 +8,7 @@
 
 import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
-import moleculeShapesColorProfile from '../common/view/moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import ScreenIconNode from '../common/view/ScreenIconNode.js';
 import moleculeShapes from '../moleculeShapes.js';
 import moleculeShapesStrings from '../moleculeShapesStrings.js';
@@ -26,7 +26,7 @@ class RealMoleculesScreen extends Screen {
   constructor( isBasicsVersion, tandem ) {
     const options = {
       name: moleculeShapesStrings.screen.realMolecules,
-      backgroundColorProperty: moleculeShapesColorProfile.backgroundProperty,
+      backgroundColorProperty: MoleculeShapesColors.backgroundProperty,
       homeScreenIcon: new ScreenIcon( new ScreenIconNode( false, isBasicsVersion ), {
         maxIconWidthProportion: 1,
         maxIconHeightProportion: 1

@@ -19,7 +19,7 @@ import moleculeShapes from '../../moleculeShapes.js';
 
 // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the
 // 'default' value provided.
-const moleculeShapesColorProfile = {
+const MoleculeShapesColors = {
   backgroundProperty: new ProfileColorProperty( 'background', {
     default: new Color( 0, 0, 0 ),
     basics: new Color( 198, 226, 246 ),
@@ -113,6 +113,6 @@ const moleculeShapesColorProfile = {
   } )
 };
 
-moleculeShapes.register( 'moleculeShapesColorProfile', moleculeShapesColorProfile );
+moleculeShapes.register( 'MoleculeShapesColors', MoleculeShapesColors );
 
-export default moleculeShapesColorProfile;
+export default MoleculeShapesColors;

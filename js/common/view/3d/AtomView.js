@@ -12,7 +12,7 @@ import Vector3 from '../../../../../dot/js/Vector3.js';
 import Color from '../../../../../scenery/js/util/Color.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
-import moleculeShapesColorProfile from '../moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import LocalGeometry from './LocalGeometry.js';
 import LocalMaterial from './LocalMaterial.js';
 
@@ -106,12 +106,12 @@ class AtomView extends THREE.Mesh {
 
 // @public {LocalMaterial} - renderer-local access
 AtomView.centralAtomLocalMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-  color: moleculeShapesColorProfile.centralAtomProperty
+  color: MoleculeShapesColors.centralAtomProperty
 } );
 
 // @public {LocalMaterial} - renderer-local access
 AtomView.atomLocalMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
-  color: moleculeShapesColorProfile.atomProperty
+  color: MoleculeShapesColors.atomProperty
 } );
 
 moleculeShapes.register( 'AtomView', AtomView );

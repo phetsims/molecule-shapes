@@ -10,7 +10,7 @@ import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import RectangularPushButton from '../../../sun/js/buttons/RectangularPushButton.js';
-import moleculeShapesColorProfile from '../common/view/moleculeShapesColorProfile.js';
+import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import moleculeShapes from '../moleculeShapes.js';
 
 const CROSS_SIZE = 10;
@@ -31,7 +31,7 @@ class RemovePairGroupButton extends RectangularPushButton {
       yMargin: 5
     }, options ) );
 
-    moleculeShapesColorProfile.removePairGroupProperty.link( color => {
+    MoleculeShapesColors.removePairGroupProperty.link( color => {
       this.baseColor = color;
     } );
   }
