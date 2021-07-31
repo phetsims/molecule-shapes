@@ -10,7 +10,7 @@
     "grunt": "~1.4.0"
   },
   "phet": {
-    "colorProfiles": [ "default", "basics", "projector" ],
+    "colorProfiles": [ "default", "projector" ],
     "requirejsNamespace": "MOLECULE_SHAPES",
     "phetLibs": [
       "mobius",
