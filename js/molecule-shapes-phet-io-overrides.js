@@ -7,7 +7,7 @@ window.phet.preloads.phetio.phetioElementsOverrides =
     "moleculeShapes.global.model.showOuterLonePairsProperty": {
       "phetioFeatured": true
     },
-    "moleculeShapes.global.view.colorProfile.profileNameProperty": {
+    "moleculeShapes.general.view.colorProfileProperty": {
       "phetioFeatured": true
     },
     "moleculeShapes.modelScreen.model": {
