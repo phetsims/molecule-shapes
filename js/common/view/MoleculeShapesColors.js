@@ -20,95 +20,95 @@ import moleculeShapes from '../../moleculeShapes.js';
 // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the
 // 'default' value provided.
 const MoleculeShapesColors = {
-  backgroundProperty: new ProfileColorProperty( 'background', {
+  backgroundProperty: new ProfileColorProperty( moleculeShapes, 'background', {
     default: new Color( 0, 0, 0 ),
     basics: new Color( 198, 226, 246 ),
     projector: new Color( 255, 255, 255 )
   } ),
-  centralAtomProperty: new ProfileColorProperty( 'centralAtom', {
+  centralAtomProperty: new ProfileColorProperty( moleculeShapes, 'centralAtom', {
     default: new Color( 159, 102, 218 ),
     basics: new Color( 153, 90, 216 )
   } ),
-  atomProperty: new ProfileColorProperty( 'atom', {
+  atomProperty: new ProfileColorProperty( moleculeShapes, 'atom', {
     default: new Color( 255, 255, 255 ),
     projector: new Color( 153, 153, 153 )
   } ),
-  bondProperty: new ProfileColorProperty( 'bond', {
+  bondProperty: new ProfileColorProperty( moleculeShapes, 'bond', {
     default: new Color( 255, 255, 255 ),
     basics: new Color( 230, 230, 230 )
   } ),
-  controlPanelBorderProperty: new ProfileColorProperty( 'controlPanelBorder', {
+  controlPanelBorderProperty: new ProfileColorProperty( moleculeShapes, 'controlPanelBorder', {
     default: new Color( 210, 210, 210 ),
     basics: new Color( 30, 30, 30 ),
     projector: new Color( 30, 30, 30 )
   } ),
-  controlPanelTitleProperty: new ProfileColorProperty( 'controlPanelTitle', {
+  controlPanelTitleProperty: new ProfileColorProperty( moleculeShapes, 'controlPanelTitle', {
     default: new Color( 240, 240, 240 ),
     projector: new Color( 0, 0, 0 ),
     basics: new Color( 0, 0, 0 )
   } ),
-  controlPanelTextProperty: new ProfileColorProperty( 'controlPanelText', {
+  controlPanelTextProperty: new ProfileColorProperty( moleculeShapes, 'controlPanelText', {
     default: new Color( 230, 230, 230 ),
     projector: new Color( 0, 0, 0 ),
     basics: new Color( 0, 0, 0 )
   } ),
-  realExampleFormulaProperty: new ProfileColorProperty( 'realExampleFormula', {
+  realExampleFormulaProperty: new ProfileColorProperty( moleculeShapes, 'realExampleFormula', {
     default: new Color( 230, 230, 230 ),
     projector: new Color( 0, 0, 0 )
   } ),
-  realExampleBorderProperty: new ProfileColorProperty( 'realExampleBorder', {
+  realExampleBorderProperty: new ProfileColorProperty( moleculeShapes, 'realExampleBorder', {
     default: new Color( 60, 60, 60 ),
     projector: new Color( 230, 230, 230 )
   } ),
-  lonePairShellProperty: new ProfileColorProperty( 'lonePairShell', {
+  lonePairShellProperty: new ProfileColorProperty( moleculeShapes, 'lonePairShell', {
     default: new Color( 255, 255, 255, 0.7 ),
     projector: new Color( 178, 178, 178, 0.7 )
   } ),
-  lonePairElectronProperty: new ProfileColorProperty( 'lonePairElectron', {
+  lonePairElectronProperty: new ProfileColorProperty( moleculeShapes, 'lonePairElectron', {
     default: new Color( 255, 255, 0, 0.8 ),
     projector: new Color( 0, 0, 0, 0.8 )
   } ),
-  moleculeGeometryNameProperty: new ProfileColorProperty( 'moleculeGeometryName', {
+  moleculeGeometryNameProperty: new ProfileColorProperty( moleculeShapes, 'moleculeGeometryName', {
     default: new Color( 255, 255, 140 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 102, 0, 204 )
   } ),
-  electronGeometryNameProperty: new ProfileColorProperty( 'electronGeometryName', {
+  electronGeometryNameProperty: new ProfileColorProperty( moleculeShapes, 'electronGeometryName', {
     default: new Color( 255, 204, 102 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 0, 102, 102 )
   } ),
-  bondAngleReadoutProperty: new ProfileColorProperty( 'bondAngleReadout', {
+  bondAngleReadoutProperty: new ProfileColorProperty( moleculeShapes, 'bondAngleReadout', {
     default: new Color( 255, 255, 255 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 0, 0, 0 )
   } ),
-  bondAngleSweepProperty: new ProfileColorProperty( 'bondAngleSweep', {
+  bondAngleSweepProperty: new ProfileColorProperty( moleculeShapes, 'bondAngleSweep', {
     default: new Color( 128, 128, 128 ),
     basics: new Color( 84, 122, 165 ),
     projector: new Color( 156, 156, 156 )
   } ),
-  bondAngleArcProperty: new ProfileColorProperty( 'bondAngleArc', {
+  bondAngleArcProperty: new ProfileColorProperty( moleculeShapes, 'bondAngleArc', {
     default: new Color( 255, 0, 0 ),
     basics: new Color( 0, 0, 0 )
   } ),
-  removeButtonTextProperty: new ProfileColorProperty( 'removeButtonText', {
+  removeButtonTextProperty: new ProfileColorProperty( moleculeShapes, 'removeButtonText', {
     default: new Color( 0, 0, 0 )
   } ),
-  removeButtonBackgroundProperty: new ProfileColorProperty( 'removeButtonBackground', {
+  removeButtonBackgroundProperty: new ProfileColorProperty( moleculeShapes, 'removeButtonBackground', {
     default: new Color( 255, 200, 0 )
   } ),
-  checkboxProperty: new ProfileColorProperty( 'checkbox', {
+  checkboxProperty: new ProfileColorProperty( moleculeShapes, 'checkbox', {
     default: new Color( 230, 230, 230 ),
     basics: new Color( 0, 0, 0 ),
     projector: new Color( 0, 0, 0 )
   } ),
-  checkboxBackgroundProperty: new ProfileColorProperty( 'checkboxBackground', {
+  checkboxBackgroundProperty: new ProfileColorProperty( moleculeShapes, 'checkboxBackground', {
     default: new Color( 30, 30, 30 ),
     basics: new Color( 255, 255, 255 ),
     projector: new Color( 255, 255, 255 )
   } ),
-  removePairGroupProperty: new ProfileColorProperty( 'removePairGroup', {
+  removePairGroupProperty: new ProfileColorProperty( moleculeShapes, 'removePairGroup', {
     default: new Color( '#d00' )
   } )
 };
