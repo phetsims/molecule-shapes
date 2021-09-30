@@ -18,7 +18,6 @@ import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import ObjectLiteralIO from '../../../../tandem/js/types/ObjectLiteralIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import ElectronGeometry from './ElectronGeometry.js';
@@ -194,26 +193,8 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
 
   stateSchema: {
     isReal: BooleanIO,
-
-    // TODO: Provide IO Types to specify these schemas instead of ObjectLiteralIO, see https://github.com/phetsims/molecule-shapes/issues/183
-    // Shaped like this:
-    // {
-    //       position: Vector3.Vector3IO,
-    //       velocity: Vector3.Vector3IO,
-    //       isLonePair: BooleanIO,
-    //       element: NullableIO( StringIO ),
-    //       isCentralAtom: BooleanIO
-    //     }
-    groups: ArrayIO( ObjectLiteralIO ),
-
-    // Shaped like this:
-    //    {
-    //     a: NumberIO,
-    //     b: NumberIO,
-    //     order: NumberIO,
-    //     length: NumberIO
-    //   }
-    bonds: ArrayIO( ObjectLiteralIO ),
+    groups: ArrayIO( PairGroup.PairGroupIO ),
+    bonds: ArrayIO( Bond.BondIO ),
     realMoleculeShape: NullableIO( RealMoleculeShape.RealMoleculeShapeIO ),
     bondLengthOverride: NullableIO( NumberIO )
   }

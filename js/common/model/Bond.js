@@ -7,6 +7,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 class Bond {
@@ -83,6 +85,17 @@ class Bond {
     return new Bond( atoms[ obj.a ], atoms[ obj.b ], obj.order, obj.length );
   }
 }
+
+// @public {IOType}
+Bond.BondIO = new IOType( 'BondIO', {
+  valueType: Bond,
+  stateSchema: {
+    a: NumberIO,
+    b: NumberIO,
+    order: NumberIO,
+    length: NumberIO
+  }
+} );
 
 moleculeShapes.register( 'Bond', Bond );
 export default Bond;

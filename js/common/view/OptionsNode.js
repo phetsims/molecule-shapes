@@ -34,7 +34,7 @@ class OptionsNode extends VBox {
     const showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont,
       fill: MoleculeShapesColors.controlPanelTextProperty,
-      tandem: showBondAnglesCheckboxTandem.createTandem( 'labelText' )
+      tandem: showLonePairsCheckboxTandem.createTandem( 'labelText' )
     } );
 
     const showBondAnglesLabel = new Text( controlShowBondAnglesString, {

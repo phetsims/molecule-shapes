@@ -11,6 +11,10 @@ import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
 import merge from '../../../../phet-core/js/merge.js';
+import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
+import StringIO from '../../../../tandem/js/types/StringIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 let nextId = 0;
@@ -322,5 +326,17 @@ PairGroup.DAMPING_FACTOR = 0.1;
 function interpolate( a, b, ratio ) {
   return a * ( 1 - ratio ) + b * ratio;
 }
+
+// @public {IOType}
+PairGroup.PairGroupIO = new IOType( 'PairGroupIO', {
+  valueType: PairGroup,
+  stateSchema: {
+    position: Vector3.Vector3IO,
+    velocity: Vector3.Vector3IO,
+    isLonePair: BooleanIO,
+    element: NullableIO( StringIO ),
+    isCentralAtom: BooleanIO
+  }
+} );
 
 export default PairGroup;
