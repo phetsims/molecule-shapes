@@ -28,22 +28,27 @@ class OptionsNode extends VBox {
    * @param {Object} [options]
    */
   constructor( model, tandem, options ) {
+    const showLonePairsCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsCheckbox' );
+    const showBondAnglesCheckboxTandem = tandem.createTandem( 'showBondAnglesCheckbox' );
+
     const showLonePairsLabel = new Text( controlShowLonePairsString, {
       font: optionsFont,
-      fill: MoleculeShapesColors.controlPanelTextProperty
+      fill: MoleculeShapesColors.controlPanelTextProperty,
+      tandem: showBondAnglesCheckboxTandem.createTandem( 'labelText' )
     } );
 
     const showBondAnglesLabel = new Text( controlShowBondAnglesString, {
       font: optionsFont,
-      fill: MoleculeShapesColors.controlPanelTextProperty
+      fill: MoleculeShapesColors.controlPanelTextProperty,
+      tandem: showBondAnglesCheckboxTandem.createTandem( 'labelText' )
     } );
 
     const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {
       enabledPropertyOptions: { phetioReadOnly: true },
-      tandem: model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsCheckbox' )
+      tandem: showLonePairsCheckboxTandem
     } );
     const showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {
-      tandem: tandem.createTandem( 'showBondAnglesCheckbox' )
+      tandem: showBondAnglesCheckboxTandem
     } );
 
     // touch areas

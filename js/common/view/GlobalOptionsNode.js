@@ -28,12 +28,14 @@ class GlobalOptionsNode extends VBox {
     const checkboxes = [];
 
     if ( !isBasicsVersion ) {
+      const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
       checkboxes.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
           font: OptionsDialog.DEFAULT_FONT,
-          maxWidth: 350
+          maxWidth: 350,
+          tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
         } ),
         MoleculeShapesGlobals.showOuterLonePairsProperty, {
-          tandem: tandem.createTandem( 'showOuterLonePairsCheckbox' )
+          tandem: showOuterLonePairsCheckboxTandem
         } ) );
     }
 
