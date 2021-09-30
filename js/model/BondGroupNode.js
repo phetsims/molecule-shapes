@@ -192,6 +192,7 @@ class BondGroupNode extends HBox {
         removePairCallback( bondOrder );
       },
       visiblePropertyOptions: { phetioReadOnly: true },
+      enabledPropertyOptions: { phetioReadOnly: true },
       tandem: tandem.createTandem( 'removeButton' )
     } );
     removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
@@ -231,7 +232,7 @@ class BondGroupNode extends HBox {
       update();
     } );
     model.showLonePairsProperty.link( update );
-    Molecule.maxPairsProperty.lazyLink( update );
+    Molecule.maxConnectionsProperty.lazyLink( update );
 
     MoleculeShapesColors.backgroundProperty.lazyLink( update );
 

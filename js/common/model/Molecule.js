@@ -14,15 +14,16 @@ import Range from '../../../../dot/js/Range.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import MoleculeShapesQueryParameters from '../MoleculeShapesQueryParameters.js';
 import Bond from './Bond.js';
 import LocalShape from './LocalShape.js';
 import PairGroup from './PairGroup.js';
 import VSEPRConfiguration from './VSEPRConfiguration.js';
 
 // Adding in maximum numbers of pairs, see https://github.com/phetsims/special-ops/issues/190
-const maxPairsProperty = new NumberProperty( 6, {
+const maxConnectionsProperty = new NumberProperty( MoleculeShapesQueryParameters.maxConnections, {
   range: new Range( 0, 6 ),
-  tandem: Tandem.GLOBAL_MODEL.createTandem( 'maxPairsProperty' ),
+  tandem: Tandem.GLOBAL_MODEL.createTandem( 'maxConnectionsProperty' ),
   numberType: 'Integer'
 } );
 
@@ -391,7 +392,7 @@ class Molecule {
    * @returns {boolean}
    */
   wouldAllowBondOrder( bondOrder ) {
-    return this.radialGroups.length < maxPairsProperty.value;
+    return this.radialGroups.length < maxConnectionsProperty.value;
   }
 
   /**
@@ -470,7 +471,7 @@ class Molecule {
 Molecule.prototype.isReal = false;
 
 // @public {Property.<number>}
-Molecule.maxPairsProperty = maxPairsProperty;
+Molecule.maxConnectionsProperty = maxConnectionsProperty;
 
 moleculeShapes.register( 'Molecule', Molecule );
 export default Molecule;

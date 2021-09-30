@@ -1,7 +1,7 @@
 /* eslint-disable */
 window.phet.preloads.phetio.phetioElementsOverrides =
   {
-    "moleculeShapes.global.model.maxPairsProperty": {
+    "moleculeShapes.global.model.maxConnectionsProperty": {
       "phetioFeatured": true
     },
     "moleculeShapes.global.model.showOuterLonePairsProperty": {
