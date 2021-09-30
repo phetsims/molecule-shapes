@@ -79,7 +79,7 @@ class MoleculeShapesModel extends PhetioObject {
 
     // @public {Property.<boolean>} - Whether lone pairs are shown
     this.showLonePairsProperty = new BooleanProperty( !isBasicsVersion, {
-      tandem: tandem.createTandem( 'showLonePairsProperty' )
+      tandem: isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsProperty' )
     } );
 
     // @public {Property.<boolean>} - Whether molecular shape names are shown
@@ -89,7 +89,7 @@ class MoleculeShapesModel extends PhetioObject {
 
     // @public {Property.<boolean>} - Whether electron shape names are shown
     this.showElectronGeometryProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'showElectronGeometryProperty' )
+      tandem: isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showElectronGeometryProperty' )
     } );
 
     const updateMolecularBonds = () => {

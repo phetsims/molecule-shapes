@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector3 from '../../../dot/js/Vector3.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import AttractorModel from '../common/model/AttractorModel.js';
@@ -45,7 +46,7 @@ class RealMoleculesModel extends MoleculeShapesModel {
 
     // @public {Property.<boolean>} whether the "Real" or "Model" view is shown
     this.showRealViewProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'showRealViewProperty' ),
+      tandem: isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showRealViewProperty' ),
       phetioState: false
     } );
 

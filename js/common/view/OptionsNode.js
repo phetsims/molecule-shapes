@@ -10,6 +10,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
@@ -39,7 +40,7 @@ class OptionsNode extends VBox {
 
     const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {
       enabledPropertyOptions: { phetioReadOnly: true },
-      tandem: tandem.createTandem( 'showLonePairsCheckbox' )
+      tandem: model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsCheckbox' )
     } );
     const showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {
       tandem: tandem.createTandem( 'showBondAnglesCheckbox' )

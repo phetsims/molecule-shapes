@@ -12,6 +12,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import GridBox from '../../../../scenery/js/layout/GridBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
@@ -126,7 +127,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       font: textLabelFont,
       fill: MoleculeShapesColors.electronGeometryNameProperty
     } ), model.showElectronGeometryProperty, {
-      tandem: tandem.createTandem( 'electronGeometryCheckbox' ),
+      tandem: model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'electronGeometryCheckbox' ),
       layoutOptions: {
         x: 1,
         y: 0
