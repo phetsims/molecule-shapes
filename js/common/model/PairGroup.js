@@ -115,7 +115,7 @@ class PairGroup {
       const offset = idealDistanceFromCenter - distance;
 
       // just modify position for now so we don't get any oscillations
-      let ratioOfMovement = Math.pow( 0.1, 0.016 / timeElapsed ); // scale this exponentially by how much time has elapsed, so the more time taken, the faster we move towards the ideal distance
+      let ratioOfMovement = Math.min( 0.1 * timeElapsed / 0.016, 1 );
       if ( isTerminalLonePair ) {
         ratioOfMovement = 1;
       }
