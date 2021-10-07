@@ -22,7 +22,7 @@
   window.phet.chipper.packageObject =
     {
       "name": "molecule-shapes",
-      "version": "1.4.0-dev.0",
+      "version": "1.4.0-dev.1",
       "license": "GPL-3.0",
       "repository": {
         "type": "git",
@@ -54,7 +54,8 @@
           "phet-io",
           "adapted-from-phet"
         ],
-        "simulation": true
+        "simulation": true,
+        "supportsOutputJS": true
       },
       "eslintConfig": {
         "extends": "../chipper/eslint/sim_eslintrc.js",
@@ -68,6 +69,10 @@
       {
         "repo": "joist",
         "requirejsNamespace": "JOIST"
+      },
+      {
+        "repo": "mobius",
+        "requirejsNamespace": "MOBIUS"
       },
       {
         "repo": "molecule-shapes",
