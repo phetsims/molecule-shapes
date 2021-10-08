@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "chipper": {
-    "sha": "a3d8499bceeadde88e5756213c4aa69fbfbcf31d",
+    "sha": "34d93a88e1572c53ea0b78ba88f3715bc2a2d931",
     "branch": "molecule-shapes-1.3"
   },
   "dot": {
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "6459c40a6bb4072d327f1ba581ccb2a34002f42e",
+    "sha": "09736c24d5c70a8aa946bc43b88408087f636b1e",
     "branch": "1.3"
   },
   "nitroglycerin": {
