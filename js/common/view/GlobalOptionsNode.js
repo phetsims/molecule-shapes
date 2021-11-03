@@ -26,14 +26,18 @@ class GlobalOptionsNode extends VBox {
   constructor( isBasicsVersion, tandem, options ) {
 
     const checkboxes = [];
+    let label = null;
 
     if ( !isBasicsVersion ) {
       const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
-      checkboxes.push( new Checkbox( new Text( optionsShowOuterLonePairsString, {
-          font: OptionsDialog.DEFAULT_FONT,
-          maxWidth: 350,
-          tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
-        } ),
+
+      label = new Text( optionsShowOuterLonePairsString, {
+        font: OptionsDialog.DEFAULT_FONT,
+        maxWidth: 350,
+        tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
+      } );
+
+      checkboxes.push( new Checkbox( label,
         MoleculeShapesGlobals.showOuterLonePairsProperty, {
           tandem: showOuterLonePairsCheckboxTandem
         } ) );
@@ -51,6 +55,9 @@ class GlobalOptionsNode extends VBox {
 
     // @private {Array.<Node>}
     this.checkboxes = checkboxes;
+
+    // @private {Node|null} - For disposal
+    this.label = label;
   }
 
   /**
@@ -59,6 +66,7 @@ class GlobalOptionsNode extends VBox {
    */
   dispose() {
     this.checkboxes.forEach( checkbox => checkbox.dispose() );
+    this.label && this.label.dispose();
 
     super.dispose();
   }
