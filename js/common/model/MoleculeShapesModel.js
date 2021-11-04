@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
@@ -19,6 +20,7 @@ import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import moleculeShapes from '../../moleculeShapes.js';
+import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import Bond from './Bond.js';
 import ElectronGeometry from './ElectronGeometry.js';
 import Molecule from './Molecule.js';
@@ -80,6 +82,11 @@ class MoleculeShapesModel extends PhetioObject {
     // @public {Property.<boolean>} - Whether lone pairs are shown
     this.showLonePairsProperty = new BooleanProperty( !isBasicsVersion, {
       tandem: isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsProperty' )
+    } );
+
+    // @public {Property.<boolean>} - Whether outer lone pairs are shown (only show if both the model AND global values are set)
+    this.showOuterLonePairsProperty = DerivedProperty.and( [ this.showLonePairsProperty, MoleculeShapesGlobals.showOuterLonePairsProperty ], {
+      tandem: Tandem.OPT_OUT
     } );
 
     // @public {Property.<boolean>} - Whether molecular shape names are shown

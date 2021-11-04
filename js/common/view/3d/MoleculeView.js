@@ -161,7 +161,7 @@ class MoleculeView extends THREE.Object3D {
     if ( group.isLonePair ) {
       const visibilityProperty = parentAtom === centralAtom ?
                                  this.model.showLonePairsProperty :
-                                 MoleculeShapesGlobals.showOuterLonePairsProperty;
+                                 this.model.showOuterLonePairsProperty;
 
       view = LonePairView.pool.get( this.renderer ).initialize( group, parentAtom, visibilityProperty );
       this.lonePairViews.push( view );
