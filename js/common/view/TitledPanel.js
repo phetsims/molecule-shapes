@@ -12,12 +12,15 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
+import HeightSizable from '../../../../scenery/js/layout/HeightSizable.js';
+import WidthSizable from '../../../../scenery/js/layout/WidthSizable.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Panel from '../../../../sun/js/Panel.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
-class TitledPanel extends Node {
+// TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions?
+class TitledPanel extends WidthSizable( HeightSizable( Node ) ) {
   constructor( titleNode, contentNode, options ) {
     super();
 
@@ -34,7 +37,8 @@ class TitledPanel extends Node {
       cornerRadius: options.cornerRadius,
       resize: options.resize,
       backgroundPickable: options.backgroundPickable,
-      minWidth: Math.max( options.minWidth || 0, titleNode.width + ( 2 * options.yMargin ) )
+      minWidth: Math.max( options.minWidth || 0, titleNode.width + ( 2 * options.yMargin ) ),
+      align: options.align
     } );
     this.setStroke( options.stroke );
     this.setFill( options.fill );
@@ -46,6 +50,14 @@ class TitledPanel extends Node {
     contentNode.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     titleNode.localBoundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     this.updateTitlePosition();
+
+    // Forward the panel's minimums to ours
+    this.panel.minimumWidthProperty.link( minimumWidth => { this.minimumWidth = minimumWidth; } );
+    this.panel.minimumHeightProperty.link( minimumHeight => { this.minimumHeight = minimumHeight; } );
+
+    // Forward our preferred size to the panel
+    this.preferredWidthProperty.link( preferredWidth => { this.panel.preferredWidth = preferredWidth; } );
+    this.preferredHeightProperty.link( preferredHeight => { this.panel.preferredHeight = preferredHeight; } );
 
     this.mutate( options );
   }

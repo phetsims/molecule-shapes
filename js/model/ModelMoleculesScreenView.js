@@ -7,11 +7,9 @@
  */
 
 import Vector3 from '../../../dot/js/Vector3.js';
-import merge from '../../../phet-core/js/merge.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import FlowBox from '../../../scenery/js/layout/FlowBox.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
-import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -69,11 +67,11 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       baseColor: MoleculeShapesColors.removeButtonBackgroundProperty,
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColors.removeButtonTextProperty.value,
-      maxWidth: 320,
+      maxWidth: 280,
       textNodeOptions: {
         tandem: Tandem.OPT_OUT
       },
-      layoutOptions: { topMargin: 5 },
+      layoutOptions: { topMargin: 5, align: 'center' },
       touchAreaXDilation: 30,
       touchAreaYDilation: 10,
       listener: () => {
@@ -96,23 +94,21 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       updateButtonEnabled();
     } );
 
-    const rightAlignGroup = new AlignGroup( { matchVertical: false } );
-    const createBox = ( node, options ) => rightAlignGroup.createBox( node, merge( {
-      maxWidth: 330
-    }, options ) );
-
     const rightBox = new FlowBox( {
-      spacing: 10,
+      spacing: 15,
       orientation: 'vertical',
+      align: 'stretch',
       children: [
-        new MoleculeShapesPanel( controlBondingString, createBox( bondingNode ), bondingPanelTandem, {
-          tandem: bondingPanelTandem
+        new MoleculeShapesPanel( controlBondingString, bondingNode, bondingPanelTandem, {
+          tandem: bondingPanelTandem,
+          align: 'center'
         } ),
-        ...( !model.isBasicsVersion ? [ new MoleculeShapesPanel( controlLonePairString, createBox( lonePairNode ), lonePairPanelTandem, {
-          tandem: lonePairPanelTandem
+        ...( !model.isBasicsVersion ? [ new MoleculeShapesPanel( controlLonePairString, lonePairNode, lonePairPanelTandem, {
+          tandem: lonePairPanelTandem,
+          align: 'center'
         } ) ] : [] ),
         removeAllButton,
-        new MoleculeShapesPanel( controlOptionsString, createBox( optionsNode, { xAlign: 'left' } ), optionsPanelTandem, {
+        new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
           layoutOptions: { topMargin: 10 },
           tandem: optionsPanelTandem
         } )

@@ -7,11 +7,9 @@
  */
 
 import ChemUtils from '../../../nitroglycerin/js/ChemUtils.js';
-import merge from '../../../phet-core/js/merge.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import FlowBox from '../../../scenery/js/layout/FlowBox.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
-import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import RichText from '../../../scenery/js/nodes/RichText.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -62,19 +60,16 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     } );
     const optionsNode = new OptionsNode( model, optionsPanelTandem );
 
-    const rightAlignGroup = new AlignGroup( { matchVertical: false } );
-    const createBox = ( node, options ) => rightAlignGroup.createBox( node, merge( {
-      maxWidth: 330
-    }, options ) );
-
     const rightBox = new FlowBox( {
-      spacing: 10,
+      spacing: 15,
       orientation: 'vertical',
+      align: 'stretch',
       children: [
-        new MoleculeShapesPanel( controlMoleculeString, createBox( moleculeComboBox ), moleculePanelTandem, {
-          tandem: moleculePanelTandem
+        new MoleculeShapesPanel( controlMoleculeString, moleculeComboBox, moleculePanelTandem, {
+          tandem: moleculePanelTandem,
+          align: 'center'
         } ),
-        new MoleculeShapesPanel( controlOptionsString, createBox( optionsNode, { xAlign: 'left' } ), optionsPanelTandem, {
+        new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
           tandem: optionsPanelTandem
         } )
       ]

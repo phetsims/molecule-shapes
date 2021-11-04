@@ -38,7 +38,8 @@ class MoleculeShapesPanel extends TitledPanel {
     const titleNode = new Text( titleString, {
       font: new PhetFont( 18 ),
       fill: MoleculeShapesColors.controlPanelTitleProperty,
-      tandem: tandem.createTandem( 'titleNode' )
+      tandem: tandem.createTandem( 'titleNode' ),
+      maxWidth: 280
     } );
 
     super( titleNode, contentNode, options );
