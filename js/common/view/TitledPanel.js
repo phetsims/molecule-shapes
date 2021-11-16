@@ -48,6 +48,7 @@ class TitledPanel extends WidthSizable( HeightSizable( Node ) ) {
     this.addChild( this.titleNode );
 
     contentNode.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
+    this.panel.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     titleNode.localBoundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     this.updateTitlePosition();
 
