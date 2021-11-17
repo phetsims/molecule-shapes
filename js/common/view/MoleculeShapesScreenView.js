@@ -318,9 +318,11 @@ class MoleculeShapesScreenView extends ScreenView {
       const screenWidth = this.screenWidth;
       const screenHeight = this.screenHeight;
 
+      const simDimensions = phet.joist.sim.dimensionProperty.value;
+
       if ( screenWidth && screenHeight ) {
-        assert && assert( screenWidth === window.innerWidth );
-        assert && assert( screenHeight === window.innerHeight );
+        assert && assert( screenWidth === simDimensions.width );
+        assert && assert( screenHeight === simDimensions.height );
 
         const cameraBounds = this.localToGlobalBounds( new Bounds2( 0, 0, this.layoutBounds.width, this.layoutBounds.height ) );
 
@@ -608,8 +610,9 @@ class MoleculeShapesScreenView extends ScreenView {
   layout( viewBounds ) {
     super.layout( viewBounds );
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const simDimensions = phet.joist.sim.dimensionProperty.value;
+    const width = simDimensions.width;
+    const height = simDimensions.height;
 
     this.threeRenderer.setSize( width, height );
 
