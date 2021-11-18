@@ -347,6 +347,15 @@ class MoleculeShapesScreenView extends ScreenView {
     };
 
     animatedPanZoomSingleton.listener.matrixProperty.lazyLink( this.layoutListener );
+
+    // We'll want to run a single step initially to load resources. See
+    // https://github.com/phetsims/molecule-shapes-basics/issues/14
+    this.hasStepped = false; // private {boolean}
+
+    // @private {function}
+    this.initialStepListener = () => {
+      this.step( 0 );
+    };
   }
 
   /**
@@ -639,6 +648,10 @@ class MoleculeShapesScreenView extends ScreenView {
       // three.js requires this to be called after changing the parameters
       this.overlayCamera.updateProjectionMatrix();
     }
+
+    if ( !this.hasStepped ) {
+      phet.joist.sim.frameEndedEmitter.addListener( this.initialStepListener );
+    }
   }
 
   /**
@@ -650,6 +663,11 @@ class MoleculeShapesScreenView extends ScreenView {
     this.moleculeView.updateView();
 
     this.render( undefined );
+
+    if ( !this.hasStepped ) {
+      phet.joist.sim.frameEndedEmitter.removeListener( this.initialStepListener );
+      this.hasStepped = true;
+    }
   }
 
   /**
