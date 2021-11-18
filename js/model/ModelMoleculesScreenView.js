@@ -77,7 +77,10 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       listener: () => {
         model.moleculeProperty.value.removeAllGroups();
       },
-      tandem: tandem.createTandem( 'removeAllButton' )
+      tandem: tandem.createTandem( 'removeAllButton' ),
+      enabledPropertyOptions: {
+        phetioReadOnly: true
+      }
     } );
 
     function updateButtonEnabled() {
