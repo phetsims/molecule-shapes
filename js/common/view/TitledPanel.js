@@ -12,10 +12,10 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import HeightSizable from '../../../../scenery/js/layout/HeightSizable.js';
-import WidthSizable from '../../../../scenery/js/layout/WidthSizable.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
-import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import { HeightSizable } from '../../../../scenery/js/imports.js';
+import { WidthSizable } from '../../../../scenery/js/imports.js';
+import { Node } from '../../../../scenery/js/imports.js';
+import { Rectangle } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import moleculeShapes from '../../moleculeShapes.js';
 

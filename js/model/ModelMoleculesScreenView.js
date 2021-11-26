@@ -8,9 +8,9 @@
 
 import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import FlowBox from '../../../scenery/js/layout/FlowBox.js';
-import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
+import { FlowBox } from '../../../scenery/js/imports.js';
+import { AlignBox } from '../../../scenery/js/imports.js';
+import { VBox } from '../../../scenery/js/imports.js';
 import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import PairGroup from '../common/model/PairGroup.js';

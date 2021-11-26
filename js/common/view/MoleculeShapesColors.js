@@ -13,8 +13,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Color from '../../../../scenery/js/util/Color.js';
-import ProfileColorProperty from '../../../../scenery/js/util/ProfileColorProperty.js';
+import { Color } from '../../../../scenery/js/imports.js';
+import { ProfileColorProperty } from '../../../../scenery/js/imports.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 // Initial colors for each profile, by string key. If a basics/projector color is not defined, it will take the

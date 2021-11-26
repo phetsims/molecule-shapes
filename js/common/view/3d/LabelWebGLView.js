@@ -17,7 +17,7 @@ import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Shape from '../../../../../kite/js/Shape.js';
-import Utils from '../../../../../scenery/js/util/Utils.js';
+import { Utils } from '../../../../../scenery/js/imports.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';

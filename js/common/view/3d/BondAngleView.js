@@ -10,7 +10,7 @@ import Bounds2 from '../../../../../dot/js/Bounds2.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import animatedPanZoomSingleton from '../../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
+import { animatedPanZoomSingleton } from '../../../../../scenery/js/imports.js';
 import moleculeShapes from '../../../moleculeShapes.js';
 import PairGroup from '../../model/PairGroup.js';
 
