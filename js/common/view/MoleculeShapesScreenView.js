@@ -649,7 +649,7 @@ class MoleculeShapesScreenView extends ScreenView {
       this.overlayCamera.updateProjectionMatrix();
     }
 
-    if ( !this.hasStepped ) {
+    if ( !this.hasStepped && !phet.joist.sim.frameEndedEmitter.hasListener( this.initialStepListener ) ) {
       phet.joist.sim.frameEndedEmitter.addListener( this.initialStepListener );
     }
   }
