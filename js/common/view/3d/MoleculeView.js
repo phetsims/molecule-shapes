@@ -130,7 +130,17 @@ class MoleculeView extends THREE.Object3D {
       angleView.dispose();
     }
     while ( this.lonePairViews.length ) {
-      this.lonePairViews.pop().dispose();
+      const lonePairView = this.lonePairViews.pop();
+      this.remove( lonePairView );
+      lonePairView.dispose();
+    }
+    while ( this.atomViews.length ) {
+      const atomView = this.atomViews.pop();
+      this.remove( atomView );
+    }
+    while ( this.bondViews.length ) {
+      const bondView = this.bondViews.pop();
+      this.remove( bondView );
     }
 
     this.molecule.groupAddedEmitter.removeListener( this.addGroupListener );
