@@ -198,7 +198,7 @@ class BondAngleView extends THREE.Object3D {
 
 // dot product between the camera direction and bond angle normal is below LOW_THRESHOLDS[bondOrder] => alpha = 0
 // dot product between the camera direction and bond angle normal is above LOW_THRESHOLDS[HIGH_THRESHOLDS] => alpha = 1
-BondAngleView.LOW_THRESHOLDS = [ 0, 0, 0, 0, 0.35, 0.45, 0.5 ]; // @public
+BondAngleView.LOW_THRESHOLDS = [ 0, 0, 0, 0.1, 0.35, 0.45, 0.5 ]; // @public
 BondAngleView.HIGH_THRESHOLDS = [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ];
 
 // @public {number} - radius, in view units
