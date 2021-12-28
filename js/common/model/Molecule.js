@@ -62,6 +62,8 @@ class Molecule {
 
     this.centralAtom = null; // @public {PairGroup} - Will be filled in later.
 
+    this.lastMidpoint = null; // @public {Vector3|null} - The last bond-angle midpoint for a 2-atom system globally
+
     // @public {Emitter}
     this.bondAddedEmitter = new Emitter( {
       parameters: [ { valueType: Bond } ]

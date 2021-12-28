@@ -10,6 +10,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
@@ -150,7 +151,8 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
     const result = {
       isReal: molecule.isReal,
       groups: molecule.groups.map( group => group.toStateObject( molecule.centralAtom ) ),
-      bonds: molecule.bonds.map( bond => bond.toStateObject( molecule.groups ) )
+      bonds: molecule.bonds.map( bond => bond.toStateObject( molecule.groups ) ),
+      lastMidpoint: molecule.lastMidpoint === null ? null : Vector3.Vector3IO.toStateObject( molecule.lastMidpoint )
     };
     const data = result;
 
@@ -166,20 +168,19 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
   },
   applyState: ( model, stateObject ) => {
     const data = stateObject;
+    let molecule;
 
     if ( data.isReal ) {
-      const molecule = new RealMolecule( RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( data.realMoleculeShape ) );
+      molecule = new RealMolecule( RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( data.realMoleculeShape ) );
       const groups = data.groups.map( groupObj => PairGroup.fromStateObject( groupObj ) );
 
       groups.forEach( ( group, index ) => {
         molecule.groups[ index ].positionProperty.value = group.positionProperty.value;
         molecule.groups[ index ].velocityProperty.value = group.velocityProperty.value;
       } );
-
-      model.moleculeProperty.value = molecule;
     }
     else {
-      const molecule = new VSEPRMolecule();
+      molecule = new VSEPRMolecule();
       molecule.bondLengthOverride = data.bondLengthOverride;
 
       const groups = data.groups.map( groupObj => PairGroup.fromStateObject( groupObj ) );
@@ -193,15 +194,18 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
       data.bonds.forEach( bondObj => {
         molecule.addBond( Bond.fromStateObject( bondObj, groups ) );
       } );
-
-      model.moleculeProperty.value = molecule;
     }
+
+    molecule.lastMidpoint = stateObject.lastMidpoint === null ? null : Vector3.Vector3IO.fromStateObject( stateObject.lastMidpoint );
+
+    model.moleculeProperty.value = molecule;
   },
 
   stateSchema: {
     isReal: BooleanIO,
     groups: ArrayIO( PairGroup.PairGroupIO ),
     bonds: ArrayIO( Bond.BondIO ),
+    lastMidpoint: NullableIO( Vector3.Vector3IO ),
     realMoleculeShape: NullableIO( RealMoleculeShape.RealMoleculeShapeIO ),
     bondLengthOverride: NullableIO( NumberIO )
   }

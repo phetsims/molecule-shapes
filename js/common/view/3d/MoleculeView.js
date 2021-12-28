@@ -41,8 +41,6 @@ class MoleculeView extends THREE.Object3D {
 
     this.radialViews = []; // @private {Array.<AtomView|LonePairView>} all views that we would want to drag
 
-    this.lastMidpoint = null; // @private {Vector3|null} - The last bond-angle midpoint for a 2-atom system globally
-
     // @private {function}
     this.addGroupListener = this.addGroup.bind( this );
     this.removeGroupListener = this.removeGroup.bind( this );
@@ -102,16 +100,16 @@ class MoleculeView extends THREE.Object3D {
     const hasTwoBonds = this.molecule.radialAtoms.length === 2;
     if ( !hasTwoBonds ) {
       // if we don't have two bonds, just ignore the last midpoint
-      this.lastMidpoint = null;
+      this.molecule.lastMidpoint = null;
     }
 
     for ( let i = 0; i < this.angleViews.length; i++ ) {
       const angleView = this.angleViews[ i ];
-      angleView.updateView( this.lastMidpoint, localCameraOrientation );
+      angleView.updateView( this.molecule.lastMidpoint, localCameraOrientation );
 
       // if we have two bonds, store the last midpoint so we can keep the bond midpoint stable
       if ( hasTwoBonds ) {
-        this.lastMidpoint = angleView.midpoint.normalized();
+        this.molecule.lastMidpoint = angleView.midpoint.normalized();
       }
     }
   }
