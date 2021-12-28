@@ -170,5 +170,8 @@ const RealMoleculesModelIO = new IOType( 'RealMoleculesModelIO', {
   }
 } );
 
+// @public {IOType}
+RealMoleculesModel.RealMoleculesModelIO = RealMoleculesModelIO;
+
 moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
 export default RealMoleculesModel;
