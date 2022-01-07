@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 
@@ -38,7 +38,7 @@ class MoleculeGeometryValue {
   }
 }
 
-const MoleculeGeometry = Enumeration.byMap( {
+const MoleculeGeometry = EnumerationDeprecated.byMap( {
   EMPTY: new MoleculeGeometryValue( 0, shapeEmptyString ),
   DIATOMIC: new MoleculeGeometryValue( 1, shapeDiatomicString ),
   LINEAR: new MoleculeGeometryValue( 2, shapeLinearString ), // e = 0,3,4

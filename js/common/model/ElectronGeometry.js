@@ -9,7 +9,7 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 
@@ -38,7 +38,7 @@ class ElectronGeometryValue {
   }
 }
 
-const ElectronGeometry = Enumeration.byMap( {
+const ElectronGeometry = EnumerationDeprecated.byMap( {
   EMPTY: new ElectronGeometryValue( geometryEmptyString, [] ),
   DIATOMIC: new ElectronGeometryValue(
     geometryDiatomicString,
