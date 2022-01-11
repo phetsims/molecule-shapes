@@ -8,7 +8,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ThreeQuaternionIO from '../../../../mobius/js/ThreeQuaternionIO.js';
@@ -57,13 +57,13 @@ class MoleculeShapesModel extends PhetioObject {
     } );
 
     // @public {Property.<ElectronGeometry>}
-    this.electronGeometryProperty = new EnumerationProperty( ElectronGeometry, this.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry, {
+    this.electronGeometryProperty = new EnumerationDeprecatedProperty( ElectronGeometry, this.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry, {
       tandem: tandem.createTandem( 'electronGeometryProperty' ),
       phetioReadOnly: true
     } );
 
     // @public {Property.<MoleculeGeometry>}
-    this.moleculeGeometryProperty = new EnumerationProperty( MoleculeGeometry, this.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry, {
+    this.moleculeGeometryProperty = new EnumerationDeprecatedProperty( MoleculeGeometry, this.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry, {
       tandem: tandem.createTandem( 'moleculeGeometryProperty' ),
       phetioReadOnly: true
     } );
