@@ -27,23 +27,6 @@ class ModelMoleculesModel extends MoleculeShapesModel {
 
     this.moleculeProperty.value.addCentralAtom( new PairGroup( new Vector3( 0, 0, 0 ), false ) );
     this.setupInitialMoleculeState();
-
-    const bondChangedListener = () => {
-      if ( this.moleculeProperty.value.radialLonePairs.length === 0 ) {
-        this.showLonePairsProperty.value = true;
-      }
-    };
-
-    // when the molecule is made empty, make sure to show lone pairs again (will allow us to drag out new ones)
-    this.moleculeProperty.link( ( newMolecule, oldMolecule ) => {
-      if ( oldMolecule ) {
-        oldMolecule.bondChangedEmitter.removeListener( bondChangedListener );
-      }
-      if ( newMolecule ) {
-        newMolecule.bondChangedEmitter.addListener( bondChangedListener );
-      }
-      bondChangedListener();
-    } );
   }
 
   /**
