@@ -29,7 +29,7 @@ moleculeShapes.register( 'AttractorModel', AttractorModel );
  * @param {Array.<Vector3>} idealOrientations - An ideal position, that may be rotated.
  * @param {Array.<Permutation>} allowablePermutations - The un-rotated stable position that we are attracted towards
  * @param {Vector3} center - The point that the groups should be rotated around. Usually a central atom that all of the groups connect to
- * @returns {number} A measure of total error (least squares-style)
+ * @returns {mapping: ResultMapping, error: number} A measure of total error (least squares-style)
  */
 AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, allowablePermutations, center, angleRepulsion, lastPermutation ) => {
   const currentOrientations = _.map( groups, group => group.positionProperty.value.minus( center ).normalized() );
@@ -104,9 +104,13 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
       const dirTowardsA = a.positionProperty.value.minus( b.positionProperty.value ).normalized();
       const timeFactor = PairGroup.getTimescaleImpulseFactor( timeElapsed );
 
+      // Dampen our push if we switched permutations, see https://github.com/phetsims/molecule-shapes/issues/203
+      const oscillationPreventionFactor = ( lastPermutation && !lastPermutation.equals( mapping.permutation ) ) ? 0.5 : 1;
+
       const extraClosePushFactor = DotUtils.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
 
-      const push = dirTowardsA.times( timeFactor *
+      const push = dirTowardsA.times( oscillationPreventionFactor *
+                                      timeFactor *
                                       angleDifference *
                                       PairGroup.ANGLE_REPULSION_SCALE *
                                       ( currentAngle < targetAngle ? 2.0 : 0.5 ) *
@@ -116,7 +120,7 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
     }
   }
 
-  return error;
+  return { mapping: mapping, error: error };
 };
 
 // maximum size of most computations is 3x6

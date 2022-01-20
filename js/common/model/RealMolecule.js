@@ -26,6 +26,8 @@ class RealMolecule extends Molecule {
     this.realMoleculeShape = realMoleculeShape; // @public {RealMoleculeShape} - Our ideal shape
     this.localShapeMap = {}; // @private {number} - Maps atom IDs => {LocalShape}
 
+    this.lastPermutations = [];
+
     const numLonePairs = realMoleculeShape.centralAtom.lonePairCount;
     const numBonds = realMoleculeShape.bonds.length;
 
@@ -98,7 +100,8 @@ class RealMolecule extends Molecule {
       if ( this.getNeighborCount( atom ) > 1 ) {
         const localShape = this.getLocalShape( atom );
 
-        localShape.applyAngleAttractionRepulsion( dt );
+        const permutation = localShape.applyAngleAttractionRepulsion( dt, this.lastPermutations[ i ] || undefined ).permutation;
+        this.lastPermutations[ i ] = permutation;
       }
     }
   }

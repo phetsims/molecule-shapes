@@ -46,7 +46,7 @@ class LocalShape {
    * @returns {number} Amount of error (least squares-style)
    */
   applyAttraction( dt ) {
-    return AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.positionProperty.value, false );
+    return AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.positionProperty.value, false ).error;
   }
 
   /**
@@ -54,9 +54,11 @@ class LocalShape {
    * @public
    *
    * @param {number} dt - Amount of time elapsed
+   * @param {Permutation} [lastPermutation]
+   * @returns {ResultMapping}
    */
-  applyAngleAttractionRepulsion( dt ) {
-    AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.positionProperty.value, true );
+  applyAngleAttractionRepulsion( dt, lastPermutation ) {
+    return AttractorModel.applyAttractorForces( this.groups, dt, this.idealOrientations, this.allowedPermutations, this.centralAtom.positionProperty.value, true, lastPermutation ).mapping;
   }
 
   /**
