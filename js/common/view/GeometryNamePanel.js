@@ -121,7 +121,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     } ), model.showMoleculeGeometryProperty, {
       tandem: moleculeGeometryCheckboxTandem,
       layoutOptions: {
-        x: 0,
+        x: 1,
         y: 0
       }
     } );
@@ -133,7 +133,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     } ), model.showElectronGeometryProperty, {
       tandem: electronGeometryCheckboxTandem,
       layoutOptions: {
-        x: 1,
+        x: 0,
         y: 0
       }
     } );
@@ -161,7 +161,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       visibleProperty: this.moleculeGeometryCheckbox.visibleProperty,
       children: [ this.moleculeText ],
       layoutOptions: {
-        x: 0,
+        x: 1,
         y: 1,
         minContentWidth: maxGeometryWidth
       }
@@ -179,7 +179,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
         visibleProperty: this.electronGeometryCheckbox.visibleProperty,
         children: [ this.electronText ],
         layoutOptions: {
-          x: 1,
+          x: 0,
           y: 1,
           minContentWidth: maxShapeWidth
         }
