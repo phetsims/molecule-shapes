@@ -141,6 +141,10 @@ class RealMoleculesModel extends MoleculeShapesModel {
       }
     }
 
+    if ( !switchedRealMolecule ) {
+      newMolecule.lastMidpoint = molecule.lastMidpoint;
+    }
+
     this.moleculeProperty.value = newMolecule;
   }
 }

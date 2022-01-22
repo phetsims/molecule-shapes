@@ -60,8 +60,8 @@ class BondAngleView extends THREE.Object3D {
    * Updates the bond-angle view based on previous information.
    * @public
    *
-   * @param {Vector3} lastMidpoint - The midpoint of the last frame's bond angle arc, used to stabilize bond angles
-   *                                 that are around ~180 degrees.
+   * @param {Vector3|null} lastMidpoint - The midpoint of the last frame's bond angle arc, used to stabilize bond angles
+   *                                      that are around ~180 degrees.
    * @param {Vector3} localCameraOrientation - A unit vector in the molecule's local coordiante space pointing
    *                                           to the camera.
    */

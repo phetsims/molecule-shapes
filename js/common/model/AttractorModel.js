@@ -148,6 +148,7 @@ const scratchIdealsArray = new MatrixOps3.Array( 18 );
  * @param {Array.<Vector3>} currentOrientations - An ordered list of orientations (normalized) that should be considered, along with the relevant permutations
  * @param {Array.<Vector3>} idealOrientations - The un-rotated stable position that we are attracted towards
  * @param {Array.<Permutation>} allowablePermutations - A list of permutations that map stable positions to pair groups in order.
+ * @param {Permutation} [lastPermutation]
  * @returns {ResultMapping} (see docs there)
  */
 AttractorModel.findClosestMatchingConfiguration = ( currentOrientations, idealOrientations, allowablePermutations, lastPermutation ) => {
