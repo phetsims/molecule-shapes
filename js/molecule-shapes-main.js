@@ -26,7 +26,7 @@ const simOptions = {
     leadDesign: 'Emily B. Moore',
     softwareDevelopment: 'Jonathan Olson',
     team: 'Julia Chamberlain, Kelly Lancaster, Ariel Paul, Kathy Perkins, Amy Rouinfar',
-    qualityAssurance: 'Steele Dalton, Bryce Griebenow, Clifford Hardin, Emily Miller, Elise Morgan, Oliver Orejola, Jacob Romero, Nancy Salpepi, Kathryn Woessner, Bryan Yoelin'
+    qualityAssurance: 'Steele Dalton, Bryce Griebenow, Clifford Hardin, Brooklyn Lash, Emily Miller, Elise Morgan, Oliver Orejola, Jacob Romero, Nancy Salpepi, Kathryn Woessner, Bryan Yoelin'
   },
   webgl: true,
 
