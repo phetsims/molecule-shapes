@@ -153,10 +153,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       fill: MoleculeShapesColors.electronGeometryNameProperty
     } );
 
-    // TODO: pointer area listeners
-
-    content.addChild( this.moleculeGeometryCheckbox );
-    content.addChild( new Node( {
+    const moleculeTextContainer = new Node( {
       // Hide this container only when the checkbox is hidden
       visibleProperty: this.moleculeGeometryCheckbox.visibleProperty,
       children: [ this.moleculeText ],
@@ -165,16 +162,20 @@ class GeometryNamePanel extends MoleculeShapesPanel {
         y: 1,
         minContentWidth: maxGeometryWidth
       }
-    } ) );
-    Property.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, this.moleculeText.boundsProperty, content.boundsProperty ], () => {
-      const bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( this.moleculeText ) ).dilated( 10 );
+    } );
+
+    // TODO: pointer area listeners
+
+    content.addChild( this.moleculeGeometryCheckbox );
+    content.addChild( moleculeTextContainer );
+
+    Property.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, moleculeTextContainer.boundsProperty, content.boundsProperty ], () => {
+      const bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( moleculeTextContainer ) ).dilated( 10 );
       this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = bounds;
     } );
 
     if ( !model.isBasicsVersion ) {
-      // basics version excludes lone-pair (electron) geometries
-      content.addChild( this.electronGeometryCheckbox );
-      content.addChild( new Node( {
+      const electronTextContainer = new Node( {
         // Hide this container only when the checkbox is hidden
         visibleProperty: this.electronGeometryCheckbox.visibleProperty,
         children: [ this.electronText ],
@@ -183,10 +184,14 @@ class GeometryNamePanel extends MoleculeShapesPanel {
           y: 1,
           minContentWidth: maxShapeWidth
         }
-      } ) );
+      } );
 
-      Property.multilink( [ this.electronGeometryCheckbox.boundsProperty, this.electronText.boundsProperty, content.boundsProperty ], () => {
-        const bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( this.electronText ) ).dilated( 10 );
+      // basics version excludes lone-pair (electron) geometries
+      content.addChild( this.electronGeometryCheckbox );
+      content.addChild( electronTextContainer );
+
+      Property.multilink( [ this.electronGeometryCheckbox.boundsProperty, electronTextContainer.boundsProperty, content.boundsProperty ], () => {
+        const bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( electronTextContainer ) ).dilated( 10 );
         this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = bounds;
       } );
     }
