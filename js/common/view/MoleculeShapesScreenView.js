@@ -256,8 +256,13 @@ class MoleculeShapesScreenView extends ScreenView {
             this.endDrag( event, trail );
           },
 
-          move: ( event, trail ) => {
+          move: function( event, trail ) {
             if ( dragMode === 'modelRotate' ) {
+              // Interrupt molecule drags if we're zoomed in, see https://github.com/phetsims/molecule-shapes/issues/213
+              if ( !animatedPanZoomSingleton.listener.matrixProperty.value.equalsEpsilon( Matrix3.IDENTITY, 1e-7 ) ) {
+                this.endDrag( event, trail );
+              }
+
               const delta = pointer.point.minus( lastGlobalPoint );
               lastGlobalPoint.set( pointer.point );
 
