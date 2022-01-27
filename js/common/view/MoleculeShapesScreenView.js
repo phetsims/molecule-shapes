@@ -13,14 +13,9 @@ import Ray3 from '../../../../dot/js/Ray3.js';
 import Sphere3 from '../../../../dot/js/Sphere3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFailureDialog.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { Mouse } from '../../../../scenery/js/imports.js';
-import { animatedPanZoomSingleton } from '../../../../scenery/js/imports.js';
-import { AlignBox } from '../../../../scenery/js/imports.js';
-import { DOM } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
-import { Utils } from '../../../../scenery/js/imports.js';
+import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFailureDialog.js';
+import { AlignBox, animatedPanZoomSingleton, DOM, Mouse, Rectangle, Utils } from '../../../../scenery/js/imports.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import LabelWebGLView from './3d/LabelWebGLView.js';
@@ -215,8 +210,11 @@ class MoleculeShapesScreenView extends ScreenView {
           pair.userControlledProperty.value = true;
           draggedParticleCount++;
         }
-          // we don't want to rotate while we are dragging any particles
-        // Additionally, don't rotate if we're zoomed into the sim
+
+        // We don't want to rotate while we are dragging any particles
+        // Additionally, don't rotate if we're zoomed into the sim - the pan/zoom listener will interrupt the rotation
+        // to start a pan, but not until there is a little bit of pointer movement. If we are zoomed in at all
+        // we don't want to allow movement that will soon just get interrupted.
         else if ( draggedParticleCount === 0 && animatedPanZoomSingleton.listener.matrixProperty.value.equalsEpsilon( Matrix3.IDENTITY, 1e-7 ) ) {
           // we rotate the entire molecule with this pointer
           dragMode = 'modelRotate';
@@ -229,8 +227,9 @@ class MoleculeShapesScreenView extends ScreenView {
 
         const lastGlobalPoint = pointer.point.copy();
 
-        const attach = dragMode === 'pairExistingSpherical';
-        if ( attach ) {
+        // If a drag starts on a pair group, input should only be for dragging. Indicate to other listeners that
+        // behavior is reserved (specifically the pan/zoom listener that should not interrupt for pan).
+        if ( dragMode === 'pairExistingSpherical' ) {
           pointer.reserveForDrag();
         }
 
@@ -258,10 +257,6 @@ class MoleculeShapesScreenView extends ScreenView {
 
           move: function( event, trail ) {
             if ( dragMode === 'modelRotate' ) {
-              // Interrupt molecule drags if we're zoomed in, see https://github.com/phetsims/molecule-shapes/issues/213
-              if ( !animatedPanZoomSingleton.listener.matrixProperty.value.equalsEpsilon( Matrix3.IDENTITY, 1e-7 ) ) {
-                this.endDrag( event, trail );
-              }
 
               const delta = pointer.point.minus( lastGlobalPoint );
               lastGlobalPoint.set( pointer.point );
@@ -281,7 +276,7 @@ class MoleculeShapesScreenView extends ScreenView {
           // not a Scenery event
           endDrag: onEndDrag,
           interrupt: onEndDrag
-        }, attach );
+        }, true ); // attach the listener so that it can be interrupted from pan and zoom operations
       }
     };
     this.backgroundEventTarget.addInputListener( multiDragListener );
