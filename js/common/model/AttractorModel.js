@@ -10,11 +10,11 @@
 
 import Matrix from '../../../../dot/js/Matrix.js';
 import MatrixOps3 from '../../../../dot/js/MatrixOps3.js';
+import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import pairs from '../../../../phet-core/js/pairs.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import PairGroup from './PairGroup.js';
-import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
 
 // just static calls, so just create an empty object
 const AttractorModel = {};
@@ -82,7 +82,7 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
 
   // angle-based repulsion
   if ( angleRepulsion && aroundCenterAtom ) {
-    const pairIndexList = pairs( DotUtils.rangeInclusive( 0, groups.length - 1 ) );
+    const pairIndexList = pairs( Utils.rangeInclusive( 0, groups.length - 1 ) );
     for ( i = 0; i < pairIndexList.length; i++ ) {
       const pairIndices = pairIndexList[ i ];
       const aIndex = pairIndices[ 0 ];
@@ -97,8 +97,8 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
       // desired orientations
       const aTarget = mapping.target.extractVector3( aIndex ).normalized();
       const bTarget = mapping.target.extractVector3( bIndex ).normalized();
-      const targetAngle = Math.acos( DotUtils.clamp( aTarget.dot( bTarget ), -1, 1 ) );
-      const currentAngle = Math.acos( DotUtils.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
+      const targetAngle = Math.acos( Utils.clamp( aTarget.dot( bTarget ), -1, 1 ) );
+      const currentAngle = Math.acos( Utils.clamp( aOrientation.dot( bOrientation ), -1, 1 ) );
       const angleDifference = ( targetAngle - currentAngle );
 
       const dirTowardsA = a.positionProperty.value.minus( b.positionProperty.value ).normalized();
@@ -107,7 +107,7 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
       // Dampen our push if we switched permutations, see https://github.com/phetsims/molecule-shapes/issues/203
       const oscillationPreventionFactor = ( lastPermutation && !lastPermutation.equals( mapping.permutation ) ) ? 0.5 : 1;
 
-      const extraClosePushFactor = DotUtils.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
+      const extraClosePushFactor = Utils.clamp( 3 * Math.pow( Math.PI - currentAngle, 2 ) / ( Math.PI * Math.PI ), 1, 3 );
 
       const push = dirTowardsA.times( oscillationPreventionFactor *
                                       timeFactor *
@@ -197,8 +197,8 @@ AttractorModel.findClosestMatchingConfiguration = ( currentOrientations, idealOr
       const permutedOrientation0 = idealOrientations[ permutation.indices[ 0 ] ];
       const permutedOrientation1 = idealOrientations[ permutation.indices[ 1 ] ];
       const errorLowBound = 4 - 4 * Math.cos( Math.abs(
-                            Math.acos( DotUtils.clamp( permutedOrientation0.dot( currentOrientations[ 0 ] ), -1, 1 ) ) -
-                            Math.acos( DotUtils.clamp( permutedOrientation1.dot( currentOrientations[ 1 ] ), -1, 1 ) )
+                            Math.acos( Utils.clamp( permutedOrientation0.dot( currentOrientations[ 0 ] ), -1, 1 ) ) -
+                            Math.acos( Utils.clamp( permutedOrientation1.dot( currentOrientations[ 1 ] ), -1, 1 ) )
       ) );
 
       // throw out results where this arbitrarily-chosen lower bound rules out the entire permutation
