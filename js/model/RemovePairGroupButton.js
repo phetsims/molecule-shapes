@@ -8,7 +8,7 @@
 
 import { Shape } from '../../../kite/js/imports.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Path } from '../../../scenery/js/imports.js';
+import { Node, Path } from '../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../sun/js/buttons/RectangularPushButton.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import moleculeShapes from '../moleculeShapes.js';
@@ -26,7 +26,7 @@ class RemovePairGroupButton extends RectangularPushButton {
   constructor( options ) {
 
     super( merge( {
-      content: crossNode,
+      content: new Node( { children: [ crossNode ] } ),
       xMargin: 5,
       yMargin: 5
     }, options ) );
