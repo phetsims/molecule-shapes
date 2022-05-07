@@ -9,51 +9,51 @@ import moleculeShapes from './moleculeShapes.js';
 
 type StringsType = {
   'molecule-shapes': {
-    'title': string
-  },
+    'title': string;
+  };
   'screen': {
-    'model': string,
-    'realMolecules': string
-  },
+    'model': string;
+    'realMolecules': string;
+  };
   'geometry': {
-    'diatomic': string,
-    'linear': string,
-    'trigonalPlanar': string,
-    'tetrahedral': string,
-    'trigonalBipyramidal': string,
-    'octahedral': string
-  },
+    'diatomic': string;
+    'linear': string;
+    'trigonalPlanar': string;
+    'tetrahedral': string;
+    'trigonalBipyramidal': string;
+    'octahedral': string;
+  };
   'shape': {
-    'diatomic': string,
-    'linear': string,
-    'bent': string,
-    'trigonalPlanar': string,
-    'trigonalPyramidal': string,
-    'tShaped': string,
-    'tetrahedral': string,
-    'seesaw': string,
-    'squarePlanar': string,
-    'trigonalBipyramidal': string,
-    'squarePyramidal': string,
-    'octahedral': string
-  },
+    'diatomic': string;
+    'linear': string;
+    'bent': string;
+    'trigonalPlanar': string;
+    'trigonalPyramidal': string;
+    'tShaped': string;
+    'tetrahedral': string;
+    'seesaw': string;
+    'squarePlanar': string;
+    'trigonalBipyramidal': string;
+    'squarePyramidal': string;
+    'octahedral': string;
+  };
   'control': {
-    'bonding': string,
-    'lonePair': string,
-    'options': string,
-    'geometryName': string,
-    'moleculeGeometry': string,
-    'electronGeometry': string,
-    'showLonePairs': string,
-    'showBondAngles': string,
-    'removeAll': string,
-    'molecule': string,
-    'realView': string,
-    'modelView': string
-  },
+    'bonding': string;
+    'lonePair': string;
+    'options': string;
+    'geometryName': string;
+    'moleculeGeometry': string;
+    'electronGeometry': string;
+    'showLonePairs': string;
+    'showBondAngles': string;
+    'removeAll': string;
+    'molecule': string;
+    'realView': string;
+    'modelView': string;
+  };
   'options': {
-    'showOuterLonePairs': string,
-    'projectorColors': string
+    'showOuterLonePairs': string;
+    'projectorColors': string;
   }
 };
 
