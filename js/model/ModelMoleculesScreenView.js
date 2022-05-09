@@ -100,7 +100,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     const rightBox = new FlowBox( {
       spacing: 15,
       orientation: 'vertical',
-      align: 'stretch',
+      stretch: true,
       children: [
         new MoleculeShapesPanel( controlBondingString, bondingNode, bondingPanelTandem, {
           tandem: bondingPanelTandem,
