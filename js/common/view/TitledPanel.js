@@ -53,12 +53,12 @@ class TitledPanel extends WidthSizable( HeightSizable( Node ) ) {
     this.updateTitlePosition();
 
     // Forward the panel's minimums to ours
-    this.panel.minimumWidthProperty.link( minimumWidth => { this.minimumWidth = minimumWidth; } );
-    this.panel.minimumHeightProperty.link( minimumHeight => { this.minimumHeight = minimumHeight; } );
+    this.panel.minimumWidthProperty.link( minimumWidth => { this.localMinimumWidth = minimumWidth; } );
+    this.panel.minimumHeightProperty.link( minimumHeight => { this.localMinimumHeight = minimumHeight; } );
 
     // Forward our preferred size to the panel
-    this.preferredWidthProperty.link( preferredWidth => { this.panel.preferredWidth = preferredWidth; } );
-    this.preferredHeightProperty.link( preferredHeight => { this.panel.preferredHeight = preferredHeight; } );
+    this.localPreferredWidthProperty.link( preferredWidth => { this.panel.preferredWidth = preferredWidth; } );
+    this.localPreferredHeightProperty.link( preferredHeight => { this.panel.preferredHeight = preferredHeight; } );
 
     this.mutate( options );
   }
