@@ -12,15 +12,12 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import { HeightSizable } from '../../../../scenery/js/imports.js';
-import { WidthSizable } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
+import { Node, Rectangle, Sizable } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 // TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions?
-class TitledPanel extends WidthSizable( HeightSizable( Node ) ) {
+class TitledPanel extends Sizable( Node ) {
   constructor( titleNode, contentNode, options ) {
     super();
 
