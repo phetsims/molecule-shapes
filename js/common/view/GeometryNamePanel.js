@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Property from '../../../../axon/js/Property.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { GridBox } from '../../../../scenery/js/imports.js';
@@ -169,7 +169,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     content.addChild( this.moleculeGeometryCheckbox );
     content.addChild( moleculeTextContainer );
 
-    Property.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, moleculeTextContainer.boundsProperty, content.boundsProperty ], () => {
+    Multilink.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, moleculeTextContainer.boundsProperty, content.boundsProperty ], () => {
       const bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( moleculeTextContainer ) ).dilated( 10 );
       this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = bounds;
     } );
@@ -190,7 +190,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       content.addChild( this.electronGeometryCheckbox );
       content.addChild( electronTextContainer );
 
-      Property.multilink( [ this.electronGeometryCheckbox.boundsProperty, electronTextContainer.boundsProperty, content.boundsProperty ], () => {
+      Multilink.multilink( [ this.electronGeometryCheckbox.boundsProperty, electronTextContainer.boundsProperty, content.boundsProperty ], () => {
         const bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( electronTextContainer ) ).dilated( 10 );
         this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = bounds;
       } );
