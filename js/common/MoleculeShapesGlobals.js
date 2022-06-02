@@ -7,7 +7,7 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Property from '../../../axon/js/Property.js';
+import Property, { AbstractProperty } from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import { Color } from '../../../scenery/js/imports.js';
 import { Utils } from '../../../scenery/js/imports.js';
@@ -74,7 +74,7 @@ merge( MoleculeShapesGlobals, {
     if ( color instanceof Color ) {
       colorProperty = new Property( color );
     }
-    else if ( color instanceof Property ) {
+    else if ( color instanceof AbstractProperty ) {
       colorProperty = color;
     }
     else {
