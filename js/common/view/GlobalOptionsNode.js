@@ -37,10 +37,9 @@ class GlobalOptionsNode extends VBox {
         tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
       } );
 
-      checkboxes.push( new Checkbox( label,
-        MoleculeShapesGlobals.showOuterLonePairsProperty, {
-          tandem: showOuterLonePairsCheckboxTandem
-        } ) );
+      checkboxes.push( new Checkbox( MoleculeShapesGlobals.showOuterLonePairsProperty, label, {
+        tandem: showOuterLonePairsCheckboxTandem
+      } ) );
     }
 
     checkboxes.push( new ProjectorModeCheckbox( {

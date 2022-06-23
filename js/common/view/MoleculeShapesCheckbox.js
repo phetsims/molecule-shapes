@@ -13,12 +13,12 @@ import MoleculeShapesColors from './MoleculeShapesColors.js';
 class MoleculeShapesCheckbox extends Checkbox {
 
   /**
-   * @param {Node} content
    * @param {Property.<boolean>} property
+   * @param {Node} content
    * @param {Object} [options]
    */
-  constructor( content, property, options ) {
-    super( content, property, options );
+  constructor( property, content, options ) {
+    super( property, content, options );
 
     MoleculeShapesColors.checkboxProperty.linkAttribute( this, 'checkboxColor' );
     MoleculeShapesColors.checkboxBackgroundProperty.linkAttribute( this, 'checkboxColorBackground' );

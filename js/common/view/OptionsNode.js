@@ -45,11 +45,11 @@ class OptionsNode extends VBox {
       maxWidth: 280
     } );
 
-    const showLonePairsCheckbox = new MoleculeShapesCheckbox( showLonePairsLabel, model.showLonePairsProperty, {
+    const showLonePairsCheckbox = new MoleculeShapesCheckbox( model.showLonePairsProperty, showLonePairsLabel, {
       enabledPropertyOptions: { phetioReadOnly: true },
       tandem: showLonePairsCheckboxTandem
     } );
-    const showBondAnglesCheckbox = new MoleculeShapesCheckbox( showBondAnglesLabel, model.showBondAnglesProperty, {
+    const showBondAnglesCheckbox = new MoleculeShapesCheckbox( model.showBondAnglesProperty, showBondAnglesLabel, {
       tandem: showBondAnglesCheckboxTandem
     } );
 
