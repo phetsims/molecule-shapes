@@ -52,7 +52,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
         tandemName: `${realMoleculeShape.displayName}Item`
       } );
     } );
-    const moleculeComboBox = new ComboBox( comboBoxItems, model.realMoleculeShapeProperty, comboBoxListContainer, {
+    const moleculeComboBox = new ComboBox( model.realMoleculeShapeProperty, comboBoxItems, comboBoxListContainer, {
       xMargin: 13,
       yMargin: 10,
       cornerRadius: 8,
