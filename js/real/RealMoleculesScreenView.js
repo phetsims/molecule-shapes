@@ -8,14 +8,9 @@
 
 import ChemUtils from '../../../nitroglycerin/js/ChemUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { FlowBox } from '../../../scenery/js/imports.js';
-import { AlignBox } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { RichText } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
+import { AlignBox, FlowBox, Node, RichText, Text } from '../../../scenery/js/imports.js';
 import AquaRadioButtonGroup from '../../../sun/js/AquaRadioButtonGroup.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
-import ComboBoxItem from '../../../sun/js/ComboBoxItem.js';
 import RealMoleculeShape from '../common/model/RealMoleculeShape.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
@@ -48,9 +43,11 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     const comboBoxListContainer = new Node();
     const comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
     const comboBoxItems = _.map( comboBoxMolecules, realMoleculeShape => {
-      return new ComboBoxItem( new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ), realMoleculeShape, {
-        tandemName: `${realMoleculeShape.displayName}Item`
-      } );
+      return {
+        value: realMoleculeShape,
+        node: new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ),
+        tandemName: `${realMoleculeShape.displayName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
+      };
     } );
     const moleculeComboBox = new ComboBox( model.realMoleculeShapeProperty, comboBoxItems, comboBoxListContainer, {
       xMargin: 13,
