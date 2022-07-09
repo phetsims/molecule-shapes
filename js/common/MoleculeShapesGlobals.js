@@ -7,7 +7,8 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Property, { ReadOnlyProperty } from '../../../axon/js/Property.js';
+import Property from '../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import { Color } from '../../../scenery/js/imports.js';
 import { Utils } from '../../../scenery/js/imports.js';
