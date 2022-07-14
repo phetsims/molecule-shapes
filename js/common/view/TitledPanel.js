@@ -21,7 +21,7 @@ class TitledPanel extends Sizable( Node ) {
   constructor( titleNode, contentNode, options ) {
     super();
 
-    options = merge( {}, Panel.DEFAULT_OPTIONS, options );
+    options = merge( {}, Panel.DEFAULT_PANEL_OPTIONS, options );
 
     this.titleNode = titleNode; // @private {Node}
     this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill, visibleProperty: titleNode.visibleProperty } ); // @private {Rectangle}
