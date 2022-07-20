@@ -7,9 +7,9 @@
  */
 
 import moleculeShapes from '../../../moleculeShapes.js';
-import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import LonePairGeometryData from '../../data/LonePairGeometryData.js';
 import PairGroup from '../../model/PairGroup.js';
+import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import ElectronView from './ElectronView.js';
 import LocalGeometry from './LocalGeometry.js';

@@ -10,15 +10,13 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Screen from '../../../../joist/js/Screen.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
-import { Image } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Image, Node, Text } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import MoleculeShapesModel from '../model/MoleculeShapesModel.js';
 import PairGroup from '../model/PairGroup.js';
 import VSEPRMolecule from '../model/VSEPRMolecule.js';
+import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import MoleculeView from './3d/MoleculeView.js';
 import MoleculeShapesScreenView from './MoleculeShapesScreenView.js';
 
