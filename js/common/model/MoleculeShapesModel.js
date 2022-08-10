@@ -71,7 +71,7 @@ class MoleculeShapesModel extends PhetioObject {
     // @public {Property.<THREE.Quaternion>} - describes the rotation of the molecule view
     this.moleculeQuaternionProperty = new Property( new THREE.Quaternion(), {
       tandem: tandem.createTandem( 'moleculeQuaternionProperty' ),
-      phetioType: Property.PropertyIO( ThreeQuaternionIO ),
+      phetioValueType: ThreeQuaternionIO,
       phetioDocumentation: 'A quaternion describing the rotation of the molecule view'
     } );
 

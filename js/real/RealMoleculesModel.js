@@ -40,7 +40,7 @@ class RealMoleculesModel extends MoleculeShapesModel {
     // @public {Property.<RealMoleculeShape>}
     this.realMoleculeShapeProperty = new Property( startingMoleculeShape, {
       tandem: tandem.createTandem( 'realMoleculeShapeProperty' ),
-      phetioType: Property.PropertyIO( RealMoleculeShape.RealMoleculeShapeIO ),
+      phetioValueType: RealMoleculeShape.RealMoleculeShapeIO,
       phetioState: false
     } );
 
