@@ -14,8 +14,6 @@ import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 
-const optionsShowOuterLonePairsString = moleculeShapesStrings.options.showOuterLonePairs;
-
 class GlobalOptionsNode extends VBox {
   /**
    * @param {boolean} isBasicsVersion
@@ -30,10 +28,11 @@ class GlobalOptionsNode extends VBox {
     if ( !isBasicsVersion ) {
       const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
 
-      label = new Text( optionsShowOuterLonePairsString, {
+      label = new Text( moleculeShapesStrings.options.showOuterLonePairs, {
         font: OptionsDialog.DEFAULT_FONT,
         maxWidth: 350,
-        tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
+        tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' ),
+        textProperty: moleculeShapesStrings.options.showOuterLonePairsProperty
       } );
 
       checkboxes.push( new Checkbox( MoleculeShapesGlobals.showOuterLonePairsProperty, label, {

@@ -16,8 +16,6 @@ import ModelMoleculesScreen from './model/ModelMoleculesScreen.js';
 import moleculeShapesStrings from './moleculeShapesStrings.js';
 import RealMoleculesScreen from './real/RealMoleculesScreen.js';
 
-const moleculeShapesTitleString = moleculeShapesStrings[ 'molecule-shapes' ].title;
-
 const isBasicsVersion = false;
 
 const simOptions = {
@@ -38,7 +36,7 @@ const simOptions = {
 // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
 simLauncher.launch( () => {
-  const sim = new Sim( moleculeShapesTitleString, [
+  const sim = new Sim( moleculeShapesStrings[ 'molecule-shapes' ].titleProperty, [
     new ModelMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'modelScreen' ) ),
     new RealMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'realMoleculesScreen' ) )
   ], simOptions );

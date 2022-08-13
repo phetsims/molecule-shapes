@@ -21,11 +21,6 @@ import moleculeShapes from '../moleculeShapes.js';
 import moleculeShapesStrings from '../moleculeShapesStrings.js';
 import BondGroupNode from './BondGroupNode.js';
 
-const controlBondingString = moleculeShapesStrings.control.bonding;
-const controlLonePairString = moleculeShapesStrings.control.lonePair;
-const controlOptionsString = moleculeShapesStrings.control.options;
-const controlRemoveAllString = moleculeShapesStrings.control.removeAll;
-
 class ModelMoleculesScreenView extends MoleculeShapesScreenView {
 
   /**
@@ -58,18 +53,19 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
         new BondGroupNode( model, 3, addPairCallback, removePairCallback, bondingPanelTandem.createTandem( 'tripleBondNode' ), {} )
       ],
       spacing: 10,
-      align: 'left'
+      align: 'center'
     } );
     const lonePairNode = new BondGroupNode( model, 0, addPairCallback, removePairCallback, lonePairPanelTandem.createTandem( 'lonePairNode' ), {} );
-    const removeAllButton = new TextPushButton( controlRemoveAllString, {
+    const removeAllButton = new TextPushButton( moleculeShapesStrings.control.removeAllProperty, {
       baseColor: MoleculeShapesColors.removeButtonBackgroundProperty,
       font: new PhetFont( 16 ),
       textFill: MoleculeShapesColors.removeButtonTextProperty.value,
       maxWidth: 280,
+      widthSizable: true,
       textNodeOptions: {
         tandem: Tandem.OPT_OUT
       },
-      layoutOptions: { topMargin: 5, align: 'center' },
+      layoutOptions: { topMargin: 5, align: 'center', stretch: false },
       touchAreaXDilation: 30,
       touchAreaYDilation: 10,
       listener: () => {
@@ -100,16 +96,16 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       orientation: 'vertical',
       stretch: true,
       children: [
-        new MoleculeShapesPanel( controlBondingString, bondingNode, bondingPanelTandem, {
+        new MoleculeShapesPanel( moleculeShapesStrings.control.bondingProperty, bondingNode, bondingPanelTandem, {
           tandem: bondingPanelTandem,
           align: 'center'
         } ),
-        ...( !model.isBasicsVersion ? [ new MoleculeShapesPanel( controlLonePairString, lonePairNode, lonePairPanelTandem, {
+        ...( !model.isBasicsVersion ? [ new MoleculeShapesPanel( moleculeShapesStrings.control.lonePairProperty, lonePairNode, lonePairPanelTandem, {
           tandem: lonePairPanelTandem,
           align: 'center'
         } ) ] : [] ),
         removeAllButton,
-        new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
+        new MoleculeShapesPanel( moleculeShapesStrings.control.optionsProperty, optionsNode, optionsPanelTandem, {
           layoutOptions: { topMargin: 10 },
           tandem: optionsPanelTandem
         } )

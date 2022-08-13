@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -17,72 +18,46 @@ import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 import MoleculeShapesPanel from './MoleculeShapesPanel.js';
 
-const controlElectronGeometryString = moleculeShapesStrings.control.electronGeometry;
-const controlGeometryNameString = moleculeShapesStrings.control.geometryName;
-const controlMoleculeGeometryString = moleculeShapesStrings.control.moleculeGeometry;
-
-const geometryDiatomicString = moleculeShapesStrings.geometry.diatomic;
-const geometryEmptyString = moleculeShapesStrings.geometry.empty;
-const geometryLinearString = moleculeShapesStrings.geometry.linear;
-const geometryOctahedralString = moleculeShapesStrings.geometry.octahedral;
-const geometryTetrahedralString = moleculeShapesStrings.geometry.tetrahedral;
-const geometryTrigonalBipyramidalString = moleculeShapesStrings.geometry.trigonalBipyramidal;
-const geometryTrigonalPlanarString = moleculeShapesStrings.geometry.trigonalPlanar;
-
-const shapeBentString = moleculeShapesStrings.shape.bent;
-const shapeDiatomicString = moleculeShapesStrings.shape.diatomic;
-const shapeEmptyString = moleculeShapesStrings.shape.empty;
-const shapeLinearString = moleculeShapesStrings.shape.linear;
-const shapeOctahedralString = moleculeShapesStrings.shape.octahedral;
-const shapeSeesawString = moleculeShapesStrings.shape.seesaw;
-const shapeSquarePlanarString = moleculeShapesStrings.shape.squarePlanar;
-const shapeSquarePyramidalString = moleculeShapesStrings.shape.squarePyramidal;
-const shapeTetrahedralString = moleculeShapesStrings.shape.tetrahedral;
-const shapeTrigonalBipyramidalString = moleculeShapesStrings.shape.trigonalBipyramidal;
-const shapeTrigonalPlanarString = moleculeShapesStrings.shape.trigonalPlanar;
-const shapeTrigonalPyramidalString = moleculeShapesStrings.shape.trigonalPyramidal;
-const shapeTShapedString = moleculeShapesStrings.shape.tShaped;
-
 // string list needed to compute maximum label bounds
-const geometryStrings = [
-  geometryEmptyString,
-  geometryDiatomicString,
-  geometryLinearString,
-  geometryTrigonalPlanarString,
-  geometryTetrahedralString,
-  geometryTrigonalBipyramidalString,
-  geometryOctahedralString
+const geometryStringProperties = [
+  moleculeShapesStrings.geometry.emptyProperty,
+  moleculeShapesStrings.geometry.diatomicProperty,
+  moleculeShapesStrings.geometry.linearProperty,
+  moleculeShapesStrings.geometry.trigonalPlanarProperty,
+  moleculeShapesStrings.geometry.tetrahedralProperty,
+  moleculeShapesStrings.geometry.trigonalBipyramidalProperty,
+  moleculeShapesStrings.geometry.octahedralProperty
 ];
 
 // string list needed to compute maximum label bounds
-const shapeStrings = [
-  shapeEmptyString,
-  shapeDiatomicString,
-  shapeLinearString,
-  shapeBentString,
-  shapeTrigonalPlanarString,
-  shapeTrigonalPyramidalString,
-  shapeTShapedString,
-  shapeTetrahedralString,
-  shapeSeesawString,
-  shapeSquarePlanarString,
-  shapeTrigonalBipyramidalString,
-  shapeSquarePyramidalString,
-  shapeOctahedralString
+const shapeStringProperties = [
+  moleculeShapesStrings.shape.emptyProperty,
+  moleculeShapesStrings.shape.diatomicProperty,
+  moleculeShapesStrings.shape.linearProperty,
+  moleculeShapesStrings.shape.bentProperty,
+  moleculeShapesStrings.shape.trigonalPlanarProperty,
+  moleculeShapesStrings.shape.trigonalPyramidalProperty,
+  moleculeShapesStrings.shape.tShapedProperty,
+  moleculeShapesStrings.shape.tetrahedralProperty,
+  moleculeShapesStrings.shape.seesawProperty,
+  moleculeShapesStrings.shape.squarePlanarProperty,
+  moleculeShapesStrings.shape.trigonalBipyramidalProperty,
+  moleculeShapesStrings.shape.squarePyramidalProperty,
+  moleculeShapesStrings.shape.octahedralProperty
 ];
 
 const geometryNameFont = new PhetFont( 16 );
 
-function getMaximumTextWidth( strings ) {
-  let maxWidth = 0;
-  _.each( strings, string => {
-    maxWidth = Math.max( maxWidth, new Text( string, { font: geometryNameFont } ).width );
+function getMaximumTextWidth( stringProperties ) {
+  return new DerivedProperty( stringProperties, ( ...strings ) => {
+    return Math.max( ...strings.map( string => {
+      return new Text( string, { font: geometryNameFont } ).width;
+    } ) );
   } );
-  return maxWidth;
 }
 
-const maxGeometryWidth = getMaximumTextWidth( geometryStrings );
-const maxShapeWidth = getMaximumTextWidth( shapeStrings );
+const maxGeometryWidthProperty = getMaximumTextWidth( geometryStringProperties );
+const maxShapeWidthProperty = getMaximumTextWidth( shapeStringProperties );
 
 class GeometryNamePanel extends MoleculeShapesPanel {
   /**
@@ -102,7 +77,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       ySpacing: 10
     } );
 
-    super( controlGeometryNameString, content, tandem );
+    super( moleculeShapesStrings.control.geometryNameProperty, content, tandem );
 
     // @private {MoleculeShapesModel}
     this.model = model;
@@ -112,10 +87,11 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
     // @private {MoleculeShapesCheckbox}
     const moleculeGeometryCheckboxTandem = tandem.createTandem( 'moleculeGeometryCheckbox' );
-    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( model.showMoleculeGeometryProperty, new Text( controlMoleculeGeometryString, {
+    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( model.showMoleculeGeometryProperty, new Text( moleculeShapesStrings.control.moleculeGeometry, {
       font: textLabelFont,
       fill: MoleculeShapesColors.moleculeGeometryNameProperty,
-      tandem: moleculeGeometryCheckboxTandem.createTandem( 'labelText' )
+      tandem: moleculeGeometryCheckboxTandem.createTandem( 'labelText' ),
+      textProperty: moleculeShapesStrings.control.moleculeGeometryProperty
     } ), {
       tandem: moleculeGeometryCheckboxTandem,
       layoutOptions: {
@@ -124,10 +100,11 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       }
     } );
     const electronGeometryCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'electronGeometryCheckbox' );
-    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( model.showElectronGeometryProperty, new Text( controlElectronGeometryString, {
+    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( model.showElectronGeometryProperty, new Text( moleculeShapesStrings.control.electronGeometry, {
       font: textLabelFont,
       fill: MoleculeShapesColors.electronGeometryNameProperty,
-      tandem: electronGeometryCheckboxTandem.createTandem( 'labelText' )
+      tandem: electronGeometryCheckboxTandem.createTandem( 'labelText' ),
+      textProperty: moleculeShapesStrings.control.electronGeometryProperty
     } ), {
       tandem: electronGeometryCheckboxTandem,
       layoutOptions: {
@@ -157,10 +134,15 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       children: [ this.moleculeText ],
       layoutOptions: {
         column: 1,
-        row: 1,
-        minContentWidth: maxGeometryWidth
+        row: 1
       }
     } );
+    maxGeometryWidthProperty.link( maxGeometryWidth => {
+      moleculeTextContainer.mutateLayoutOptions( {
+        minContentWidth: maxGeometryWidth
+      } );
+    } );
+
 
     // TODO: pointer area listeners
 
@@ -179,9 +161,13 @@ class GeometryNamePanel extends MoleculeShapesPanel {
         children: [ this.electronText ],
         layoutOptions: {
           column: 0,
-          row: 1,
-          minContentWidth: maxShapeWidth
+          row: 1
         }
+      } );
+      maxShapeWidthProperty.link( maxShapeWidth => {
+        electronTextContainer.mutateLayoutOptions( {
+          minContentWidth: maxShapeWidth
+        } );
       } );
 
       // basics version excludes lone-pair (electron) geometries
@@ -214,8 +200,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   updateNames() {
-    this.moleculeText.text = this.getMoleculeGeometryName();
-    this.electronText.text = this.getElectronGeometryName();
+    this.moleculeText.textProperty = this.getMoleculeGeometryName();
+    this.electronText.textProperty = this.getElectronGeometryName();
 
     // layout
     this.moleculeText.centerX = this.moleculeGeometryCheckbox.centerX;
@@ -226,12 +212,12 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   getMoleculeGeometryName() {
-    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry.string;
-    if ( name === null ) {
-      return shapeEmptyString;
+    const nameProperty = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry.stringProperty;
+    if ( nameProperty === null ) {
+      return moleculeShapesStrings.shape.emptyProperty;
     }
     else {
-      return name;
+      return nameProperty;
     }
   }
 
@@ -239,12 +225,12 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   getElectronGeometryName() {
-    const name = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry.string;
-    if ( name === null ) {
-      return geometryEmptyString;
+    const nameProperty = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry.stringProperty;
+    if ( nameProperty === null ) {
+      return moleculeShapesStrings.geometry.emptyProperty;
     }
     else {
-      return name;
+      return nameProperty;
     }
   }
 }

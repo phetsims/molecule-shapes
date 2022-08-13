@@ -13,25 +13,17 @@ import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecate
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 
-const geometryDiatomicString = moleculeShapesStrings.geometry.diatomic;
-const geometryEmptyString = moleculeShapesStrings.geometry.empty;
-const geometryLinearString = moleculeShapesStrings.geometry.linear;
-const geometryOctahedralString = moleculeShapesStrings.geometry.octahedral;
-const geometryTetrahedralString = moleculeShapesStrings.geometry.tetrahedral;
-const geometryTrigonalBipyramidalString = moleculeShapesStrings.geometry.trigonalBipyramidal;
-const geometryTrigonalPlanarString = moleculeShapesStrings.geometry.trigonalPlanar;
-
 // Constant for the tetrahedral shape
 const TETRA_CONST = Math.PI * -19.471220333 / 180;
 
 class ElectronGeometryValue {
   /*
-   * @param {string} string
+   * @param {IProperty<string>} stringProperty
    * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
    */
-  constructor( string, unitVectors ) {
-    // @public {string}
-    this.string = string;
+  constructor( stringProperty, unitVectors ) {
+    // @public {IProperty<string>}
+    this.stringProperty = stringProperty;
 
     // @public {Array.<Vector3>}
     this.unitVectors = unitVectors;
@@ -39,22 +31,22 @@ class ElectronGeometryValue {
 }
 
 const ElectronGeometry = EnumerationDeprecated.byMap( {
-  EMPTY: new ElectronGeometryValue( geometryEmptyString, [] ),
+  EMPTY: new ElectronGeometryValue( moleculeShapesStrings.geometry.emptyProperty, [] ),
   DIATOMIC: new ElectronGeometryValue(
-    geometryDiatomicString,
+    moleculeShapesStrings.geometry.diatomicProperty,
     [
       new Vector3( 1, 0, 0 )
     ]
   ),
   LINEAR: new ElectronGeometryValue(
-    geometryLinearString,
+    moleculeShapesStrings.geometry.linearProperty,
     [
       new Vector3( 1, 0, 0 ),
       new Vector3( -1, 0, 0 )
     ]
   ),
   TRIGONAL_PLANAR: new ElectronGeometryValue(
-    geometryTrigonalPlanarString,
+    moleculeShapesStrings.geometry.trigonalPlanarProperty,
     [
       new Vector3( 1, 0, 0 ),
       new Vector3( Math.cos( Math.PI * 2 / 3 ), Math.sin( Math.PI * 2 / 3 ), 0 ),
@@ -62,7 +54,7 @@ const ElectronGeometry = EnumerationDeprecated.byMap( {
     ]
   ),
   TETRAHEDRAL: new ElectronGeometryValue(
-    geometryTetrahedralString,
+    moleculeShapesStrings.geometry.tetrahedralProperty,
     [
       new Vector3( 0, 0, 1 ),
       new Vector3( Math.cos( 0 ) * Math.cos( TETRA_CONST ), Math.sin( 0 ) * Math.cos( TETRA_CONST ), Math.sin( TETRA_CONST ) ),
@@ -71,7 +63,7 @@ const ElectronGeometry = EnumerationDeprecated.byMap( {
     ]
   ),
   TRIGONAL_BIPYRAMIDAL: new ElectronGeometryValue(
-    geometryTrigonalBipyramidalString,
+    moleculeShapesStrings.geometry.trigonalBipyramidalProperty,
     [
       // equitorial (fills up with lone pairs first)
       new Vector3( 0, 1, 0 ),
@@ -84,7 +76,7 @@ const ElectronGeometry = EnumerationDeprecated.byMap( {
     ]
   ),
   OCTAHEDRAL: new ElectronGeometryValue(
-    geometryOctahedralString,
+    moleculeShapesStrings.geometry.octahedralProperty,
     [
       // opposites first
       new Vector3( 0, 0, 1 ),

@@ -15,12 +15,12 @@ import TitledPanel from './TitledPanel.js';
 
 class MoleculeShapesPanel extends TitledPanel {
   /**
-   * @param {string} titleString
+   * @param {IProperty<string>>} titleStringProperty
    * @param {Node} contentNode
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( titleString, contentNode, tandem, options ) {
+  constructor( titleStringProperty, contentNode, tandem, options ) {
     options = merge( {
       lineWidth: 1.5,
       xMargin: MoleculeShapesPanel.xMargin,
@@ -35,11 +35,12 @@ class MoleculeShapesPanel extends TitledPanel {
       stroke: MoleculeShapesColors.controlPanelBorderProperty
     }, options );
 
-    const titleNode = new Text( titleString, {
+    const titleNode = new Text( titleStringProperty.value, {
       font: new PhetFont( 18 ),
       fill: MoleculeShapesColors.controlPanelTitleProperty,
       tandem: tandem.createTandem( 'titleNode' ),
-      maxWidth: 280
+      maxWidth: 280,
+      textProperty: titleStringProperty
     } );
 
     super( titleNode, contentNode, options );
