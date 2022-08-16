@@ -25,7 +25,7 @@ class RealMoleculesScreen extends Screen {
    */
   constructor( isBasicsVersion, tandem ) {
     const options = {
-      name: moleculeShapesStrings.screen.realMolecules,
+      name: moleculeShapesStrings.screen.realMoleculesProperty,
       backgroundColorProperty: MoleculeShapesColors.backgroundProperty,
       homeScreenIcon: new ScreenIcon( new ScreenIconNode( false, isBasicsVersion ), {
         maxIconWidthProportion: 1,

@@ -10,48 +10,34 @@ import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecate
 import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 
-const shapeBentString = moleculeShapesStrings.shape.bent;
-const shapeDiatomicString = moleculeShapesStrings.shape.diatomic;
-const shapeEmptyString = moleculeShapesStrings.shape.empty;
-const shapeLinearString = moleculeShapesStrings.shape.linear;
-const shapeOctahedralString = moleculeShapesStrings.shape.octahedral;
-const shapeSeesawString = moleculeShapesStrings.shape.seesaw;
-const shapeSquarePlanarString = moleculeShapesStrings.shape.squarePlanar;
-const shapeSquarePyramidalString = moleculeShapesStrings.shape.squarePyramidal;
-const shapeTetrahedralString = moleculeShapesStrings.shape.tetrahedral;
-const shapeTrigonalBipyramidalString = moleculeShapesStrings.shape.trigonalBipyramidal;
-const shapeTrigonalPlanarString = moleculeShapesStrings.shape.trigonalPlanar;
-const shapeTrigonalPyramidalString = moleculeShapesStrings.shape.trigonalPyramidal;
-const shapeTShapedString = moleculeShapesStrings.shape.tShaped;
-
 class MoleculeGeometryValue {
   /*
    * @param {number} x
-   * @param {string} string
+   * @param {IProperty<string>} stringProperty
    */
-  constructor( x, string ) {
+  constructor( x, stringProperty ) {
     // @public {number}
     this.x = x;
 
-    // @public {string}
-    this.string = string;
+    // @public {IProperty<string>}
+    this.stringProperty = stringProperty;
   }
 }
 
 const MoleculeGeometry = EnumerationDeprecated.byMap( {
-  EMPTY: new MoleculeGeometryValue( 0, shapeEmptyString ),
-  DIATOMIC: new MoleculeGeometryValue( 1, shapeDiatomicString ),
-  LINEAR: new MoleculeGeometryValue( 2, shapeLinearString ), // e = 0,3,4
-  BENT: new MoleculeGeometryValue( 2, shapeBentString ), // e = 1,2
-  TRIGONAL_PLANAR: new MoleculeGeometryValue( 3, shapeTrigonalPlanarString ), // e = 0
-  TRIGONAL_PYRAMIDAL: new MoleculeGeometryValue( 3, shapeTrigonalPyramidalString ), // e = 1
-  T_SHAPED: new MoleculeGeometryValue( 3, shapeTShapedString ), // e = 2,3
-  TETRAHEDRAL: new MoleculeGeometryValue( 4, shapeTetrahedralString ), // e = 0
-  SEESAW: new MoleculeGeometryValue( 4, shapeSeesawString ), // e = 1
-  SQUARE_PLANAR: new MoleculeGeometryValue( 4, shapeSquarePlanarString ), // e = 2
-  TRIGONAL_BIPYRAMIDAL: new MoleculeGeometryValue( 5, shapeTrigonalBipyramidalString ), // e = 0
-  SQUARE_PYRAMIDAL: new MoleculeGeometryValue( 5, shapeSquarePyramidalString ), // e = 1
-  OCTAHEDRAL: new MoleculeGeometryValue( 6, shapeOctahedralString ) // e = 0
+  EMPTY: new MoleculeGeometryValue( 0, moleculeShapesStrings.shape.emptyProperty ),
+  DIATOMIC: new MoleculeGeometryValue( 1, moleculeShapesStrings.shape.diatomicProperty ),
+  LINEAR: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.linearProperty ), // e = 0,3,4
+  BENT: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.bentProperty ), // e = 1,2
+  TRIGONAL_PLANAR: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPlanarProperty ), // e = 0
+  TRIGONAL_PYRAMIDAL: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPyramidalProperty ), // e = 1
+  T_SHAPED: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.tShapedProperty ), // e = 2,3
+  TETRAHEDRAL: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.tetrahedralProperty ), // e = 0
+  SEESAW: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.seesawProperty ), // e = 1
+  SQUARE_PLANAR: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.squarePlanarProperty ), // e = 2
+  TRIGONAL_BIPYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.trigonalBipyramidalProperty ), // e = 0
+  SQUARE_PYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.squarePyramidalProperty ), // e = 1
+  OCTAHEDRAL: new MoleculeGeometryValue( 6, moleculeShapesStrings.shape.octahedralProperty ) // e = 0
 }, {
   beforeFreeze: MoleculeGeometry => {
     /*

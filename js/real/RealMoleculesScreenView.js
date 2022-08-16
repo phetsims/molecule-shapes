@@ -20,11 +20,6 @@ import OptionsNode from '../common/view/OptionsNode.js';
 import moleculeShapes from '../moleculeShapes.js';
 import moleculeShapesStrings from '../moleculeShapesStrings.js';
 
-const controlModelViewString = moleculeShapesStrings.control.modelView;
-const controlMoleculeString = moleculeShapesStrings.control.molecule;
-const controlOptionsString = moleculeShapesStrings.control.options;
-const controlRealViewString = moleculeShapesStrings.control.realView;
-
 class RealMoleculesScreenView extends MoleculeShapesScreenView {
   /**
    * @param {ModelMoleculesModel} model the model for the entire screen
@@ -62,11 +57,11 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       orientation: 'vertical',
       stretch: true,
       children: [
-        new MoleculeShapesPanel( controlMoleculeString, moleculeComboBox, moleculePanelTandem, {
+        new MoleculeShapesPanel( moleculeShapesStrings.control.moleculeProperty, moleculeComboBox, moleculePanelTandem, {
           tandem: moleculePanelTandem,
           align: 'center'
         } ),
-        new MoleculeShapesPanel( controlOptionsString, optionsNode, optionsPanelTandem, {
+        new MoleculeShapesPanel( moleculeShapesStrings.control.optionsProperty, optionsNode, optionsPanelTandem, {
           tandem: optionsPanelTandem
         } )
       ]
@@ -85,13 +80,15 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       const approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
 
       // NOTE: these font sizes are scaled!
-      const realViewLabel = new Text( controlRealViewString, {
+      const realViewLabel = new Text( moleculeShapesStrings.control.realView, {
         font: new PhetFont( 28 ),
-        fill: MoleculeShapesColors.controlPanelTextProperty
+        fill: MoleculeShapesColors.controlPanelTextProperty,
+        textProperty: moleculeShapesStrings.control.realViewProperty
       } );
-      const modelViewLabel = new Text( controlModelViewString, {
+      const modelViewLabel = new Text( moleculeShapesStrings.control.modelView, {
         font: new PhetFont( 28 ),
-        fill: MoleculeShapesColors.controlPanelTextProperty
+        fill: MoleculeShapesColors.controlPanelTextProperty,
+        textProperty: moleculeShapesStrings.control.modelViewProperty
       } );
 
       const horizontalSpacing = 30;
@@ -115,12 +112,14 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
           scale: radioButtonScale,
           maxWidth: 320
         },
-        top: this.layoutBounds.top + 20,
         tandem: tandem.createTandem( 'realModelRadioButtonGroup' ),
         touchAreaYDilation: 10,
         spacing: horizontalSpacing,
-        centerX: approximateVisualCenterX,
         orientation: 'horizontal'
+      } );
+      realModelRadioButtonGroup.localBoundsProperty.link( () => {
+        realModelRadioButtonGroup.top = this.layoutBounds.top + 20;
+        realModelRadioButtonGroup.centerX = approximateVisualCenterX;
       } );
       this.addChild( realModelRadioButtonGroup );
     }

@@ -115,7 +115,9 @@ class BondGroupNode extends HBox {
    */
   constructor( model, bondOrder, addPairCallback, removePairCallback, tandem, options ) {
     super( {
-      tandem: tandem
+      tandem: tandem,
+      align: 'center',
+      widthSizable: false
     } );
 
     this.model = model; // @private {MoleculeShapesModel}

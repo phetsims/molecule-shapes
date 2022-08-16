@@ -11,25 +11,10 @@
 
 import Permutation from '../../../../dot/js/Permutation.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import AttractorModel from './AttractorModel.js';
 import ElectronGeometry from './ElectronGeometry.js';
 import LocalShape from './LocalShape.js';
 import MoleculeGeometry from './MoleculeGeometry.js';
-
-const shapeBentString = moleculeShapesStrings.shape.bent;
-const shapeDiatomicString = moleculeShapesStrings.shape.diatomic;
-const shapeEmptyString = moleculeShapesStrings.shape.empty;
-const shapeLinearString = moleculeShapesStrings.shape.linear;
-const shapeOctahedralString = moleculeShapesStrings.shape.octahedral;
-const shapeSeesawString = moleculeShapesStrings.shape.seesaw;
-const shapeSquarePlanarString = moleculeShapesStrings.shape.squarePlanar;
-const shapeSquarePyramidalString = moleculeShapesStrings.shape.squarePyramidal;
-const shapeTetrahedralString = moleculeShapesStrings.shape.tetrahedral;
-const shapeTrigonalBipyramidalString = moleculeShapesStrings.shape.trigonalBipyramidal;
-const shapeTrigonalPlanarString = moleculeShapesStrings.shape.trigonalPlanar;
-const shapeTrigonalPyramidalString = moleculeShapesStrings.shape.trigonalPyramidal;
-const shapeTShapedString = moleculeShapesStrings.shape.tShaped;
 
 // for looking up VSEPRConfiguration instances
 const configurationMap = {}; // x+','+e => {VSEPRConfiguration}
@@ -95,85 +80,6 @@ class VSEPRConfiguration {
     return AttractorModel.findClosestMatchingConfiguration( AttractorModel.getOrientationsFromOrigin( groups ),
       this.bondOrientations,
       Permutation.permutations( this.bondOrientations.length ) );
-  }
-
-  /**
-   * Returns the "geometry" name.
-   * @public
-   *
-   * @param {number} x - Number of radial atoms connected to the central atom
-   * @param {number} e - Number of radial lone pairs connected to the central atom
-   * @returns {string}
-   */
-  static getName( x, e ) {
-    // figure out what the name is
-    if ( x === 0 ) {
-      return shapeEmptyString;
-    }
-    else if ( x === 1 ) {
-      return shapeDiatomicString;
-    }
-    else if ( x === 2 ) {
-      if ( e === 0 || e === 3 || e === 4 ) {
-        return shapeLinearString;
-      }
-      else if ( e === 1 || e === 2 ) {
-        return shapeBentString;
-      }
-      else {
-        throw new Error( `invalid x: ${x}, e: ${e}` );
-      }
-    }
-    else if ( x === 3 ) {
-      if ( e === 0 ) {
-        return shapeTrigonalPlanarString;
-      }
-      else if ( e === 1 ) {
-        return shapeTrigonalPyramidalString;
-      }
-      else if ( e === 2 || e === 3 ) {
-        return shapeTShapedString;
-      }
-      else {
-        throw new Error( `invalid x: ${x}, e: ${e}` );
-      }
-    }
-    else if ( x === 4 ) {
-      if ( e === 0 ) {
-        return shapeTetrahedralString;
-      }
-      else if ( e === 1 ) {
-        return shapeSeesawString;
-      }
-      else if ( e === 2 ) {
-        return shapeSquarePlanarString;
-      }
-      else {
-        throw new Error( `invalid x: ${x}, e: ${e}` );
-      }
-    }
-    else if ( x === 5 ) {
-      if ( e === 0 ) {
-        return shapeTrigonalBipyramidalString;
-      }
-      else if ( e === 1 ) {
-        return shapeSquarePyramidalString;
-      }
-      else {
-        throw new Error( `invalid x: ${x}, e: ${e}` );
-      }
-    }
-    else if ( x === 6 ) {
-      if ( e === 0 ) {
-        return shapeOctahedralString;
-      }
-      else {
-        throw new Error( `invalid x: ${x}, e: ${e}` );
-      }
-    }
-    else {
-      throw new Error( `unknown VSEPR configuration x: ${x}, e: ${e}` );
-    }
   }
 
   /*

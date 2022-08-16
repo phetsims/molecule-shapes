@@ -15,9 +15,6 @@ import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 
-const controlShowBondAnglesString = moleculeShapesStrings.control.showBondAngles;
-const controlShowLonePairsString = moleculeShapesStrings.control.showLonePairs;
-
 const optionsFont = new PhetFont( 14 );
 
 class OptionsNode extends VBox {
@@ -30,14 +27,14 @@ class OptionsNode extends VBox {
     const showLonePairsCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsCheckbox' );
     const showBondAnglesCheckboxTandem = tandem.createTandem( 'showBondAnglesCheckbox' );
 
-    const showLonePairsLabel = new Text( controlShowLonePairsString, {
+    const showLonePairsLabel = new Text( moleculeShapesStrings.control.showLonePairsProperty, {
       font: optionsFont,
       fill: MoleculeShapesColors.controlPanelTextProperty,
       tandem: showLonePairsCheckboxTandem.createTandem( 'labelText' ),
       maxWidth: 280
     } );
 
-    const showBondAnglesLabel = new Text( controlShowBondAnglesString, {
+    const showBondAnglesLabel = new Text( moleculeShapesStrings.control.showBondAnglesProperty, {
       font: optionsFont,
       fill: MoleculeShapesColors.controlPanelTextProperty,
       tandem: showBondAnglesCheckboxTandem.createTandem( 'labelText' ),
