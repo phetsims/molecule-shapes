@@ -15,7 +15,7 @@ import TitledPanel from './TitledPanel.js';
 
 class MoleculeShapesPanel extends TitledPanel {
   /**
-   * @param {IProperty<string>>} titleStringProperty
+   * @param {TReadOnlyProperty<string>>} titleStringProperty
    * @param {Node} contentNode
    * @param {Tandem} tandem
    * @param {Object} [options]
@@ -35,12 +35,11 @@ class MoleculeShapesPanel extends TitledPanel {
       stroke: MoleculeShapesColors.controlPanelBorderProperty
     }, options );
 
-    const titleNode = new Text( titleStringProperty.value, {
+    const titleNode = new Text( titleStringProperty, {
       font: new PhetFont( 18 ),
       fill: MoleculeShapesColors.controlPanelTitleProperty,
       tandem: tandem.createTandem( 'titleNode' ),
-      maxWidth: 280,
-      textProperty: titleStringProperty
+      maxWidth: 280
     } );
 
     super( titleNode, contentNode, options );

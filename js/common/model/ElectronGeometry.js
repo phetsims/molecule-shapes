@@ -18,11 +18,11 @@ const TETRA_CONST = Math.PI * -19.471220333 / 180;
 
 class ElectronGeometryValue {
   /*
-   * @param {IProperty<string>} stringProperty
+   * @param {TReadOnlyProperty<string>} stringProperty
    * @param {Array.<Vector3>} unitVectors - Ordered list of orientations taken by an ideal configuration
    */
   constructor( stringProperty, unitVectors ) {
-    // @public {IProperty<string>}
+    // @public {TReadOnlyProperty<string>}
     this.stringProperty = stringProperty;
 
     // @public {Array.<Vector3>}

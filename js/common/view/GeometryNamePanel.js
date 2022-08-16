@@ -87,11 +87,10 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
     // @private {MoleculeShapesCheckbox}
     const moleculeGeometryCheckboxTandem = tandem.createTandem( 'moleculeGeometryCheckbox' );
-    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( model.showMoleculeGeometryProperty, new Text( moleculeShapesStrings.control.moleculeGeometry, {
+    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( model.showMoleculeGeometryProperty, new Text( moleculeShapesStrings.control.moleculeGeometryProperty, {
       font: textLabelFont,
       fill: MoleculeShapesColors.moleculeGeometryNameProperty,
-      tandem: moleculeGeometryCheckboxTandem.createTandem( 'labelText' ),
-      textProperty: moleculeShapesStrings.control.moleculeGeometryProperty
+      tandem: moleculeGeometryCheckboxTandem.createTandem( 'labelText' )
     } ), {
       tandem: moleculeGeometryCheckboxTandem,
       layoutOptions: {
@@ -100,11 +99,10 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       }
     } );
     const electronGeometryCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'electronGeometryCheckbox' );
-    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( model.showElectronGeometryProperty, new Text( moleculeShapesStrings.control.electronGeometry, {
+    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( model.showElectronGeometryProperty, new Text( moleculeShapesStrings.control.electronGeometryProperty, {
       font: textLabelFont,
       fill: MoleculeShapesColors.electronGeometryNameProperty,
-      tandem: electronGeometryCheckboxTandem.createTandem( 'labelText' ),
-      textProperty: moleculeShapesStrings.control.electronGeometryProperty
+      tandem: electronGeometryCheckboxTandem.createTandem( 'labelText' )
     } ), {
       tandem: electronGeometryCheckboxTandem,
       layoutOptions: {
