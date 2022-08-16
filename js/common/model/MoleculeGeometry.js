@@ -13,13 +13,13 @@ import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 class MoleculeGeometryValue {
   /*
    * @param {number} x
-   * @param {IProperty<string>} stringProperty
+   * @param {TProperty<string>} stringProperty
    */
   constructor( x, stringProperty ) {
     // @public {number}
     this.x = x;
 
-    // @public {IProperty<string>}
+    // @public {TProperty<string>}
     this.stringProperty = stringProperty;
   }
 }
