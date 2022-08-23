@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import PreferencesModel from '../../joist/js/preferences/PreferencesModel.js';
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import CanvasWarningNode from '../../scenery-phet/js/CanvasWarningNode.js';
@@ -26,9 +27,13 @@ const simOptions = {
     qualityAssurance: 'Steele Dalton, Bryce Griebenow, Clifford Hardin, Brooklyn Lash, Emily Miller, Elise Morgan, Oliver Orejola, Jacob Romero, Nancy Salpepi, Kathryn Woessner, Bryan Yoelin'
   },
   webgl: true,
-
-  // Creates content for the Options dialog
-  createOptionsDialogContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem ),
+  preferencesModel: new PreferencesModel( {
+    generalOptions: {
+      customPreferences: [ {
+        createContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem )
+      } ]
+    }
+  } ),
 
   homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.value ? null : new CanvasWarningNode()
 };
