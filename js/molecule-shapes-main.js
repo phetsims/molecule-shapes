@@ -28,6 +28,9 @@ const simOptions = {
   },
   webgl: true,
   preferencesModel: new PreferencesModel( {
+    visualOptions: {
+      supportsProjectorMode: true
+    },
     generalOptions: {
       customPreferences: [ {
         createContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem.createTandem( 'moleculeShapesPreferencesContent' ) )

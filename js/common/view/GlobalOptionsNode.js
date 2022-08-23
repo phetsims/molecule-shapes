@@ -7,7 +7,6 @@
  */
 
 import OptionsDialog from '../../../../joist/js/OptionsDialog.js';
-import ProjectorModeCheckbox from '../../../../joist/js/ProjectorModeCheckbox.js';
 import { Text, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import moleculeShapes from '../../moleculeShapes.js';
@@ -38,10 +37,6 @@ class GlobalOptionsNode extends VBox {
         tandem: showOuterLonePairsCheckboxTandem
       } ) );
     }
-
-    checkboxes.push( new ProjectorModeCheckbox( {
-      tandem: tandem.createTandem( 'projectorModeCheckbox' )
-    } ) );
 
     super( {
       children: checkboxes,
