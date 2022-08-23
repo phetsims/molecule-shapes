@@ -30,7 +30,7 @@ const simOptions = {
   preferencesModel: new PreferencesModel( {
     generalOptions: {
       customPreferences: [ {
-        createContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem )
+        createContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem.createTandem( 'moleculeShapesPreferencesContent' ) )
       } ]
     }
   } ),
