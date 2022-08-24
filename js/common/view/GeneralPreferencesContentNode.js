@@ -1,7 +1,7 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
 /**
- * Global options shown in the "Options" dialog from the PhET Menu
+ * Preferences controls for molecule-shapes that may change simulation representation or behavior.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
