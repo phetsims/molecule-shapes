@@ -13,7 +13,7 @@ import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 
-class GlobalOptionsNode extends VBox {
+class GeneralPreferencesContentNode extends VBox {
   /**
    * @param {boolean} isBasicsVersion
    * @param {Tandem} tandem
@@ -63,6 +63,6 @@ class GlobalOptionsNode extends VBox {
   }
 }
 
-moleculeShapes.register( 'GlobalOptionsNode', GlobalOptionsNode );
+moleculeShapes.register( 'GeneralPreferencesContentNode', GeneralPreferencesContentNode );
 
-export default GlobalOptionsNode;
+export default GeneralPreferencesContentNode;

@@ -12,7 +12,7 @@ import simLauncher from '../../joist/js/simLauncher.js';
 import CanvasWarningNode from '../../scenery-phet/js/CanvasWarningNode.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import MoleculeShapesGlobals from './common/MoleculeShapesGlobals.js';
-import GlobalOptionsNode from './common/view/GlobalOptionsNode.js';
+import GeneralPreferencesContentNode from './common/view/GeneralPreferencesContentNode.js';
 import ModelMoleculesScreen from './model/ModelMoleculesScreen.js';
 import moleculeShapesStrings from './moleculeShapesStrings.js';
 import RealMoleculesScreen from './real/RealMoleculesScreen.js';
@@ -33,7 +33,7 @@ const simOptions = {
     },
     generalOptions: {
       customPreferences: [ {
-        createContent: tandem => new GlobalOptionsNode( isBasicsVersion, tandem.createTandem( 'moleculeShapesPreferencesContent' ) )
+        createContent: tandem => new GeneralPreferencesContentNode( isBasicsVersion, tandem.createTandem( 'moleculeShapesPreferencesContent' ) )
       } ]
     }
   } ),
