@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import OptionsDialog from '../../../../joist/js/OptionsDialog.js';
+import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import { Text, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import moleculeShapes from '../../moleculeShapes.js';
@@ -28,7 +28,7 @@ class GlobalOptionsNode extends VBox {
       const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
 
       label = new Text( moleculeShapesStrings.options.showOuterLonePairsProperty, {
-        font: OptionsDialog.DEFAULT_FONT,
+        font: PreferencesDialog.CONTENT_FONT,
         maxWidth: 350,
         tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
       } );
@@ -40,7 +40,7 @@ class GlobalOptionsNode extends VBox {
 
     super( {
       children: checkboxes,
-      spacing: OptionsDialog.DEFAULT_SPACING,
+      spacing: PreferencesDialog.CONTENT_SPACING,
       align: 'left'
     } );
 
