@@ -38,6 +38,7 @@ class GeneralPreferencesContentNode extends VBox {
       } ) );
     }
 
+    // A VBox is used to easily add in more controls in the future.
     super( {
       children: checkboxes,
       spacing: PreferencesDialog.CONTENT_SPACING,
