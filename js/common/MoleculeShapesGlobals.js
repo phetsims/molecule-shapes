@@ -17,7 +17,7 @@ import MoleculeShapesQueryParameters from './MoleculeShapesQueryParameters.js';
 
 const MoleculeShapesGlobals = {
   showOuterLonePairsProperty: new BooleanProperty( MoleculeShapesQueryParameters.showOuterLonePairs, {
-    tandem: phet.chipper.packageObject.name === 'molecule-shapes-basics' ? Tandem.OPT_OUT : Tandem.GLOBAL_MODEL.createTandem( 'showOuterLonePairsProperty' )
+    tandem: phet.chipper.packageObject.name === 'molecule-shapes-basics' ? Tandem.OPT_OUT : Tandem.PREFERENCES.createTandem( 'showOuterLonePairsProperty' )
   } )
 };
 
