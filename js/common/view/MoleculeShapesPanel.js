@@ -26,7 +26,6 @@ class MoleculeShapesPanel extends TitledPanel {
       xMargin: MoleculeShapesPanel.xMargin,
       yMargin: 15,
       cornerRadius: 15,
-      resize: true,
 
       // we want everything to absorb events, since things behind the panel are pickable
       backgroundPickable: true,
