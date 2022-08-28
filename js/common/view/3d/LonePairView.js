@@ -120,7 +120,7 @@ class LonePairView extends THREE.Object3D {
    * @public
    */
   dispose() {
-    this.visibilityProperty.unlink( this.visibilityListener );
+    this.visibilityListener && this.visibilityProperty.unlink( this.visibilityListener );
     this.group.positionProperty.unlink( this.positionListener );
 
     // clean references
