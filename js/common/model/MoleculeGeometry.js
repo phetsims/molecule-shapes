@@ -25,19 +25,19 @@ class MoleculeGeometryValue {
 }
 
 const MoleculeGeometry = EnumerationDeprecated.byMap( {
-  EMPTY: new MoleculeGeometryValue( 0, moleculeShapesStrings.shape.emptyProperty ),
-  DIATOMIC: new MoleculeGeometryValue( 1, moleculeShapesStrings.shape.diatomicProperty ),
-  LINEAR: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.linearProperty ), // e = 0,3,4
-  BENT: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.bentProperty ), // e = 1,2
-  TRIGONAL_PLANAR: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPlanarProperty ), // e = 0
-  TRIGONAL_PYRAMIDAL: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPyramidalProperty ), // e = 1
-  T_SHAPED: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.tShapedProperty ), // e = 2,3
-  TETRAHEDRAL: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.tetrahedralProperty ), // e = 0
-  SEESAW: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.seesawProperty ), // e = 1
-  SQUARE_PLANAR: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.squarePlanarProperty ), // e = 2
-  TRIGONAL_BIPYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.trigonalBipyramidalProperty ), // e = 0
-  SQUARE_PYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.squarePyramidalProperty ), // e = 1
-  OCTAHEDRAL: new MoleculeGeometryValue( 6, moleculeShapesStrings.shape.octahedralProperty ) // e = 0
+  EMPTY: new MoleculeGeometryValue( 0, moleculeShapesStrings.shape.emptyStringProperty ),
+  DIATOMIC: new MoleculeGeometryValue( 1, moleculeShapesStrings.shape.diatomicStringProperty ),
+  LINEAR: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.linearStringProperty ), // e = 0,3,4
+  BENT: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.bentStringProperty ), // e = 1,2
+  TRIGONAL_PLANAR: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPlanarStringProperty ), // e = 0
+  TRIGONAL_PYRAMIDAL: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPyramidalStringProperty ), // e = 1
+  T_SHAPED: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.tShapedStringProperty ), // e = 2,3
+  TETRAHEDRAL: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.tetrahedralStringProperty ), // e = 0
+  SEESAW: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.seesawStringProperty ), // e = 1
+  SQUARE_PLANAR: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.squarePlanarStringProperty ), // e = 2
+  TRIGONAL_BIPYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.trigonalBipyramidalStringProperty ), // e = 0
+  SQUARE_PYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.squarePyramidalStringProperty ), // e = 1
+  OCTAHEDRAL: new MoleculeGeometryValue( 6, moleculeShapesStrings.shape.octahedralStringProperty ) // e = 0
 }, {
   beforeFreeze: MoleculeGeometry => {
     /*

@@ -27,14 +27,14 @@ class OptionsNode extends VBox {
     const showLonePairsCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsCheckbox' );
     const showBondAnglesCheckboxTandem = tandem.createTandem( 'showBondAnglesCheckbox' );
 
-    const showLonePairsLabel = new Text( moleculeShapesStrings.control.showLonePairsProperty, {
+    const showLonePairsLabel = new Text( moleculeShapesStrings.control.showLonePairsStringProperty, {
       font: optionsFont,
       fill: MoleculeShapesColors.controlPanelTextProperty,
       tandem: showLonePairsCheckboxTandem.createTandem( 'labelText' ),
       maxWidth: 280
     } );
 
-    const showBondAnglesLabel = new Text( moleculeShapesStrings.control.showBondAnglesProperty, {
+    const showBondAnglesLabel = new Text( moleculeShapesStrings.control.showBondAnglesStringProperty, {
       font: optionsFont,
       fill: MoleculeShapesColors.controlPanelTextProperty,
       tandem: showBondAnglesCheckboxTandem.createTandem( 'labelText' ),

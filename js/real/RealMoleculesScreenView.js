@@ -57,11 +57,11 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       orientation: 'vertical',
       stretch: true,
       children: [
-        new MoleculeShapesPanel( moleculeShapesStrings.control.moleculeProperty, moleculeComboBox, moleculePanelTandem, {
+        new MoleculeShapesPanel( moleculeShapesStrings.control.moleculeStringProperty, moleculeComboBox, moleculePanelTandem, {
           tandem: moleculePanelTandem,
           align: 'center'
         } ),
-        new MoleculeShapesPanel( moleculeShapesStrings.control.optionsProperty, optionsNode, optionsPanelTandem, {
+        new MoleculeShapesPanel( moleculeShapesStrings.control.optionsStringProperty, optionsNode, optionsPanelTandem, {
           tandem: optionsPanelTandem
         } )
       ]
@@ -83,12 +83,12 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       const realViewLabel = new Text( moleculeShapesStrings.control.realView, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColors.controlPanelTextProperty,
-        textProperty: moleculeShapesStrings.control.realViewProperty
+        textProperty: moleculeShapesStrings.control.realViewStringProperty
       } );
       const modelViewLabel = new Text( moleculeShapesStrings.control.modelView, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColors.controlPanelTextProperty,
-        textProperty: moleculeShapesStrings.control.modelViewProperty
+        textProperty: moleculeShapesStrings.control.modelViewStringProperty
       } );
 
       const horizontalSpacing = 30;

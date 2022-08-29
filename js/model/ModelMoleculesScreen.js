@@ -25,7 +25,7 @@ class ModelMoleculesScreen extends Screen {
    */
   constructor( isBasicsVersion, tandem ) {
     const options = {
-      name: moleculeShapesStrings.screen.modelProperty,
+      name: moleculeShapesStrings.screen.modelStringProperty,
       backgroundColorProperty: MoleculeShapesColors.backgroundProperty,
       homeScreenIcon: new ScreenIcon( new ScreenIconNode( true, isBasicsVersion ), {
         maxIconWidthProportion: 1,

@@ -31,22 +31,22 @@ class ElectronGeometryValue {
 }
 
 const ElectronGeometry = EnumerationDeprecated.byMap( {
-  EMPTY: new ElectronGeometryValue( moleculeShapesStrings.geometry.emptyProperty, [] ),
+  EMPTY: new ElectronGeometryValue( moleculeShapesStrings.geometry.emptyStringProperty, [] ),
   DIATOMIC: new ElectronGeometryValue(
-    moleculeShapesStrings.geometry.diatomicProperty,
+    moleculeShapesStrings.geometry.diatomicStringProperty,
     [
       new Vector3( 1, 0, 0 )
     ]
   ),
   LINEAR: new ElectronGeometryValue(
-    moleculeShapesStrings.geometry.linearProperty,
+    moleculeShapesStrings.geometry.linearStringProperty,
     [
       new Vector3( 1, 0, 0 ),
       new Vector3( -1, 0, 0 )
     ]
   ),
   TRIGONAL_PLANAR: new ElectronGeometryValue(
-    moleculeShapesStrings.geometry.trigonalPlanarProperty,
+    moleculeShapesStrings.geometry.trigonalPlanarStringProperty,
     [
       new Vector3( 1, 0, 0 ),
       new Vector3( Math.cos( Math.PI * 2 / 3 ), Math.sin( Math.PI * 2 / 3 ), 0 ),
@@ -54,7 +54,7 @@ const ElectronGeometry = EnumerationDeprecated.byMap( {
     ]
   ),
   TETRAHEDRAL: new ElectronGeometryValue(
-    moleculeShapesStrings.geometry.tetrahedralProperty,
+    moleculeShapesStrings.geometry.tetrahedralStringProperty,
     [
       new Vector3( 0, 0, 1 ),
       new Vector3( Math.cos( 0 ) * Math.cos( TETRA_CONST ), Math.sin( 0 ) * Math.cos( TETRA_CONST ), Math.sin( TETRA_CONST ) ),
@@ -63,7 +63,7 @@ const ElectronGeometry = EnumerationDeprecated.byMap( {
     ]
   ),
   TRIGONAL_BIPYRAMIDAL: new ElectronGeometryValue(
-    moleculeShapesStrings.geometry.trigonalBipyramidalProperty,
+    moleculeShapesStrings.geometry.trigonalBipyramidalStringProperty,
     [
       // equitorial (fills up with lone pairs first)
       new Vector3( 0, 1, 0 ),
@@ -76,7 +76,7 @@ const ElectronGeometry = EnumerationDeprecated.byMap( {
     ]
   ),
   OCTAHEDRAL: new ElectronGeometryValue(
-    moleculeShapesStrings.geometry.octahedralProperty,
+    moleculeShapesStrings.geometry.octahedralStringProperty,
     [
       // opposites first
       new Vector3( 0, 0, 1 ),

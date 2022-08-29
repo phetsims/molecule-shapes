@@ -20,30 +20,30 @@ import MoleculeShapesPanel from './MoleculeShapesPanel.js';
 
 // string list needed to compute maximum label bounds
 const geometryStringProperties = [
-  moleculeShapesStrings.geometry.emptyProperty,
-  moleculeShapesStrings.geometry.diatomicProperty,
-  moleculeShapesStrings.geometry.linearProperty,
-  moleculeShapesStrings.geometry.trigonalPlanarProperty,
-  moleculeShapesStrings.geometry.tetrahedralProperty,
-  moleculeShapesStrings.geometry.trigonalBipyramidalProperty,
-  moleculeShapesStrings.geometry.octahedralProperty
+  moleculeShapesStrings.geometry.emptyStringProperty,
+  moleculeShapesStrings.geometry.diatomicStringProperty,
+  moleculeShapesStrings.geometry.linearStringProperty,
+  moleculeShapesStrings.geometry.trigonalPlanarStringProperty,
+  moleculeShapesStrings.geometry.tetrahedralStringProperty,
+  moleculeShapesStrings.geometry.trigonalBipyramidalStringProperty,
+  moleculeShapesStrings.geometry.octahedralStringProperty
 ];
 
 // string list needed to compute maximum label bounds
 const shapeStringProperties = [
-  moleculeShapesStrings.shape.emptyProperty,
-  moleculeShapesStrings.shape.diatomicProperty,
-  moleculeShapesStrings.shape.linearProperty,
-  moleculeShapesStrings.shape.bentProperty,
-  moleculeShapesStrings.shape.trigonalPlanarProperty,
-  moleculeShapesStrings.shape.trigonalPyramidalProperty,
-  moleculeShapesStrings.shape.tShapedProperty,
-  moleculeShapesStrings.shape.tetrahedralProperty,
-  moleculeShapesStrings.shape.seesawProperty,
-  moleculeShapesStrings.shape.squarePlanarProperty,
-  moleculeShapesStrings.shape.trigonalBipyramidalProperty,
-  moleculeShapesStrings.shape.squarePyramidalProperty,
-  moleculeShapesStrings.shape.octahedralProperty
+  moleculeShapesStrings.shape.emptyStringProperty,
+  moleculeShapesStrings.shape.diatomicStringProperty,
+  moleculeShapesStrings.shape.linearStringProperty,
+  moleculeShapesStrings.shape.bentStringProperty,
+  moleculeShapesStrings.shape.trigonalPlanarStringProperty,
+  moleculeShapesStrings.shape.trigonalPyramidalStringProperty,
+  moleculeShapesStrings.shape.tShapedStringProperty,
+  moleculeShapesStrings.shape.tetrahedralStringProperty,
+  moleculeShapesStrings.shape.seesawStringProperty,
+  moleculeShapesStrings.shape.squarePlanarStringProperty,
+  moleculeShapesStrings.shape.trigonalBipyramidalStringProperty,
+  moleculeShapesStrings.shape.squarePyramidalStringProperty,
+  moleculeShapesStrings.shape.octahedralStringProperty
 ];
 
 const geometryNameFont = new PhetFont( 16 );
@@ -77,7 +77,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       ySpacing: 10
     } );
 
-    super( moleculeShapesStrings.control.geometryNameProperty, content, tandem );
+    super( moleculeShapesStrings.control.geometryNameStringProperty, content, tandem );
 
     // @private {MoleculeShapesModel}
     this.model = model;
@@ -87,7 +87,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
     // @private {MoleculeShapesCheckbox}
     const moleculeGeometryCheckboxTandem = tandem.createTandem( 'moleculeGeometryCheckbox' );
-    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( model.showMoleculeGeometryProperty, new Text( moleculeShapesStrings.control.moleculeGeometryProperty, {
+    this.moleculeGeometryCheckbox = new MoleculeShapesCheckbox( model.showMoleculeGeometryProperty, new Text( moleculeShapesStrings.control.moleculeGeometryStringProperty, {
       font: textLabelFont,
       fill: MoleculeShapesColors.moleculeGeometryNameProperty,
       tandem: moleculeGeometryCheckboxTandem.createTandem( 'labelText' )
@@ -99,7 +99,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       }
     } );
     const electronGeometryCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'electronGeometryCheckbox' );
-    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( model.showElectronGeometryProperty, new Text( moleculeShapesStrings.control.electronGeometryProperty, {
+    this.electronGeometryCheckbox = new MoleculeShapesCheckbox( model.showElectronGeometryProperty, new Text( moleculeShapesStrings.control.electronGeometryStringProperty, {
       font: textLabelFont,
       fill: MoleculeShapesColors.electronGeometryNameProperty,
       tandem: electronGeometryCheckboxTandem.createTandem( 'labelText' )
@@ -212,7 +212,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
   getMoleculeGeometryName() {
     const nameProperty = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry.stringProperty;
     if ( nameProperty === null ) {
-      return moleculeShapesStrings.shape.emptyProperty;
+      return moleculeShapesStrings.shape.emptyStringProperty;
     }
     else {
       return nameProperty;
@@ -225,7 +225,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
   getElectronGeometryName() {
     const nameProperty = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry.stringProperty;
     if ( nameProperty === null ) {
-      return moleculeShapesStrings.geometry.emptyProperty;
+      return moleculeShapesStrings.geometry.emptyStringProperty;
     }
     else {
       return nameProperty;

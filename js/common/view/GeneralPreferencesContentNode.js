@@ -27,7 +27,7 @@ class GeneralPreferencesContentNode extends VBox {
     if ( !isBasicsVersion ) {
       const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
 
-      label = new Text( moleculeShapesStrings.options.showOuterLonePairsProperty, {
+      label = new Text( moleculeShapesStrings.options.showOuterLonePairsStringProperty, {
         font: PreferencesDialog.CONTENT_FONT,
         maxWidth: 350,
         tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
