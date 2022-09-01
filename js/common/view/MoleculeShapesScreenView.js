@@ -15,7 +15,7 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFailureDialog.js';
-import { AlignBox, animatedPanZoomSingleton, DOM, Mouse, Rectangle, Utils } from '../../../../scenery/js/imports.js';
+import { AlignBox, animatedPanZoomSingleton, DOM, Mouse, Rectangle } from '../../../../scenery/js/imports.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import LabelWebGLView from './3d/LabelWebGLView.js';
@@ -101,10 +101,12 @@ class MoleculeShapesScreenView extends ScreenView {
     this.moleculeNode.invalidateDOM();
 
     // support Scenery/Joist 0.2 screenshot (takes extra work to output)
-    this.moleculeNode.renderToCanvasSelf = wrapper => {
+    this.moleculeNode.renderToCanvasSelf = ( wrapper, matrix ) => {
       let canvas = null;
 
-      const backingScale = Utils.backingScale( wrapper.context );
+      // Extract out the backing scale based on our trail
+      // Guaranteed to be affine, 1:1 aspect ratio and axis-aligned
+      const backingScale = matrix.timesMatrix( this.getUniqueTrail().getMatrix().inverted() ).m00();
 
       const effectiveWidth = Math.ceil( backingScale * this.screenWidth );
       const effectiveHeight = Math.ceil( backingScale * this.screenHeight );
