@@ -31,7 +31,7 @@ const simOptions = {
     visualOptions: {
       supportsProjectorMode: true
     },
-    generalOptions: {
+    simulationOptions: {
       customPreferences: [ {
         createContent: tandem => new GeneralPreferencesContentNode( isBasicsVersion, tandem.createTandem( 'simPreferences' ) )
       } ]
