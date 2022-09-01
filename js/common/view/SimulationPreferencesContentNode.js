@@ -13,7 +13,7 @@ import moleculeShapes from '../../moleculeShapes.js';
 import moleculeShapesStrings from '../../moleculeShapesStrings.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 
-class GeneralPreferencesContentNode extends VBox {
+class SimulationPreferencesContentNode extends VBox {
   /**
    * @param {boolean} isBasicsVersion
    * @param {Tandem} tandem
@@ -64,6 +64,6 @@ class GeneralPreferencesContentNode extends VBox {
   }
 }
 
-moleculeShapes.register( 'GeneralPreferencesContentNode', GeneralPreferencesContentNode );
+moleculeShapes.register( 'SimulationPreferencesContentNode', SimulationPreferencesContentNode );
 
-export default GeneralPreferencesContentNode;
+export default SimulationPreferencesContentNode;
