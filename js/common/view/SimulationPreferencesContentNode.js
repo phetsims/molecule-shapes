@@ -10,7 +10,7 @@ import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialo
 import { Text, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import moleculeShapesStrings from '../../moleculeShapesStrings.js';
+import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 
 class SimulationPreferencesContentNode extends VBox {
@@ -27,7 +27,7 @@ class SimulationPreferencesContentNode extends VBox {
     if ( !isBasicsVersion ) {
       const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
 
-      label = new Text( moleculeShapesStrings.options.showOuterLonePairsStringProperty, {
+      label = new Text( MoleculeShapesStrings.options.showOuterLonePairsStringProperty, {
         font: PreferencesDialog.CONTENT_FONT,
         maxWidth: 350,
         tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )

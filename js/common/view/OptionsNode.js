@@ -11,7 +11,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text, VBox } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import moleculeShapesStrings from '../../moleculeShapesStrings.js';
+import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 
@@ -27,14 +27,14 @@ class OptionsNode extends VBox {
     const showLonePairsCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsCheckbox' );
     const showBondAnglesCheckboxTandem = tandem.createTandem( 'showBondAnglesCheckbox' );
 
-    const showLonePairsLabel = new Text( moleculeShapesStrings.control.showLonePairsStringProperty, {
+    const showLonePairsLabel = new Text( MoleculeShapesStrings.control.showLonePairsStringProperty, {
       font: optionsFont,
       fill: MoleculeShapesColors.controlPanelTextProperty,
       tandem: showLonePairsCheckboxTandem.createTandem( 'labelText' ),
       maxWidth: 280
     } );
 
-    const showBondAnglesLabel = new Text( moleculeShapesStrings.control.showBondAnglesStringProperty, {
+    const showBondAnglesLabel = new Text( MoleculeShapesStrings.control.showBondAnglesStringProperty, {
       font: optionsFont,
       fill: MoleculeShapesColors.controlPanelTextProperty,
       tandem: showBondAnglesCheckboxTandem.createTandem( 'labelText' ),

@@ -11,7 +11,7 @@ import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import ScreenIconNode from '../common/view/ScreenIconNode.js';
 import moleculeShapes from '../moleculeShapes.js';
-import moleculeShapesStrings from '../moleculeShapesStrings.js';
+import MoleculeShapesStrings from '../MoleculeShapesStrings.js';
 import ModelMoleculesModel from './ModelMoleculesModel.js';
 import ModelMoleculesScreenView from './ModelMoleculesScreenView.js';
 
@@ -25,7 +25,7 @@ class ModelMoleculesScreen extends Screen {
    */
   constructor( isBasicsVersion, tandem ) {
     const options = {
-      name: moleculeShapesStrings.screen.modelStringProperty,
+      name: MoleculeShapesStrings.screen.modelStringProperty,
       backgroundColorProperty: MoleculeShapesColors.backgroundProperty,
       homeScreenIcon: new ScreenIcon( new ScreenIconNode( true, isBasicsVersion ), {
         maxIconWidthProportion: 1,

@@ -93,8 +93,8 @@ type StringsType = {
   }
 };
 
-const moleculeShapesStrings = getStringModule( 'MOLECULE_SHAPES' ) as StringsType;
+const MoleculeShapesStrings = getStringModule( 'MOLECULE_SHAPES' ) as StringsType;
 
-moleculeShapes.register( 'moleculeShapesStrings', moleculeShapesStrings );
+moleculeShapes.register( 'MoleculeShapesStrings', MoleculeShapesStrings );
 
-export default moleculeShapesStrings;
+export default MoleculeShapesStrings;

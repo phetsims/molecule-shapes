@@ -14,7 +14,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import MoleculeShapesGlobals from './common/MoleculeShapesGlobals.js';
 import SimulationPreferencesContentNode from './common/view/SimulationPreferencesContentNode.js';
 import ModelMoleculesScreen from './model/ModelMoleculesScreen.js';
-import moleculeShapesStrings from './moleculeShapesStrings.js';
+import MoleculeShapesStrings from './MoleculeShapesStrings.js';
 import RealMoleculesScreen from './real/RealMoleculesScreen.js';
 
 const isBasicsVersion = false;
@@ -44,7 +44,7 @@ const simOptions = {
 // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
 
 simLauncher.launch( () => {
-  const sim = new Sim( moleculeShapesStrings[ 'molecule-shapes' ].titleStringProperty, [
+  const sim = new Sim( MoleculeShapesStrings[ 'molecule-shapes' ].titleStringProperty, [
     new ModelMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'modelScreen' ) ),
     new RealMoleculesScreen( isBasicsVersion, Tandem.ROOT.createTandem( 'realMoleculesScreen' ) )
   ], simOptions );

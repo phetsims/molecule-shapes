@@ -8,7 +8,7 @@
 
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import moleculeShapes from '../../moleculeShapes.js';
-import moleculeShapesStrings from '../../moleculeShapesStrings.js';
+import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 
 class MoleculeGeometryValue {
   /*
@@ -25,19 +25,19 @@ class MoleculeGeometryValue {
 }
 
 const MoleculeGeometry = EnumerationDeprecated.byMap( {
-  EMPTY: new MoleculeGeometryValue( 0, moleculeShapesStrings.shape.emptyStringProperty ),
-  DIATOMIC: new MoleculeGeometryValue( 1, moleculeShapesStrings.shape.diatomicStringProperty ),
-  LINEAR: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.linearStringProperty ), // e = 0,3,4
-  BENT: new MoleculeGeometryValue( 2, moleculeShapesStrings.shape.bentStringProperty ), // e = 1,2
-  TRIGONAL_PLANAR: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPlanarStringProperty ), // e = 0
-  TRIGONAL_PYRAMIDAL: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.trigonalPyramidalStringProperty ), // e = 1
-  T_SHAPED: new MoleculeGeometryValue( 3, moleculeShapesStrings.shape.tShapedStringProperty ), // e = 2,3
-  TETRAHEDRAL: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.tetrahedralStringProperty ), // e = 0
-  SEESAW: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.seesawStringProperty ), // e = 1
-  SQUARE_PLANAR: new MoleculeGeometryValue( 4, moleculeShapesStrings.shape.squarePlanarStringProperty ), // e = 2
-  TRIGONAL_BIPYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.trigonalBipyramidalStringProperty ), // e = 0
-  SQUARE_PYRAMIDAL: new MoleculeGeometryValue( 5, moleculeShapesStrings.shape.squarePyramidalStringProperty ), // e = 1
-  OCTAHEDRAL: new MoleculeGeometryValue( 6, moleculeShapesStrings.shape.octahedralStringProperty ) // e = 0
+  EMPTY: new MoleculeGeometryValue( 0, MoleculeShapesStrings.shape.emptyStringProperty ),
+  DIATOMIC: new MoleculeGeometryValue( 1, MoleculeShapesStrings.shape.diatomicStringProperty ),
+  LINEAR: new MoleculeGeometryValue( 2, MoleculeShapesStrings.shape.linearStringProperty ), // e = 0,3,4
+  BENT: new MoleculeGeometryValue( 2, MoleculeShapesStrings.shape.bentStringProperty ), // e = 1,2
+  TRIGONAL_PLANAR: new MoleculeGeometryValue( 3, MoleculeShapesStrings.shape.trigonalPlanarStringProperty ), // e = 0
+  TRIGONAL_PYRAMIDAL: new MoleculeGeometryValue( 3, MoleculeShapesStrings.shape.trigonalPyramidalStringProperty ), // e = 1
+  T_SHAPED: new MoleculeGeometryValue( 3, MoleculeShapesStrings.shape.tShapedStringProperty ), // e = 2,3
+  TETRAHEDRAL: new MoleculeGeometryValue( 4, MoleculeShapesStrings.shape.tetrahedralStringProperty ), // e = 0
+  SEESAW: new MoleculeGeometryValue( 4, MoleculeShapesStrings.shape.seesawStringProperty ), // e = 1
+  SQUARE_PLANAR: new MoleculeGeometryValue( 4, MoleculeShapesStrings.shape.squarePlanarStringProperty ), // e = 2
+  TRIGONAL_BIPYRAMIDAL: new MoleculeGeometryValue( 5, MoleculeShapesStrings.shape.trigonalBipyramidalStringProperty ), // e = 0
+  SQUARE_PYRAMIDAL: new MoleculeGeometryValue( 5, MoleculeShapesStrings.shape.squarePyramidalStringProperty ), // e = 1
+  OCTAHEDRAL: new MoleculeGeometryValue( 6, MoleculeShapesStrings.shape.octahedralStringProperty ) // e = 0
 }, {
   beforeFreeze: MoleculeGeometry => {
     /*

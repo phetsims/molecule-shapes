@@ -18,7 +18,7 @@ import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
 import OptionsNode from '../common/view/OptionsNode.js';
 import moleculeShapes from '../moleculeShapes.js';
-import moleculeShapesStrings from '../moleculeShapesStrings.js';
+import MoleculeShapesStrings from '../MoleculeShapesStrings.js';
 
 class RealMoleculesScreenView extends MoleculeShapesScreenView {
   /**
@@ -57,11 +57,11 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       orientation: 'vertical',
       stretch: true,
       children: [
-        new MoleculeShapesPanel( moleculeShapesStrings.control.moleculeStringProperty, moleculeComboBox, moleculePanelTandem, {
+        new MoleculeShapesPanel( MoleculeShapesStrings.control.moleculeStringProperty, moleculeComboBox, moleculePanelTandem, {
           tandem: moleculePanelTandem,
           align: 'center'
         } ),
-        new MoleculeShapesPanel( moleculeShapesStrings.control.optionsStringProperty, optionsNode, optionsPanelTandem, {
+        new MoleculeShapesPanel( MoleculeShapesStrings.control.optionsStringProperty, optionsNode, optionsPanelTandem, {
           tandem: optionsPanelTandem
         } )
       ]
@@ -80,15 +80,15 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       const approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
 
       // NOTE: these font sizes are scaled!
-      const realViewLabel = new Text( moleculeShapesStrings.control.realView, {
+      const realViewLabel = new Text( MoleculeShapesStrings.control.realView, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColors.controlPanelTextProperty,
-        textProperty: moleculeShapesStrings.control.realViewStringProperty
+        textProperty: MoleculeShapesStrings.control.realViewStringProperty
       } );
-      const modelViewLabel = new Text( moleculeShapesStrings.control.modelView, {
+      const modelViewLabel = new Text( MoleculeShapesStrings.control.modelView, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColors.controlPanelTextProperty,
-        textProperty: moleculeShapesStrings.control.modelViewStringProperty
+        textProperty: MoleculeShapesStrings.control.modelViewStringProperty
       } );
 
       const horizontalSpacing = 30;
