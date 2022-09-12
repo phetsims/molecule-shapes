@@ -34,14 +34,15 @@ class MoleculeShapesPanel extends TitledPanel {
       stroke: MoleculeShapesColors.controlPanelBorderProperty
     }, options );
 
-    const titleNode = new Text( titleStringProperty, {
+    const titleText = new Text( titleStringProperty, {
       font: new PhetFont( 18 ),
       fill: MoleculeShapesColors.controlPanelTitleProperty,
-      tandem: tandem.createTandem( 'titleNode' ),
+      tandem: tandem.createTandem( 'titleText' ),
+      phetioVisiblePropertyInstrumented: true,
       maxWidth: 280
     } );
 
-    super( titleNode, contentNode, options );
+    super( titleText, contentNode, options );
   }
 }
 
