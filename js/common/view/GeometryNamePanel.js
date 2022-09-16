@@ -198,8 +198,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
    * @private
    */
   updateNames() {
-    this.moleculeText.textProperty = this.getMoleculeGeometryName();
-    this.electronText.textProperty = this.getElectronGeometryName();
+    this.moleculeText.stringProperty = this.getMoleculeGeometryName();
+    this.electronText.stringProperty = this.getElectronGeometryName();
 
     // layout
     this.moleculeText.centerX = this.moleculeGeometryCheckbox.centerX;

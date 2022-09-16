@@ -83,12 +83,12 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       const realViewLabel = new Text( MoleculeShapesStrings.control.realView, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColors.controlPanelTextProperty,
-        textProperty: MoleculeShapesStrings.control.realViewStringProperty
+        stringProperty: MoleculeShapesStrings.control.realViewStringProperty
       } );
       const modelViewLabel = new Text( MoleculeShapesStrings.control.modelView, {
         font: new PhetFont( 28 ),
         fill: MoleculeShapesColors.controlPanelTextProperty,
-        textProperty: MoleculeShapesStrings.control.modelViewStringProperty
+        stringProperty: MoleculeShapesStrings.control.modelViewStringProperty
       } );
 
       const horizontalSpacing = 30;
