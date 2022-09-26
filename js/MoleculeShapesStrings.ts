@@ -5,91 +5,91 @@
  */
 /* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import moleculeShapes from './moleculeShapes.js';
 
 type StringsType = {
   'molecule-shapes': {
     'title': string;
-    'titleStringProperty': TReadOnlyProperty<string>;
+    'titleStringProperty': LinkableProperty<string>;
   };
   'screen': {
     'model': string;
-    'modelStringProperty': TReadOnlyProperty<string>;
+    'modelStringProperty': LinkableProperty<string>;
     'realMolecules': string;
-    'realMoleculesStringProperty': TReadOnlyProperty<string>;
+    'realMoleculesStringProperty': LinkableProperty<string>;
   };
   'geometry': {
     'diatomic': string;
-    'diatomicStringProperty': TReadOnlyProperty<string>;
+    'diatomicStringProperty': LinkableProperty<string>;
     'linear': string;
-    'linearStringProperty': TReadOnlyProperty<string>;
+    'linearStringProperty': LinkableProperty<string>;
     'trigonalPlanar': string;
-    'trigonalPlanarStringProperty': TReadOnlyProperty<string>;
+    'trigonalPlanarStringProperty': LinkableProperty<string>;
     'tetrahedral': string;
-    'tetrahedralStringProperty': TReadOnlyProperty<string>;
+    'tetrahedralStringProperty': LinkableProperty<string>;
     'trigonalBipyramidal': string;
-    'trigonalBipyramidalStringProperty': TReadOnlyProperty<string>;
+    'trigonalBipyramidalStringProperty': LinkableProperty<string>;
     'octahedral': string;
-    'octahedralStringProperty': TReadOnlyProperty<string>;
+    'octahedralStringProperty': LinkableProperty<string>;
   };
   'shape': {
     'diatomic': string;
-    'diatomicStringProperty': TReadOnlyProperty<string>;
+    'diatomicStringProperty': LinkableProperty<string>;
     'linear': string;
-    'linearStringProperty': TReadOnlyProperty<string>;
+    'linearStringProperty': LinkableProperty<string>;
     'bent': string;
-    'bentStringProperty': TReadOnlyProperty<string>;
+    'bentStringProperty': LinkableProperty<string>;
     'trigonalPlanar': string;
-    'trigonalPlanarStringProperty': TReadOnlyProperty<string>;
+    'trigonalPlanarStringProperty': LinkableProperty<string>;
     'trigonalPyramidal': string;
-    'trigonalPyramidalStringProperty': TReadOnlyProperty<string>;
+    'trigonalPyramidalStringProperty': LinkableProperty<string>;
     'tShaped': string;
-    'tShapedStringProperty': TReadOnlyProperty<string>;
+    'tShapedStringProperty': LinkableProperty<string>;
     'tetrahedral': string;
-    'tetrahedralStringProperty': TReadOnlyProperty<string>;
+    'tetrahedralStringProperty': LinkableProperty<string>;
     'seesaw': string;
-    'seesawStringProperty': TReadOnlyProperty<string>;
+    'seesawStringProperty': LinkableProperty<string>;
     'squarePlanar': string;
-    'squarePlanarStringProperty': TReadOnlyProperty<string>;
+    'squarePlanarStringProperty': LinkableProperty<string>;
     'trigonalBipyramidal': string;
-    'trigonalBipyramidalStringProperty': TReadOnlyProperty<string>;
+    'trigonalBipyramidalStringProperty': LinkableProperty<string>;
     'squarePyramidal': string;
-    'squarePyramidalStringProperty': TReadOnlyProperty<string>;
+    'squarePyramidalStringProperty': LinkableProperty<string>;
     'octahedral': string;
-    'octahedralStringProperty': TReadOnlyProperty<string>;
+    'octahedralStringProperty': LinkableProperty<string>;
   };
   'control': {
     'bonding': string;
-    'bondingStringProperty': TReadOnlyProperty<string>;
+    'bondingStringProperty': LinkableProperty<string>;
     'lonePair': string;
-    'lonePairStringProperty': TReadOnlyProperty<string>;
+    'lonePairStringProperty': LinkableProperty<string>;
     'options': string;
-    'optionsStringProperty': TReadOnlyProperty<string>;
+    'optionsStringProperty': LinkableProperty<string>;
     'geometryName': string;
-    'geometryNameStringProperty': TReadOnlyProperty<string>;
+    'geometryNameStringProperty': LinkableProperty<string>;
     'moleculeGeometry': string;
-    'moleculeGeometryStringProperty': TReadOnlyProperty<string>;
+    'moleculeGeometryStringProperty': LinkableProperty<string>;
     'electronGeometry': string;
-    'electronGeometryStringProperty': TReadOnlyProperty<string>;
+    'electronGeometryStringProperty': LinkableProperty<string>;
     'showLonePairs': string;
-    'showLonePairsStringProperty': TReadOnlyProperty<string>;
+    'showLonePairsStringProperty': LinkableProperty<string>;
     'showBondAngles': string;
-    'showBondAnglesStringProperty': TReadOnlyProperty<string>;
+    'showBondAnglesStringProperty': LinkableProperty<string>;
     'removeAll': string;
-    'removeAllStringProperty': TReadOnlyProperty<string>;
+    'removeAllStringProperty': LinkableProperty<string>;
     'molecule': string;
-    'moleculeStringProperty': TReadOnlyProperty<string>;
+    'moleculeStringProperty': LinkableProperty<string>;
     'realView': string;
-    'realViewStringProperty': TReadOnlyProperty<string>;
+    'realViewStringProperty': LinkableProperty<string>;
     'modelView': string;
-    'modelViewStringProperty': TReadOnlyProperty<string>;
+    'modelViewStringProperty': LinkableProperty<string>;
   };
   'options': {
     'showOuterLonePairs': string;
-    'showOuterLonePairsStringProperty': TReadOnlyProperty<string>;
+    'showOuterLonePairsStringProperty': LinkableProperty<string>;
     'projectorColors': string;
-    'projectorColorsStringProperty': TReadOnlyProperty<string>;
+    'projectorColorsStringProperty': LinkableProperty<string>;
   }
 };
 
