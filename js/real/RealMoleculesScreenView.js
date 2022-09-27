@@ -80,29 +80,25 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       const approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
 
       // NOTE: these font sizes are scaled!
-      const realViewLabel = new Text( MoleculeShapesStrings.control.realView, {
-        font: new PhetFont( 28 ),
-        fill: MoleculeShapesColors.controlPanelTextProperty,
-        stringProperty: MoleculeShapesStrings.control.realViewStringProperty
-      } );
-      const modelViewLabel = new Text( MoleculeShapesStrings.control.modelView, {
-        font: new PhetFont( 28 ),
-        fill: MoleculeShapesColors.controlPanelTextProperty,
-        stringProperty: MoleculeShapesStrings.control.modelViewStringProperty
-      } );
-
       const horizontalSpacing = 30;
-
       const radioButtonScale = 0.7;
 
       const realModelRadioButtonGroup = new AquaRadioButtonGroup( model.showRealViewProperty, [
         {
-          node: realViewLabel,
+          createNode: tandem => new Text( MoleculeShapesStrings.control.realView, {
+            font: new PhetFont( 28 ),
+            fill: MoleculeShapesColors.controlPanelTextProperty,
+            stringProperty: MoleculeShapesStrings.control.realViewStringProperty
+          } ),
           value: true,
           tandemName: 'realRadioButton'
         },
         {
-          node: modelViewLabel,
+          createNode: tandem => new Text( MoleculeShapesStrings.control.modelView, {
+            font: new PhetFont( 28 ),
+            fill: MoleculeShapesColors.controlPanelTextProperty,
+            stringProperty: MoleculeShapesStrings.control.modelViewStringProperty
+          } ),
           value: false,
           tandemName: 'modelRadioButton'
         }
