@@ -166,11 +166,11 @@ const RealMoleculesModelIO = new IOType( 'RealMoleculesModelIO', {
 
     return result;
   },
-  applyState: ( model, obj ) => {
-    model.realMoleculeShapeProperty.value = RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( obj.realMoleculeShape );
-    model.showRealViewProperty.value = obj.showRealView;
+  applyState: ( model, stateObject ) => {
+    model.realMoleculeShapeProperty.value = RealMoleculeShape.RealMoleculeShapeIO.fromStateObject( stateObject.realMoleculeShape );
+    model.showRealViewProperty.value = stateObject.showRealView;
 
-    MoleculeShapesModel.MoleculeShapesModelIO.applyState( model, obj );
+    MoleculeShapesModel.MoleculeShapesModelIO.applyState( model, stateObject );
   }
 } );
 
