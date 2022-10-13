@@ -10,10 +10,6 @@
     "grunt": "~1.5.3"
   },
   "phet": {
-    "colorProfiles": [
-      "default",
-      "projector"
-    ],
     "requirejsNamespace": "MOLECULE_SHAPES",
     "phetLibs": [
       "mobius",
@@ -33,7 +29,13 @@
       "adapted-from-phet"
     ],
     "simulation": true,
-    "supportsOutputJS": true
+    "supportsOutputJS": true,
+    "simFeatures": {
+      "colorProfiles": [
+        "default",
+        "projector"
+      ]
+    }
   },
   "eslintConfig": {
     "extends": "../chipper/eslint/sim_eslintrc.js",
