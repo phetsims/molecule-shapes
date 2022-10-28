@@ -1,9 +1,6 @@
 /* eslint-disable */
 window.phet.preloads.phetio.phetioElementsOverrides =
   {
-    "moleculeShapes.general.view.colorProfileProperty": {
-      "phetioFeatured": true
-    },
     "moleculeShapes.global.model.maxConnectionsProperty": {
       "phetioFeatured": true
     },
