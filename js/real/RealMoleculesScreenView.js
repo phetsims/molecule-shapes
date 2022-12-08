@@ -88,6 +88,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
           createNode: tandem => new Text( MoleculeShapesStrings.control.realView, {
             font: new PhetFont( 28 ),
             fill: MoleculeShapesColors.controlPanelTextProperty,
+            tandem: tandem.createTandem( 'text' ),
             stringProperty: MoleculeShapesStrings.control.realViewStringProperty
           } ),
           value: true,
@@ -97,6 +98,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
           createNode: tandem => new Text( MoleculeShapesStrings.control.modelView, {
             font: new PhetFont( 28 ),
             fill: MoleculeShapesColors.controlPanelTextProperty,
+            tandem: tandem.createTandem( 'text' ),
             stringProperty: MoleculeShapesStrings.control.modelViewStringProperty
           } ),
           value: false,
