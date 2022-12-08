@@ -11,7 +11,6 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, FlowBox, Node, RichText, Text } from '../../../scenery/js/imports.js';
 import AquaRadioButtonGroup from '../../../sun/js/AquaRadioButtonGroup.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
-import RealMoleculeShape from '../common/model/RealMoleculeShape.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
@@ -36,8 +35,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     const optionsPanelTandem = tandem.createTandem( 'optionsPanel' );
 
     const comboBoxListContainer = new Node();
-    const comboBoxMolecules = model.isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
-    const comboBoxItems = _.map( comboBoxMolecules, realMoleculeShape => {
+    const comboBoxItems = _.map( model.realMoleculeShapeProperty.validValues, realMoleculeShape => {
       return {
         value: realMoleculeShape,
         node: new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ),

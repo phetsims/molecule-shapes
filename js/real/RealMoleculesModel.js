@@ -29,7 +29,8 @@ class RealMoleculesModel extends MoleculeShapesModel {
    */
   constructor( isBasicsVersion, tandem ) {
 
-    const startingMoleculeShape = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES[ 0 ] : RealMoleculeShape.TAB_2_MOLECULES[ 0 ];
+    const validMoleculeShapes = isBasicsVersion ? RealMoleculeShape.TAB_2_BASIC_MOLECULES : RealMoleculeShape.TAB_2_MOLECULES;
+    const startingMoleculeShape = validMoleculeShapes[ 0 ];
     const startingMolecule = new RealMolecule( startingMoleculeShape );
 
     super( isBasicsVersion, {
@@ -41,6 +42,7 @@ class RealMoleculesModel extends MoleculeShapesModel {
     this.realMoleculeShapeProperty = new Property( startingMoleculeShape, {
       tandem: tandem.createTandem( 'realMoleculeShapeProperty' ),
       phetioValueType: RealMoleculeShape.RealMoleculeShapeIO,
+      validValues: validMoleculeShapes,
       phetioState: false
     } );
 
