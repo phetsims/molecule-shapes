@@ -46,7 +46,8 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       xMargin: 13,
       yMargin: 10,
       cornerRadius: 8,
-      tandem: moleculePanelTandem.createTandem( 'moleculeComboBox' )
+      tandem: moleculePanelTandem.createTandem( 'moleculeComboBox' ),
+      widthSizable: false
     } );
     const optionsNode = new OptionsNode( model, optionsPanelTandem );
 
