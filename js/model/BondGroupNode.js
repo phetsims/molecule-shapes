@@ -192,7 +192,6 @@ class BondGroupNode extends HBox {
       enabledPropertyOptions: { phetioReadOnly: true },
       tandem: tandem.createTandem( 'removeButton' )
     } );
-    removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
 
     // updates the visual state of the thumbnail (image/overlay) and removal button
     function update() {
@@ -239,6 +238,10 @@ class BondGroupNode extends HBox {
       align: 'center',
       excludeInvisibleChildrenFromBounds: false
     }, options ) );
+
+    // For unknown reasons, the touch area on the button is disrupted in the mutate, so the touch area must be applied afterwards
+    // See https://github.com/phetsims/molecule-shapes/issues/231
+    removeButton.touchArea = removeButton.localBounds.dilatedY( 14 ).withMinX( removeButton.localBounds.minX - 10 ).withMaxX( removeButton.localBounds.maxX + 20 );
   }
 }
 
