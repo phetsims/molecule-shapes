@@ -84,7 +84,9 @@ class VSEPRMolecule extends Molecule {
    * @returns {number}
    */
   getMaximumBondLength() {
-    if ( this.bondLengthOverride !== undefined ) {
+
+    // PhET-iO sets a null value
+    if ( this.bondLengthOverride !== undefined && this.bondLengthOverride !== null ) {
       return this.bondLengthOverride;
     }
     else {
