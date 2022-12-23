@@ -12,15 +12,13 @@ import Molecule from './Molecule.js';
 import PairGroup from './PairGroup.js';
 
 class VSEPRMolecule extends Molecule {
-  /*
-   * @param {number} bondLengthOverride - Override the length of the displayed bond (the bond will not stretch between
-   *                                      both atoms, but will be able to detach from the central atom to stay the same
-   *                                      length)
-   */
-  constructor( bondLengthOverride ) {
+  constructor() {
     super( false );
 
-    this.bondLengthOverride = bondLengthOverride; // @public {number}
+    // @public {number|null}
+    // Override the length of the displayed bond (the bond will not stretch between both atoms, but will be able to
+    // detach from the central atom to stay the same length)
+    this.bondLengthOverride = null;
   }
 
   /**
@@ -86,7 +84,7 @@ class VSEPRMolecule extends Molecule {
   getMaximumBondLength() {
 
     // PhET-iO sets a null value
-    if ( this.bondLengthOverride !== undefined && this.bondLengthOverride !== null ) {
+    if ( this.bondLengthOverride !== null ) {
       return this.bondLengthOverride;
     }
     else {
