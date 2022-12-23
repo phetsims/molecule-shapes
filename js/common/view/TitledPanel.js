@@ -12,8 +12,9 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import { Node, Rectangle, Sizable } from '../../../../scenery/js/imports.js';
+import { Node, Rectangle, Sizable, WidthSizable } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 // TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions?
@@ -23,20 +24,40 @@ class TitledPanel extends Sizable( Node ) {
       excludeInvisibleChildrenFromBounds: true
     } );
 
+    // We'll create a resizable content node for the Panel, since we want to include the titleNode's size within
+    // our minimum width.
+    // TODO: Before moving to common code, get this to support Sizable.
+    const contentContainer = new ( WidthSizable( Node ) )( {
+      children: [ contentNode ]
+    } );
+
+    // Forward preferred sizes from the container to the actual content node
+    contentContainer.localPreferredWidthProperty.link( width => {
+      contentNode.preferredWidth = width;
+    } );
+
+    // Forward minimum sizes from the content (and title) to the container
+    Multilink.multilink( [
+      // TODO: Support non-sizable content nodes if moving to common code.
+      contentNode.minimumWidthProperty,
+      titleNode.boundsProperty
+    ], ( contentWidth, titleBounds ) => {
+      contentContainer.localMinimumWidth = Math.max( contentWidth, titleBounds.width + ( 2 * options.yMargin ) );
+    } );
+
     options = merge( {}, Panel.DEFAULT_PANEL_OPTIONS, options );
 
     this.titleNode = titleNode; // @private {Node}
     this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill, visibleProperty: titleNode.visibleProperty } ); // @private {Rectangle}
 
     // @private {Node}
-    this.panel = new Panel( contentNode, {
+    this.panel = new Panel( contentContainer, {
       lineWidth: options.lineWidth,
       xMargin: options.xMargin,
       yMargin: options.yMargin,
       cornerRadius: options.cornerRadius,
       resize: options.resize,
       backgroundPickable: options.backgroundPickable,
-      minWidth: Math.max( options.minWidth || 0, titleNode.width + ( 2 * options.yMargin ) ),
       align: options.align
     } );
     this.setStroke( options.stroke );
@@ -46,6 +67,7 @@ class TitledPanel extends Sizable( Node ) {
     this.addChild( this.titleBackgroundNode );
     this.addChild( this.titleNode );
 
+    contentContainer.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     contentNode.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     this.panel.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     titleNode.localBoundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
