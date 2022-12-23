@@ -6,67 +6,54 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import merge from '../../../../phet-core/js/merge.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text, VBox } from '../../../../scenery/js/imports.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
+import { Text } from '../../../../scenery/js/imports.js';
+import VerticalCheckboxGroup from '../../../../sun/js/VerticalCheckboxGroup.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
-import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
+import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 
 const optionsFont = new PhetFont( 14 );
 
-class OptionsNode extends VBox {
+class OptionsNode extends VerticalCheckboxGroup {
   /**
    * @param {MoleculeShapesModel} model
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( model, tandem, options ) {
-    const showLonePairsCheckboxTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'showLonePairsCheckbox' );
-    const showBondAnglesCheckboxTandem = tandem.createTandem( 'showBondAnglesCheckbox' );
+  constructor( model, tandem, providedOptions ) {
+    const options = optionize()( { // eslint-disable-line bad-text
+      touchAreaXDilation: 10
+    }, providedOptions );
 
-    const showLonePairsLabel = new Text( MoleculeShapesStrings.control.showLonePairsStringProperty, {
-      font: optionsFont,
-      fill: MoleculeShapesColors.controlPanelTextProperty,
-      tandem: showLonePairsCheckboxTandem.createTandem( 'labelText' ),
-      maxWidth: 280
-    } );
-
-    const showBondAnglesLabel = new Text( MoleculeShapesStrings.control.showBondAnglesStringProperty, {
-      font: optionsFont,
-      fill: MoleculeShapesColors.controlPanelTextProperty,
-      tandem: showBondAnglesCheckboxTandem.createTandem( 'labelText' ),
-      maxWidth: 280
-    } );
-
-    const showLonePairsCheckbox = new MoleculeShapesCheckbox( model.showLonePairsProperty, showLonePairsLabel, {
-      enabledPropertyOptions: { phetioReadOnly: true },
-      tandem: showLonePairsCheckboxTandem
-    } );
-    const showBondAnglesCheckbox = new MoleculeShapesCheckbox( model.showBondAnglesProperty, showBondAnglesLabel, {
-      tandem: showBondAnglesCheckboxTandem
-    } );
-
-    // touch areas
-    const lonePairTouchArea = showLonePairsCheckbox.localBounds.dilatedXY( 10, 4 );
-    const bondAngleTouchArea = showBondAnglesCheckbox.localBounds.dilatedXY( 10, 4 );
-    // extend both out as far as needed
-    lonePairTouchArea.maxX = bondAngleTouchArea.maxX = Math.max( lonePairTouchArea.maxX, bondAngleTouchArea.maxX );
-    // extend the bottom touch area below
-    bondAngleTouchArea.maxY += 10;
-    // extend the top touch area above (changes depending on whether it's basics version or not)
-    ( model.isBasicsVersion ? bondAngleTouchArea : lonePairTouchArea ).minY -= 10;
-    showLonePairsCheckbox.touchArea = lonePairTouchArea;
-    showBondAnglesCheckbox.touchArea = bondAngleTouchArea;
-
-    // TODO: Don't create both on basics?
-    super( merge( {
-      children: model.isBasicsVersion ? [ showBondAnglesCheckbox ] : [ showLonePairsCheckbox, showBondAnglesCheckbox ],
-      spacing: 10,
-      align: 'left'
-    }, options ) );
+    super( [
+      ...( model.isBasicsVersion ? [] : [ {
+        property: model.showLonePairsProperty,
+        createNode: tandem => new Text( MoleculeShapesStrings.control.showLonePairsStringProperty, {
+          font: optionsFont,
+          fill: MoleculeShapesColors.controlPanelTextProperty,
+          tandem: tandem.createTandem( 'labelText' ),
+          maxWidth: 280
+        } ),
+        tandemName: 'showLonePairsCheckbox',
+        options: combineOptions( {}, MoleculeShapesGlobals.checkboxOptions, {
+          enabledPropertyOptions: { phetioReadOnly: true }
+        } )
+      } ] ),
+      {
+        property: model.showBondAnglesProperty,
+        createNode: tandem => new Text( MoleculeShapesStrings.control.showBondAnglesStringProperty, {
+          font: optionsFont,
+          fill: MoleculeShapesColors.controlPanelTextProperty,
+          tandem: tandem.createTandem( 'labelText' ),
+          maxWidth: 280
+        } ),
+        tandemName: 'showBondAnglesCheckbox',
+        options: MoleculeShapesGlobals.checkboxOptions
+      }
+    ], options );
   }
 }
 

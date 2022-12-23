@@ -14,11 +14,17 @@ import { Color, Utils } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import moleculeShapes from '../moleculeShapes.js';
 import MoleculeShapesQueryParameters from './MoleculeShapesQueryParameters.js';
+import MoleculeShapesColors from './view/MoleculeShapesColors.js';
 
 const MoleculeShapesGlobals = {
   showOuterLonePairsProperty: new BooleanProperty( MoleculeShapesQueryParameters.showOuterLonePairs, {
     tandem: phet.chipper.packageObject.name === 'molecule-shapes-basics' ? Tandem.OPT_OUT : Tandem.PREFERENCES.createTandem( 'showOuterLonePairsProperty' )
-  } )
+  } ),
+
+  checkboxOptions: {
+    checkboxColor: MoleculeShapesColors.checkboxProperty,
+    checkboxColorBackground: MoleculeShapesColors.checkboxBackgroundProperty
+  }
 };
 
 moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );

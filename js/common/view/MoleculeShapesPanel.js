@@ -39,6 +39,7 @@ class MoleculeShapesPanel extends TitledPanel {
       fill: MoleculeShapesColors.controlPanelTitleProperty,
       tandem: tandem.createTandem( 'titleText' ),
       phetioVisiblePropertyInstrumented: true,
+      pickable: false,
       maxWidth: 280
     } );
 

@@ -48,7 +48,11 @@ class TitledPanel extends Sizable( Node ) {
     options = merge( {}, Panel.DEFAULT_PANEL_OPTIONS, options );
 
     this.titleNode = titleNode; // @private {Node}
-    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, { fill: options.fill, visibleProperty: titleNode.visibleProperty } ); // @private {Rectangle}
+    this.titleBackgroundNode = new Rectangle( 0, 0, 5, 5, 0, 0, {
+      fill: options.fill,
+      visibleProperty: titleNode.visibleProperty,
+      pickable: false
+    } ); // @private {Rectangle}
 
     // @private {Node}
     this.panel = new Panel( contentContainer, {
