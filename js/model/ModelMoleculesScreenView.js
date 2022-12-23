@@ -45,7 +45,7 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
     const bondingPanelTandem = tandem.createTandem( 'bondingPanel' );
     const lonePairPanelTandem = model.isBasicsVersion ? Tandem.OPT_OUT : tandem.createTandem( 'lonePairPanel' );
 
-    const optionsNode = new OptionsNode( model, optionsPanelTandem );
+    const optionsNode = new OptionsNode( model, optionsPanelTandem.createTandem( 'optionsCheckboxGroup' ) );
     const bondingNode = new VBox( {
       children: [
         new BondGroupNode( model, 1, addPairCallback, removePairCallback, bondingPanelTandem.createTandem( 'singleBondNode' ), {} ),
