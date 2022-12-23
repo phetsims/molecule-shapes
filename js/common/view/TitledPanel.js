@@ -19,7 +19,9 @@ import moleculeShapes from '../../moleculeShapes.js';
 // TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions?
 class TitledPanel extends Sizable( Node ) {
   constructor( titleNode, contentNode, options ) {
-    super();
+    super( {
+      excludeInvisibleChildrenFromBounds: true
+    } );
 
     options = merge( {}, Panel.DEFAULT_PANEL_OPTIONS, options );
 
@@ -64,11 +66,14 @@ class TitledPanel extends Sizable( Node ) {
    * @private
    */
   updateTitlePosition() {
-    if ( this.panel.bounds.isFinite() ) {
+    const hasContents = this.panel.bounds.isFinite();
+    if ( hasContents ) {
       this.titleNode.centerX = this.panel.centerX;
       this.titleNode.centerY = this.panel.top;
       this.titleBackgroundNode.setRectBounds( this.titleNode.bounds.dilatedX( 10 ) );
     }
+
+    this.titleNode.visible = hasContents;
   }
 
   /**
