@@ -33,7 +33,9 @@ class TitledPanel extends Sizable( Node ) {
 
     // Forward preferred sizes from the container to the actual content node
     contentContainer.localPreferredWidthProperty.link( width => {
-      contentNode.preferredWidth = width;
+      if ( contentNode.widthSizable ) {
+        contentNode.preferredWidth = width;
+      }
     } );
 
     // Forward minimum sizes from the content (and title) to the container
