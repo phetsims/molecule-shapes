@@ -10,6 +10,7 @@
     "grunt": "~1.5.3"
   },
   "phet": {
+    "ignoreForAutomatedMaintenanceReleases": true,
     "requirejsNamespace": "MOLECULE_SHAPES",
     "phetLibs": [
       "mobius",
