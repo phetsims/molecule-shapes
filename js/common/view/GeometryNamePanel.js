@@ -48,11 +48,13 @@ const shapeStringProperties = [
 
 const geometryNameFont = new PhetFont( 16 );
 
+const MAX_INDIVIDUAL_WIDTH = 420;
+
 function getMaximumTextWidth( stringProperties ) {
   return new DerivedProperty( stringProperties, ( ...strings ) => {
-    return Math.max( ...strings.map( string => {
+    return Math.min( MAX_INDIVIDUAL_WIDTH, Math.max( ...strings.map( string => {
       return new Text( string, { font: geometryNameFont } ).width;
-    } ) );
+    } ) ) );
   } );
 }
 
@@ -116,14 +118,16 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       visibleProperty: model.showMoleculeGeometryProperty,
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColors.moleculeGeometryNameProperty
+      fill: MoleculeShapesColors.moleculeGeometryNameProperty,
+      maxWidth: MAX_INDIVIDUAL_WIDTH
     } );
     // @private {Text}
     this.electronText = new Text( 'Y', {
       visibleProperty: model.showElectronGeometryProperty,
       font: geometryNameFont,
       pickable: false,
-      fill: MoleculeShapesColors.electronGeometryNameProperty
+      fill: MoleculeShapesColors.electronGeometryNameProperty,
+      maxWidth: MAX_INDIVIDUAL_WIDTH
     } );
 
     const moleculeTextContainer = new Node( {
@@ -132,7 +136,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       children: [ this.moleculeText ],
       layoutOptions: {
         column: 1,
-        row: 1
+        row: 1,
+        minContentHeight: this.moleculeText.height
       }
     } );
     maxGeometryWidthProperty.link( maxGeometryWidth => {
@@ -148,7 +153,11 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     content.addChild( moleculeTextContainer );
 
     Multilink.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, moleculeTextContainer.boundsProperty, content.boundsProperty ], () => {
-      const bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( moleculeTextContainer ) ).dilated( 10 );
+      let bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( moleculeTextContainer ) );
+      if ( bounds.width < maxGeometryWidthProperty.value ) {
+        bounds = bounds.dilatedX( ( maxGeometryWidthProperty.value - bounds.width ) / 2 );
+      }
+      bounds = bounds.dilated( 10 );
       this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = bounds;
     } );
 
@@ -159,7 +168,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
         children: [ this.electronText ],
         layoutOptions: {
           column: 0,
-          row: 1
+          row: 1,
+          minContentHeight: this.electronText.height
         }
       } );
       maxShapeWidthProperty.link( maxShapeWidth => {
@@ -173,7 +183,11 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       content.addChild( electronTextContainer );
 
       Multilink.multilink( [ this.electronGeometryCheckbox.boundsProperty, electronTextContainer.boundsProperty, content.boundsProperty ], () => {
-        const bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( electronTextContainer ) ).dilated( 10 );
+        let bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( electronTextContainer ) );
+        if ( bounds.width < maxShapeWidthProperty.value ) {
+          bounds = bounds.dilatedX( ( maxShapeWidthProperty.value - bounds.width ) / 2 );
+        }
+        bounds = bounds.dilated( 10 );
         this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = bounds;
       } );
     }
@@ -190,8 +204,6 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     } );
 
     this.mutate( options );
-
-    this.maxWidth = 900; // See https://github.com/phetsims/molecule-shapes/issues/137
   }
 
   /**
