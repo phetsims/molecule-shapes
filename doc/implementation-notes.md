@@ -70,7 +70,7 @@ The scene is rendered mainly in two passes, the first for opaque objects, and th
 
 three.js includes linear-algebra math (vectors, matrices) which require conversion between other formats. Notably:
 new THREE.Vector3().copy( dotVector3 ) // creates a new THREE.Vector3 with the value of dotVector3 (copy() is different!)
-new Vector3( 0, 0, 0 ).set( threeVector3 ) // creates a new dot.Vector3 with the value of the THREE.Vector3.
+new Vector3( 0, 0, 0 ).set( threeVector3 ) // creates a new phet.dot.Vector3 with the value of the THREE.Vector3.
 
 We mainly use THREE.Mesh (combining a THREE.Material and THREE.Geometry) for our displayed objects. A Geometry is a
 collection of information, of which we only use vertices, faces, and sometimes UV coordinates. A Material basically
