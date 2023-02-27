@@ -39,9 +39,7 @@ class OptionsNode extends VerticalCheckboxGroup {
           maxWidth: 280
         } ),
         tandemName: 'showLonePairsCheckbox',
-        options: combineOptions( {}, MoleculeShapesGlobals.checkboxOptions, {
-          enabledPropertyOptions: { phetioReadOnly: true }
-        } )
+        options: combineOptions( {}, MoleculeShapesGlobals.checkboxOptions )
       } ] ),
       {
         property: model.showBondAnglesProperty,
