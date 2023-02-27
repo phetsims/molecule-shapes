@@ -28,7 +28,10 @@ class TitledPanel extends Sizable( Node ) {
     // our minimum width.
     // TODO: Before moving to common code, get this to support Sizable.
     const contentContainer = new ( WidthSizable( Node ) )( {
-      children: [ contentNode ]
+      children: [ contentNode ],
+
+      // If our content is invisible, the actual Panel's content will be invisible, so it can collapse normally.
+      visibleProperty: contentNode.visibleProperty
     } );
 
     // Forward preferred sizes from the container to the actual content node
