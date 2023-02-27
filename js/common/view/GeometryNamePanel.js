@@ -153,8 +153,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
     Multilink.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, moleculeTextContainer.boundsProperty, content.boundsProperty ], () => {
       let bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( moleculeTextContainer ) );
-      if ( bounds.width < maxElectronGeometryWidthProperty.value ) {
-        bounds = bounds.dilatedX( ( maxElectronGeometryWidthProperty.value - bounds.width ) / 2 );
+      if ( bounds.width < maxMoleculeGeometryWidthProperty.value ) {
+        bounds = bounds.dilatedX( ( maxMoleculeGeometryWidthProperty.value - bounds.width ) / 2 );
       }
       bounds = bounds.dilated( 10 );
       this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = bounds;
@@ -184,8 +184,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
       Multilink.multilink( [ this.electronGeometryCheckbox.boundsProperty, electronTextContainer.boundsProperty, content.boundsProperty ], () => {
         let bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( electronTextContainer ) );
-        if ( bounds.width < maxMoleculeGeometryWidthProperty.value ) {
-          bounds = bounds.dilatedX( ( maxMoleculeGeometryWidthProperty.value - bounds.width ) / 2 );
+        if ( bounds.width < maxElectronGeometryWidthProperty.value ) {
+          bounds = bounds.dilatedX( ( maxElectronGeometryWidthProperty.value - bounds.width ) / 2 );
         }
         bounds = bounds.dilated( 10 );
         this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = bounds;
