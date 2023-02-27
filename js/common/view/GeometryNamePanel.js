@@ -19,7 +19,7 @@ import MoleculeShapesColors from './MoleculeShapesColors.js';
 import MoleculeShapesPanel from './MoleculeShapesPanel.js';
 
 // string list needed to compute maximum label bounds
-const geometryStringProperties = [
+const electronGeometryStringProperties = [
   MoleculeShapesStrings.geometry.emptyStringProperty,
   MoleculeShapesStrings.geometry.diatomicStringProperty,
   MoleculeShapesStrings.geometry.linearStringProperty,
@@ -30,7 +30,7 @@ const geometryStringProperties = [
 ];
 
 // string list needed to compute maximum label bounds
-const shapeStringProperties = [
+const moleculeGeometryStringProperties = [
   MoleculeShapesStrings.shape.emptyStringProperty,
   MoleculeShapesStrings.shape.diatomicStringProperty,
   MoleculeShapesStrings.shape.linearStringProperty,
@@ -58,8 +58,8 @@ function getMaximumTextWidth( stringProperties ) {
   } );
 }
 
-const maxGeometryWidthProperty = getMaximumTextWidth( geometryStringProperties );
-const maxShapeWidthProperty = getMaximumTextWidth( shapeStringProperties );
+const maxElectronGeometryWidthProperty = getMaximumTextWidth( electronGeometryStringProperties );
+const maxMoleculeGeometryWidthProperty = getMaximumTextWidth( moleculeGeometryStringProperties );
 
 class GeometryNamePanel extends MoleculeShapesPanel {
   /**
@@ -140,12 +140,11 @@ class GeometryNamePanel extends MoleculeShapesPanel {
         minContentHeight: this.moleculeText.height
       }
     } );
-    maxGeometryWidthProperty.link( maxGeometryWidth => {
+    maxMoleculeGeometryWidthProperty.link( maxMoleculeGeometryWidth => {
       moleculeTextContainer.mutateLayoutOptions( {
-        minContentWidth: maxGeometryWidth
+        minContentWidth: maxMoleculeGeometryWidth
       } );
     } );
-
 
     // TODO: pointer area listeners
 
@@ -154,8 +153,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
     Multilink.multilink( [ this.moleculeGeometryCheckbox.boundsProperty, moleculeTextContainer.boundsProperty, content.boundsProperty ], () => {
       let bounds = this.moleculeGeometryCheckbox.localBounds.union( this.moleculeGeometryCheckbox.boundsOf( moleculeTextContainer ) );
-      if ( bounds.width < maxGeometryWidthProperty.value ) {
-        bounds = bounds.dilatedX( ( maxGeometryWidthProperty.value - bounds.width ) / 2 );
+      if ( bounds.width < maxElectronGeometryWidthProperty.value ) {
+        bounds = bounds.dilatedX( ( maxElectronGeometryWidthProperty.value - bounds.width ) / 2 );
       }
       bounds = bounds.dilated( 10 );
       this.moleculeGeometryCheckbox.touchArea = this.moleculeGeometryCheckbox.mouseArea = bounds;
@@ -172,11 +171,12 @@ class GeometryNamePanel extends MoleculeShapesPanel {
           minContentHeight: this.electronText.height
         }
       } );
-      maxShapeWidthProperty.link( maxShapeWidth => {
+      maxElectronGeometryWidthProperty.link( maxElectronGeometryWidth => {
         electronTextContainer.mutateLayoutOptions( {
-          minContentWidth: maxShapeWidth
+          minContentWidth: maxElectronGeometryWidth
         } );
       } );
+
 
       // basics version excludes lone-pair (electron) geometries
       content.addChild( this.electronGeometryCheckbox );
@@ -184,8 +184,8 @@ class GeometryNamePanel extends MoleculeShapesPanel {
 
       Multilink.multilink( [ this.electronGeometryCheckbox.boundsProperty, electronTextContainer.boundsProperty, content.boundsProperty ], () => {
         let bounds = this.electronGeometryCheckbox.localBounds.union( this.electronGeometryCheckbox.boundsOf( electronTextContainer ) );
-        if ( bounds.width < maxShapeWidthProperty.value ) {
-          bounds = bounds.dilatedX( ( maxShapeWidthProperty.value - bounds.width ) / 2 );
+        if ( bounds.width < maxMoleculeGeometryWidthProperty.value ) {
+          bounds = bounds.dilatedX( ( maxMoleculeGeometryWidthProperty.value - bounds.width ) / 2 );
         }
         bounds = bounds.dilated( 10 );
         this.electronGeometryCheckbox.touchArea = this.electronGeometryCheckbox.mouseArea = bounds;
