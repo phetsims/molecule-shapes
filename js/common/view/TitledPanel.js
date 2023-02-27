@@ -72,9 +72,19 @@ class TitledPanel extends Sizable( Node ) {
     this.setStroke( options.stroke );
     this.setFill( options.fill );
 
+    // @private {Node}
+    this.titleContainer = new Node();
+    Multilink.multilink( [
+      this.panel.boundsProperty,
+      contentNode.visibleProperty,
+      contentNode.boundsProperty
+    ], ( panelBounds, contentVisible, contentBounds ) => {
+      const isValid = panelBounds.isFinite() && contentBounds.isFinite() && contentVisible;
+      this.titleContainer.children = isValid ? [ this.titleBackgroundNode, this.titleNode ] : [];
+    } );
+
     this.addChild( this.panel );
-    this.addChild( this.titleBackgroundNode );
-    this.addChild( this.titleNode );
+    this.addChild( this.titleContainer );
 
     contentContainer.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
     contentNode.boundsProperty.lazyLink( this.updateTitlePosition.bind( this ) );
@@ -103,8 +113,6 @@ class TitledPanel extends Sizable( Node ) {
       this.titleNode.centerY = this.panel.top;
       this.titleBackgroundNode.setRectBounds( this.titleNode.bounds.dilatedX( 10 ) );
     }
-
-    this.titleNode.visible = hasContents;
   }
 
   /**
