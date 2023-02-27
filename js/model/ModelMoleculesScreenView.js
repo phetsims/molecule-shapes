@@ -8,7 +8,7 @@
 
 import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, FlowBox, VBox } from '../../../scenery/js/imports.js';
+import { AlignBox, VBox } from '../../../scenery/js/imports.js';
 import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import PairGroup from '../common/model/PairGroup.js';
@@ -90,9 +90,8 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       updateButtonEnabled();
     } );
 
-    const rightBox = new FlowBox( {
+    const rightBox = new VBox( {
       spacing: 15,
-      orientation: 'vertical',
       stretch: true,
       children: [
         new MoleculeShapesPanel( MoleculeShapesStrings.control.bondingStringProperty, bondingNode, bondingPanelTandem, {

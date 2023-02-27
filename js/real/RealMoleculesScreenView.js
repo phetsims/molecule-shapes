@@ -8,7 +8,7 @@
 
 import ChemUtils from '../../../nitroglycerin/js/ChemUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, FlowBox, Node, RichText, Text } from '../../../scenery/js/imports.js';
+import { AlignBox, Node, RichText, Text, VBox } from '../../../scenery/js/imports.js';
 import AquaRadioButtonGroup from '../../../sun/js/AquaRadioButtonGroup.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
@@ -51,9 +51,8 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     } );
     const optionsNode = new OptionsNode( model, optionsPanelTandem.createTandem( 'optionsCheckboxGroup' ) );
 
-    const rightBox = new FlowBox( {
+    const rightBox = new VBox( {
       spacing: 15,
-      orientation: 'vertical',
       stretch: true,
       children: [
         new MoleculeShapesPanel( MoleculeShapesStrings.control.moleculeStringProperty, moleculeComboBox, moleculePanelTandem, {
