@@ -83,21 +83,19 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
 
       const realModelRadioButtonGroup = new AquaRadioButtonGroup( model.showRealViewProperty, [
         {
-          createNode: tandem => new Text( MoleculeShapesStrings.control.realView, {
+          createNode: tandem => new Text( MoleculeShapesStrings.control.realViewStringProperty, {
             font: new PhetFont( 28 ),
             fill: MoleculeShapesColors.controlPanelTextProperty,
-            tandem: tandem.createTandem( 'text' ),
-            stringProperty: MoleculeShapesStrings.control.realViewStringProperty
+            tandem: tandem.createTandem( 'text' )
           } ),
           value: true,
           tandemName: 'realRadioButton'
         },
         {
-          createNode: tandem => new Text( MoleculeShapesStrings.control.modelView, {
+          createNode: tandem => new Text( MoleculeShapesStrings.control.modelViewStringProperty, {
             font: new PhetFont( 28 ),
             fill: MoleculeShapesColors.controlPanelTextProperty,
-            tandem: tandem.createTandem( 'text' ),
-            stringProperty: MoleculeShapesStrings.control.modelViewStringProperty
+            tandem: tandem.createTandem( 'text' )
           } ),
           value: false,
           tandemName: 'modelRadioButton'
