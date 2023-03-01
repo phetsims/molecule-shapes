@@ -31,7 +31,7 @@ class LabelFallbackNode extends Text {
    * @param {number} layoutScale - The ScreenView's layout scale
    */
   setLabel( string, brightness, centerScreenPoint, midScreenPoint, layoutScale ) {
-    this.string = string;
+    this.text = string;
     this.visible = true;
 
     const localCenter = this.globalToParentPoint( centerScreenPoint );
