@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "2aba36f8995712a48f070261b5c94a230f02e972",
+    "sha": "3298304654985b95842361c64705ebb113ce2db2",
     "branch": "1.6"
   },
   "nitroglycerin": {
@@ -73,7 +73,7 @@
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "36174c4f867c25604ffb82413c78daece27cc956",
+    "sha": "e8bb98fa96f333f5ae866766be53b0b14bcda3cb",
     "branch": "HEAD"
   },
   "scenery-phet": {
@@ -89,7 +89,7 @@
     "branch": "HEAD"
   },
   "sun": {
-    "sha": "b9bedd0950abbd80cc588ff83734647e51ec6245",
+    "sha": "c3dc6b88732074b91fc712628453042f73f24a7d",
     "branch": "HEAD"
   },
   "tambo": {
