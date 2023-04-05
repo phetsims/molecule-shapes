@@ -9,6 +9,8 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import StringProperty from '../../../../axon/js/StringProperty.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
@@ -30,8 +32,19 @@ class ElectronGeometryValue {
   }
 }
 
+// Global place for the empty electron geometry string. It's not a translated string anymore, see https://github.com/phetsims/rosetta/issues/388
+export const emptyElectronGeometryStringProperty = new StringProperty( '', {
+  // TODO: instrumented because of TinyForwardingProperty's assertion that we can't switch to uninstrumented Properties
+  // See https://github.com/phetsims/rosetta/issues/388
+  tandem: Tandem.GLOBAL_MODEL.createTandem( 'emptyElectronGeometryStringProperty' ),
+  phetioState: false,
+  phetioFeatured: false,
+  phetioDocumentation: 'Should only be the empty string',
+  phetioReadOnly: true
+} );
+
 const ElectronGeometry = EnumerationDeprecated.byMap( {
-  EMPTY: new ElectronGeometryValue( MoleculeShapesStrings.geometry.emptyStringProperty, [] ),
+  EMPTY: new ElectronGeometryValue( emptyElectronGeometryStringProperty, [] ),
   DIATOMIC: new ElectronGeometryValue(
     MoleculeShapesStrings.geometry.diatomicStringProperty,
     [
