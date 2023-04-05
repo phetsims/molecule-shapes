@@ -1,4 +1,4 @@
-// Copyright 2013-2022, University of Colorado Boulder
+// Copyright 2013-2023, University of Colorado Boulder
 
 /**
  * Contains the "optimal" molecule structures (pair group directions stored as unit vectors),
