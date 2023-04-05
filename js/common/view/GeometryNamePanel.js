@@ -17,10 +17,12 @@ import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 import MoleculeShapesPanel from './MoleculeShapesPanel.js';
+import { emptyElectronGeometryStringProperty } from '../model/ElectronGeometry.js';
+import { emptyMoleculeGeometryStringProperty } from '../model/MoleculeGeometry.js';
 
 // string list needed to compute maximum label bounds
 const electronGeometryStringProperties = [
-  MoleculeShapesStrings.geometry.emptyStringProperty,
+  emptyElectronGeometryStringProperty,
   MoleculeShapesStrings.geometry.diatomicStringProperty,
   MoleculeShapesStrings.geometry.linearStringProperty,
   MoleculeShapesStrings.geometry.trigonalPlanarStringProperty,
@@ -31,7 +33,7 @@ const electronGeometryStringProperties = [
 
 // string list needed to compute maximum label bounds
 const moleculeGeometryStringProperties = [
-  MoleculeShapesStrings.shape.emptyStringProperty,
+  emptyMoleculeGeometryStringProperty,
   MoleculeShapesStrings.shape.diatomicStringProperty,
   MoleculeShapesStrings.shape.linearStringProperty,
   MoleculeShapesStrings.shape.bentStringProperty,
@@ -224,7 +226,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
   getMoleculeGeometryName() {
     const nameProperty = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().moleculeGeometry.stringProperty;
     if ( nameProperty === null ) {
-      return MoleculeShapesStrings.shape.emptyStringProperty;
+      return emptyMoleculeGeometryStringProperty;
     }
     else {
       return nameProperty;
@@ -237,7 +239,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
   getElectronGeometryName() {
     const nameProperty = this.model.moleculeProperty.value.getCentralVSEPRConfiguration().electronGeometry.stringProperty;
     if ( nameProperty === null ) {
-      return MoleculeShapesStrings.geometry.emptyStringProperty;
+      return emptyElectronGeometryStringProperty;
     }
     else {
       return nameProperty;

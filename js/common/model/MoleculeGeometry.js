@@ -6,6 +6,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import StringProperty from '../../../../axon/js/StringProperty.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
@@ -24,8 +26,19 @@ class MoleculeGeometryValue {
   }
 }
 
+// Global place for the empty molecule geometry string. It's not a translated string anymore, see https://github.com/phetsims/rosetta/issues/388
+export const emptyMoleculeGeometryStringProperty = new StringProperty( '', {
+  // TODO: instrumented because of TinyForwardingProperty's assertion that we can't switch to uninstrumented Properties
+  // See https://github.com/phetsims/rosetta/issues/388
+  tandem: Tandem.GLOBAL_MODEL.createTandem( 'emptyMoleculeGeometryStringProperty' ),
+  phetioState: false,
+  phetioFeatured: false,
+  phetioDocumentation: 'Should only be the empty string',
+  phetioReadOnly: true
+} );
+
 const MoleculeGeometry = EnumerationDeprecated.byMap( {
-  EMPTY: new MoleculeGeometryValue( 0, MoleculeShapesStrings.shape.emptyStringProperty ),
+  EMPTY: new MoleculeGeometryValue( 0, emptyMoleculeGeometryStringProperty ),
   DIATOMIC: new MoleculeGeometryValue( 1, MoleculeShapesStrings.shape.diatomicStringProperty ),
   LINEAR: new MoleculeGeometryValue( 2, MoleculeShapesStrings.shape.linearStringProperty ), // e = 0,3,4
   BENT: new MoleculeGeometryValue( 2, MoleculeShapesStrings.shape.bentStringProperty ), // e = 1,2
