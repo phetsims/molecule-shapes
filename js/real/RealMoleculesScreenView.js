@@ -38,7 +38,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
     const comboBoxItems = _.map( model.realMoleculeShapeProperty.validValues, realMoleculeShape => {
       return {
         value: realMoleculeShape,
-        node: new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ),
+        createNode: () => new RichText( ChemUtils.toSubscript( realMoleculeShape.displayName ) ),
         tandemName: `${realMoleculeShape.displayName}${ComboBox.ITEM_TANDEM_NAME_SUFFIX}`
       };
     } );
