@@ -38,7 +38,10 @@ const simOptions = {
     }
   } ),
 
-  homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.value ? null : new CanvasWarningNode()
+  homeScreenWarningNode: MoleculeShapesGlobals.useWebGLProperty.value ? null : new CanvasWarningNode(),
+
+  // phet-io options
+  phetioDesigned: true
 };
 
 // NOTE: ?webgl=false will trigger Canvas rendering with a reduced poly-count
