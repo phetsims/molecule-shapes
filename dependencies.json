@@ -5,7 +5,7 @@
     "branch": "HEAD"
   },
   "axon": {
-    "sha": "ecf09b3e5fca83283346330540d62836fd796b46",
+    "sha": "e359a2ed4ecf496d2efddb2f2a6bd0191d0b41aa",
     "branch": "HEAD"
   },
   "brand": {
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "4b7dd12bf74cd95a6f8cd37d5700935ec401809a",
+    "sha": "19667319c73aba776fe299f3cd7cf1b9f58af47a",
     "branch": "1.6"
   },
   "nitroglycerin": {
@@ -97,7 +97,7 @@
     "branch": "HEAD"
   },
   "tandem": {
-    "sha": "d735eab635e4d72a6db67f02ae69a6389e6f3c45",
+    "sha": "f5ce38b590f216e9e54be6aa439268493b1830a1",
     "branch": "HEAD"
   },
   "twixt": {
