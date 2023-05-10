@@ -36,7 +36,11 @@
         "projector"
       ]
     },
-    "published": true
+    "published": true,
+    "screenNameKeys": [
+      "MOLECULE_SHAPES/screen.model",
+      "MOLECULE_SHAPES/screen.realMolecules"
+    ]
   },
   "eslintConfig": {
     "extends": "../chipper/eslint/sim_eslintrc.js",
