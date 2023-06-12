@@ -17,50 +17,31 @@ class SimulationPreferencesContentNode extends VBox {
   /**
    * @param {boolean} isBasicsVersion
    * @param {Tandem} tandem
-   * @param {Object} [options]
    */
-  constructor( isBasicsVersion, tandem, options ) {
+  constructor( isBasicsVersion, tandem ) {
 
-    const checkboxes = [];
-    let label = null;
+    const children = [];
 
     if ( !isBasicsVersion ) {
       const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
 
-      label = new Text( MoleculeShapesStrings.options.showOuterLonePairsStringProperty, {
+      const label = new Text( MoleculeShapesStrings.options.showOuterLonePairsStringProperty, {
         font: PreferencesDialog.CONTENT_FONT,
         maxWidth: 350,
         tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
       } );
 
-      checkboxes.push( new Checkbox( MoleculeShapesGlobals.showOuterLonePairsProperty, label, {
+      children.push( new Checkbox( MoleculeShapesGlobals.showOuterLonePairsProperty, label, {
         tandem: showOuterLonePairsCheckboxTandem
       } ) );
     }
 
     // A VBox is used to easily add in more controls in the future.
     super( {
-      children: checkboxes,
+      children: children,
       spacing: PreferencesDialog.CONTENT_SPACING,
       align: 'left'
     } );
-
-    // @private {Array.<Node>}
-    this.checkboxes = checkboxes;
-
-    // @private {Node|null} - For disposal
-    this.label = label;
-  }
-
-  /**
-   * Releases references
-   * @public
-   */
-  dispose() {
-    this.checkboxes.forEach( checkbox => checkbox.dispose() );
-    this.label && this.label.dispose();
-
-    super.dispose();
   }
 }
 
