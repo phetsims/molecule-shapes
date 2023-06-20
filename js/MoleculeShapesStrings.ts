@@ -5,91 +5,91 @@
  */
 /* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
-import LinkableProperty from '../../axon/js/LinkableProperty.js';
+import type LocalizedStringProperty from '../../chipper/js/LocalizedStringProperty.js';
 import moleculeShapes from './moleculeShapes.js';
 
 type StringsType = {
   'molecule-shapes': {
     'title': string;
-    'titleStringProperty': LinkableProperty<string>;
+    'titleStringProperty': LocalizedStringProperty;
   };
   'screen': {
     'model': string;
-    'modelStringProperty': LinkableProperty<string>;
+    'modelStringProperty': LocalizedStringProperty;
     'realMolecules': string;
-    'realMoleculesStringProperty': LinkableProperty<string>;
+    'realMoleculesStringProperty': LocalizedStringProperty;
   };
   'geometry': {
     'diatomic': string;
-    'diatomicStringProperty': LinkableProperty<string>;
+    'diatomicStringProperty': LocalizedStringProperty;
     'linear': string;
-    'linearStringProperty': LinkableProperty<string>;
+    'linearStringProperty': LocalizedStringProperty;
     'trigonalPlanar': string;
-    'trigonalPlanarStringProperty': LinkableProperty<string>;
+    'trigonalPlanarStringProperty': LocalizedStringProperty;
     'tetrahedral': string;
-    'tetrahedralStringProperty': LinkableProperty<string>;
+    'tetrahedralStringProperty': LocalizedStringProperty;
     'trigonalBipyramidal': string;
-    'trigonalBipyramidalStringProperty': LinkableProperty<string>;
+    'trigonalBipyramidalStringProperty': LocalizedStringProperty;
     'octahedral': string;
-    'octahedralStringProperty': LinkableProperty<string>;
+    'octahedralStringProperty': LocalizedStringProperty;
   };
   'shape': {
     'diatomic': string;
-    'diatomicStringProperty': LinkableProperty<string>;
+    'diatomicStringProperty': LocalizedStringProperty;
     'linear': string;
-    'linearStringProperty': LinkableProperty<string>;
+    'linearStringProperty': LocalizedStringProperty;
     'bent': string;
-    'bentStringProperty': LinkableProperty<string>;
+    'bentStringProperty': LocalizedStringProperty;
     'trigonalPlanar': string;
-    'trigonalPlanarStringProperty': LinkableProperty<string>;
+    'trigonalPlanarStringProperty': LocalizedStringProperty;
     'trigonalPyramidal': string;
-    'trigonalPyramidalStringProperty': LinkableProperty<string>;
+    'trigonalPyramidalStringProperty': LocalizedStringProperty;
     'tShaped': string;
-    'tShapedStringProperty': LinkableProperty<string>;
+    'tShapedStringProperty': LocalizedStringProperty;
     'tetrahedral': string;
-    'tetrahedralStringProperty': LinkableProperty<string>;
+    'tetrahedralStringProperty': LocalizedStringProperty;
     'seesaw': string;
-    'seesawStringProperty': LinkableProperty<string>;
+    'seesawStringProperty': LocalizedStringProperty;
     'squarePlanar': string;
-    'squarePlanarStringProperty': LinkableProperty<string>;
+    'squarePlanarStringProperty': LocalizedStringProperty;
     'trigonalBipyramidal': string;
-    'trigonalBipyramidalStringProperty': LinkableProperty<string>;
+    'trigonalBipyramidalStringProperty': LocalizedStringProperty;
     'squarePyramidal': string;
-    'squarePyramidalStringProperty': LinkableProperty<string>;
+    'squarePyramidalStringProperty': LocalizedStringProperty;
     'octahedral': string;
-    'octahedralStringProperty': LinkableProperty<string>;
+    'octahedralStringProperty': LocalizedStringProperty;
   };
   'control': {
     'bonding': string;
-    'bondingStringProperty': LinkableProperty<string>;
+    'bondingStringProperty': LocalizedStringProperty;
     'lonePair': string;
-    'lonePairStringProperty': LinkableProperty<string>;
+    'lonePairStringProperty': LocalizedStringProperty;
     'options': string;
-    'optionsStringProperty': LinkableProperty<string>;
+    'optionsStringProperty': LocalizedStringProperty;
     'geometryName': string;
-    'geometryNameStringProperty': LinkableProperty<string>;
+    'geometryNameStringProperty': LocalizedStringProperty;
     'moleculeGeometry': string;
-    'moleculeGeometryStringProperty': LinkableProperty<string>;
+    'moleculeGeometryStringProperty': LocalizedStringProperty;
     'electronGeometry': string;
-    'electronGeometryStringProperty': LinkableProperty<string>;
+    'electronGeometryStringProperty': LocalizedStringProperty;
     'showLonePairs': string;
-    'showLonePairsStringProperty': LinkableProperty<string>;
+    'showLonePairsStringProperty': LocalizedStringProperty;
     'showBondAngles': string;
-    'showBondAnglesStringProperty': LinkableProperty<string>;
+    'showBondAnglesStringProperty': LocalizedStringProperty;
     'removeAll': string;
-    'removeAllStringProperty': LinkableProperty<string>;
+    'removeAllStringProperty': LocalizedStringProperty;
     'molecule': string;
-    'moleculeStringProperty': LinkableProperty<string>;
+    'moleculeStringProperty': LocalizedStringProperty;
     'realView': string;
-    'realViewStringProperty': LinkableProperty<string>;
+    'realViewStringProperty': LocalizedStringProperty;
     'modelView': string;
-    'modelViewStringProperty': LinkableProperty<string>;
+    'modelViewStringProperty': LocalizedStringProperty;
   };
   'options': {
     'showOuterLonePairs': string;
-    'showOuterLonePairsStringProperty': LinkableProperty<string>;
+    'showOuterLonePairsStringProperty': LocalizedStringProperty;
     'projectorColors': string;
-    'projectorColorsStringProperty': LinkableProperty<string>;
+    'projectorColorsStringProperty': LocalizedStringProperty;
   }
 };
 
