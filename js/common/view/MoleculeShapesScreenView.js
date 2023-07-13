@@ -48,7 +48,7 @@ class MoleculeShapesScreenView extends ScreenView {
     this.screenHeight = null; // @public
 
     // main three.js Scene setup
-    this.threeScene = new THREE.FBScene(); // @private
+    this.threeScene = new THREE.Scene(); // @private
 
     this.threeCamera = new THREE.PerspectiveCamera(); // @private will set the projection parameters on layout
     this.threeCamera.near = 1;
@@ -167,7 +167,7 @@ class MoleculeShapesScreenView extends ScreenView {
     this.addChild( this.moleculeNode );
 
     // overlay Scene for bond-angle labels (if WebGL)
-    this.overlayScene = new THREE.FBScene(); // @private
+    this.overlayScene = new THREE.Scene(); // @private
     this.overlayCamera = new THREE.OrthographicCamera(); // @private
     this.overlayCamera.position.z = 50; // @private
 
@@ -363,7 +363,7 @@ class MoleculeShapesScreenView extends ScreenView {
   /**
    * @public
    *
-   * @param {THREE.FBScene} threeScene
+   * @param {THREE.Scene} threeScene
    */
   static addLightsToScene( threeScene ) {
     const ambientLight = new THREE.AmbientLight( 0x191919 ); // closest to 0.1 like the original shader

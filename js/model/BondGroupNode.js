@@ -26,7 +26,7 @@ import RemovePairGroupButton from './RemovePairGroupButton.js';
 /*---------------------------------------------------------------------------*
  * Dynamic generation of the bonding/lone-pair panel images, by rendering a three.js scene to an image
  *----------------------------------------------------------------------------*/
-const scene = new THREE.FBScene();
+const scene = new THREE.Scene();
 MoleculeShapesScreenView.addLightsToScene( scene );
 
 const renderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
