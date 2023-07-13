@@ -23,7 +23,7 @@ import MoleculeShapesScreenView from './MoleculeShapesScreenView.js';
 /*---------------------------------------------------------------------------*
  * Dynamic generation of the molecules
  *----------------------------------------------------------------------------*/
-const scene = new THREE.Scene();
+const scene = new THREE.FBScene();
 MoleculeShapesScreenView.addLightsToScene( scene );
 
 const renderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
