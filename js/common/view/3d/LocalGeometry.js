@@ -11,10 +11,10 @@ import moleculeShapes from '../../../moleculeShapes.js';
 
 class LocalGeometry {
   /*
-   * @param {THREE.Geometry} masterGeometry - The geometry to clone for each renderer
+   * @param {THREE.Geometry} mainGeometry - The geometry to clone for each renderer
    */
-  constructor( masterGeometry ) {
-    this.masterGeometry = masterGeometry;
+  constructor( mainGeometry ) {
+    this.mainGeometry = mainGeometry;
 
     // renderers[i] "owns" geometries[i]
     this.renderers = []; // @private {Array.<THREE.Renderer>}
@@ -36,7 +36,7 @@ class LocalGeometry {
     }
 
     this.renderers.push( renderer );
-    const geometry = this.masterGeometry.clone();
+    const geometry = this.mainGeometry.clone();
     this.geometries.push( geometry );
 
     return geometry;

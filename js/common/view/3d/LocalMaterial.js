@@ -15,15 +15,15 @@ import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 
 class LocalMaterial {
   /*
-   * @param {THREE.Material} masterMaterial - The material to clone for each renderer
+   * @param {THREE.Material} mainMaterial - The material to clone for each renderer
    */
-  constructor( masterMaterial, options ) {
+  constructor( mainMaterial, options ) {
 
     options = merge( {
       // default options?
     }, options );
 
-    this.masterMaterial = masterMaterial; // @private {THREE.Material}
+    this.mainMaterial = mainMaterial; // @private {THREE.Material}
 
     // renderers[i] "owns" materials[i]
     this.renderers = []; // @private {Array.<THREE.Renderer>}
@@ -57,7 +57,7 @@ class LocalMaterial {
     }
 
     this.renderers.push( renderer );
-    const material = this.masterMaterial.clone();
+    const material = this.mainMaterial.clone();
     this.materials.push( material );
 
     return material;
@@ -71,19 +71,19 @@ class LocalMaterial {
    * @param {*} value
    */
   setUniform( name, value ) {
-    this.masterMaterial.uniforms[ name ].value = value;
+    this.mainMaterial.uniforms[ name ].value = value;
     _.each( this.materials, material => { material.uniforms[ name ].value = value; } );
   }
 
   /**
-   * Sets the color for the materials (master material and the copies).
+   * Sets the color for the materials (main material and the copies).
    * @public
    *
    * @param {Color} color
    */
   setColor( color ) {
     const hex = color.toNumber();
-    this.masterMaterial.color.setHex( hex );
+    this.mainMaterial.color.setHex( hex );
     _.each( this.materials, material => { material.color.setHex( hex ); } );
   }
 

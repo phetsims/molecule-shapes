@@ -19,9 +19,9 @@ import LocalPool from './LocalPool.js';
 const jsonLoader = new THREE.JSONLoader();
 
 // geometry used for display
-const masterShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGLProperty.value ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
+const mainShellGeometry = jsonLoader.parse( MoleculeShapesGlobals.useWebGLProperty.value ? LonePairGeometryData.HIGH_DETAIL : LonePairGeometryData.LOW_DETAIL_QUADS ).geometry;
 // renderer-local access
-const localShellGeometry = new LocalGeometry( masterShellGeometry );
+const localShellGeometry = new LocalGeometry( mainShellGeometry );
 const localShellMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( {
   transparent: true,
   opacity: 0.7,
