@@ -43,10 +43,13 @@ The moving behavior of the atoms and lone pairs is a dynamic balance between the
   configuration. Both velocity and position are directly changed for faster convergence, and lone pairs experience
   more attraction.
 - An attractive pair-wise force is applied to "Real" atoms and lone pairs that pushes bond angles towards the closest
-  ideal configuration (not based on target positions, but instead bond angles). This is also applied to outer lone pairs.
+  ideal configuration (not based on target positions, but instead bond angles). This is also applied to outer lone
+  pairs.
 
 The last two effects require that we know:
+
 1. A 3D rotation of our "ideal" configuration to best match our "current" configuration.
 2. Which atom/lone-pair matches which "ideal" orientation.
-This is computed every frame, via an SVD-based linear regression for every possible permutation of atoms and lone pairs
-that the model allows. Thus we know the "current" position of each atom/lone-pair, and the closest "ideal" position.
+   This is computed every frame, via an SVD-based linear regression for every possible permutation of atoms and lone
+   pairs
+   that the model allows. Thus we know the "current" position of each atom/lone-pair, and the closest "ideal" position.
