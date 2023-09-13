@@ -17,7 +17,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
-// TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions?
+// TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions? https://github.com/phetsims/tasks/issues/1129
 class TitledPanel extends Sizable( Node ) {
   constructor( titleNode, contentNode, options ) {
     super( {
@@ -26,7 +26,7 @@ class TitledPanel extends Sizable( Node ) {
 
     // We'll create a resizable content node for the Panel, since we want to include the titleNode's size within
     // our minimum width.
-    // TODO: Before moving to common code, get this to support Sizable.
+    // TODO: Before moving to common code, get this to support Sizable. https://github.com/phetsims/tasks/issues/1129
     const contentContainer = new ( WidthSizable( Node ) )( {
       children: [ contentNode ],
 
@@ -43,7 +43,7 @@ class TitledPanel extends Sizable( Node ) {
 
     // Forward minimum sizes from the content (and title) to the container
     Multilink.multilink( [
-      // TODO: Support non-sizable content nodes if moving to common code.
+      // TODO: Support non-sizable content nodes if moving to common code. https://github.com/phetsims/tasks/issues/1129
       contentNode.minimumWidthProperty,
       titleNode.boundsProperty
     ], ( contentWidth, titleBounds ) => {

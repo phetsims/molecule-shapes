@@ -28,7 +28,7 @@ class MoleculeGeometryValue {
 
 // Global place for the empty molecule geometry string. It's not a translated string anymore, see https://github.com/phetsims/rosetta/issues/388
 export const emptyMoleculeGeometryStringProperty = new StringProperty( '', {
-  // TODO: instrumented because of TinyForwardingProperty's assertion that we can't switch to uninstrumented Properties
+  // TODO: instrumented because of TinyForwardingProperty's assertion that we can't switch to uninstrumented Properties https://github.com/phetsims/tasks/issues/1129
   // See https://github.com/phetsims/rosetta/issues/388
   tandem: Tandem.GLOBAL_MODEL.createTandem( 'emptyMoleculeGeometryStringProperty' ),
   phetioState: false,

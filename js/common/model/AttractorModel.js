@@ -68,7 +68,7 @@ AttractorModel.applyAttractorForces = ( groups, timeElapsed, idealOrientations, 
     }
 
     // position movement for faster convergence
-    if ( !pair.isCentralAtom && aroundCenterAtom ) { // TODO: better way of not moving the center atom?
+    if ( !pair.isCentralAtom && aroundCenterAtom ) { // TODO: better way of not moving the center atom? https://github.com/phetsims/tasks/issues/1129
       pair.addPosition( delta.times( 2.0 * timeElapsed ) );
     }
 
@@ -189,7 +189,7 @@ AttractorModel.findClosestMatchingConfiguration = ( currentOrientations, idealOr
 
   let bestResult = lastPermutation !== undefined ? calculateTarget( lastPermutation ) : null;
 
-  // TODO: log how effective the permutation checking is at removing the search space
+  // TODO: log how effective the permutation checking is at removing the search space https://github.com/phetsims/tasks/issues/1129
   for ( let pIndex = 0; pIndex < allowablePermutations.length; pIndex++ ) {
     const permutation = allowablePermutations[ pIndex ];
 

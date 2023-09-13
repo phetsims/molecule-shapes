@@ -116,7 +116,7 @@ class BondAngleView extends THREE.Object3D {
       this.parent.localToWorld( centerDevicePoint );
       this.parent.localToWorld( midDevicePoint );
 
-      // TODO: failure of encapsulation here!
+      // TODO: failure of encapsulation here! https://github.com/phetsims/tasks/issues/1129
       // inverse projection into normalized device coordinates
       this.screenView.convertScreenPointFromGlobalPoint( centerDevicePoint );
       this.screenView.convertScreenPointFromGlobalPoint( midDevicePoint );

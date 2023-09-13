@@ -97,7 +97,7 @@ function getBondDataURL( isModel, isBasicsVersion ) {
   molecule.addGroupAndBond( new PairGroup( new Vector3( Math.sin( angle ), -Math.cos( angle ), 0 ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
   molecule.addGroupAndBond( new PairGroup( new Vector3( -Math.sin( angle ), -Math.cos( angle ), 0 ).times( PairGroup.BONDED_PAIR_DISTANCE ), false, { element: radialElement } ), centralAtom, bondOrder );
 
-  // TODO: This molecule isn't being passed in anymore?
+  // TODO: This molecule isn't being passed in anymore? https://github.com/phetsims/tasks/issues/1129
   const model = new MoleculeShapesModel( false, { initialMolecule: molecule }, Tandem.OPT_OUT );
 
   const view = new MoleculeView( model, MoleculeShapesScreenView.createAPIStub( renderer ), molecule, {

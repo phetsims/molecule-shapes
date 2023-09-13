@@ -148,7 +148,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       } );
     } );
 
-    // TODO: pointer area listeners
+    // TODO: pointer area listeners https://github.com/phetsims/tasks/issues/1129
 
     content.addChild( this.moleculeGeometryCheckbox );
     content.addChild( moleculeTextContainer );

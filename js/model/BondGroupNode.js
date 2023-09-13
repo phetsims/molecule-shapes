@@ -132,7 +132,7 @@ class BondGroupNode extends HBox {
     // A semi-transparent overlay with the same color as the background (and variable alpha). Used to adjust the visual
     // "opacity" of the underlying image (by toggling our alpha), and as a hit-area for events.
     const overlay = new Rectangle( 0, 0, 120, bondOrder !== 0 ? ATOM_HEIGHT : LONE_PAIR_HEIGHT, 0, 0, options );
-    // TODO: track this with the FireListener?
+    // TODO: track this with the FireListener? https://github.com/phetsims/tasks/issues/1129
     overlay.addInputListener( {
       enter: () => {
         overCount++;

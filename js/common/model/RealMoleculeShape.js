@@ -324,7 +324,7 @@ const RealMoleculeShapeIO = new IOType( 'RealMoleculeShapeIO', {
     displayName: StringIO
   },
   toStateObject( realMoleculeShape ) {
-    // TODO: Should we support creating custom RealMoleculeShapes?
+    // TODO: Should we support creating custom RealMoleculeShapes? https://github.com/phetsims/tasks/issues/1129
     return {
       displayName: realMoleculeShape.displayName
     };
