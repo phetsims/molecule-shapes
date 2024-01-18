@@ -2,6 +2,8 @@
 
 /**
  * Query parameters supported by this simulation.
+ *
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 import moleculeShapes from '../moleculeShapes.js';
