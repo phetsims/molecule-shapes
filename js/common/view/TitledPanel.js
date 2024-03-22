@@ -11,10 +11,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Multilink from '../../../../axon/js/Multilink.js';
 import merge from '../../../../phet-core/js/merge.js';
 import { Node, Rectangle, Sizable, WidthSizable } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
-import Multilink from '../../../../axon/js/Multilink.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
 // TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions? https://github.com/phetsims/tasks/issues/1129
