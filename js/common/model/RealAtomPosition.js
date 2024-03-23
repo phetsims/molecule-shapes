@@ -1,4 +1,4 @@
-// Copyright 2014-2020, University of Colorado Boulder
+// Copyright 2014-2024, University of Colorado Boulder
 
 /**
  * The position of an atom in 3 dimensions, used for RealMoleculeShape.

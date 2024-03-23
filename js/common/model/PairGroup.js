@@ -1,4 +1,4 @@
-// Copyright 2013-2021, University of Colorado Boulder
+// Copyright 2013-2024, University of Colorado Boulder
 
 /**
  * A pair of electrons in VSEPR, which are either an atom (the electrons are constrained by the bond) or a lone pair.
