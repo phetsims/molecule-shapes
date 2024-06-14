@@ -1,5 +1,5 @@
 {
-  "comment": "# molecule-shapes 1.6.10 Sun Jun 09 2024 19:18:02 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# molecule-shapes 1.6.11-rc.1 Fri Jun 14 2024 15:45:26 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "c13a8c7741d95fbd8e37619c66ebcca8686dffe7",
     "branch": "HEAD"
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "molecule-shapes": {
-    "sha": "d11a61af1b27c46822b40a880c7d3d58bd9ad46b",
+    "sha": "e6b27f5b49c630dc93373e664022ba3d60421565",
     "branch": "1.6"
   },
   "nitroglycerin": {
