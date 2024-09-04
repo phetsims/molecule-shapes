@@ -13,6 +13,7 @@ import Ray3 from '../../../../dot/js/Ray3.js';
 import Sphere3 from '../../../../dot/js/Sphere3.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import MobiusQueryParameters from '../../../../mobius/js/MobiusQueryParameters.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import ContextLossFailureDialog from '../../../../scenery-phet/js/ContextLossFailureDialog.js';
 import { AlignBox, animatedPanZoomSingleton, DOM, Mouse, Rectangle } from '../../../../scenery/js/imports.js';
@@ -56,13 +57,13 @@ class MoleculeShapesScreenView extends ScreenView {
 
     // @public {THREE.Renderer}
     this.threeRenderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
-      antialias: true,
-      preserveDrawingBuffer: phet.chipper.queryParameters.preserveDrawingBuffer
+      antialias: MobiusQueryParameters.threeRendererAntialias,
+      preserveDrawingBuffer: MobiusQueryParameters.threeRendererPreserveDrawingBuffer
     } ) : new THREE.CanvasRenderer( {
       devicePixelRatio: 1 // hopefully helps performance a bit
     } );
 
-    this.threeRenderer.setPixelRatio( window.devicePixelRatio || 1 );
+    this.threeRenderer.setPixelRatio( MobiusQueryParameters.threeRendererPixelRatio );
 
     // @private {ContextLossFailureDialog|null} - dialog shown on context loss, constructed
     // lazily because Dialog requires sim bounds during construction
@@ -213,9 +214,9 @@ class MoleculeShapesScreenView extends ScreenView {
           draggedParticleCount++;
         }
 
-        // We don't want to rotate while we are dragging any particles
-        // Additionally, don't rotate if we're zoomed into the sim - the pan/zoom listener will interrupt the rotation
-        // to start a pan, but not until there is a little bit of pointer movement. If we are zoomed in at all
+          // We don't want to rotate while we are dragging any particles
+          // Additionally, don't rotate if we're zoomed into the sim - the pan/zoom listener will interrupt the rotation
+          // to start a pan, but not until there is a little bit of pointer movement. If we are zoomed in at all
         // we don't want to allow movement that will soon just get interrupted.
         else if ( draggedParticleCount === 0 && animatedPanZoomSingleton.listener.matrixProperty.value.equalsEpsilon( Matrix3.IDENTITY, 1e-7 ) ) {
           // we rotate the entire molecule with this pointer

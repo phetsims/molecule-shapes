@@ -9,6 +9,7 @@
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import Screen from '../../../../joist/js/Screen.js';
+import MobiusQueryParameters from '../../../../mobius/js/MobiusQueryParameters.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
 import { Image, Node, Text } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -27,7 +28,7 @@ const scene = new THREE.Scene();
 MoleculeShapesScreenView.addLightsToScene( scene );
 
 const renderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
-  antialias: true,
+  antialias: MobiusQueryParameters.threeRendererAntialias,
   preserveDrawingBuffer: true, // so we can toDataURL() it
   alpha: true // transparency needs to be enabled, even though we don't need it here. see #98
 } ) : new THREE.CanvasRenderer();

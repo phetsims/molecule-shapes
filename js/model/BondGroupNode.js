@@ -8,6 +8,7 @@
 
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector3 from '../../../dot/js/Vector3.js';
+import MobiusQueryParameters from '../../../mobius/js/MobiusQueryParameters.js';
 import merge from '../../../phet-core/js/merge.js';
 import platform from '../../../phet-core/js/platform.js';
 import { FireListener, HBox, Image, Imageable, Node, Rectangle } from '../../../scenery/js/imports.js';
@@ -30,7 +31,7 @@ const scene = new THREE.Scene();
 MoleculeShapesScreenView.addLightsToScene( scene );
 
 const renderer = MoleculeShapesGlobals.useWebGLProperty.value ? new THREE.WebGLRenderer( {
-  antialias: true,
+  antialias: MobiusQueryParameters.threeRendererAntialias,
   preserveDrawingBuffer: true, // so we can toDataURL() it
   alpha: true // so we can render the transparency
 } ) : new THREE.CanvasRenderer();
