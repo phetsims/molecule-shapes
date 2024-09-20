@@ -52,6 +52,18 @@
     },
     "rules": {
       "no-view-imported-from-model": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts"
+        ],
+        "parserOptions": {
+          "project": [
+            "../molecule-shapes/tsconfig.json"
+          ]
+        }
+      }
+    ]
   }
 }
