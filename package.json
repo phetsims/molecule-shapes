@@ -60,7 +60,7 @@
         ],
         "parserOptions": {
           "project": [
-            "../molecule-shapes/tsconfig.json"
+            "../chipper/tsconfig/eslint-all/tsconfig.json"
           ]
         }
       }
