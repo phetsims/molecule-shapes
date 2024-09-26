@@ -24,7 +24,7 @@ class OptionsNode extends VerticalCheckboxGroup {
    * @param {Object} [providedOptions]
    */
   constructor( model, tandem, providedOptions ) {
-    const options = optionize()( { // eslint-disable-line bad-text
+    const options = optionize()( { // eslint-disable-line phet/bad-text
       touchAreaXDilation: 10,
       tandem: tandem
     }, providedOptions );
