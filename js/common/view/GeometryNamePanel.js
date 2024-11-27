@@ -14,11 +14,11 @@ import { GridBox, Node, Text } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
+import { emptyElectronGeometryStringProperty } from '../model/ElectronGeometry.js';
+import { emptyMoleculeGeometryStringProperty } from '../model/MoleculeGeometry.js';
 import MoleculeShapesCheckbox from './MoleculeShapesCheckbox.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 import MoleculeShapesPanel from './MoleculeShapesPanel.js';
-import { emptyElectronGeometryStringProperty } from '../model/ElectronGeometry.js';
-import { emptyMoleculeGeometryStringProperty } from '../model/MoleculeGeometry.js';
 
 // string list needed to compute maximum label bounds
 const electronGeometryStringProperties = [

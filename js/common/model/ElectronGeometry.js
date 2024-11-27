@@ -8,10 +8,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Vector3 from '../../../../dot/js/Vector3.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import StringProperty from '../../../../axon/js/StringProperty.js';
+import Vector3 from '../../../../dot/js/Vector3.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 
