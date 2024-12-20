@@ -97,6 +97,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       tandem: moleculeGeometryCheckboxTandem.createTandem( 'labelText' )
     } ), {
       tandem: moleculeGeometryCheckboxTandem,
+      phetioDisplayOnlyPropertyInstrumented: true,
       layoutOptions: {
         column: 1,
         row: 0
@@ -109,6 +110,7 @@ class GeometryNamePanel extends MoleculeShapesPanel {
       tandem: electronGeometryCheckboxTandem.createTandem( 'labelText' )
     } ), {
       tandem: electronGeometryCheckboxTandem,
+      phetioDisplayOnlyPropertyInstrumented: true,
       layoutOptions: {
         column: 0,
         row: 0
