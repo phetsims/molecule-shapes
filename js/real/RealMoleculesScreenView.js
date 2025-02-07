@@ -8,7 +8,11 @@
 
 import ChemUtils from '../../../nitroglycerin/js/ChemUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Node, RichText, Text, VBox } from '../../../scenery/js/imports.js';
+import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import RichText from '../../../scenery/js/nodes/RichText.js';
+import Text from '../../../scenery/js/nodes/Text.js';
 import AquaRadioButtonGroup from '../../../sun/js/AquaRadioButtonGroup.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';

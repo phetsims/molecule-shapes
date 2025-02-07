@@ -6,9 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Node, Path } from '../../../scenery/js/imports.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
 import RectangularPushButton from '../../../sun/js/buttons/RectangularPushButton.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import moleculeShapes from '../moleculeShapes.js';

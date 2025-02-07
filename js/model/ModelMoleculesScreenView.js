@@ -8,7 +8,8 @@
 
 import Vector3 from '../../../dot/js/Vector3.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, VBox } from '../../../scenery/js/imports.js';
+import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import PairGroup from '../common/model/PairGroup.js';

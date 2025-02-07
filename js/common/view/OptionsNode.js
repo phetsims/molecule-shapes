@@ -8,7 +8,7 @@
 
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import VerticalCheckboxGroup from '../../../../sun/js/VerticalCheckboxGroup.js';
 import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';

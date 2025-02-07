@@ -13,7 +13,10 @@
 
 import Multilink from '../../../../axon/js/Multilink.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Node, Rectangle, Sizable, WidthSizable } from '../../../../scenery/js/imports.js';
+import Sizable from '../../../../scenery/js/layout/Sizable.js';
+import WidthSizable from '../../../../scenery/js/layout/WidthSizable.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Panel from '../../../../sun/js/Panel.js';
 import moleculeShapes from '../../moleculeShapes.js';
 
