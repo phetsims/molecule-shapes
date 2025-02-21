@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
+import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
@@ -27,7 +27,7 @@ class SimulationPreferencesContentNode extends VBox {
       const showOuterLonePairsCheckboxTandem = tandem.createTandem( 'showOuterLonePairsCheckbox' );
 
       const label = new Text( MoleculeShapesStrings.options.showOuterLonePairsStringProperty, {
-        font: PreferencesDialog.CONTENT_FONT,
+        font: PreferencesDialogConstants.CONTENT_FONT,
         maxWidth: 350,
         tandem: showOuterLonePairsCheckboxTandem.createTandem( 'labelText' )
       } );
@@ -40,7 +40,7 @@ class SimulationPreferencesContentNode extends VBox {
     // A VBox is used to easily add in more controls in the future.
     super( {
       children: children,
-      spacing: PreferencesDialog.CONTENT_SPACING,
+      spacing: PreferencesDialogConstants.CONTENT_SPACING,
       align: 'left'
     } );
   }
