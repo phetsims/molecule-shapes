@@ -176,21 +176,23 @@ class MoleculeShapesScreenView extends ScreenView {
     this.overlayCamera = new THREE.OrthographicCamera(); // @private
     this.overlayCamera.position.z = 50; // @private
 
-    this.addChild( new ResetAllButton( {
+    this.resetAllButton = new ResetAllButton( {
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10,
       listener: () => {
         model.reset();
       },
       tandem: tandem.createTandem( 'resetAllButton' )
-    } ) );
+    } );
+    this.addChild( this.resetAllButton );
 
-    this.addChild( new AlignBox( new GeometryNamePanel( model, tandem.createTandem( 'namePanel' ) ), {
+    const geometryNamePanel = new AlignBox( new GeometryNamePanel( model, tandem.createTandem( 'namePanel' ) ), {
       alignBounds: this.layoutBounds,
       xAlign: 'left',
       yAlign: 'bottom',
       margin: 10
-    } ) );
+    } );
+    this.addChild( geometryNamePanel );
 
     // we only want to support dragging particles OR rotating the molecule (not both) at the same time
     let draggedParticleCount = 0;
@@ -363,6 +365,14 @@ class MoleculeShapesScreenView extends ScreenView {
     this.initialStepListener = () => {
       this.step( 0 );
     };
+
+    // Accessibility pdom order
+    this.pdomPlayAreaNode.pdomOrder = [
+    ];
+
+    this.pdomControlAreaNode.pdomOrder = [
+      geometryNamePanel
+    ];
   }
 
   /**

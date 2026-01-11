@@ -77,6 +77,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
 
     this.addChild( comboBoxListContainer );
 
+    let realModelRadioButtonGroup = new Node();
     if ( !model.isBasicsVersion ) {
       // we offset the camera, so we don't have an exact constant. this is tuned
       const approximateVisualCenterX = this.layoutBounds.width / 2 - 100;
@@ -85,7 +86,7 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       const horizontalSpacing = 30;
       const radioButtonScale = 0.7;
 
-      const realModelRadioButtonGroup = new AquaRadioButtonGroup( model.showRealViewProperty, [
+      realModelRadioButtonGroup = new AquaRadioButtonGroup( model.showRealViewProperty, [
         {
           createNode: tandem => new Text( MoleculeShapesStrings.control.realViewStringProperty, {
             font: new PhetFont( 28 ),
@@ -132,6 +133,17 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
       this.moleculeView = new MoleculeView( model, this, newMolecule, tandem.createTandem( 'moleculeView' ) );
       this.addMoleculeView( this.moleculeView );
     } );
+
+    // Accessibility pdom order
+    this.pdomPlayAreaNode.pdomOrder = [
+    ];
+
+    this.pdomControlAreaNode.pdomOrder = [
+      ...this.pdomControlAreaNode.pdomOrder,
+      rightBox,
+      realModelRadioButtonGroup,
+      this.resetAllButton
+    ];
   }
 }
 

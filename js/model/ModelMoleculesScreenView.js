@@ -127,6 +127,16 @@ class ModelMoleculesScreenView extends MoleculeShapesScreenView {
       this.moleculeView = new MoleculeView( model, this, newMolecule, tandem.createTandem( 'moleculeView' ) );
       this.addMoleculeView( this.moleculeView );
     } );
+
+    // Accessibility pdom order
+    this.pdomPlayAreaNode.pdomOrder = [
+    ];
+
+    this.pdomControlAreaNode.pdomOrder = [
+      ...this.pdomControlAreaNode.pdomOrder,
+      rightBox,
+      this.resetAllButton
+    ];
   }
 
   /**
