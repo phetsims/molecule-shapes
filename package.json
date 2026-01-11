@@ -35,7 +35,8 @@
         "default",
         "projector"
       ],
-      "supportsDynamicLocale": true
+      "supportsDynamicLocale": true,
+      "supportsInteractiveDescription": true
     },
     "published": true,
     "phet-io": {
