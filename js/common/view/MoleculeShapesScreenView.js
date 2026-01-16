@@ -467,8 +467,9 @@ class MoleculeShapesScreenView extends ScreenView {
   /*
    * @private
    * @param {Vector3} screenPoint
-   * @returns {THREE.Raycaster}
+   * @returns {any} - THREE.Raycaster
    */
+  // @ts-ignore - THREE types not portable
   getRaycasterFromScreenPoint( screenPoint ) {
 
     // normalized device coordinates
@@ -542,8 +543,9 @@ class MoleculeShapesScreenView extends ScreenView {
    * @public
    *
    * @param {Vector2} screenPoint
-   * @returns {THREE.Vector3} in the moleculeView's local coordinate system
+   * @returns {any} - THREE.Vector3 in the moleculeView's local coordinate system
    */
+  // @ts-ignore - THREE types not portable
   getPlanarMoleculePosition( screenPoint ) {
     const cameraRay = this.getRayFromScreenPoint( screenPoint );
     const intersection = Plane3.XY.intersectWithRay( cameraRay );
