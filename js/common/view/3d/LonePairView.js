@@ -132,18 +132,17 @@ class LonePairView extends THREE.Object3D {
     LonePairView.pool.put( this, this.renderer );
   }
 
-  /*
+  /**
    * Intersection hit-test to determine if a pointer is over the lone pair view.
    * @public
    *
    * @param {THREE.Ray} worldRay - Camera ray in world space
    * @param {boolean} isTouch - Whether expanded touch regions should be included
-   * @returns {any} - The first intersection point (THREE.Vector3 in world coordinates) found if it exists, otherwise
+   * @returns {THREE.Vector3|null} - The first intersection point in world coordinates found if it exists, otherwise
    *                null. Note that we short-circuit the handling, so it may pick an intersection
    *                point on the opposite side - for now that's deemed an acceptable trade-off for
    *                performance.
    */
-  // @ts-ignore - THREE types not portable
   intersect( worldRay, isTouch ) {
     const inverseMatrix = new THREE.Matrix4();
     const ray = new THREE.Ray();

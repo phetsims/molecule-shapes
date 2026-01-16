@@ -54,15 +54,14 @@ class AtomView extends THREE.Mesh {
     }
   }
 
-  /*
+  /**
    * Intersection test for whether the mouse/touch is over this.
    * @public
    *
    * @param {THREE.Ray} worldRay - Camera ray in world space
    * @param {boolean} isTouch - Whether expanded touch regions should be included
-   * @returns {any} - The first intersection point (THREE.Vector3 in world coordinates) if it exists, otherwise null
+   * @returns {THREE.Vector3|null} - The first intersection point in world coordinates if it exists, otherwise null
    */
-  // @ts-ignore - THREE types not portable
   intersect( worldRay, isTouch ) {
     const inverseMatrix = new THREE.Matrix4();
     const ray = new THREE.Ray();
