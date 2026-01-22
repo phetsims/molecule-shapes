@@ -1,4 +1,4 @@
-// Copyright 2014-2015, University of Colorado Boulder
+// Copyright 2014-2016, University of Colorado Boulder
 
 /**
  * View of the angle (sector and arc) between two bonds. The sector is the filled-in area between two bonds, and the

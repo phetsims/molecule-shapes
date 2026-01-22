@@ -1,4 +1,4 @@
-// Copyright 2014-2015, University of Colorado Boulder
+// Copyright 2014-2016, University of Colorado Boulder
 
 /**
  * View of the angle (sector and line) between two bonds, written in three.js so it can be displayed with Canvas instead

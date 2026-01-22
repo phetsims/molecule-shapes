@@ -1,4 +1,4 @@
-// Copyright 2014-2015, University of Colorado Boulder
+// Copyright 2014-2016, University of Colorado Boulder
 
 /**
  * Displays a thumbnail of the bond type (single, double, triple) or lone pair, along with a red 'X' for removal.
