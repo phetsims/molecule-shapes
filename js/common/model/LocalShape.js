@@ -5,7 +5,7 @@
  *
  * Also contains the ability to push the local atoms into place, along with many helper functions
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Permutation from '../../../../dot/js/Permutation.js';

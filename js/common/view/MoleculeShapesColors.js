@@ -10,7 +10,7 @@
  * our iframe parent container, and receive color change requests from the container. This allows testing out color
  * changes interactively.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Color from '../../../../scenery/js/util/Color.js';

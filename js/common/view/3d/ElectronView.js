@@ -3,7 +3,7 @@
 /**
  * View of an individual electron in a cloud {THREE.Object3D}
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import moleculeShapes from '../../../moleculeShapes.js';

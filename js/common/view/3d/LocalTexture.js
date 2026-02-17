@@ -4,7 +4,7 @@
  * Provides access to renderer-specific textures which are otherwise identical. We can't share textures across
  * three.js renderers, so we must resort to making one copy per renderer.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import moleculeShapes from '../../../moleculeShapes.js';

@@ -10,7 +10,7 @@
  * character, e.g. 'X12.3°'). We update the UV coordinates for each character's position to correspond to the position
  * inside the texture where the desired glyph is.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds2 from '../../../../../dot/js/Bounds2.js';

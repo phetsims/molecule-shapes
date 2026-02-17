@@ -6,7 +6,7 @@
  * Note that we use X and E for the radial atom and radial lone pair count (respectively) due to its usage in chemistry,
  * with the "AXE method" (see http://en.wikipedia.org/wiki/VSEPR_theory)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Permutation from '../../../../dot/js/Permutation.js';

@@ -3,7 +3,7 @@
 /**
  * View of a lone pair
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import moleculeShapes from '../../../moleculeShapes.js';

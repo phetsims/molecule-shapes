@@ -3,7 +3,7 @@
 /**
  * Represents a physically malleable version of a real molecule, with lone pairs if necessary.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';

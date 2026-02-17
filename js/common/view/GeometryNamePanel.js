@@ -3,7 +3,7 @@
 /**
  * Shows the molecular and electron geometry names, and has checkboxes which allow toggling their visibility
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';

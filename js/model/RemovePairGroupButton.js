@@ -3,7 +3,7 @@
 /**
  * A red button with an 'X' that, when clicked, will remove an atom (with a bond type) or a lone pair from the main molecule
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Shape from '../../../kite/js/Shape.js';

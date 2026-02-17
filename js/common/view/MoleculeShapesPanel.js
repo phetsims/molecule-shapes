@@ -3,7 +3,7 @@
 /**
  * A TitledPanel with colors and sizing specific to the Molecule Shapes simulation.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import merge from '../../../../phet-core/js/merge.js';

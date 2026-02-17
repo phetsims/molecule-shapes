@@ -5,7 +5,7 @@
  * in an order such that higher-repulsion pair groups (lone pairs)
  * will tend to occupy the 1st slots, and bonds will occupy the later slots.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import StringProperty from '../../../../axon/js/StringProperty.js';

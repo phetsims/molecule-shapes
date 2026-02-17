@@ -3,7 +3,7 @@
 /**
  * Base type for views of the angle (sector and line) between two bonds (not including the displayed label)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds2 from '../../../../../dot/js/Bounds2.js';

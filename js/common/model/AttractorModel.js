@@ -5,7 +5,7 @@
  * (1) finds the closest VSEPR configuration (with rotation) to our current positions, and
  * (2) pushes the electron pairs towards those positions.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Matrix from '../../../../dot/js/Matrix.js';

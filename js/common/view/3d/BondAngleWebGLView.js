@@ -8,7 +8,7 @@
  *
  * NOTE: This does NOT include the text readout for the label
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import moleculeShapes from '../../../moleculeShapes.js';

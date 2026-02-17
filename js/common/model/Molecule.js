@@ -4,7 +4,7 @@
  * Base type of model of a single-atom-centered molecule which has a certain number of pair groups
  * surrounding it. Concrete sub-types should implement the methods documented at the start of the prototype.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Emitter from '../../../../axon/js/Emitter.js';

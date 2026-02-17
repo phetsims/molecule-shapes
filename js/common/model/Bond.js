@@ -4,7 +4,7 @@
  * Molecular bond between two items (representing atoms). Polymorphic, as the bond can reference any arbitrary type of
  * objects.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import IOType from '../../../../tandem/js/types/IOType.js';

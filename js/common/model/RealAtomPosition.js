@@ -3,7 +3,7 @@
 /**
  * The position of an atom in 3 dimensions, used for RealMoleculeShape.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Atom from '../../../../nitroglycerin/js/Atom.js';

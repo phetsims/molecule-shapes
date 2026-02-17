@@ -3,7 +3,7 @@
 /**
  * Displays a thumbnail of the bond type (single, double, triple) or lone pair, along with a red 'X' for removal.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds2 from '../../../dot/js/Bounds2.js';

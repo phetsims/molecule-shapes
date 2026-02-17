@@ -4,7 +4,7 @@
  * Represents a 'real' molecule with exact positions, as opposed to a molecule model (which is VSEPR-based
  * and doesn't include other information).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Utils from '../../../../dot/js/Utils.js';

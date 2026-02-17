@@ -4,7 +4,7 @@
  * 3D data for the 'Lone Pair' cloud, generated from balloon2.obj. See /assets/balloon-README.txt for details. Modeled
  * in Blender by PhET.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import moleculeShapes from '../../moleculeShapes.js';

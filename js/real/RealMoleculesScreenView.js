@@ -3,7 +3,7 @@
 /**
  * View for the 'Real Molecules' screen.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import ChemUtils from '../../../nitroglycerin/js/ChemUtils.js';

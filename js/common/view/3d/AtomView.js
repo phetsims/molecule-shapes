@@ -3,7 +3,7 @@
 /**
  * View of an atom {THREE.Object3D}
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Ray3 from '../../../../../dot/js/Ray3.js';

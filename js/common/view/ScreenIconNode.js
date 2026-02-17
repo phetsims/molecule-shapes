@@ -3,7 +3,7 @@
 /**
  * Dynamically generates the screen icons by rendering 3D scenes into an image and displaying atom labels on top.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Utils from '../../../../dot/js/Utils.js';

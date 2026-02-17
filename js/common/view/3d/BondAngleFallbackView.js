@@ -5,7 +5,7 @@
  * of WebGL (works for both). Less efficient that BondAngleWebGLView, since we need to update the vertices on the CPU
  * and push them over to the GPU.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import moleculeShapes from '../../../moleculeShapes.js';

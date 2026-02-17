@@ -3,7 +3,7 @@
 /**
  * A pair of electrons in VSEPR, which are either an atom (the electrons are constrained by the bond) or a lone pair.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

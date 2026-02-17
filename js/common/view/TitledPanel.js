@@ -8,7 +8,7 @@
  * is intended that there is no line in-between the two near where the title is. We use a rectangle with this background
  * color to hide the border, so that it blends well into the content around it.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Multilink from '../../../../axon/js/Multilink.js';

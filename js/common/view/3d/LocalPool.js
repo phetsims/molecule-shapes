@@ -4,7 +4,7 @@
  * Provides access to renderer-specific pools of objects (object pooling where objects with different renderers can't
  * be mixed).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import moleculeShapes from '../../../moleculeShapes.js';

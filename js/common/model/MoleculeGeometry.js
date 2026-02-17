@@ -3,7 +3,7 @@
 /**
  * Represents a description of the atomic layout of the molecule.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import StringProperty from '../../../../axon/js/StringProperty.js';

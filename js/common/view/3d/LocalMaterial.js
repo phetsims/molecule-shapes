@@ -6,7 +6,7 @@
  *
  * Also provides ways to modify every copied material when uniforms/etc. needs to be changed.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import merge from '../../../../../phet-core/js/merge.js';

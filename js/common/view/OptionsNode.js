@@ -3,7 +3,7 @@
 /**
  * Options (lone pair and bond angle toggles) that are shown within a panel
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
