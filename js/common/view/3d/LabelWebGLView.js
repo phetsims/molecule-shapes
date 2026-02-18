@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * Label (text) of the angle between two bonds. We restrict the possible input strings to the form '123.4°' or '12.3°'

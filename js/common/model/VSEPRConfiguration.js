@@ -1,4 +1,4 @@
-// Copyright 2013-2022, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * A simple molecule configuration that doesn't discriminate between bond or atom types (only lone pairs vs bonds).

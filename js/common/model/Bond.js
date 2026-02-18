@@ -1,4 +1,4 @@
-// Copyright 2013-2021, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * Molecular bond between two items (representing atoms). Polymorphic, as the bond can reference any arbitrary type of
