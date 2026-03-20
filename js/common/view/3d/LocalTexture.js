@@ -7,8 +7,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../../moleculeShapes.js';
-
 class LocalTexture {
   /*
    * @param {() => {THREE.Texture}} textureFactory - Creates a texture whenever needed (for each renderer)
@@ -42,7 +40,5 @@ class LocalTexture {
     return material;
   }
 }
-
-moleculeShapes.register( 'LocalTexture', LocalTexture );
 
 export default LocalTexture;

@@ -20,7 +20,6 @@ import RealMolecule from '../common/model/RealMolecule.js';
 import RealMoleculeShape from '../common/model/RealMoleculeShape.js';
 import VSEPRConfiguration from '../common/model/VSEPRConfiguration.js';
 import VSEPRMolecule from '../common/model/VSEPRMolecule.js';
-import moleculeShapes from '../moleculeShapes.js';
 
 class RealMoleculesModel extends MoleculeShapesModel {
   /**
@@ -179,5 +178,4 @@ const RealMoleculesModelIO = new IOType( 'RealMoleculesModelIO', {
 // @public {IOType}
 RealMoleculesModel.RealMoleculesModelIO = RealMoleculesModelIO;
 
-moleculeShapes.register( 'RealMoleculesModel', RealMoleculesModel );
 export default RealMoleculesModel;

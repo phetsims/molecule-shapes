@@ -10,7 +10,6 @@
  */
 
 import merge from '../../../../../phet-core/js/merge.js';
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 
 class LocalMaterial {
@@ -98,7 +97,5 @@ class LocalMaterial {
     this.setUniform( 'color', colorArray );
   }
 }
-
-moleculeShapes.register( 'LocalMaterial', LocalMaterial );
 
 export default LocalMaterial;

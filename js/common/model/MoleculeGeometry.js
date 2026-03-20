@@ -9,7 +9,6 @@
 import StringProperty from '../../../../axon/js/StringProperty.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 
 class MoleculeGeometryValue {
@@ -134,5 +133,4 @@ const MoleculeGeometry = EnumerationDeprecated.byMap( {
   }
 } );
 
-moleculeShapes.register( 'MoleculeGeometry', MoleculeGeometry );
 export default MoleculeGeometry;

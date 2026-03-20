@@ -6,7 +6,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import LocalGeometry from './LocalGeometry.js';
@@ -31,7 +30,5 @@ class ElectronView extends THREE.Mesh {
     super( localElectronGeometry.get( renderer ), localElectronMaterial.get( renderer ) );
   }
 }
-
-moleculeShapes.register( 'ElectronView', ElectronView );
 
 export default ElectronView;

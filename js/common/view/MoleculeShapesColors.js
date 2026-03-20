@@ -113,6 +113,4 @@ const MoleculeShapesColors = {
   } )
 };
 
-moleculeShapes.register( 'MoleculeShapesColors', MoleculeShapesColors );
-
 export default MoleculeShapesColors;

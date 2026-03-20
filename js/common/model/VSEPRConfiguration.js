@@ -10,7 +10,6 @@
  */
 
 import Permutation from '../../../../dot/js/Permutation.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import AttractorModel from './AttractorModel.js';
 import ElectronGeometry from './ElectronGeometry.js';
 import LocalShape from './LocalShape.js';
@@ -103,5 +102,4 @@ class VSEPRConfiguration {
   }
 }
 
-moleculeShapes.register( 'VSEPRConfiguration', VSEPRConfiguration );
 export default VSEPRConfiguration;

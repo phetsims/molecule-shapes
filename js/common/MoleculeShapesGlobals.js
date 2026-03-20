@@ -13,7 +13,6 @@ import merge from '../../../phet-core/js/merge.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Utils from '../../../scenery/js/util/Utils.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import moleculeShapes from '../moleculeShapes.js';
 import MoleculeShapesQueryParameters from './MoleculeShapesQueryParameters.js';
 import MoleculeShapesColors from './view/MoleculeShapesColors.js';
 
@@ -27,8 +26,6 @@ const MoleculeShapesGlobals = {
     checkboxColorBackground: MoleculeShapesColors.checkboxBackgroundProperty
   }
 };
-
-moleculeShapes.register( 'MoleculeShapesGlobals', MoleculeShapesGlobals );
 
 let hasBasicWebGLSupport = phet.chipper.queryParameters.webgl && Utils.isWebGLSupported;
 

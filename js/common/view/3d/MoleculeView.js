@@ -7,7 +7,6 @@
  */
 
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesScreenView from '../MoleculeShapesScreenView.js';
 import AtomView from './AtomView.js';
@@ -335,7 +334,5 @@ class MoleculeView extends THREE.Object3D {
     } );
   }
 }
-
-moleculeShapes.register( 'MoleculeView', MoleculeView );
 
 export default MoleculeView;

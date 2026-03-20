@@ -21,7 +21,6 @@ import AlignBox from '../../../../scenery/js/layout/nodes/AlignBox.js';
 import animatedPanZoomSingleton from '../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
 import DOM from '../../../../scenery/js/nodes/DOM.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import LabelWebGLView from './3d/LabelWebGLView.js';
 import GeometryNamePanel from './GeometryNamePanel.js';
@@ -706,5 +705,4 @@ class MoleculeShapesScreenView extends ScreenView {
 // @public - where our camera is positioned in world coordinates (manually tuned)
 MoleculeShapesScreenView.cameraPosition = new THREE.Vector3( 0.12 * 50, -0.025 * 50, 40 );
 
-moleculeShapes.register( 'MoleculeShapesScreenView', MoleculeShapesScreenView );
 export default MoleculeShapesScreenView;

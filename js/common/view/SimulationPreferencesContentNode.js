@@ -10,7 +10,6 @@ import PreferencesDialogConstants from '../../../../joist/js/preferences/Prefere
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 
@@ -45,7 +44,5 @@ class SimulationPreferencesContentNode extends VBox {
     } );
   }
 }
-
-moleculeShapes.register( 'SimulationPreferencesContentNode', SimulationPreferencesContentNode );
 
 export default SimulationPreferencesContentNode;

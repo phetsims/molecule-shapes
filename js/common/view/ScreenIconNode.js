@@ -15,7 +15,6 @@ import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesModel from '../model/MoleculeShapesModel.js';
 import PairGroup from '../model/PairGroup.js';
 import VSEPRMolecule from '../model/VSEPRMolecule.js';
@@ -165,5 +164,4 @@ class ScreenIconNode extends Node {
   }
 }
 
-moleculeShapes.register( 'ScreenIconNode', ScreenIconNode );
 export default ScreenIconNode;

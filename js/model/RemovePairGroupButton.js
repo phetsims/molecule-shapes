@@ -12,7 +12,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import RectangularPushButton from '../../../sun/js/buttons/RectangularPushButton.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
-import moleculeShapes from '../moleculeShapes.js';
 
 const CROSS_SIZE = 10;
 const crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( CROSS_SIZE, CROSS_SIZE ).moveTo( 0, CROSS_SIZE ).lineTo( CROSS_SIZE, 0 ), {
@@ -38,5 +37,4 @@ class RemovePairGroupButton extends RectangularPushButton {
   }
 }
 
-moleculeShapes.register( 'RemovePairGroupButton', RemovePairGroupButton );
 export default RemovePairGroupButton;

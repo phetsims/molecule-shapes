@@ -7,7 +7,6 @@
  */
 
 import Vector3 from '../../../../../dot/js/Vector3.js';
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import LocalGeometry from './LocalGeometry.js';
@@ -143,7 +142,5 @@ class BondView extends THREE.Object3D {
     }
   }
 }
-
-moleculeShapes.register( 'BondView', BondView );
 
 export default BondView;

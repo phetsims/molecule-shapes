@@ -13,12 +13,10 @@ import MatrixOps3 from '../../../../dot/js/MatrixOps3.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import pairs from '../../../../phet-core/js/pairs.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import PairGroup from './PairGroup.js';
 
 // just static calls, so just create an empty object
 const AttractorModel = {};
-moleculeShapes.register( 'AttractorModel', AttractorModel );
 
 /**
  * Apply an attraction to the closest ideal position, with the given time elapsed

@@ -7,7 +7,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../moleculeShapes.js';
 import Molecule from './Molecule.js';
 import PairGroup from './PairGroup.js';
 
@@ -92,7 +91,5 @@ class VSEPRMolecule extends Molecule {
     }
   }
 }
-
-moleculeShapes.register( 'VSEPRMolecule', VSEPRMolecule );
 
 export default VSEPRMolecule;

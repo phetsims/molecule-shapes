@@ -7,7 +7,6 @@
  */
 
 import Vector3 from '../../../../dot/js/Vector3.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import LocalShape from './LocalShape.js';
 import Molecule from './Molecule.js';
 import PairGroup from './PairGroup.js';
@@ -126,7 +125,5 @@ class RealMolecule extends Molecule {
     return undefined;
   }
 }
-
-moleculeShapes.register( 'RealMolecule', RealMolecule );
 
 export default RealMolecule;

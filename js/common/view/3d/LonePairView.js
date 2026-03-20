@@ -6,7 +6,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../../moleculeShapes.js';
 import LonePairGeometryData from '../../data/LonePairGeometryData.js';
 import PairGroup from '../../model/PairGroup.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
@@ -175,7 +174,5 @@ class LonePairView extends THREE.Object3D {
 
 // @private {LocalPool}
 LonePairView.pool = new LocalPool( 'LonePairView', renderer => new LonePairView( renderer ) );
-
-moleculeShapes.register( 'LonePairView', LonePairView );
 
 export default LonePairView;

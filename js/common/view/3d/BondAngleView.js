@@ -11,7 +11,6 @@ import Utils from '../../../../../dot/js/Utils.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import animatedPanZoomSingleton from '../../../../../scenery/js/listeners/animatedPanZoomSingleton.js';
-import moleculeShapes from '../../../moleculeShapes.js';
 import PairGroup from '../../model/PairGroup.js';
 
 class BondAngleView extends THREE.Object3D {
@@ -203,7 +202,5 @@ BondAngleView.HIGH_THRESHOLDS = [ 0, 0, 0, 0.5, 0.55, 0.65, 0.75 ];
 
 // @public {number} - radius, in view units
 BondAngleView.radius = 5;
-
-moleculeShapes.register( 'BondAngleView', BondAngleView );
 
 export default BondAngleView;

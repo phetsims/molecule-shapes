@@ -12,7 +12,6 @@ import StringProperty from '../../../../axon/js/StringProperty.js';
 import Vector3 from '../../../../dot/js/Vector3.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 
 // Constant for the tetrahedral shape
@@ -126,5 +125,4 @@ const ElectronGeometry = EnumerationDeprecated.byMap( {
   }
 } );
 
-moleculeShapes.register( 'ElectronGeometry', ElectronGeometry );
 export default ElectronGeometry;

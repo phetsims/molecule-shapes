@@ -10,7 +10,6 @@
 
 import Permutation from '../../../../dot/js/Permutation.js';
 import partition from '../../../../phet-core/js/partition.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import AttractorModel from './AttractorModel.js';
 
 class LocalShape {
@@ -148,7 +147,5 @@ class LocalShape {
     return permutations;
   }
 }
-
-moleculeShapes.register( 'LocalShape', LocalShape );
 
 export default LocalShape;

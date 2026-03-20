@@ -11,7 +11,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import BondAngleView from './BondAngleView.js';
@@ -244,7 +243,5 @@ class BondAngleWebGLView extends BondAngleView {
 
 // @private {LocalPool}
 BondAngleWebGLView.pool = new LocalPool( 'BondAngleWebGLView', renderer => new BondAngleWebGLView( renderer ) );
-
-moleculeShapes.register( 'BondAngleWebGLView', BondAngleWebGLView );
 
 export default BondAngleWebGLView;

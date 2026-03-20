@@ -7,7 +7,6 @@
  */
 
 import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
-import moleculeShapes from '../moleculeShapes.js';
 
 const MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
   // Determines the default for whether outer lone pairs are shown.
@@ -20,7 +19,5 @@ const MoleculeShapesQueryParameters = QueryStringMachine.getAll( {
     public: true
   }
 } );
-
-moleculeShapes.register( 'MoleculeShapesQueryParameters', MoleculeShapesQueryParameters );
 
 export default MoleculeShapesQueryParameters;

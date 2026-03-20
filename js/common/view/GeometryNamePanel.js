@@ -14,7 +14,6 @@ import GridBox from '../../../../scenery/js/layout/nodes/GridBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesStrings from '../../MoleculeShapesStrings.js';
 import { emptyElectronGeometryStringProperty } from '../model/ElectronGeometry.js';
 import { emptyMoleculeGeometryStringProperty } from '../model/MoleculeGeometry.js';
@@ -250,7 +249,5 @@ class GeometryNamePanel extends MoleculeShapesPanel {
     }
   }
 }
-
-moleculeShapes.register( 'GeometryNamePanel', GeometryNamePanel );
 
 export default GeometryNamePanel;

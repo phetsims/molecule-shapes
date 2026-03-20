@@ -7,8 +7,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../../moleculeShapes.js';
-
 class LocalGeometry {
   /*
    * @param {THREE.Geometry} mainGeometry - The geometry to clone for each renderer
@@ -42,7 +40,5 @@ class LocalGeometry {
     return geometry;
   }
 }
-
-moleculeShapes.register( 'LocalGeometry', LocalGeometry );
 
 export default LocalGeometry;

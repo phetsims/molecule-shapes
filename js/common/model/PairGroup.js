@@ -15,7 +15,6 @@ import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
-import moleculeShapes from '../../moleculeShapes.js';
 
 let nextId = 0;
 
@@ -298,8 +297,6 @@ class PairGroup {
     return Math.sqrt( ( timeElapsed > 0.017 ) ? 0.017 / timeElapsed : 1 );
   }
 }
-
-moleculeShapes.register( 'PairGroup', PairGroup );
 
 /*---------------------------------------------------------------------------*
  * constants

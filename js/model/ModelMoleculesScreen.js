@@ -10,7 +10,6 @@ import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import ScreenIconNode from '../common/view/ScreenIconNode.js';
-import moleculeShapes from '../moleculeShapes.js';
 import MoleculeShapesStrings from '../MoleculeShapesStrings.js';
 import ModelMoleculesModel from './ModelMoleculesModel.js';
 import ModelMoleculesScreenView from './ModelMoleculesScreenView.js';
@@ -42,5 +41,4 @@ class ModelMoleculesScreen extends Screen {
   }
 }
 
-moleculeShapes.register( 'ModelMoleculesScreen', ModelMoleculesScreen );
 export default ModelMoleculesScreen;

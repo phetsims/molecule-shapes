@@ -9,7 +9,6 @@
 
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import moleculeShapes from '../../moleculeShapes.js';
 
 class Bond {
   /**
@@ -97,5 +96,4 @@ Bond.BondIO = new IOType( 'BondIO', {
   }
 } );
 
-moleculeShapes.register( 'Bond', Bond );
 export default Bond;

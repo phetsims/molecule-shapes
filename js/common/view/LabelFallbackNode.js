@@ -8,7 +8,6 @@
 
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 
 class LabelFallbackNode extends Text {
@@ -50,7 +49,5 @@ class LabelFallbackNode extends Text {
     this.visible = false;
   }
 }
-
-moleculeShapes.register( 'LabelFallbackNode', LabelFallbackNode );
 
 export default LabelFallbackNode;

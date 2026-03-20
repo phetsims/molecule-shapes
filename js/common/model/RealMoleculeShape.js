@@ -12,7 +12,6 @@ import Vector3 from '../../../../dot/js/Vector3.js';
 import Element from '../../../../nitroglycerin/js/Element.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import StringIO from '../../../../tandem/js/types/StringIO.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import Bond from './Bond.js';
 import ElectronGeometry from './ElectronGeometry.js';
 import RealAtomPosition from './RealAtomPosition.js';
@@ -104,8 +103,6 @@ class RealMoleculeShape {
     return this.displayName;
   }
 }
-
-moleculeShapes.register( 'RealMoleculeShape', RealMoleculeShape );
 
 const createMoleculeShape = ( name, length, callback ) => {
   const shape = new RealMoleculeShape( name, length );

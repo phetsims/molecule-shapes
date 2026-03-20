@@ -13,7 +13,6 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesQueryParameters from '../MoleculeShapesQueryParameters.js';
 import Bond from './Bond.js';
 import LocalShape from './LocalShape.js';
@@ -475,5 +474,4 @@ Molecule.prototype.isReal = false;
 // @public {Property.<number>}
 Molecule.maxConnectionsProperty = maxConnectionsProperty;
 
-moleculeShapes.register( 'Molecule', Molecule );
 export default Molecule;

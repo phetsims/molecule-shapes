@@ -7,8 +7,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../../moleculeShapes.js';
-
 class LocalPool {
   /*
    * @param {string} name - for debugging purposes
@@ -81,7 +79,5 @@ class LocalPool {
 LocalPool.prototype.debug = ( phet.chipper.queryParameters.dev ) ? function( action ) {
   console.log( this.name, action, this.quantityInside, this.quantityOutside );
 } : () => {};
-
-moleculeShapes.register( 'LocalPool', LocalPool );
 
 export default LocalPool;

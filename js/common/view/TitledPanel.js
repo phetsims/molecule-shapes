@@ -18,7 +18,6 @@ import WidthSizable from '../../../../scenery/js/layout/WidthSizable.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Panel from '../../../../sun/js/Panel.js';
-import moleculeShapes from '../../moleculeShapes.js';
 
 // TODO: Best sometime to actually have us extend panel sometime perhaps? Or have panelOptions? https://github.com/phetsims/tasks/issues/1129
 class TitledPanel extends Sizable( Node ) {
@@ -164,7 +163,5 @@ class TitledPanel extends Sizable( Node ) {
 
   set fill( value ) { this.setFill( value ); }
 }
-
-moleculeShapes.register( 'TitledPanel', TitledPanel );
 
 export default TitledPanel;

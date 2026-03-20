@@ -10,7 +10,6 @@ import Ray3 from '../../../../../dot/js/Ray3.js';
 import Sphere3 from '../../../../../dot/js/Sphere3.js';
 import Vector3 from '../../../../../dot/js/Vector3.js';
 import Color from '../../../../../scenery/js/util/Color.js';
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import LocalGeometry from './LocalGeometry.js';
@@ -113,7 +112,5 @@ AtomView.centralAtomLocalMaterial = new LocalMaterial( new THREE.MeshLambertMate
 AtomView.atomLocalMaterial = new LocalMaterial( new THREE.MeshLambertMaterial( { overdraw: OVERDRAW } ), {
   color: MoleculeShapesColors.atomProperty
 } );
-
-moleculeShapes.register( 'AtomView', AtomView );
 
 export default AtomView;

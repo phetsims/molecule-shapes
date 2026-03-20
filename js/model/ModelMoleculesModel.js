@@ -10,7 +10,6 @@ import Vector3 from '../../../dot/js/Vector3.js';
 import MoleculeShapesModel from '../common/model/MoleculeShapesModel.js';
 import PairGroup from '../common/model/PairGroup.js';
 import VSEPRMolecule from '../common/model/VSEPRMolecule.js';
-import moleculeShapes from '../moleculeShapes.js';
 
 class ModelMoleculesModel extends MoleculeShapesModel {
   /**
@@ -51,7 +50,5 @@ class ModelMoleculesModel extends MoleculeShapesModel {
     this.setupInitialMoleculeState();
   }
 }
-
-moleculeShapes.register( 'ModelMoleculesModel', ModelMoleculesModel );
 
 export default ModelMoleculesModel;

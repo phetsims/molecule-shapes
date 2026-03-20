@@ -7,7 +7,6 @@
  */
 
 import Atom from '../../../../nitroglycerin/js/Atom.js';
-import moleculeShapes from '../../moleculeShapes.js';
 
 class RealAtomPosition extends Atom {
   /**
@@ -29,5 +28,4 @@ class RealAtomPosition extends Atom {
   }
 }
 
-moleculeShapes.register( 'RealAtomPosition', RealAtomPosition );
 export default RealAtomPosition;

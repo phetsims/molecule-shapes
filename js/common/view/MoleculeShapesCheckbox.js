@@ -7,7 +7,6 @@
  */
 
 import Checkbox from '../../../../sun/js/Checkbox.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesColors from './MoleculeShapesColors.js';
 
 class MoleculeShapesCheckbox extends Checkbox {
@@ -25,5 +24,4 @@ class MoleculeShapesCheckbox extends Checkbox {
   }
 }
 
-moleculeShapes.register( 'MoleculeShapesCheckbox', MoleculeShapesCheckbox );
 export default MoleculeShapesCheckbox;

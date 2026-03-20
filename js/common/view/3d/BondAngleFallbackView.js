@@ -8,7 +8,6 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import BondAngleView from './BondAngleView.js';
@@ -161,7 +160,5 @@ class BondAngleFallbackView extends BondAngleView {
 
 // @private {LocalPool}
 BondAngleFallbackView.pool = new LocalPool( 'BondAngleFallbackView', renderer => new BondAngleFallbackView( renderer ) );
-
-moleculeShapes.register( 'BondAngleFallbackView', BondAngleFallbackView );
 
 export default BondAngleFallbackView;

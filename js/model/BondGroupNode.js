@@ -26,7 +26,6 @@ import MoleculeShapesGlobals from '../common/MoleculeShapesGlobals.js';
 import MoleculeView from '../common/view/3d/MoleculeView.js';
 import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
-import moleculeShapes from '../moleculeShapes.js';
 import RemovePairGroupButton from './RemovePairGroupButton.js';
 
 /*---------------------------------------------------------------------------*
@@ -252,7 +251,5 @@ class BondGroupNode extends HBox {
     }, options ) );
   }
 }
-
-moleculeShapes.register( 'BondGroupNode', BondGroupNode );
 
 export default BondGroupNode;

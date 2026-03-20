@@ -20,7 +20,6 @@ import MoleculeShapesColors from '../common/view/MoleculeShapesColors.js';
 import MoleculeShapesPanel from '../common/view/MoleculeShapesPanel.js';
 import MoleculeShapesScreenView from '../common/view/MoleculeShapesScreenView.js';
 import OptionsNode from '../common/view/OptionsNode.js';
-import moleculeShapes from '../moleculeShapes.js';
 import MoleculeShapesStrings from '../MoleculeShapesStrings.js';
 
 class RealMoleculesScreenView extends MoleculeShapesScreenView {
@@ -147,5 +146,4 @@ class RealMoleculesScreenView extends MoleculeShapesScreenView {
   }
 }
 
-moleculeShapes.register( 'RealMoleculesScreenView', RealMoleculesScreenView );
 export default RealMoleculesScreenView;

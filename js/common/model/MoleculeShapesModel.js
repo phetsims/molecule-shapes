@@ -20,7 +20,6 @@ import BooleanIO from '../../../../tandem/js/types/BooleanIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import moleculeShapes from '../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../MoleculeShapesGlobals.js';
 import Bond from './Bond.js';
 import ElectronGeometry from './ElectronGeometry.js';
@@ -211,5 +210,4 @@ MoleculeShapesModel.MoleculeShapesModelIO = new IOType( 'MoleculeShapesModelIO',
   }
 } );
 
-moleculeShapes.register( 'MoleculeShapesModel', MoleculeShapesModel );
 export default MoleculeShapesModel;

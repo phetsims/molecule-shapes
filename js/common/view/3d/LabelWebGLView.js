@@ -18,7 +18,6 @@ import Matrix3 from '../../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../../dot/js/Vector2.js';
 import Shape from '../../../../../kite/js/Shape.js';
 import Utils from '../../../../../scenery/js/util/Utils.js';
-import moleculeShapes from '../../../moleculeShapes.js';
 import MoleculeShapesGlobals from '../../MoleculeShapesGlobals.js';
 import MoleculeShapesColors from '../MoleculeShapesColors.js';
 import LocalTexture from './LocalTexture.js';
@@ -336,7 +335,5 @@ class LabelWebGLView extends THREE.Mesh {
     this.geometry.uvsNeedUpdate = true; // will need when we change UVs
   }
 }
-
-moleculeShapes.register( 'LabelWebGLView', LabelWebGLView );
 
 export default LabelWebGLView;
