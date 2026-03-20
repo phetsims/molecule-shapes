@@ -63,4 +63,6 @@ type StringsType = {
 
 const MoleculeShapesStrings = getStringModule( 'MOLECULE_SHAPES' ) as StringsType;
 
+moleculeShapes.register( 'MoleculeShapesStrings', MoleculeShapesStrings );
+
 export default MoleculeShapesStrings;
