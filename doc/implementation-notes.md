@@ -60,7 +60,7 @@ Three layers:
 - 2D overlay with three.js (middle)
 - 2D user interface with Scenery (top)
 
-Can render with WebGL when supported, but falls back to Canvas if necessary (flag in MoleculeShapesGlobals)
+Can render with WebGL when supported, but falls back to Canvas if necessary (flag in MoleculeShapesConstants)
 
 ## three.js and overview of usage:
 
